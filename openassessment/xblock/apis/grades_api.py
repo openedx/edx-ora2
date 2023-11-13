@@ -15,6 +15,46 @@ class GradesAPI:
         return self._block.submission_uuid
 
     @property
+    def score_overridden(self):
+        """
+        Determine if score was overridden by staff.
+        Adapted from grade_mixin._get_assessment_type.
+
+        Returns: True if score was overridden by staff, False otherwise.
+        """
+        workflow = self._block.get_workflow_info()
+        score = workflow['score']
+
+        complete = score is not None
+        grade_annotation_types = [annotation['annotation_type'] for annotation in (score or {}).get("annotations", [])]
+        if complete and "staff_defined" in grade_annotation_types:
+            return True
+
+        return False
+
+    @property
+    def effective_assessment_type(self):
+        """
+        Determine which assessment step we will use as our "graded" step.
+
+        This follows the order:
+        1) Staff (if assessment received / overridden)
+        2) Peer (if assessment step configured)
+        3) Self (if assessment step configured)
+
+        NOTE: The logic in a few places differs, but this combines the best I've found.
+        """
+        if self.staff_score is not None or self.score_overridden:
+            return "staff"
+        elif "peer-assessment" in self._block.assessment_steps:
+            return "peer"
+        elif "self-assessment" in self._block.assessment_steps:
+            return "self"
+
+        # To make pylint happy
+        return None
+
+    @property
     def self_score(self):
         """
         Get self score.

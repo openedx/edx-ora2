@@ -17,7 +17,6 @@ from openassessment.xblock.test.base import (
 )
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
-    AssessmentStepSerializer,
     AssessmentGradeSerializer,
     AssessmentScoreSerializer,
     AssessmentDataSerializer,
@@ -198,13 +197,13 @@ class TestPeerSplit(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             {}
         )
 
-        context = {"response": submission, "step": "peer"}
+        context = {"response": submission, "step": "done"}
 
         # When I load my response
         data = AssessmentGradeSerializer(xblock.api_data, context=context).data
 
         # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
+        self.assertEqual("peer", data["effectiveAssessmentType"])
         self.assertEqual(data["peer"]["stepScore"], {'earned': 5, 'possible': 6})
         self.assertEqual(len(data["peer"]["assessments"]), 2)
         self.assertIsNone(data["peerUnweighted"]["stepScore"])
@@ -212,13 +211,22 @@ class TestPeerSplit(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
 
 class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+
+    maxDiff = None
+
+    def assertNestedDictEquals(self, dict_1, dict_2):
+        # Manually expand nested dicts for comparison
+        dict_1_expanded = json.loads(json.dumps(dict_1))
+        dict_2_expanded = json.loads(json.dumps(dict_2))
+        return self.assertDictEqual(dict_1_expanded, dict_2_expanded)
+
     ASSESSMENT = {
         'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Fair'},
         'criterion_feedback': {},
         'overall_feedback': ""
     }
 
-    @scenario("data/self_assessment_scenario.xml", user_id="Alan")
+    @scenario("data/self_only_scenario.xml", user_id="Alan")
     def test_self_assessment_step(self, xblock):
         submission_text = ["Foo", "Bar"]
 
@@ -226,23 +234,37 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
             xblock, submission_text=submission_text
         )
 
-        context = {"response": submission, "step": "self"}
+        context = {"response": submission, "step": "done"}
+
+        # The self-only example uses a different rubric
+        self_assessment = {
+            'options_selected': {'Concise': 'Robert Heinlein', 'Clear-headed': 'Spock', 'Form': 'Reddit'},
+            'criterion_feedback': {},
+            'overall_feedback': "I'm so cool",
+        }
 
         resp = self.request(
-            xblock, "self_assess", json.dumps(self.ASSESSMENT), response_format="json"
+            xblock, "self_assess", json.dumps(self_assessment), response_format="json"
         )
         self.assertTrue(resp["success"])
 
         # When I load my response
         data = AssessmentGradeSerializer(xblock.api_data, context=context).data
-        # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
-        self.assertEqual(
-            data["self"],
-            AssessmentStepSerializer(
-                xblock.api_data.self_assessment_data.assessment, context=context
-            ).data,
-        )
+
+        # Then I get the appropriate assessment data
+        expected_assessment_type = "self"
+        self.assertEqual(expected_assessment_type, data["effectiveAssessmentType"])
+
+        score_details = data[expected_assessment_type]
+        self.assertDictEqual(score_details["assessment"], {
+            "overallFeedback": self_assessment['overall_feedback'],
+            "criteria": [
+                {"selectedOption": 2, "feedback": ""},
+                {"selectedOption": 4, "feedback": ""},
+                {"selectedOption": 2, "feedback": ""},
+            ]
+        })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 15, "possible": 20})
 
     @scenario("data/grade_scenario.xml", user_id="Alan")
     def test_staff_assessment_step(self, xblock):
@@ -253,21 +275,33 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
 
         self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
 
-        context = {"response": submission, "step": "staff"}
+        context = {"response": submission, "step": "done"}
+
         # When I load my response
         data = AssessmentGradeSerializer(xblock.api_data, context=context).data
 
-        # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
-        self.assertEqual(
-            data["staff"],
-            AssessmentStepSerializer(
-                xblock.api_data.staff_assessment_data.assessment, context=context
-            ).data,
-        )
+        # Then I get the appropriate assessment data
+        expected_assessment_type = "staff"
+        self.assertEqual(expected_assessment_type, data["effectiveAssessmentType"])
+
+        score_details = data[expected_assessment_type]
+        self.assertNestedDictEquals(score_details["assessment"], {
+            "overallFeedback": STAFF_GOOD_ASSESSMENT["overall_feedback"],
+            "criteria": [
+                {
+                    "selectedOption": 0,
+                    "feedback": '',
+                },
+                {
+                    "selectedOption": 1,
+                    "feedback": '',
+                }
+            ]
+        })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 5, "possible": 6})
 
     @scenario("data/grade_scenario.xml", user_id="Bernard")
-    def test_peer_assement_steps(self, xblock):
+    def test_peer_assessment_steps(self, xblock):
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         submission = self.create_test_submission(
@@ -292,60 +326,80 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
                 graded_by,
             )
 
-        context = {"response": submission, "step": "peer"}
+        context = {"response": submission, "step": "done"}
 
         # When I load my response
         data = AssessmentGradeSerializer(xblock.api_data, context=context).data
 
-        # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
-        self.assertEqual(data["peer"], {'stepScore': None, 'assessments': []})
+        # Then I get the appropriate assessment data
+        expected_assessment_type = "peer"
+        self.assertEqual(expected_assessment_type, data["effectiveAssessmentType"])
+
+        score_details = data[expected_assessment_type]
+        self.assertDictEqual(score_details, {'stepScore': None, 'assessments': []})
+
         self.assertIsNone(data["peerUnweighted"]['stepScore'])
         self.assertEqual(len(data["peerUnweighted"]['assessments']), len(self.PEERS))
 
-    @scenario("data/grade_scenario.xml", user_id="Alan")
-    def test_assessment_step_score(self, xblock):
-        submission_text = ["Foo", "Bar"]
+    @scenario("data/grade_scenario.xml", user_id="Bernard")
+    def test_staff_override(self, xblock):
+        # Create a submission from the user
+        student_item = xblock.get_student_item_dict()
         submission = self.create_test_submission(
-            xblock, submission_text=submission_text
+            xblock, student_item=student_item, submission_text=self.SUBMISSION
         )
 
+        # Create submissions from other users
+        scorer_subs = self.create_peer_submissions(
+            student_item, self.PEERS, self.SUBMISSION
+        )
+
+        graded_by = xblock.get_assessment_module("peer-assessment")["must_be_graded_by"]
+        for scorer_sub, scorer_name, assessment in list(
+            zip(scorer_subs, self.PEERS, PEER_ASSESSMENTS)
+        ):
+            self.create_peer_assessment(
+                scorer_sub,
+                scorer_name,
+                submission,
+                assessment,
+                xblock.rubric_criteria,
+                graded_by,
+            )
+
+        # Create a staff override
         self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
 
-        context = {"response": submission, "step": "staff"}
+        context = {"response": submission, "step": "done"}
+
         # When I load my response
         data = AssessmentGradeSerializer(xblock.api_data, context=context).data
 
-        # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
+        # Then I get the appropriate assessment data
+        expected_assessment_type = "staff"
+        self.assertEqual(expected_assessment_type, data["effectiveAssessmentType"])
 
-        step_score = AssessmentScoreSerializer(
-            xblock.api_data.staff_assessment_data.assessment, context=context
-        ).data
+        score_details = data[expected_assessment_type]
+        # Feedback is disabled in this assignment
+        self.assertNestedDictEquals(score_details["assessment"], {
+            "overallFeedback": STAFF_GOOD_ASSESSMENT["overall_feedback"],
+            "criteria": [
+                {
+                    "selectedOption": 0,
+                    "feedback": '',
+                },
+                {
+                    "selectedOption": 1,
+                    "feedback": '',
+                }
+            ]
+        })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 5, "possible": 6})
 
-        self.assertEqual(data["staff"]["stepScore"], step_score)
-
-    @scenario("data/grade_scenario.xml", user_id="Alan")
-    def test_assessment_step_assessment_data(self, xblock):
-        submission_text = ["Foo", "Bar"]
-        submission = self.create_test_submission(
-            xblock, submission_text=submission_text
-        )
-
-        self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-
-        context = {"response": submission, "step": "staff"}
-        # When I load my response
-        data = AssessmentGradeSerializer(xblock.api_data, context=context).data
-
-        # I get the appropriate response
-        self.assertEqual(context["step"], data["effectiveAssessmentType"])
-
-        assessment_data = AssessmentDataSerializer(
-            xblock.api_data.staff_assessment_data.assessment, context=context
-        ).data
-
-        self.assertEqual(data["staff"]["assessment"], assessment_data)
+        # With peer responses all listed as unweighted
+        self.assertDictEqual(data["peer"], {'stepScore': None, 'assessments': []})
+        self.assertIsNone(data["peerUnweighted"]['stepScore'])
+        self.assertEqual(len(data["peerUnweighted"]['assessments']), len(self.PEERS))
 
 
 class TestAssessmentScoreSerializer(TestCase):
