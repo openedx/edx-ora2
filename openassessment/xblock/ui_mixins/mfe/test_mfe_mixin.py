@@ -237,16 +237,13 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         # When I try to jump to a bad step
         response = self.request_get_learner_data(xblock, suffix="asdf")
 
-        # Then I get an error and don't return data
+        # Then I get None as response
+        self.assertIsNone(json.loads(response.body))
+
+        # And no serializer is called
         mock_serializer.assert_not_called()
 
-        expected_status = 404
-        self.assertEqual(expected_status, response.status_code)
-
-        expected_body = {'error': 'Invalid jump to step: asdf'}
-        self.assertDictEqual(expected_body, json.loads(response.body))
-
-    @ddt.data("peer", "grades")
+    @ddt.data("peer", "done")
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
     def test_jump_to_inaccessible_step(self, xblock, inaccessible_step, mock_serializer):
@@ -256,14 +253,11 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         # When I try to jump to a step I can't access
         response = self.request_get_learner_data(xblock, suffix=inaccessible_step)
 
-        # Then I get an error and don't return data
+        # Then I get None as response
+        self.assertIsNone(json.loads(response.body))
+
+        # And no serializer is called
         mock_serializer.assert_not_called()
-
-        expected_status = 400
-        self.assertEqual(expected_status, response.status_code)
-
-        expected_body = {'error': f'Cannot jump to step: {inaccessible_step}'}
-        self.assertDictEqual(expected_body, json.loads(response.body))
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alice")

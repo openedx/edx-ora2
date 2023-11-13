@@ -77,13 +77,10 @@ class MfeMixin:
 
         # Allow jumping to a specific step, within our allowed steps
         if jump_step:
-            jumpable_steps = ("submission", "peer", "grades")
-            if jump_step not in jumpable_steps:
-                raise JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
             if self._can_jump_to_step(workflow_step, jump_step):
                 serializer_context.update({"jump_to_step": suffix})
             else:
-                raise JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
+                return None
 
         # Determine which mode we are viewing in, since data comes from different sources
         # View submission, submitted or draft
@@ -102,10 +99,10 @@ class MfeMixin:
         step_name_mappings = {
             "submission": "submission",
             "peer": "peer",
-            "grades": "done"
+            "done": "done",
         }
 
-        workflow_step_to_jump_to = step_name_mappings[jump_step]
+        workflow_step_to_jump_to = step_name_mappings.get(jump_step, None)
 
         # Can always "jump" to submission
         if workflow_step_to_jump_to == "submission":
