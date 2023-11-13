@@ -19,8 +19,14 @@ template_paths = {
 }
 
 
-def peer_context(config_data, step_data, peer_sub=None):
+def peer_context(config_data, step_data, self_assessment_data, peer_sub=None):
     user_preferences = get_user_preferences(config_data.user_service)
+
+    is_self = "self-assessment" in config_data.assessment_steps
+    is_self_complete = self_assessment_data.is_self_complete
+    peer_has_finished = step_data.has_finished[0]
+    show_survey = (peer_has_finished and not is_self) or (peer_has_finished and is_self_complete)
+
     context_dict = {
         "rubric_criteria": config_data.rubric_criteria_with_labels,
         "allow_multiple_files": config_data.allow_multiple_files,
@@ -29,6 +35,7 @@ def peer_context(config_data, step_data, peer_sub=None):
         "user_timezone": user_preferences["user_timezone"],
         "user_language": user_preferences["user_language"],
         "xblock_id": config_data.get_xblock_id(),
+        "show_survey": show_survey,
     }
 
     if config_data.rubric_feedback_prompt is not None:
@@ -98,7 +105,7 @@ def peer_path_and_context(api_data, continue_grading):
     def path_and_context(path_key, peer_sub=None):
         return (
             template_paths[path_key],
-            peer_context(api_data.config_data, step_data, peer_sub),
+            peer_context(api_data.config_data, step_data, api_data.self_assessment_data, peer_sub),
         )
 
     if step_data.is_cancelled:

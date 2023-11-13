@@ -332,7 +332,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
@@ -351,7 +352,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_closed.html', expected_context
@@ -370,7 +372,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
@@ -392,7 +395,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_waiting.html',
@@ -426,7 +430,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_assessment.html',
@@ -449,7 +454,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
@@ -476,7 +482,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_closed.html',
@@ -506,7 +513,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_closed.html',
@@ -534,7 +542,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
@@ -564,7 +573,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_turbo_mode_waiting.html',
@@ -595,7 +605,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_turbo_mode.html',
@@ -620,7 +631,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
             xblock, 'legacy/peer/oa_peer_unavailable.html',

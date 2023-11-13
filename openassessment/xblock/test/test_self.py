@@ -173,7 +173,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             }
         )
 
@@ -189,7 +190,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             }
         )
 
@@ -203,7 +205,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             }
         )
 
@@ -224,6 +227,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': True,
                 'user_timezone': True,
                 'allow_multiple_files': True,
+                'show_survey': False
             }
         )
 
@@ -240,7 +244,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'show_survey': False
             },
             workflow_status='waiting',
             status_details={
@@ -262,8 +267,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
-                'user_language': None
-
+                'user_language': None,
+                'show_survey': False
             },
             workflow_status="peer",
             status_details={
@@ -283,7 +288,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'show_survey': False
             },
             workflow_status='done'
         )
@@ -299,7 +305,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             },
             workflow_status='cancelled'
         )
@@ -319,7 +326,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -345,7 +353,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -365,7 +374,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -398,7 +408,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
-                'user_language': 'en'
+                'user_language': 'en',
+                'show_survey': False
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
