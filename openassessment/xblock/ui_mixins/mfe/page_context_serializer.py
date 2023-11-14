@@ -22,6 +22,10 @@ from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResp
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS, CharListField
 
 
+class UnknownActiveStepException(Exception):
+    """Raised when we can't determine the active step"""
+
+
 class AssessmentScoreSerializer(Serializer):
     """
     Returns:
@@ -249,7 +253,16 @@ class ProgressSerializer(Serializer):
         if not instance.workflow_data.has_workflow or instance.workflow_data.is_cancelled:
             return "submission"
         else:
-            return STEP_NAME_MAPPINGS[instance.workflow_data.status]
+            step_name = STEP_NAME_MAPPINGS[instance.workflow_data.status]
+            if step_name == "waiting":
+                workflow_requirements = instance.workflow_data.workflow_requirements
+                if 'staff' in workflow_requirements and workflow_requirements['staff']['required']:
+                    return "staff"
+                elif 'peer' in workflow_requirements:
+                    return "peer"
+                else:
+                    raise UnknownActiveStepException("Workflow is in waiting but no staff or peer step is required.")
+            return step_name
 
 
 class PageDataSerializer(Serializer):

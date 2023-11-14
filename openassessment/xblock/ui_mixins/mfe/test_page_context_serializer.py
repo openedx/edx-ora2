@@ -465,6 +465,19 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.assertNestedDictEquals(expected_data, progress_data)
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
+    def test_peer_assessment__waiting(self, xblock):
+        # Given I am on the peer step and waiting for submissions
+        self.create_test_submission(xblock)
+        # xblock.workflow_data.workflow.set("status", "waiting")
+        xblock.workflow_data.workflow["status"] = "waiting"
+
+        # When I ask for progress
+        progress_data = ProgressSerializer(xblock).data
+
+        # Expect active step to be peer instead of waiting
+        self.assertEqual('peer', progress_data['activeStepName'])
+
+    @scenario("data/peer_only_scenario.xml", user_id="Alan")
     def test_peer_assessment__cancelled(self, xblock):
         # Given I am on the peer step and then get cancelled
         submission = self.create_test_submission(xblock)
@@ -594,6 +607,29 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
+
+    @scenario('data/grade_scenario_self_staff.xml', user_id='Alan')
+    def test_self_staff_assessment__waiting(self, xblock):
+        # Given I am on the staff step and waiting for submissions
+        self.create_submission_and_assessments(xblock, 'submission_text', [], [], SELF_ASSESSMENT)
+        xblock.workflow_data.workflow['status'] = 'waiting'
+
+        # When I ask for progress
+        progress_data = ProgressSerializer(xblock).data
+
+        # Expect active step to be staff instead of waiting
+        self.assertEqual('staff', progress_data['activeStepName'])
+
+    @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Alan')
+    def test_self_staff_assessment__not_required(self, xblock):
+        # Given I am on the staff step and waiting for submissions
+        self.create_submission_and_assessments(xblock, 'submission_text', [], [], SELF_ASSESSMENT)
+
+        # When I ask for progress
+        progress_data = ProgressSerializer(xblock).data
+
+        # Expect active step to be staff instead of waiting
+        self.assertEqual('done', progress_data['activeStepName'])
 
     @skip
     @scenario("data/team_submission.xml", user_id="Alan")
