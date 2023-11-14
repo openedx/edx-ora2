@@ -13,14 +13,6 @@ from rest_framework.serializers import (
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import CharListField, NullField
 
 
-class FileIndexListField(ListField):
-    def to_representation(self, data):
-        return [
-            self.child.to_representation({'item': item, 'file_index': i}) if item is not None else None
-            for i, item in enumerate(data)
-        ]
-
-
 class SubmissionFileSerializer(Serializer):
     fileUrl = URLField(source='file.url')
     fileDescription = CharField(source='file.description')
