@@ -14,6 +14,14 @@ from openassessment.xblock.ui_mixins.mfe.serializer_utils import CharListField, 
 
 
 class SubmissionFileSerializer(Serializer):
+    """
+    Files for a submitted response, different format from draft response.
+
+    Args: {
+        "file": (Object),
+        "file_index": (Int),
+    }
+    """
     fileUrl = URLField(source='file.url')
     fileDescription = CharField(source='file.description')
     fileName = CharField(source='file.name')
@@ -23,6 +31,8 @@ class SubmissionFileSerializer(Serializer):
 
 class SubmissionSerializer(Serializer):
     """
+    Serialize a submitted response, different format from draft responses.
+
     Args:
     * get_learner_submission_data shape
 
@@ -51,6 +61,14 @@ class SubmissionSerializer(Serializer):
 
 
 class FileDescriptorSerializer(Serializer):
+    """
+    Files uploaded for a draft response, different format from submitted responses.
+
+    Args: {
+        file: (Object),
+        file_index: (Int),
+    }
+    """
     fileUrl = URLField(source='file.download_url')
     fileDescription = CharField(source='file.description')
     fileName = CharField(source='file.name')
@@ -59,6 +77,9 @@ class FileDescriptorSerializer(Serializer):
 
 
 class TeamFileDescriptorSerializer(Serializer):
+    """
+    Files uploaded by team members for a draft response, different format from submitted responses.
+    """
     fileUrl = URLField(source='download_url')
     fileDescription = CharField(source='description')
     fileName = CharField(source='name')
@@ -68,6 +89,8 @@ class TeamFileDescriptorSerializer(Serializer):
 
 class DraftResponseSerializer(Serializer):
     """
+    Serialize a draft response, a different format from submitted responses.
+
     Args:
     * get_learner_submission_data shape
 
