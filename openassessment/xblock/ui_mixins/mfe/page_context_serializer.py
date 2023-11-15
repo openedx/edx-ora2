@@ -252,17 +252,20 @@ class ProgressSerializer(Serializer):
         """Return the active step name"""
         if not instance.workflow_data.has_workflow or instance.workflow_data.is_cancelled:
             return "submission"
+        elif instance.workflow_data.is_waiting:
+            # If we are waiting, we are either waiting on a peer or a staff grade.
+            # Staff takes precidence, so if a required (not automatically inserted) staff
+            # step exists, we are considered to be in "staff". If there is a peer, we are
+            # considered to be in "peer"
+            workflow_requirements = instance.workflow_data.workflow_requirements
+            if "staff" in workflow_requirements and workflow_requirements["staff"]["required"]:
+                return "staff"
+            elif "peer" in workflow_requirements:
+                return "peer"
+            else:
+                raise UnknownActiveStepException("Workflow is in waiting but no staff or peer step is required.")
         else:
-            step_name = STEP_NAME_MAPPINGS[instance.workflow_data.status]
-            if step_name == "waiting":
-                workflow_requirements = instance.workflow_data.workflow_requirements
-                if 'staff' in workflow_requirements and workflow_requirements['staff']['required']:
-                    return "staff"
-                elif 'peer' in workflow_requirements:
-                    return "peer"
-                else:
-                    raise UnknownActiveStepException("Workflow is in waiting but no staff or peer step is required.")
-            return step_name
+            return STEP_NAME_MAPPINGS[instance.workflow_data.status]
 
 
 class PageDataSerializer(Serializer):

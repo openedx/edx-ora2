@@ -14,6 +14,7 @@ from openassessment.fileupload.api import TeamFileDescriptor
 from openassessment.workflow.api import cancel_workflow
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
+from openassessment.xblock.apis.workflow_api import WorkflowAPI
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
     SELF_ASSESSMENT,
@@ -26,6 +27,7 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
     PageDataSerializer,
     ProgressSerializer,
     TeamInfoSerializer,
+    UnknownActiveStepException,
 )
 
 
@@ -464,12 +466,18 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
         self.assertNestedDictEquals(expected_data, progress_data)
 
-    @scenario("data/peer_only_scenario.xml", user_id="Alan")
+    @scenario("data/grade_scenario_peer_only.xml", user_id="Alan")
     def test_peer_assessment__waiting(self, xblock):
         # Given I am on the peer step and waiting for submissions
-        self.create_test_submission(xblock)
-        # xblock.workflow_data.workflow.set("status", "waiting")
-        xblock.workflow_data.workflow["status"] = "waiting"
+        self.create_submission_and_assessments(
+            xblock,
+            'submission_text',
+            self.PEERS,
+            PEER_ASSESSMENTS,
+            None,
+            waiting_for_peer=True
+        )
+        self.assertTrue(xblock.workflow_data.is_waiting)
 
         # When I ask for progress
         progress_data = ProgressSerializer(xblock).data
@@ -612,7 +620,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     def test_self_staff_assessment__waiting(self, xblock):
         # Given I am on the staff step and waiting for submissions
         self.create_submission_and_assessments(xblock, 'submission_text', [], [], SELF_ASSESSMENT)
-        xblock.workflow_data.workflow['status'] = 'waiting'
+        self.assertTrue(xblock.workflow_data.is_waiting)
 
         # When I ask for progress
         progress_data = ProgressSerializer(xblock).data
@@ -620,16 +628,36 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Expect active step to be staff instead of waiting
         self.assertEqual('staff', progress_data['activeStepName'])
 
-    @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Alan')
-    def test_self_staff_assessment__not_required(self, xblock):
-        # Given I am on the staff step and waiting for submissions
-        self.create_submission_and_assessments(xblock, 'submission_text', [], [], SELF_ASSESSMENT)
+    @scenario("data/grade_scenario_staff_peer.xml", user_id="Alan")
+    def test_peer_the_staff_assessment__waiting(self, xblock):
+        # Given I am waiting for both peer and staff assessments
+        self.create_submission_and_assessments(
+            xblock,
+            'submission_text',
+            self.PEERS,
+            PEER_ASSESSMENTS,
+            None,
+            waiting_for_peer=True
+        )
+        self.assertTrue(xblock.workflow_data.is_waiting)
 
         # When I ask for progress
         progress_data = ProgressSerializer(xblock).data
 
-        # Expect active step to be staff instead of waiting
-        self.assertEqual('done', progress_data['activeStepName'])
+        # Expect active step to be staff instead of waiting or peer
+        self.assertEqual('staff', progress_data['activeStepName'])
+
+    @scenario("data/self_only_scenario.xml", user_id="Alan")
+    def test_waiting_error(self, xblock):
+        # Given I am waiting when I shouldn't be able to be waiting
+        self.create_test_submission(xblock)
+        self.assertTrue(xblock.workflow_data.is_self)
+
+        with patch.object(WorkflowAPI, 'is_waiting', new_callable=PropertyMock(return_value=True)):
+            self.assertTrue(xblock.workflow_data.is_waiting)
+            # When I ask for progress
+            with self.assertRaises(UnknownActiveStepException):
+                ProgressSerializer(xblock).data  # pylint: disable=expression-not-assigned
 
     @skip
     @scenario("data/team_submission.xml", user_id="Alan")
