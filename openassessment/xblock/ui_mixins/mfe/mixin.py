@@ -69,44 +69,27 @@ class MfeMixin:
         2) If step provided, validate that we can get to that step and return the appropriate response
         """
         # Query workflow step here only once to avoid duplicate workflow updates
-        workflow_step = self.workflow_data.status or "submission"
-        active_step = suffix
+        current_workflow_step = self.workflow_data.status or "submission"
+        requested_step = suffix
 
         # Validate that any active step is a valid step
         if suffix and suffix not in handler_suffixes.STEP_SUFFIXES:
-            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, f"Invalid step name: {active_step}")
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, f"Invalid step name: {requested_step}")
 
-        serializer_context = {"active_step": None, "workflow_step": workflow_step}
+        serializer_context = {"active_step": None, "workflow_step": current_workflow_step}
 
         # For the general case, just return refreshed page data, without a response
-        if not active_step:
+        if not requested_step:
             return PageDataSerializer(self, context=serializer_context).data
 
-        # Check to see if user can access this step
-        if not self._user_has_reached_step(workflow_step, active_step):
-            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {active_step}")
+        # Check to see if user can access this workflow step
+        requested_workflow_step = STEP_NAME_MAPPINGS[requested_step]
+        if not self.workflow_data.has_reached_given_step(requested_workflow_step, current_workflow_step=current_workflow_step):
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_workflow_step}")
 
         # If they have access to this step, return the associated data
-        serializer_context.update({"active_step": active_step})
+        serializer_context["active_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
-
-    def _user_has_reached_step(self, workflow_step, step):
-        """ A helper to determine if we can jump to a step or not """
-
-        # Map MFE step name to workflow step name
-        requested_workflow_step = STEP_NAME_MAPPINGS[step]
-
-        # Submission is start state, have always reached this
-        if requested_workflow_step == "submission":
-            return True
-
-        # Have reached your current workflow step
-        if requested_workflow_step == workflow_step:
-            return True
-
-        # Have reached any step you have completed
-        step_status = self.workflow_data.status_details.get(requested_workflow_step, {})
-        return step_status.get("complete", False)
 
     def _submission_draft_handler(self, data):
         try:

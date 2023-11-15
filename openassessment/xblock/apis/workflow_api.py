@@ -34,6 +34,30 @@ class WorkflowAPI:
     def status_details(self):
         return self.workflow.get("status_details", {})
 
+    def has_reached_given_step(self, requested_step, current_workflow_step=None):
+        """
+        Helper to determine if are far enough through a workflow to request data for a step.
+
+        Returns:
+        True if we are on or have completed the requested step for this ORA.
+        False otherwise.
+        """
+
+        if not current_workflow_step:
+            current_workflow_step = self.status or "submission"
+
+        # Submission is start state, have always reached this
+        if requested_step == "submission":
+            return True
+
+        # Have reached your current workflow step
+        if requested_step == current_workflow_step:
+            return True
+
+        # Have reached any step you have completed
+        step_status = self.status_details.get(requested_step, {})
+        return step_status.get("complete", False)
+
     @property
     def is_peer_complete(self):
         return self.status_details.get("peer", {}).get("complete", False)
