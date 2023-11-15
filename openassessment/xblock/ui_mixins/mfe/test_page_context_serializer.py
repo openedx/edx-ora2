@@ -6,7 +6,10 @@ from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
 from unittest.mock import Mock, PropertyMock, patch
+
 import ddt
+from rest_framework.fields import ValidationError
+
 from openassessment.fileupload.api import TeamFileDescriptor
 from openassessment.workflow.api import cancel_workflow
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
@@ -25,8 +28,9 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
     TeamInfoSerializer,
 )
 
-
+@ddt.ddt
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.DraftResponseSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alan")
@@ -56,6 +60,16 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         mock_assessment_serializer.assert_called_once()
         mock_submission_serializer.assert_not_called()
 
+    @ddt.data("requested_step", "current_workflow_step")
+    @scenario("data/basic_scenario.xml", user_id="Alan")
+    def test_missing_context(self, xblock, missing_context_entry):
+        # Given I am missing required context
+        context = {"requested_step": "peer", "current_workflow_step": "peer"}
+        context.pop(missing_context_entry)
+
+        # When I ask for page data
+        with self.assertRaises(ValidationError):
+            _ = PageDataSerializer(xblock, context=context).data
 
 @ddt.ddt
 class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsMixin):
