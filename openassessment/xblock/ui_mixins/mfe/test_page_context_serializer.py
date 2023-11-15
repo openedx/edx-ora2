@@ -28,6 +28,7 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
     TeamInfoSerializer,
 )
 
+
 @ddt.ddt
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
@@ -70,6 +71,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # When I ask for page data
         with self.assertRaises(ValidationError):
             _ = PageDataSerializer(xblock, context=context).data
+
 
 @ddt.ddt
 class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsMixin):

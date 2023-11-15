@@ -84,7 +84,10 @@ class MfeMixin:
 
         # Check to see if user can access this workflow step
         requested_workflow_step = STEP_NAME_MAPPINGS[requested_step]
-        if not self.workflow_data.has_reached_given_step(requested_workflow_step, current_workflow_step=current_workflow_step):
+        if not self.workflow_data.has_reached_given_step(
+            requested_workflow_step,
+            current_workflow_step=current_workflow_step
+        ):
             raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_workflow_step}")
 
         # If they have access to this step, return the associated data
