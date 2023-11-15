@@ -282,7 +282,7 @@ class PageDataSerializer(Serializer):
             raise ValidationError("Missing required context: workflow_step")
 
         if self.context.get("active_step", "submission") not in handler_suffixes.STEP_SUFFIXES:
-            raise Exception(f"Bad step name: {self.context.get('active_step')}")
+            raise ValidationError(f"Bad step name: {self.context.get('active_step')}")
 
         return super().to_representation(instance)
 
