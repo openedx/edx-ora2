@@ -140,25 +140,23 @@ class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
         WARN: It is critical we do not hit this if we are not on the student
               training step, as loading an example will create a workflow.
 
-        Returns: List of criterion names and matched selections
-        [
-            {
-                name: (String) Criterion name,
-                selection: (String) Option name that should be selected,
-            }
-        ]
+        Returns: {
+            <Criterion Index>: (Number) Selected criterion option index
+            <Criterion Index>: (Number) Selected criterion option index
+            ... etc.
+        }
         """
-        example = instance.example
+        criteria = instance.example["rubric"]['criteria']
+        options_selected = instance.example["options_selected"]
 
-        options_selected = []
-        for criterion in example["options_selected"]:
-            criterion_selection = {
-                "name": criterion,
-                "selection": example["options_selected"][criterion],
-            }
-            options_selected.append(criterion_selection)
+        expected_rubric_selections = {}
+        for criterion in criteria:
+            for option in criterion['options']:
+                if option['name'] == options_selected[criterion['name']]:
+                    expected_rubric_selections[criterion['order_num']] = option['order_num']
+                    break
 
-        return options_selected
+        return expected_rubric_selections
 
 
 class PeerStepInfoSerializer(StepInfoBaseSerializer):
