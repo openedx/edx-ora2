@@ -214,17 +214,33 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
-    def test_start_submission(self, xblock, mock_serializer):
-        # Given we haven't started a submission
+    def test_no_requested_step(self, xblock, mock_serializer):
+        # Given we don't pass an active step
         mock_serializer.return_value = MockSerializer()
 
         # When I ask for learner data
         _ = self.request_get_learner_data(xblock)
 
+        # Then I call serialization without an active step
+        expected_context = {
+            "requested_step": None,
+            "current_workflow_step": "submission",
+        }
+        mock_serializer.assert_called_once_with(xblock, context={**expected_context})
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml")
+    def test_start_submission(self, xblock, mock_serializer):
+        # Given we haven't started a submission
+        mock_serializer.return_value = MockSerializer()
+
+        # When I ask for learner data
+        _ = self.request_get_learner_data(xblock, suffix="submission")
+
         # Then I get submission
         expected_context = {
-            "step": "submission",
-            "view": "submission",
+            "requested_step": "submission",
+            "current_workflow_step": "submission",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -240,13 +256,10 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         # Then I get an error and don't return data
         mock_serializer.assert_not_called()
 
-        expected_status = 404
-        self.assertEqual(expected_status, response.status_code)
+        expected_context = "Invalid step name: asdf"
+        assert_error_response(response, 400, error_codes.INCORRECT_PARAMETERS, context=expected_context)
 
-        expected_body = {'error': 'Invalid jump to step: asdf'}
-        self.assertDictEqual(expected_body, json.loads(response.body))
-
-    @ddt.data("peer", "grades")
+    @ddt.data("peer", "done")
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
     def test_jump_to_inaccessible_step(self, xblock, inaccessible_step, mock_serializer):
@@ -262,7 +275,12 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         expected_status = 400
         self.assertEqual(expected_status, response.status_code)
 
-        expected_body = {'error': f'Cannot jump to step: {inaccessible_step}'}
+        expected_body = {
+            'error': {
+                'error_code': 'ERR_INACCESSIBLE_STEP',
+                'error_context': f'Inaccessible step: {inaccessible_step}'
+            }
+        }
         self.assertDictEqual(expected_body, json.loads(response.body))
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
@@ -277,8 +295,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct assessment step
         expected_context = {
-            "step": "self",
-            "view": "assessment",
+            "requested_step": None,
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -295,9 +313,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct view
         expected_context = {
-            "step": "self",
-            "jump_to_step": "submission",
-            "view": "submission",
+            "requested_step": "submission",
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 

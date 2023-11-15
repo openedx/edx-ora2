@@ -32,6 +32,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
+from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     AddFileRequestSerializer,
     FileUploadCallbackRequestSerializer
@@ -62,62 +63,36 @@ class MfeMixin:
     @XBlock.json_handler
     def get_learner_data(self, data, suffix=""):  # pylint: disable=unused-argument
         """
-        Get data for the user / step of the ORA
-        - If no step provided, go to current workflow step
-            - If not submitted, load draft submission
-            - If submitted, load fir
-        - If user provides jumpable step
-            - Check if we can get to that step
-            - If we can, go to that step
-            - Otherwise, raise an error
+        Get data for the user / step of the ORA, based on the following modes:
+
+        1) If no step provided, refresh progress but don't return any response.
+        2) If step provided, validate that we can get to that step and return the appropriate response
         """
-        workflow_step = self.workflow_data.status or "submission"
-        jump_step = suffix
-        serializer_context = {"step": workflow_step}
+        # Query workflow step here only once to avoid duplicate workflow updates
+        current_workflow_step = self.workflow_data.status or "submission"
+        requested_step = suffix
 
-        # Allow jumping to a specific step, within our allowed steps
-        if jump_step:
-            jumpable_steps = ("submission", "peer", "grades")
-            if jump_step not in jumpable_steps:
-                raise JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
-            if self._can_jump_to_step(workflow_step, jump_step):
-                serializer_context.update({"jump_to_step": suffix})
-            else:
-                raise JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
+        # Validate that any active step is a valid step
+        if suffix and suffix not in handler_suffixes.STEP_SUFFIXES:
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, f"Invalid step name: {requested_step}")
 
-        # Determine which mode we are viewing in, since data comes from different sources
-        # View submission, submitted or draft
-        if workflow_step == "submission" or jump_step == "submission":
-            serializer_context.update({"view": "submission"})
-        # View the current assessment step
-        else:
-            serializer_context.update({"view": "assessment"})
+        serializer_context = {"requested_step": None, "current_workflow_step": current_workflow_step}
 
-        page_context = PageDataSerializer(self, context=serializer_context)
-        return page_context.data
+        # For the general case, just return refreshed page data, without a response
+        if not requested_step:
+            return PageDataSerializer(self, context=serializer_context).data
 
-    def _can_jump_to_step(self, workflow_step, jump_step):
-        """ A helper to determine if we can jump to a step or not """
+        # Check to see if user can access this workflow step
+        requested_workflow_step = STEP_NAME_MAPPINGS[requested_step]
+        if not self.workflow_data.has_reached_given_step(
+            requested_workflow_step,
+            current_workflow_step=current_workflow_step
+        ):
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_workflow_step}")
 
-        step_name_mappings = {
-            "submission": "submission",
-            "peer": "peer",
-            "grades": "done"
-        }
-
-        workflow_step_to_jump_to = step_name_mappings[jump_step]
-
-        # Can always "jump" to submission
-        if workflow_step_to_jump_to == "submission":
-            return True
-
-        # Can always "jump" to the step you're on
-        if jump_step == workflow_step:
-            return True
-
-        # Can jump to a step you've completed
-        step_status = self.workflow_data.status_details.get(workflow_step_to_jump_to, {})
-        return step_status.get("complete", False)
+        # If they have access to this step, return the associated data
+        serializer_context["requested_step"] = requested_step
+        return PageDataSerializer(self, context=serializer_context).data
 
     def _submission_draft_handler(self, data):
         try:

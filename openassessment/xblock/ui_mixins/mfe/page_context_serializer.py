@@ -17,6 +17,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentGradeSerializer,
     AssessmentResponseSerializer,
 )
+from openassessment.xblock.ui_mixins.mfe.constants import handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS, CharListField
 
@@ -245,7 +246,7 @@ class ProgressSerializer(Serializer):
 
     def get_activeStepName(self, instance):
         """Return the active step name"""
-        if not instance.workflow_data.has_workflow:
+        if not instance.workflow_data.has_workflow or instance.workflow_data.is_cancelled:
             return "submission"
         else:
             return STEP_NAME_MAPPINGS[instance.workflow_data.status]
@@ -261,10 +262,11 @@ class PageDataSerializer(Serializer):
     * ORA XBlock (self)
 
     Context:
-    * step - The Workflow step
-    * view - One of "submission" when drafting / viewing a submission or "assessment"
-             assessing responses / viewing grades.
-    * jump_to_step (Optional) - Allowing user to jump back to view a previous step.
+    * current_workflow_step - The Workflow step
+    * requested_step - The step a user is currently requesting data for
+
+    NOTE: This serializer assumes you have *already* checked safety of a user visiting this step and
+    blocked unintended access, as requesting data for some steps will start that workflow step.
     """
 
     requires_context = True
@@ -274,10 +276,13 @@ class PageDataSerializer(Serializer):
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
-        if "step" not in self.context:
-            raise ValidationError("Missing required context: step")
-        if "view" not in self.context:
-            raise ValidationError("Missing required context: view")
+        if "requested_step" not in self.context:
+            raise ValidationError("Missing required context: requested_step")
+        if "current_workflow_step" not in self.context:
+            raise ValidationError("Missing required context: current_workflow_step")
+
+        if self.context.get("requested_step", "submission") not in handler_suffixes.STEP_SUFFIXES:
+            raise ValidationError(f"Bad step name: {self.context.get('requested_step')}")
 
         return super().to_representation(instance)
 
@@ -287,8 +292,19 @@ class PageDataSerializer(Serializer):
         """
         # pylint: disable=broad-exception-raised
 
-        # Submission Views
-        if self.context.get("view") == "submission":
+        requested_step = self.context.get("requested_step")
+        current_workflow_step = self.context.get("current_workflow_step")
+
+        # When we are requesting page w/out active step, no response is needed
+        if requested_step is None:
+            return None
+
+        # If a student's submission was cancelled, don't show any data, workflows are paused.
+        elif current_workflow_step == "cancelled":
+            return None
+
+        # Submission (draft OR completed)
+        elif requested_step == "submission":
             learner_submission_data = instance.get_learner_submission_data()
 
             # Draft response
@@ -298,40 +314,32 @@ class PageDataSerializer(Serializer):
             # Submitted response
             return SubmissionSerializer(learner_submission_data).data
 
-        # Assessment Views
-        elif self.context.get("view") == "assessment":
-            # Can't view assessments without completing submission
-            if self.context["step"] == "submission":
-                raise Exception("Cannot view assessments without having completed submission.")
+        # Student Training - return next example to practice
+        elif requested_step == "studentTraining":
+            response = instance.student_training_data.example
 
-            # Go to the current step, or jump to the selected step
-            jump_to_step = self.context.get("jump_to_step", None)
-            workflow_step = self.context["step"]
-            active_step = jump_to_step or workflow_step
+        # Peer
+        elif requested_step == "peer":
 
-            # Fetch the response for the given step
-            if active_step == "training":
-                response = instance.student_training_data.example
-            elif active_step == "peer":
-                if workflow_step == "peer":
-                    # If we are on the peer step, grab a submission automatically
-                    response = instance.peer_assessment_data().get_peer_submission()
-                elif jump_to_step == "peer":
-                    # If we are jumping to the peer step grab any existing assessments but
-                    # don't get a new one automatically
-                    response = instance.peer_assessment_data().get_active_assessment_submission()
-            elif active_step in ("self", "done"):
-                learner_submission_data = instance.get_learner_submission_data()
-                return SubmissionSerializer(learner_submission_data).data
-            elif active_step in ("staff", "ai", "waiting"):
-                response = None
+            # If this is the step we're on (not continued grading), get a new submission to assess
+            if current_workflow_step == "peer":
+                response = instance.peer_assessment_data().get_peer_submission()
+
+            # We're revisiting the peer step, get me my active assessment, if I have one in progress...
+            # Otherwise, we're using a separate endpoint to request extra peer submissions to grade.
             else:
-                raise Exception(f"Bad step name: {active_step}")
+                response = instance.peer_assessment_data().get_active_assessment_submission()
 
-            return AssessmentResponseSerializer(response).data
+        # Self / Done - Return your response to view / assess
+        elif requested_step in ("self", "done"):
+            learner_submission_data = instance.get_learner_submission_data()
+            return SubmissionSerializer(learner_submission_data).data
 
-        else:
-            raise Exception("Missing view context for page")
+        # Steps without a necessary response
+        elif requested_step in ("staff"):
+            response = None
+
+        return AssessmentResponseSerializer(response).data
 
     def get_assessment(self, instance):
         """
