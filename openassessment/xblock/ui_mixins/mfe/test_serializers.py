@@ -351,7 +351,7 @@ class TestStudentTrainingSettingsSerializer(XBlockHandlerTestCase):
 
         # Then I get the right config
         self.assertFalse(step_config["required"])
-        self.assertTrue("numberOfExamples" not in step_config)
+        self.assertNotIn("numberOfExamples", step_config)
 
 
 class TestSelfSettingsSerializer(XBlockHandlerTestCase):
