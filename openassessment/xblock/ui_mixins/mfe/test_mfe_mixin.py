@@ -214,7 +214,7 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
-    def test_no_active_step(self, xblock, mock_serializer):
+    def test_no_requested_step(self, xblock, mock_serializer):
         # Given we don't pass an active step
         mock_serializer.return_value = MockSerializer()
 
@@ -223,8 +223,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I call serialization without an active step
         expected_context = {
-            "active_step": None,
-            "workflow_step": "submission",
+            "requested_step": None,
+            "current_workflow_step": "submission",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -239,8 +239,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I get submission
         expected_context = {
-            "active_step": "submission",
-            "workflow_step": "submission",
+            "requested_step": "submission",
+            "current_workflow_step": "submission",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -295,8 +295,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct assessment step
         expected_context = {
-            "active_step": None,
-            "workflow_step": "self",
+            "requested_step": None,
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -313,8 +313,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct view
         expected_context = {
-            "active_step": "submission",
-            "workflow_step": "self",
+            "requested_step": "submission",
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 

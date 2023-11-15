@@ -32,7 +32,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the submission view
-        context = {"active_step": "submission", "workflow_step": "submission"}
+        context = {"requested_step": "submission", "current_workflow_step": "submission"}
 
         # When I ask for my submission data
         _ = PageDataSerializer(xblock, context=context).data
@@ -47,7 +47,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     def test_assessment_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the assessment view
         self.create_test_submission(xblock)
-        context = {"active_step": "peer", "workflow_step": "peer"}
+        context = {"requested_step": "peer", "current_workflow_step": "peer"}
 
         # When I ask for assessment data
         _ = PageDataSerializer(xblock, context=context).data
@@ -72,7 +72,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     def test_student_training(self, xblock):
         # Given we are on the student training step
         self.create_test_submission(xblock)
-        self.context = {"active_step": "studentTraining", "workflow_step": "training"}
+        self.context = {"requested_step": "studentTraining", "current_workflow_step": "training"}
 
         # When I load my response
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
@@ -110,7 +110,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
             xblock.peer_assessment_data().get_peer_submission()
 
         # When I load my response
-        self.context = {"active_step": "peer", "workflow_step": "peer"}
+        self.context = {"requested_step": "peer", "current_workflow_step": "peer"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get my current assessment, if I had one, and if I didn't, one is assigned to me
@@ -129,7 +129,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... but with no responses to assess
 
         # When I load my response
-        self.context = {"active_step": "peer", "workflow_step": "peer"}
+        self.context = {"requested_step": "peer", "current_workflow_step": "peer"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
@@ -142,7 +142,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        self.context = {"active_step": "staff", "workflow_step": "waiting"}
+        self.context = {"requested_step": "staff", "current_workflow_step": "waiting"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
@@ -155,7 +155,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        self.context = {"active_step": "peer", "workflow_step": "waiting"}
+        self.context = {"requested_step": "peer", "current_workflow_step": "waiting"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
@@ -169,7 +169,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_submission_and_assessments(xblock, submission_text, [], [], SELF_ASSESSMENT)
 
         # When I load my response
-        self.context = {"active_step": "done", "workflow_step": "done"}
+        self.context = {"requested_step": "done", "current_workflow_step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get my response back
@@ -198,7 +198,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
 
         # When I try to jump back to that step
-        self.context = {"active_step": "peer", "workflow_step": "done"}
+        self.context = {"requested_step": "peer", "current_workflow_step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data
 
         # I receive an empty response because I have not yet requested a submission to assess
@@ -226,7 +226,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.assertIsNotNone(sub)
 
         # When I try to jump back to that step
-        self.context = {"active_step": "peer", "workflow_step": "done"}
+        self.context = {"requested_step": "peer", "current_workflow_step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data
 
         # Then I can continue to receive peer responses to grade
@@ -244,7 +244,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock, submission_text=submission_text)
 
         # When I load my response
-        self.context = {"active_step": "self", "workflow_step": "self"}
+        self.context = {"requested_step": "self", "current_workflow_step": "self"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get my response back
@@ -271,7 +271,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Given I am on the submission step
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "submission"}
+        context = {"requested_step": None, "current_workflow_step": "submission"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -300,7 +300,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "training"}
+        context = {"requested_step": None, "current_workflow_step": "training"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -340,7 +340,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "training"}
+        context = {"requested_step": None, "current_workflow_step": "training"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -380,7 +380,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "training"}
+        context = {"requested_step": None, "current_workflow_step": "training"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -420,7 +420,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "peer"}
+        context = {"requested_step": None, "current_workflow_step": "peer"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -462,7 +462,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         mock_get_cancellation_info = PropertyMock(return_value=mock_cancellation_info)
         with patch.object(SubmissionAPI, 'cancellation_info', new_callable=mock_get_cancellation_info):
             # When I ask for progress
-            context = {"active_step": None, "workflow_step": "cancelled"}
+            context = {"requested_step": None, "current_workflow_step": "cancelled"}
             progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -490,7 +490,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "self"}
+        context = {"requested_step": None, "current_workflow_step": "self"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -521,7 +521,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "self"}
+        context = {"requested_step": None, "current_workflow_step": "self"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -553,7 +553,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_test_submission(xblock)
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "self"}
+        context = {"requested_step": None, "current_workflow_step": "self"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes
@@ -596,7 +596,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         )
 
         # When I ask for progress
-        context = {"active_step": None, "workflow_step": "team"}
+        context = {"requested_step": None, "current_workflow_step": "team"}
         progress_data = ProgressSerializer(xblock, context=context).data
 
         # Then I get the expected shapes

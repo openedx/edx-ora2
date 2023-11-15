@@ -76,7 +76,7 @@ class MfeMixin:
         if suffix and suffix not in handler_suffixes.STEP_SUFFIXES:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, f"Invalid step name: {requested_step}")
 
-        serializer_context = {"active_step": None, "workflow_step": current_workflow_step}
+        serializer_context = {"requested_step": None, "current_workflow_step": current_workflow_step}
 
         # For the general case, just return refreshed page data, without a response
         if not requested_step:
@@ -88,7 +88,7 @@ class MfeMixin:
             raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_workflow_step}")
 
         # If they have access to this step, return the associated data
-        serializer_context["active_step"] = requested_step
+        serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
 
     def _submission_draft_handler(self, data):

@@ -262,8 +262,8 @@ class PageDataSerializer(Serializer):
     * ORA XBlock (self)
 
     Context:
-    * workflow_step - The Workflow step
-    * active_step - The step a user is currently requesting data for
+    * current_workflow_step - The Workflow step
+    * requested_step - The step a user is currently requesting data for
 
     NOTE: This serializer assumes you have *already* checked safety of a user visiting this step and
     blocked unintended access, as requesting data for some steps will start that workflow step.
@@ -276,13 +276,13 @@ class PageDataSerializer(Serializer):
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
-        if "active_step" not in self.context:
-            raise ValidationError("Missing required context: active_step")
-        if "workflow_step" not in self.context:
-            raise ValidationError("Missing required context: workflow_step")
+        if "requested_step" not in self.context:
+            raise ValidationError("Missing required context: requested_step")
+        if "current_workflow_step" not in self.context:
+            raise ValidationError("Missing required context: current_workflow_step")
 
-        if self.context.get("active_step", "submission") not in handler_suffixes.STEP_SUFFIXES:
-            raise ValidationError(f"Bad step name: {self.context.get('active_step')}")
+        if self.context.get("requested_step", "submission") not in handler_suffixes.STEP_SUFFIXES:
+            raise ValidationError(f"Bad step name: {self.context.get('requested_step')}")
 
         return super().to_representation(instance)
 
@@ -292,19 +292,19 @@ class PageDataSerializer(Serializer):
         """
         # pylint: disable=broad-exception-raised
 
-        active_step = self.context.get("active_step")
-        workflow_step = self.context.get("workflow_step")
+        requested_step = self.context.get("requested_step")
+        current_workflow_step = self.context.get("current_workflow_step")
 
         # When we are requesting page w/out active step, no response is needed
-        if active_step is None:
+        if requested_step is None:
             return None
 
         # If a student's submission was cancelled, don't show any data, workflows are paused.
-        elif workflow_step == "cancelled":
+        elif current_workflow_step == "cancelled":
             return None
 
         # Submission (draft OR completed)
-        elif active_step == "submission":
+        elif requested_step == "submission":
             learner_submission_data = instance.get_learner_submission_data()
 
             # Draft response
@@ -315,14 +315,14 @@ class PageDataSerializer(Serializer):
             return SubmissionSerializer(learner_submission_data).data
 
         # Student Training - return next example to practice
-        elif active_step == "studentTraining":
+        elif requested_step == "studentTraining":
             response = instance.student_training_data.example
 
         # Peer
-        elif active_step == "peer":
+        elif requested_step == "peer":
 
             # If this is the step we're on (not continued grading), get a new submission to assess
-            if workflow_step == "peer":
+            if current_workflow_step == "peer":
                 response = instance.peer_assessment_data().get_peer_submission()
 
             # We're revisiting the peer step, get me my active assessment, if I have one in progress...
@@ -331,12 +331,12 @@ class PageDataSerializer(Serializer):
                 response = instance.peer_assessment_data().get_active_assessment_submission()
 
         # Self / Done - Return your response to view / assess
-        elif active_step in ("self", "done"):
+        elif requested_step in ("self", "done"):
             learner_submission_data = instance.get_learner_submission_data()
             return SubmissionSerializer(learner_submission_data).data
 
         # Steps without a necessary response
-        elif active_step in ("staff"):
+        elif requested_step in ("staff"):
             response = None
 
         return AssessmentResponseSerializer(response).data
