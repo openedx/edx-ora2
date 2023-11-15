@@ -90,7 +90,6 @@ class MfeMixin:
         serializer_context.update({"active_step": active_step})
         return PageDataSerializer(self, context=serializer_context).data
 
-
     def _user_has_reached_step(self, workflow_step, step):
         """ A helper to determine if we can jump to a step or not """
 
