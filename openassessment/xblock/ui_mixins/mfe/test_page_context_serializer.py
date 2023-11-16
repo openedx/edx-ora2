@@ -336,13 +336,10 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": False,
                     "closedReason": None,
                     "numberOfAssessmentsCompleted": 0,
-                    "expectedRubricSelections": [
-                        {
-                            "name": "Vocabulary",
-                            "selection": "Good",
-                        },
-                        {"name": "Grammar", "selection": "Excellent"},
-                    ],
+                    "expectedRubricSelections": {
+                        0: 1,
+                        1: 2,
+                    }
                 },
                 "peer": None,
             },
@@ -376,13 +373,10 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": True,
                     "closedReason": "pastDue",
                     "numberOfAssessmentsCompleted": 0,
-                    "expectedRubricSelections": [
-                        {
-                            "name": "Vocabulary",
-                            "selection": "Good",
-                        },
-                        {"name": "Grammar", "selection": "Excellent"},
-                    ],
+                    "expectedRubricSelections": {
+                        0: 1,
+                        1: 2,
+                    }
                 },
                 "peer": None,
             },
@@ -416,13 +410,10 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": True,
                     "closedReason": "notAvailableYet",
                     "numberOfAssessmentsCompleted": 0,
-                    "expectedRubricSelections": [
-                        {
-                            "name": "Vocabulary",
-                            "selection": "Good",
-                        },
-                        {"name": "Grammar", "selection": "Excellent"},
-                    ],
+                    "expectedRubricSelections": {
+                        0: 1,
+                        1: 2,
+                    },
                 },
                 "peer": None,
             },

@@ -322,9 +322,9 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         self.assertTrue(peer_config["enableFlexibleGrading"])
 
 
-class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
+class TestStudentTrainingSettingsSerializer(XBlockHandlerTestCase):
     """
-    Test for TrainingSettingsSerializer
+    Test for StudentTrainingSettingsSerializer
     """
 
     step_config_key = "studentTraining"
@@ -339,8 +339,9 @@ class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
 
         # Then I get the right config
         self.assertTrue(step_config["required"])
+        self.assertEqual(step_config["numberOfExamples"], 2)
 
-    @scenario("data/basic_scenario.xml")
+    @scenario("data/peer_only_scenario.xml")
     def test_disabled(self, xblock):
         # Given an ORA without a training step
         # When I ask for step config
@@ -350,6 +351,7 @@ class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
 
         # Then I get the right config
         self.assertFalse(step_config["required"])
+        self.assertNotIn("numberOfExamples", step_config)
 
 
 class TestSelfSettingsSerializer(XBlockHandlerTestCase):
