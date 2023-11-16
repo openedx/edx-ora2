@@ -174,8 +174,8 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
 def assert_error_response(response, status_code, error_code, context=''):
     assert response.status_code == status_code
     assert response.json['error'] == {
-        'error_code': error_code,
-        'error_context': context
+        'errorCode': error_code,
+        'errorContext': context
     }
 
 
@@ -277,8 +277,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         expected_body = {
             'error': {
-                'error_code': 'ERR_INACCESSIBLE_STEP',
-                'error_context': f'Inaccessible step: {inaccessible_step}'
+                'errorCode': 'ERR_INACCESSIBLE_STEP',
+                'errorContext': f'Inaccessible step: {inaccessible_step}'
             }
         }
         self.assertDictEqual(expected_body, json.loads(response.body))
@@ -740,7 +740,7 @@ class FileUploadTest(MFEHandlersTestBase):
     def test_bad_inputs(self, xblock, payload):
         resp = self.request_upload_files(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @scenario("data/basic_scenario.xml")
     def test_file_upload_error(self, xblock):
@@ -869,7 +869,7 @@ class FileCallbackTests(MFEHandlersTestBase):
     def test_bad_params(self, xblock, payload):
         resp = self.request_file_callback(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @scenario("data/basic_scenario.xml")
     def test_success(self, xblock):
@@ -947,7 +947,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
     def test_incorrect_params(self, xblock, payload):
         resp = self.request_assessment_submit(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @ddt.data(None, 'cancelled', 'done', 'ai')
     @scenario("data/basic_scenario.xml")
@@ -955,7 +955,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         with self.mock_workflow_status(status):
             resp = self.request_assessment_submit(xblock)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INVALID_STATE_TO_ASSESS
+        assert resp.json['error']['errorCode'] == error_codes.INVALID_STATE_TO_ASSESS
 
     @ddt.unpack
     @ddt.data(

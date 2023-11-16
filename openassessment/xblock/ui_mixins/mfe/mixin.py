@@ -48,8 +48,8 @@ class OraApiException(JsonHandlerError):
         super().__init__(
             status_code,
             {
-                'error_code': error_code,
-                'error_context': error_context
+                'errorCode': error_code,
+                'errorContext': error_context
             }
         )
 
