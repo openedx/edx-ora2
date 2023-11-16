@@ -68,7 +68,7 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
                 yield
 
     DEFAULT_DRAFT_VALUE = {'response': {'textResponses': ['hi']}}
-    DEFAULT_SUBMIT_VALUE = {'response': {'textResponses': ['Hello World', 'Goodbye World']}}
+    DEFAULT_SUBMIT_VALUE = {'submission': {'textResponses': ['Hello World', 'Goodbye World']}}
     DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
 
     DEFAULT_ASSESSMENT_SUBMIT_VALUE = {
@@ -685,7 +685,7 @@ class SubmissionCreateTest(MFEHandlersTestBase):
         with self._mock_create_submission() as mock_submit:
             resp = self.request_create_submission(xblock)
             assert resp.status_code == 200
-            assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE, 3)
+            assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE["submission"]["textResponses"], 3)
 
 
 @ddt.ddt
