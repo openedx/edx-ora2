@@ -361,10 +361,8 @@ class PageDataSerializer(Serializer):
 
     def get_assessment(self, instance):
         """
-         we get an assessment for the current assessment step.
+        Get my assessments (grades) when my ORA is complete.
         """
-        # Assessment Views
-        if self.context.get("requested_step") == "done":
+        if instance.workflow_data.is_done:
             return AssessmentGradeSerializer(instance.api_data, context=self.context).data
-        else:
-            return None
+        return None
