@@ -325,6 +325,11 @@ class MfeMixin:
         return MfeAssessmentDataSerializer(data).data
 
     def _assessment_get_peer_handler(self):
+
+        # Raise an exception if we don't have a peer step
+        if not "peer-assessment" in self.assessment_steps:
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, error_context="No peer step for ORA")
+
         # Call get_peer_submission to grab a new peer submission
         self.peer_assessment_data().get_peer_submission()
 
