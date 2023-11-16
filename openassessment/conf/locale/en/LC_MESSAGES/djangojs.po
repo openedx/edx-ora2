@@ -165,7 +165,6 @@ msgstr ""
 msgid "Demo the new Grading Experience"
 msgstr ""
 
-<<<<<<< HEAD
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 #: xblock/static/js/src/lms/oa_course_items_listing.js:97
 msgid "Unit Name"
@@ -251,7 +250,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 #: xblock/static/js/src/lms/oa_course_items_listing.js:338
-=======
+
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
 msgid "Unit Name"
@@ -329,7 +328,6 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
->>>>>>> c1b6eeaf663a6fdef921a9cb6d54b24da8bba28d
 msgid "Back to Full List"
 msgstr ""
 
@@ -528,13 +526,8 @@ msgstr ""
 msgid "Error getting the number of ungraded responses"
 msgstr ""
 
-<<<<<<< HEAD
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_staff_area.js:538
-=======
-#: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:369
-#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:369
->>>>>>> c1b6eeaf663a6fdef921a9cb6d54b24da8bba28d
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -615,13 +608,8 @@ msgstr ""
 msgid "Error while fetching student data."
 msgstr ""
 
-<<<<<<< HEAD
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 #: xblock/static/js/src/lms/oa_base.js:343
-=======
-#: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:375
-#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:375
->>>>>>> c1b6eeaf663a6fdef921a9cb6d54b24da8bba28d
 msgid "Unable to load"
 msgstr ""
 

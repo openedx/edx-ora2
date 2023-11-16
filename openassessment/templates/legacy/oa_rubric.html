@@ -1,0 +1,95 @@
+{% spaceless %}
+{% load i18n %}
+<div class="assessment__fields">
+    <ol class="list list--fields assessment__rubric">
+        {% for criterion in rubric_criteria %}
+        <li
+            class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %} {{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
+        >
+            <div class="question__title ui-slidable__control">
+                <button class="ui-slidable" aria-expanded="true" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid|default:'dummy_uuid' }}__{{ criterion.order_num }}" aria-controls="oa_rubric__{{ rubric_type }}__{{ submission.uuid|default:'dummy_uuid' }}__{{ criterion.order_num }}__content">
+                    <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                    <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-slidable__control__copy question__title__copy">{{ criterion.prompt }}</span>
+                    <span class="label--required sr">({% trans "Required" %})</span>
+                </button>
+            </div>
+
+            <div class="ui-slidable__content" aria-labelledby="oa_rubric__{{ rubric_type }}__{{ submission.uuid|default:'dummy_uuid' }}__{{ criterion.order_num }}" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid|default:'dummy_uuid' }}__{{ criterion.order_num }}__content">
+                <div class="question__answers">
+                    <div role="group" aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}">
+                        {% for option in criterion.options %}
+                        <div class="answer">
+                            <div class="wrapper--input">
+                                {% if rubric_type == 'read_only' %}
+                                    <label for="{{ rubric_type }}__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                    class="answer__label"
+                                    >{{ option.label }}</label>
+                                {% else %}
+                                    <input type="radio"
+                                        data-criterion-name="{{ criterion.name }}"
+                                        class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
+                                        id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                        value="{{ option.name }}"
+                                        name="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
+                                        aria-describedby="{{ rubric_type }}__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"/>
+                                    <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                        class="answer__label"
+                                        >{{ option.label }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="wrapper--metadata"
+                                 id="{{ rubric_type }}__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}">
+                                <span class="answer__tip">{{ option.explanation }}</span>
+                                <span class="answer__points">{{ option.points }} <span class="answer__points__label">{% trans "points" %}</span></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if rubric_type != 'read_only' %}
+                        {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
+                            <div class="answer--feedback">
+                                <div class="wrapper--input">
+                                    <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback__{{ xblock_id }}" class="answer__label">{% trans "Comments" %}</label>
+                                    <textarea
+                                        class="answer__value"
+                                        id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback__{{ xblock_id }}"
+                                        value="{{ criterion.name }}"
+                                        data-preview="criteria__{{ criterion.name }}"
+                                        data-criterion-name="{{ criterion.name }}"
+                                        aria-describedby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"
+                                        maxlength="10000"
+                                        {% if criterion.feedback == 'required' %}required{% endif %}
+                                        >
+                                    </textarea>
+                                    {% include "legacy/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num elem="div" preview_name="criteria__" %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% if rubric_type != 'read_only' %}
+            <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback">
+                <label class="question__title" for="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}">
+                    <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
+                </label>
+
+                <div class="wrapper--input">
+                    <textarea
+                        class="assessment__rubric__question--feedback__value"
+                        id="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}"
+                        data-preview="feedback"
+                        placeholder="{{ rubric_feedback_default_text }}"
+                        maxlength="10000"
+                    >
+                    </textarea>
+                    {% include "legacy/oa_latex_preview.html" with id="feedback__"|add:rubric_type elem="div" preview_name="feedback" %}
+                </div>
+            </li>
+        {% endif %}
+    </ol>
+</div>
+{% endspaceless %}

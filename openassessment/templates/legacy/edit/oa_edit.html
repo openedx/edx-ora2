@@ -1,0 +1,38 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<div
+    id="openassessment-editor"
+    class="editor-with-buttons editor-with-tabs"
+    data-is-released="{{ is_released|lower }}"
+>
+    <div class="openassessment_editor_content_and_tabs">
+        {% include "legacy/edit/oa_edit_header_and_validation.html" %}
+
+        {% include "legacy/edit/oa_edit_prompts.html" %}
+
+        {% include "legacy/edit/oa_edit_rubric.html" %}
+
+        {% include "legacy/edit/oa_edit_schedule.html" %}
+
+        {% include "legacy/edit/oa_edit_assessment_steps.html" %}
+
+        {% include "legacy/edit/oa_edit_settings.html" %}
+
+    </div>
+
+    <div class="openassessment_editor_buttons xblock-actions">
+        <h3 class="sr">Actions</h3>
+        <ul>
+            <li class="action-item">
+                <a href="#" class="button action-primary openassessment_save_button">{% trans "Save" %}</a>
+            </li>
+
+            <li class="action-item">
+                <a href="#" class="button openassessment_cancel_button">{% trans "Cancel" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+{% endspaceless %}

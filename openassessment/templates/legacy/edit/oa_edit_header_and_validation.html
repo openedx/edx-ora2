@@ -1,0 +1,54 @@
+{% load i18n %}
+<div id="openassessment_editor_header">
+    <h6 id="oa_editor_window_title" class="title modal_window_title" >{% trans "Open Response Assessment" %}</h6>
+    <ul class="editor_modes action_list action_modes editor_tabs">
+        <li role="tab" class="view-button oa_editor_tab" id="oa_edit_prompt_tab">
+            <a href="#oa_prompt_editor_wrapper">
+                <span class="validation-warning" aria-label="">{% include 'legacy/icons/warning_filled.html' %}</span>
+                {% trans "Prompt" %}
+            </a>
+            <span class="sr-only tab-error-count"></span>
+        </li>
+        <li role="tab" class="view-button oa_editor_tab" id="oa_edit_rubric_tab">
+            <a href="#oa_rubric_editor_wrapper">
+                <span class="validation-warning" aria-label="">{% include 'legacy/icons/warning_filled.html' %}</span>
+                {% trans "Rubric" %}
+            </a>
+            <span class="sr-only tab-error-count"></span>
+        </li>
+        <li role="tab" class="view-button oa_editor_tab" id="oa_edit_schedule_tab">
+            <a href="#oa_schedule_editor_wrapper">
+                <span class="validation-warning" aria-label="">{% include 'legacy/icons/warning_filled.html' %}</span>
+                {% trans "Schedule" %}
+                {# TODO: Remove this in AU-1433 when the "new" icons are no longer desired #}
+                <span class="icon fa fa-star" aria-hidden="true"></span>
+            </a>
+            <span class="sr-only tab-error-count"></span>
+        </li>
+        <li role="tab" class="view-button oa_editor_tab" id="oa_edit_assessment_steps_tab">
+            <a href="#oa_assessment_steps_editor_wrapper">
+                <span class="validation-warning" aria-label="">{% include 'legacy/icons/warning_filled.html' %}</span>
+                {% trans "Assessment steps" %}
+            </a>
+            <span class="sr-only tab-error-count"></span>
+        </li>
+        <li role="tab" class="icon view-button oa_editor_tab" id="oa_edit_settings_tab">
+            <a href="#oa_settings_editor_wrapper">
+                <span class="validation-warning" aria-label="">{% include 'legacy/icons/warning_filled.html' %}</span>
+                {% trans "Settings" %}
+            </a>
+            <span class="sr-only tab-error-count"></span>
+        </li>
+    </ul>
+</div>
+
+<div id="openassessment_validation_alert" class="covered" role="alert">
+    <span class="openassessment_alert_icon" aria-hidden="true" aria-label="warning">{% include 'legacy/icons/warning_filled.html' %}</span>
+    <div class="openassessment_alert_header">
+        <h2 class="openassessment_alert_title"></h2>
+        <p class="openassessment_alert_message"></p>
+    </div>
+    <a href="" rel="view" class="action openassessment_alert_close" aria-label="close alert">
+        <span class="icon fa fa-times-circle" aria-hidden="true"></span>
+    </a>
+</div>

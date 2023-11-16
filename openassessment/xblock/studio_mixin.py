@@ -62,7 +62,7 @@ class StudioMixin:
         key: val.get('display_name', key) for key, val in AVAILABLE_EDITORS.items()
     }
 
-    STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
+    STUDIO_EDITING_TEMPLATE = 'legacy/edit/oa_edit.html'
 
     ORA_SETTINGS_DOCUMENT_URL = 'https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/CreateORAAssignment.html#specify-a-name-and-dates'  # noqa: E501 pylint: disable=line-too-long
 

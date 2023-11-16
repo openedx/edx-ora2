@@ -1,0 +1,33 @@
+{% load i18n %}
+{% spaceless %}
+<li id="openassessment__leaderboard__{{ xblock_id }}" class="openassessment__steps__step step--leaderboard is--complete ui-slidable__container is--showing {% if allow_latex %} allow--latex{% endif %}" tabindex="-1">
+    <header class="step__header ui-slidable__control">
+        <h4 class="step__title">
+            <button class="ui-slidable" aria-expanded="true" id="oa_leaderboard_{{ xblock_id }}" aria-controls="oa_leaderboard_{{ xblock_id }}_content" aria-describedby="oa_step_status oa_step_deadline">
+                <span class="wrapper--copy">
+                    <span class="step__label">{% trans "Top Responses" %} </span>
+                </span>
+            </button>
+        </h4>
+    </header>
+    <div class="wrapper--step__content ui-slidable__content" aria-labelledby="oa_leaderboard_{{ xblock_id }}" id="oa_leaderboard_{{ xblock_id }}_content">
+        <ol class="list leaderboard__score__list">
+        {% for topscore in topscores %}
+            <li class="leaderboard__score__item">
+                <div class="leaderboard__list__number">{{ forloop.counter }}</div>
+                {% with num_points=topscore.score %}
+                <div class="leaderboard__score__title">
+                    {% blocktrans %}{{ num_points }} points{% endblocktrans %}
+                </div>
+                {% endwith %}
+                <div class="leaderboard__answer">
+                    {% trans "Your peer's response to the prompt above" as translated_label %}
+                    {% include "legacy/oa_submission_answer.html" with answer=topscore.submission.answer answer_text_label=translated_label %}
+                    {% include "legacy/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=topscore.files class_prefix="submission__answer" including_template="leaderboard_show" xblock_id=xblock_id %}
+                </div>
+            </li>
+        {% endfor %}
+        </ol>
+    </div>
+</li>
+{% endspaceless %}

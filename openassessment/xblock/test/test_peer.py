@@ -129,7 +129,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):
         # Submit a peer assessment without a submission
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -140,7 +142,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
 
         # Attempt to assess a peer without first leasing their submission
         # (usually occurs by rendering the peer assessment step)
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -328,10 +332,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_closed_scenario.xml', user_id='Bob')
@@ -347,10 +352,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
+            xblock, 'legacy/peer/oa_peer_closed.html', expected_context
         )
 
     @scenario('data/peer_future_scenario.xml', user_id='Bob')
@@ -366,10 +372,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
@@ -388,10 +395,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_waiting.html',
+            xblock, 'legacy/peer/oa_peer_waiting.html',
             expected_context,
             workflow_status='peer',
             graded_enough=False,
@@ -422,10 +430,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_assessment.html',
+            xblock, 'legacy/peer/oa_peer_assessment.html',
             expected_context,
             workflow_status='peer',
         )
@@ -445,11 +454,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_cancelled.html',
+            xblock, 'legacy/peer/oa_peer_cancelled.html',
             expected_context,
             workflow_status='cancelled',
             graded_enough=True,
@@ -472,10 +482,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -502,10 +513,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -530,11 +542,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_complete.html',
+            xblock, 'legacy/peer/oa_peer_complete.html',
             expected_context,
             workflow_status=workflow_status,
             graded_enough=True,
@@ -560,10 +573,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode_waiting.html',
             expected_context,
             continue_grading=True,
             workflow_status=workflow_status,
@@ -591,10 +605,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode.html',
             expected_context,
             continue_grading=True,
             workflow_status='done',
@@ -616,10 +631,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html',
+            xblock, 'legacy/peer/oa_peer_unavailable.html',
             expected_context,
             continue_grading=True,
         )
@@ -786,13 +802,13 @@ class TestPeerAssessHandler(XBlockHandlerTestCase, SubmissionTestMixin):
             expect_failure=True
         )
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_request_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
         self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_internal_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError

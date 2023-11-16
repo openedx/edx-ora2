@@ -197,6 +197,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
+        xblock.mfe_views_enabled = False
 
         # If the client requests the staff info directly, they should get an error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
@@ -289,7 +290,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNotNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         # Bob still needs to assess other learners
         self.assertIsNone(context['grade_details'])
@@ -323,7 +324,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNotNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
@@ -392,7 +393,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNotNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
@@ -431,7 +432,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -463,7 +464,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         xblock.submission_uuid = submission["uuid"]
         path, _ = xblock.peer_path_and_context(False)
-        self.assertEqual("openassessmentblock/peer/oa_peer_cancelled.html", path)
+        self.assertEqual("legacy/peer/oa_peer_cancelled.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_image_submission(self, xblock):
@@ -485,8 +486,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
-                get_download_url:
+        with patch("openassessment.data.get_download_url") as get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
 
             # also fake a file_upload_type so our patched url gets rendered
@@ -546,8 +546,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
-                get_download_url:
+        with patch("openassessment.data.get_download_url") as get_download_url:
             get_download_url.return_value = Mock()
             get_download_url.side_effect = lambda file_key: file_keys_with_images[file_key]
 
@@ -599,7 +598,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to simulate an error
-        with patch("openassessment.fileupload.api.get_download_url") as file_api_call:
+        with patch("openassessment.data.get_download_url") as file_api_call:
             file_api_call.side_effect = FileUploadInternalError("Error!")
             __, context = xblock.get_student_info_path_and_context("Bob")
 
@@ -1094,7 +1093,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             self._verify_staff_assessment_rendering(
                 xblock,
-                'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+                'legacy/staff_area/oa_staff_grade_learners_assessment.html',
                 context,
                 FILE_URL,
             )
@@ -1359,7 +1358,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'files_names': [SAVED_FILES_NAMES[1], SAVED_FILES_NAMES[0]],
             'files_sizes': [],
         })
-        with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
+        with patch("openassessment.data.get_download_url") as get_download_url:
             get_download_url.return_value = FILE_URL
             __, __ = xblock.get_student_info_path_and_context('Bob')  # pylint: disable=redeclared-assigned-name
         with self.assertRaises(AssertionError):
@@ -1411,7 +1410,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         new_context['staff_file_urls'] = staff_urls
         self._verify_staff_assessment_rendering(
             xblock,
-            'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+            'legacy/staff_area/oa_staff_grade_learners_assessment.html',
             new_context,
             FILE_URL,
         )
@@ -1436,30 +1435,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         else:
             self.assertEqual(ungraded, context['staff_assessment_ungraded'])
             self.assertEqual(in_progress, context['staff_assessment_in_progress'])
-
-    @staticmethod
-    def _create_mock_runtime(
-            item_id,
-            is_staff,
-            is_admin,
-            anonymous_user_id,
-            user_is_beta=False,
-    ):
-        """
-        Internal helper to define a mock runtime.
-        """
-        mock_runtime = Mock(
-            course_id='test_course',
-            item_id=item_id,
-            anonymous_student_id=anonymous_user_id,
-            user_is_staff=is_staff,
-            user_is_admin=is_admin,
-            user_is_beta=user_is_beta,
-            service=lambda self, service: Mock(
-                get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
-            )
-        )
-        return mock_runtime
 
     @staticmethod
     def _create_submission(item, values, types):
@@ -1510,8 +1485,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
-                get_download_url:
+        with patch("openassessment.data.get_download_url") as get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
             # also fake a file_upload_type so our patched url gets rendered
             xblock.file_upload_type_raw = 'image'

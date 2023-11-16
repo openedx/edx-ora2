@@ -3,9 +3,13 @@ Exposed api for ORA XBlock workflows.
 """
 
 
+from enum import Enum
+
+
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
+        self.grades = self._block.grades_data
 
     def get_workflow_info(self, submission_uuid=None):
         return self._block.get_workflow_info(submission_uuid)
@@ -19,12 +23,40 @@ class WorkflowAPI:
         return bool(self.workflow)
 
     @property
+    def assessment_steps(self):
+        return self._block.assessment_steps
+
+    @property
     def has_status(self):
         return bool(self.status)
 
     @property
     def status_details(self):
         return self.workflow.get("status_details", {})
+
+    def has_reached_given_step(self, requested_step, current_workflow_step=None):
+        """
+        Helper to determine if are far enough through a workflow to request data for a step.
+
+        Returns:
+        True if we are on or have completed the requested step for this ORA.
+        False otherwise.
+        """
+
+        if not current_workflow_step:
+            current_workflow_step = self.status or "submission"
+
+        # Submission is start state, have always reached this
+        if requested_step == "submission":
+            return True
+
+        # Have reached your current workflow step
+        if requested_step == current_workflow_step:
+            return True
+
+        # Have reached any step you have completed
+        step_status = self.status_details.get(requested_step, {})
+        return step_status.get("complete", False)
 
     @property
     def is_peer_complete(self):
@@ -68,11 +100,15 @@ class WorkflowAPI:
 
     @property
     def workflow_requirements(self):
-        return self._block.workflow_requirements
+        return self._block.workflow_requirements()
 
     @property
     def status(self):
         return self.workflow.get("status")
+
+    @property
+    def has_received_grade(self):
+        return bool(self.workflow.get('score'))
 
     def get_workflow_status_counts(self):
         return self._block.get_workflow_status_counts()
@@ -103,3 +139,64 @@ class WorkflowAPI:
 
     def get_team_workflow_cancellation_info(self, team_submission_uuid):
         return self._block.get_team_workflow_cancellation_info(team_submission_uuid)
+
+
+class WorkflowStep:
+    """Utility class for comparing and serializing steps"""
+
+    # Store one disambiguated step
+    canonical_step = None
+    step_name = None
+
+    # Enum of workflow steps, used for canonical mapping of steps
+    class Step(Enum):
+        SUBMISSION = "submission"
+        PEER = "peer"
+        STUDENT_TRAINING = "training"
+        STAFF = "staff"
+        SELF = "self"
+        AI = "ai"
+
+    _assessment_module_mappings = {
+        "peer-assessment": Step.PEER,
+        "student-training": Step.STUDENT_TRAINING,
+        "staff-assessment": Step.STAFF,
+        "self-assessment": Step.SELF,
+    }
+
+    _workflow_step_mappings = {
+        "submission": Step.SUBMISSION,
+        "training": Step.STUDENT_TRAINING,
+        "peer": Step.PEER,
+        "self": Step.SELF,
+        "staff": Step.STAFF,
+    }
+
+    _step_mappings = {**_assessment_module_mappings, **_workflow_step_mappings}
+
+    @property
+    def assessment_module_name(self):
+        """ Get the assessment module name for the step """
+        for assessment_step, canonical_step in self._assessment_module_mappings.items():
+            if canonical_step == self.canonical_step:
+                return assessment_step
+        return "unknown"
+
+    @property
+    def workflow_step_name(self):
+        """ Get the workflow step name for the step """
+        for workflow_step, canonical_step in self._workflow_step_mappings.items():
+            if canonical_step == self.canonical_step:
+                return workflow_step
+        return "unknown"
+
+    def __init__(self, step_name):
+        # Get the "canonical" step from any representation of the step name
+        self.step_name = step_name
+        self.canonical_step = self._step_mappings.get(step_name)
+
+    def __eq__(self, __value: object) -> bool:
+        return self.canonical_step == self._step_mappings.get(__value)
+
+    def __repr__(self) -> str:
+        return str(self.canonical_step)
