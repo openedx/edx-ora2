@@ -290,12 +290,16 @@ class PageDataSerializer(Serializer):
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
+
+        # Check required context
         if "requested_step" not in self.context:
             raise ValidationError("Missing required context: requested_step")
         if "current_workflow_step" not in self.context:
             raise ValidationError("Missing required context: current_workflow_step")
 
-        if self.context.get("requested_step", "submission") not in handler_suffixes.STEP_SUFFIXES:
+        # validate step values
+        requested_step = self.context.get("requested_step")
+        if requested_step is not None and requested_step not in handler_suffixes.STEP_SUFFIXES:
             raise ValidationError(f"Bad step name: {self.context.get('requested_step')}")
 
         return super().to_representation(instance)
