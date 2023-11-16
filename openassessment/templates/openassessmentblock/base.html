@@ -61,7 +61,7 @@
           frameborder="0"
           id="ora-iframe-{{xblock_id}}"
           src="http://localhost:1992/xblock/{{course_id}}/{{xblock_id}}"
-          style="width: 100%"
+          style="width: 100%; height: 1000px"
           onload="loadResizeEvent()"
         ></iframe>
         {% if leaderboard_ui_model %}
@@ -101,6 +101,8 @@
   document.getElementById(toHide).style.display = 'none';
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
+      console.log("receive resize event");
+      console.log({ data: event.data });
       if (event.data.type === 'plugin.modal') {
         window.parent.postMessage(event.data, document.referrer);
       }
