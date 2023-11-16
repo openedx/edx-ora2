@@ -31,10 +31,18 @@ from openassessment.xblock.utils.data_conversion import (
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-def submit(data, block_config_data, block_submission_data, block_workflow_data):
-    student_sub_data = data["submission"]
+def submit(text_responses, block_config_data, block_submission_data, block_workflow_data):
+    """
+    Submit response for a student.
+
+    Args:
+    * text_responses - List of text responses for submission
+    * block_config_data - ORAConfigAPI
+    * block_submission_data - SubmissionAPI
+    * block_workflow_data - WorkflowAPI
+    """
     success, msg = validate_submission(
-        student_sub_data,
+        text_responses,
         block_config_data.prompts,
         block_config_data.translate,
         block_config_data.text_response,
@@ -57,7 +65,7 @@ def submit(data, block_config_data, block_submission_data, block_workflow_data):
         if block_config_data.is_team_assignment():
             return create_team_submission(
                 student_item_dict,
-                student_sub_data,
+                text_responses,
                 block_config_data,
                 block_submission_data,
                 block_workflow_data
@@ -65,7 +73,7 @@ def submit(data, block_config_data, block_submission_data, block_workflow_data):
         else:
             return create_submission(
                 student_item_dict,
-                student_sub_data,
+                text_responses,
                 block_config_data,
                 block_submission_data,
                 block_workflow_data

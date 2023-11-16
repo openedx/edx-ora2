@@ -108,7 +108,8 @@ class MfeMixin:
     def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
-            submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)
+            text_responses = data["submission"]["textResponses"]
+            submissions_actions.submit(text_responses, self.config_data, self.submission_data, self.workflow_data)
         except KeyError as e:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
         except SubmissionValidationException as e:
