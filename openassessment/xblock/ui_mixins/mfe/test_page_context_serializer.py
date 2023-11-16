@@ -97,7 +97,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
     def setUp(self):
         """For these tests, we are always in assessment view"""
-        self.context = {"view": "assessment"}
+        self.context = {"requested_step": "done"}
         return super().setUp()
 
     @scenario("data/student_training.xml", user_id="Alan")

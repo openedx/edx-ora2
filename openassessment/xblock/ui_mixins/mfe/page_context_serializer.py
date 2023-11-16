@@ -364,7 +364,7 @@ class PageDataSerializer(Serializer):
          we get an assessment for the current assessment step.
         """
         # Assessment Views
-        if self.context.get("view") == "assessment":
+        if self.context.get("requested_step") == "done":
             return AssessmentGradeSerializer(instance.api_data, context=self.context).data
         else:
             return None
