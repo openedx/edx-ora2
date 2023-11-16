@@ -96,7 +96,7 @@ class MfeMixin:
 
     def _submission_draft_handler(self, data):
         try:
-            student_submission_data = data['response']['text_responses']
+            student_submission_data = data['response']['textResponses']
             submissions_actions.save_submission_draft(student_submission_data, self.config_data, self.submission_data)
         except KeyError as e:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e

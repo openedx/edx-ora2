@@ -67,8 +67,8 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
                 mock_unsubmitted_urls.side_effect = expected_file_urls.get
                 yield
 
-    DEFAULT_DRAFT_VALUE = {'response': {'text_responses': ['hi']}}
-    DEFAULT_SUBMIT_VALUE = {'response': {'text_responses': ['Hello World', 'Goodbye World']}}
+    DEFAULT_DRAFT_VALUE = {'response': {'textResponses': ['hi']}}
+    DEFAULT_SUBMIT_VALUE = {'response': {'textResponses': ['Hello World', 'Goodbye World']}}
     DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
 
     DEFAULT_ASSESSMENT_SUBMIT_VALUE = {
@@ -612,7 +612,7 @@ class SubmissionDraftTest(MFEHandlersTestBase):
         with self._mock_save_submission_draft() as mock_draft:
             resp = self.request_save_draft(xblock)
             assert resp.status_code == 200
-            assert_called_once_with_helper(mock_draft, self.DEFAULT_DRAFT_VALUE['response']['text_responses'], 2)
+            assert_called_once_with_helper(mock_draft, self.DEFAULT_DRAFT_VALUE['response']['textResponses'], 2)
 
 
 class SubmissionCreateTest(MFEHandlersTestBase):
