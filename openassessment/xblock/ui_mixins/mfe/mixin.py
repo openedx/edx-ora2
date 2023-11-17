@@ -32,7 +32,6 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
-from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     AddFileRequestSerializer,
     FileUploadCallbackRequestSerializer
@@ -52,6 +51,17 @@ class OraApiException(JsonHandlerError):
                 'errorContext': error_context
             }
         )
+
+
+# Map requested ORA app step to workflow step name
+MFE_STEP_TO_WORKFLOW_MAPPINGS = {
+    "submission": "submission",
+    "studentTraining": "training",
+    "peer": "peer",
+    "self": "self",
+    "staff": "staff",
+    "done": "done",
+}
 
 
 class MfeMixin:
@@ -83,7 +93,7 @@ class MfeMixin:
             return PageDataSerializer(self, context=serializer_context).data
 
         # Check to see if user can access this workflow step
-        requested_workflow_step = STEP_NAME_MAPPINGS[requested_step]
+        requested_workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[requested_step]
         if not self.workflow_data.has_reached_given_step(
             requested_workflow_step,
             current_workflow_step=current_workflow_step
