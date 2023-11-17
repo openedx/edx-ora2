@@ -706,7 +706,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(xblock.white_listed_file_types, ["pdf"])
 
     @ddt.data(True, False)
-    @scenario('data/basic_scenario.xml')
+    @scenario('data/simple_self_staff_scenario.xml')
     def test_mfe_views_supported__teams(self, xblock, mock_teams_assignment):
         # Given I'm on / not on a team assignment
         xblock.is_team_assignment = Mock(return_value=mock_teams_assignment)
