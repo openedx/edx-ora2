@@ -106,8 +106,8 @@ class OpenAssessmentBlock(
 
     VALID_ASSESSMENT_TYPES = [
         "student-training",
-        "peer-assessment",
         "self-assessment",
+        "peer-assessment",
         "staff-assessment",
     ]
 

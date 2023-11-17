@@ -101,13 +101,14 @@
   document.getElementById(toHide).style.display = 'none';
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
-      console.log("receive resize event");
-      console.log({ data: event.data });
+      const iframe = document.getElementById('ora-iframe-{{xblock_id}}');
       if (event.data.type === 'plugin.modal') {
         window.parent.postMessage(event.data, document.referrer);
       }
+      if (event.data.type === 'plugin.modal-close') {
+        iframe.contentWindow.postMessage(event.data, '*');
+      }
       if (event.data.type === 'ora-resize') {
-        const iframe = document.getElementById('ora-iframe-{{xblock_id}}');
         const { height } = event.data.payload;
         iframe.height = height;
       }
