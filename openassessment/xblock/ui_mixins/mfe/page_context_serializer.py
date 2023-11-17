@@ -255,7 +255,7 @@ class ProgressSerializer(Serializer):
             return "submission"
         elif instance.workflow_data.is_waiting:
             # If we are waiting, we are either waiting on a peer or a staff grade.
-            # Staff takes precidence, so if a required (not automatically inserted) staff
+            # Staff takes precedence, so if a required (not automatically inserted) staff
             # step exists, we are considered to be in "staff". If there is a peer, we are
             # considered to be in "peer"
             workflow_requirements = instance.workflow_data.workflow_requirements
