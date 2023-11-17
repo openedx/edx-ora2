@@ -106,9 +106,9 @@ class OpenAssessmentBlock(
 
     VALID_ASSESSMENT_TYPES = [
         "student-training",
-        "self-assessment",
         "peer-assessment",
-        "staff-assessment",
+        "self-assessment",
+        "staff-assessment"
     ]
 
     VALID_ASSESSMENT_TYPES_FOR_TEAMS = [  # pylint: disable=invalid-name
@@ -622,9 +622,11 @@ class OpenAssessmentBlock(
         """
         Determine if our steps have been reordered (omission of steps is fine)
         """
+        mfe_supported_step_ordering = ['student-training', 'self-assessment', 'peer-assessment', 'staff-assessment']
+
         last_step_index = 0
         for assessment_step in self.assessment_steps:
-            step_index = self.VALID_ASSESSMENT_TYPES.index(assessment_step)
+            step_index = mfe_supported_step_ordering.index(assessment_step)
 
             if step_index < last_step_index:
                 return False
