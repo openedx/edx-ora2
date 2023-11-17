@@ -613,7 +613,7 @@ class OpenAssessmentBlock(
             "title": self.title,
             "xblock_id": self.get_xblock_id(),
             "course_id": self.course_id,
-            "hotjar_site_id": getattr(settings,'HOTJAR_SITE_ID','00000'),
+            "hotjar_site_id": getattr(settings, 'HOTJAR_SITE_ID', '00000'),
         }
 
         template = get_template("openassessmentblock/base.html")
