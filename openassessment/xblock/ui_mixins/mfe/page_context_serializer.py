@@ -335,9 +335,11 @@ class PageDataSerializer(Serializer):
             # Submitted response
             return SubmissionSerializer(learner_submission_data).data
 
-        # Student Training - return next example to practice
+        # Student Training - return next example to practice or None
         elif requested_step == "studentTraining":
             response = instance.student_training_data.example
+            if response is None:
+                return None
 
         # Peer
         elif requested_step == "peer":
