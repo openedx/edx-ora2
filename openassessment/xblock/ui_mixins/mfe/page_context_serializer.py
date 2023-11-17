@@ -150,6 +150,9 @@ class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
             ... etc.
         }
         """
+        if not instance.example:
+            return None
+
         criteria = instance.example["rubric"]['criteria']
         options_selected = instance.example["options_selected"]
 
