@@ -98,7 +98,8 @@
   const isMobile = window.navigator.userAgent.includes("org.edx.mobile");
   const mfe_views = ("{{mfe_views}}" === 'True') || isMobile;
   const toHide = mfe_views ? 'ora-legacy-view' : 'ora-view';
-  document.getElementById(toHide).style.display = 'none';
+  const elementToRemove = document.getElementById(toHide);
+  elementToRemove.parentNode.removeChild(elementToRemove);
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
       const iframe = document.getElementById('ora-iframe-{{xblock_id}}');
