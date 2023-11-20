@@ -524,6 +524,9 @@ class OpenAssessmentBlock(
         }
         return student_item_dict
 
+    # You need to tell studio that there is an author view, it won't go searching for it
+    has_author_view = True
+
     @togglable_mobile_support
     def author_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
