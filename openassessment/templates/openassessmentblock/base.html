@@ -61,7 +61,7 @@
           frameborder="0"
           id="ora-iframe-{{xblock_id}}"
           src="http://localhost:1992/xblock/{{course_id}}/{{xblock_id}}"
-          style="width: 100%"
+          style="width: 100%; height: 1000px"
           onload="loadResizeEvent()"
         ></iframe>
         {% if leaderboard_ui_model %}
@@ -98,14 +98,18 @@
   const isMobile = window.navigator.userAgent.includes("org.edx.mobile");
   const mfe_views = ("{{mfe_views}}" === 'True') || isMobile;
   const toHide = mfe_views ? 'ora-legacy-view' : 'ora-view';
-  document.getElementById(toHide).style.display = 'none';
+  const elementToRemove = document.getElementById(toHide);
+  elementToRemove.parentNode.removeChild(elementToRemove);
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
+      const iframe = document.getElementById('ora-iframe-{{xblock_id}}');
       if (event.data.type === 'plugin.modal') {
         window.parent.postMessage(event.data, document.referrer);
       }
+      if (event.data.type === 'plugin.modal-close') {
+        iframe.contentWindow.postMessage(event.data, '*');
+      }
       if (event.data.type === 'ora-resize') {
-        const iframe = document.getElementById('ora-iframe-{{xblock_id}}');
         const { height } = event.data.payload;
         iframe.height = height;
       }

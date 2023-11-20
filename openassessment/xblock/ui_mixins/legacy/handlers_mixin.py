@@ -73,7 +73,12 @@ class LegacyHandlersMixin:
                 self.config_data.translate('"submission" required to submit answer.'),
             )
         try:
-            submission = submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)
+            submission = submissions_actions.submit(
+                data["submission"],
+                self.config_data,
+                self.submission_data,
+                self.workflow_data
+            )
             return (
                 True,
                 submission.get("student_item"),

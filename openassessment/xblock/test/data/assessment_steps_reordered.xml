@@ -43,7 +43,7 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="self-assessment" />
+        <assessment name="staff-assessment" required="true"/>
         <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
     </assessments>
 </openassessment>

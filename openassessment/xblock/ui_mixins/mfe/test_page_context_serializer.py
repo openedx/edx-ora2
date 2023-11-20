@@ -74,6 +74,20 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         with self.assertRaises(ValidationError):
             _ = PageDataSerializer(xblock, context=context).data
 
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.SubmissionSerializer")
+    @scenario("data/basic_scenario.xml", user_id="Alan")
+    def test_no_requested_step(self, xblock, mock_submission_serializer, mock_assessment_serializer):
+        # Given I don't request a step (allowed for asking progress data)
+        context = {"requested_step": None, "current_workflow_step": "peer"}
+
+        # When I ask for my submission data
+        _ = PageDataSerializer(xblock, context=context).data
+
+        # Then I load page data, without any response data
+        mock_submission_serializer.assert_not_called()
+        mock_assessment_serializer.assert_not_called()
+
 
 @ddt.ddt
 class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -83,7 +97,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
     def setUp(self):
         """For these tests, we are always in assessment view"""
-        self.context = {"view": "assessment"}
+        self.context = {"requested_step": "done"}
         return super().setUp()
 
     @scenario("data/student_training.xml", user_id="Alan")

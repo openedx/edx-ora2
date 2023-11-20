@@ -108,7 +108,7 @@ class OpenAssessmentBlock(
         "student-training",
         "peer-assessment",
         "self-assessment",
-        "staff-assessment",
+        "staff-assessment"
     ]
 
     VALID_ASSESSMENT_TYPES_FOR_TEAMS = [  # pylint: disable=invalid-name
@@ -524,6 +524,9 @@ class OpenAssessmentBlock(
         }
         return student_item_dict
 
+    # You need to tell studio that there is an author view, it won't go searching for it
+    has_author_view = True
+
     @togglable_mobile_support
     def author_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
@@ -622,9 +625,11 @@ class OpenAssessmentBlock(
         """
         Determine if our steps have been reordered (omission of steps is fine)
         """
+        mfe_supported_step_ordering = ['student-training', 'self-assessment', 'peer-assessment', 'staff-assessment']
+
         last_step_index = 0
         for assessment_step in self.assessment_steps:
-            step_index = self.VALID_ASSESSMENT_TYPES.index(assessment_step)
+            step_index = mfe_supported_step_ordering.index(assessment_step)
 
             if step_index < last_step_index:
                 return False

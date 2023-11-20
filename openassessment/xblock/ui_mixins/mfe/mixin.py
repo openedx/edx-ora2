@@ -32,7 +32,6 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
-from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     AddFileRequestSerializer,
     FileUploadCallbackRequestSerializer
@@ -48,10 +47,21 @@ class OraApiException(JsonHandlerError):
         super().__init__(
             status_code,
             {
-                'error_code': error_code,
-                'error_context': error_context
+                'errorCode': error_code,
+                'errorContext': error_context
             }
         )
+
+
+# Map requested ORA app step to workflow step name
+MFE_STEP_TO_WORKFLOW_MAPPINGS = {
+    "submission": "submission",
+    "studentTraining": "training",
+    "peer": "peer",
+    "self": "self",
+    "staff": "staff",
+    "done": "done",
+}
 
 
 class MfeMixin:
@@ -83,7 +93,7 @@ class MfeMixin:
             return PageDataSerializer(self, context=serializer_context).data
 
         # Check to see if user can access this workflow step
-        requested_workflow_step = STEP_NAME_MAPPINGS[requested_step]
+        requested_workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[requested_step]
         if not self.workflow_data.has_reached_given_step(
             requested_workflow_step,
             current_workflow_step=current_workflow_step
@@ -96,7 +106,7 @@ class MfeMixin:
 
     def _submission_draft_handler(self, data):
         try:
-            student_submission_data = data['response']['text_responses']
+            student_submission_data = data['response']['textResponses']
             submissions_actions.save_submission_draft(student_submission_data, self.config_data, self.submission_data)
         except KeyError as e:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
@@ -108,7 +118,8 @@ class MfeMixin:
     def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
-            submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)
+            text_responses = data["submission"]["textResponses"]
+            submissions_actions.submit(text_responses, self.config_data, self.submission_data, self.workflow_data)
         except KeyError as e:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
         except SubmissionValidationException as e:
@@ -324,6 +335,11 @@ class MfeMixin:
         return MfeAssessmentDataSerializer(data).data
 
     def _assessment_get_peer_handler(self):
+
+        # Raise an exception if we don't have a peer step
+        if "peer-assessment" not in self.assessment_steps:
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, error_context="No peer step for ORA")
+
         # Call get_peer_submission to grab a new peer submission
         self.peer_assessment_data().get_peer_submission()
 
