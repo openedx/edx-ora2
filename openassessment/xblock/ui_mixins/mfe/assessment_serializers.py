@@ -203,7 +203,7 @@ class MfeAssessmentCriterionSerializer(Serializer):
     }
     """
     selectedOption = IntegerField()
-    feedback = CharField()
+    feedback = CharField(allow_blank=True, allow_null=True)
 
 
 class MfeAssessmentDataSerializer(Serializer):

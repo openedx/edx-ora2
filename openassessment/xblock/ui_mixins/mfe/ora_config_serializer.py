@@ -117,6 +117,15 @@ class SelfSettingsSerializer(Serializer):
     endDatetime = DateTimeField(source="due")
 
 
+class StudentTrainingSettingsSerializer(Serializer):
+    required = BooleanField(default=True)
+
+    numberOfExamples = SerializerMethodField(source="*", default=0)
+
+    def get_numberOfExamples(self, assessment):
+        return len(assessment["examples"])
+
+
 class PeerSettingsSerializer(Serializer):
     required = BooleanField(default=True)
 
@@ -158,6 +167,8 @@ class AssessmentStepSettingsSerializer(Serializer):
             return PeerSettingsSerializer(assessment_step).data
         elif assessment_step and self.step_name == "self-assessment":
             return SelfSettingsSerializer(assessment_step).data
+        elif assessment_step and self.step_name == "student-training":
+            return StudentTrainingSettingsSerializer(assessment_step).data
 
         # If we didn't find a step, it is not required
         if assessment_step is None:

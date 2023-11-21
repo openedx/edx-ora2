@@ -67,8 +67,8 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
                 mock_unsubmitted_urls.side_effect = expected_file_urls.get
                 yield
 
-    DEFAULT_DRAFT_VALUE = {'response': {'text_responses': ['hi']}}
-    DEFAULT_SUBMIT_VALUE = {'response': {'text_responses': ['Hello World', 'Goodbye World']}}
+    DEFAULT_DRAFT_VALUE = {'response': {'textResponses': ['hi']}}
+    DEFAULT_SUBMIT_VALUE = {'submission': {'textResponses': ['Hello World', 'Goodbye World']}}
     DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
 
     DEFAULT_ASSESSMENT_SUBMIT_VALUE = {
@@ -174,8 +174,8 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
 def assert_error_response(response, status_code, error_code, context=''):
     assert response.status_code == status_code
     assert response.json['error'] == {
-        'error_code': error_code,
-        'error_context': context
+        'errorCode': error_code,
+        'errorContext': context
     }
 
 
@@ -214,17 +214,33 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
-    def test_start_submission(self, xblock, mock_serializer):
-        # Given we haven't started a submission
+    def test_no_requested_step(self, xblock, mock_serializer):
+        # Given we don't pass an active step
         mock_serializer.return_value = MockSerializer()
 
         # When I ask for learner data
         _ = self.request_get_learner_data(xblock)
 
+        # Then I call serialization without an active step
+        expected_context = {
+            "requested_step": None,
+            "current_workflow_step": "submission",
+        }
+        mock_serializer.assert_called_once_with(xblock, context={**expected_context})
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml")
+    def test_start_submission(self, xblock, mock_serializer):
+        # Given we haven't started a submission
+        mock_serializer.return_value = MockSerializer()
+
+        # When I ask for learner data
+        _ = self.request_get_learner_data(xblock, suffix="submission")
+
         # Then I get submission
         expected_context = {
-            "step": "submission",
-            "view": "submission",
+            "requested_step": "submission",
+            "current_workflow_step": "submission",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -240,13 +256,10 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         # Then I get an error and don't return data
         mock_serializer.assert_not_called()
 
-        expected_status = 404
-        self.assertEqual(expected_status, response.status_code)
+        expected_context = "Invalid step name: asdf"
+        assert_error_response(response, 400, error_codes.INCORRECT_PARAMETERS, context=expected_context)
 
-        expected_body = {'error': 'Invalid jump to step: asdf'}
-        self.assertDictEqual(expected_body, json.loads(response.body))
-
-    @ddt.data("peer", "grades")
+    @ddt.data("peer", "done")
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
     @scenario("data/basic_scenario.xml")
     def test_jump_to_inaccessible_step(self, xblock, inaccessible_step, mock_serializer):
@@ -262,7 +275,12 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         expected_status = 400
         self.assertEqual(expected_status, response.status_code)
 
-        expected_body = {'error': f'Cannot jump to step: {inaccessible_step}'}
+        expected_body = {
+            'error': {
+                'errorCode': 'ERR_INACCESSIBLE_STEP',
+                'errorContext': f'Inaccessible step: {inaccessible_step}'
+            }
+        }
         self.assertDictEqual(expected_body, json.loads(response.body))
 
     @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
@@ -277,8 +295,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct assessment step
         expected_context = {
-            "step": "self",
-            "view": "assessment",
+            "requested_step": None,
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -295,9 +313,8 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
 
         # Then I am routed to the correct view
         expected_context = {
-            "step": "self",
-            "jump_to_step": "submission",
-            "view": "submission",
+            "requested_step": "submission",
+            "current_workflow_step": "self",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
@@ -595,7 +612,7 @@ class SubmissionDraftTest(MFEHandlersTestBase):
         with self._mock_save_submission_draft() as mock_draft:
             resp = self.request_save_draft(xblock)
             assert resp.status_code == 200
-            assert_called_once_with_helper(mock_draft, self.DEFAULT_DRAFT_VALUE['response']['text_responses'], 2)
+            assert_called_once_with_helper(mock_draft, self.DEFAULT_DRAFT_VALUE['response']['textResponses'], 2)
 
 
 class SubmissionCreateTest(MFEHandlersTestBase):
@@ -668,7 +685,7 @@ class SubmissionCreateTest(MFEHandlersTestBase):
         with self._mock_create_submission() as mock_submit:
             resp = self.request_create_submission(xblock)
             assert resp.status_code == 200
-            assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE, 3)
+            assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE["submission"]["textResponses"], 3)
 
 
 @ddt.ddt
@@ -723,7 +740,7 @@ class FileUploadTest(MFEHandlersTestBase):
     def test_bad_inputs(self, xblock, payload):
         resp = self.request_upload_files(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @scenario("data/basic_scenario.xml")
     def test_file_upload_error(self, xblock):
@@ -852,7 +869,7 @@ class FileCallbackTests(MFEHandlersTestBase):
     def test_bad_params(self, xblock, payload):
         resp = self.request_file_callback(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @scenario("data/basic_scenario.xml")
     def test_success(self, xblock):
@@ -930,7 +947,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
     def test_incorrect_params(self, xblock, payload):
         resp = self.request_assessment_submit(xblock, payload)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+        assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
     @ddt.data(None, 'cancelled', 'done', 'ai')
     @scenario("data/basic_scenario.xml")
@@ -938,7 +955,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         with self.mock_workflow_status(status):
             resp = self.request_assessment_submit(xblock)
         assert resp.status_code == 400
-        assert resp.json['error']['error_code'] == error_codes.INVALID_STATE_TO_ASSESS
+        assert resp.json['error']['errorCode'] == error_codes.INVALID_STATE_TO_ASSESS
 
     @ddt.unpack
     @ddt.data(
