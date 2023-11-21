@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-25 14:38+0000\n"
+"POT-Creation-Date: 2023-11-21 22:21+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -938,7 +938,7 @@ msgid "%(num_points)s points"
 msgstr ""
 
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:24
-#: templates/legacy/peer/oa_peer_assessment.html:74
+#: templates/legacy/peer/oa_peer_assessment.html:84
 #: templates/legacy/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
 msgstr ""
@@ -1165,12 +1165,12 @@ msgid ""
 "administrator. If you access the files, you do so at your own risk.)"
 msgstr ""
 
-#: templates/legacy/peer/oa_peer_assessment.html:26
+#: templates/legacy/peer/oa_peer_assessment.html:36
 msgid "Assess Peers"
 msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)"
-#: templates/legacy/peer/oa_peer_assessment.html:34
+#: templates/legacy/peer/oa_peer_assessment.html:44
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1182,7 +1182,7 @@ msgid ""
 msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)"
-#: templates/legacy/peer/oa_peer_assessment.html:41
+#: templates/legacy/peer/oa_peer_assessment.html:51
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1193,7 +1193,7 @@ msgid ""
 "            "
 msgstr ""
 
-#: templates/legacy/peer/oa_peer_assessment.html:51
+#: templates/legacy/peer/oa_peer_assessment.html:61
 #, python-format
 msgid ""
 "\n"
@@ -1201,23 +1201,23 @@ msgid ""
 "                "
 msgstr ""
 
-#: templates/legacy/peer/oa_peer_assessment.html:65
+#: templates/legacy/peer/oa_peer_assessment.html:75
 #: templates/legacy/peer/oa_peer_turbo_mode.html:45
 msgid "Read and assess the following response from one of your peers."
 msgstr ""
 
-#: templates/legacy/peer/oa_peer_assessment.html:77
+#: templates/legacy/peer/oa_peer_assessment.html:87
 #: templates/legacy/peer/oa_peer_turbo_mode.html:56
-#: templates/legacy/self/oa_self_assessment.html:60
+#: templates/legacy/self/oa_self_assessment.html:70
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:45
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:38
 #: templates/legacy/staff_area/oa_student_info.html:63
 msgid "Associated Files"
 msgstr ""
 
-#: templates/legacy/peer/oa_peer_assessment.html:91
+#: templates/legacy/peer/oa_peer_assessment.html:101
 #: templates/legacy/peer/oa_peer_turbo_mode.html:70
-#: templates/legacy/self/oa_self_assessment.html:71
+#: templates/legacy/self/oa_self_assessment.html:81
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:57
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
@@ -1333,7 +1333,7 @@ msgid ""
 msgstr ""
 
 #: templates/legacy/response/oa_response.html:54
-#: templates/legacy/self/oa_self_assessment.html:46
+#: templates/legacy/self/oa_self_assessment.html:56
 msgid "In Progress"
 msgstr ""
 
@@ -1620,7 +1620,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_graded.html:30
 #: templates/legacy/response/oa_response_submitted.html:51
-#: templates/legacy/self/oa_self_assessment.html:57
+#: templates/legacy/self/oa_self_assessment.html:67
 msgid "Your response"
 msgstr ""
 
@@ -1681,12 +1681,12 @@ msgid ""
 "                        "
 msgstr ""
 
-#: templates/legacy/self/oa_self_assessment.html:23
+#: templates/legacy/self/oa_self_assessment.html:33
 msgid "Assess Your Response"
 msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)"
-#: templates/legacy/self/oa_self_assessment.html:31
+#: templates/legacy/self/oa_self_assessment.html:41
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1698,7 +1698,7 @@ msgid ""
 msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)"
-#: templates/legacy/self/oa_self_assessment.html:38
+#: templates/legacy/self/oa_self_assessment.html:48
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1709,7 +1709,7 @@ msgid ""
 "           "
 msgstr ""
 
-#: templates/legacy/self/oa_self_assessment.html:78
+#: templates/legacy/self/oa_self_assessment.html:88
 msgid "Submit your assessment"
 msgstr ""
 
