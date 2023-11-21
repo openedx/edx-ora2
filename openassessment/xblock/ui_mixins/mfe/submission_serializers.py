@@ -120,7 +120,9 @@ class DraftResponseSerializer(Serializer):
     def get_uploadedFiles(self, data):
         result = []
         for index, uploaded_file in enumerate(data['file_data']):
-            result.append(FileDescriptorSerializer(({'file': uploaded_file, 'file_index': index})).data)
+            # hide deleted files from output
+            if uploaded_file["download_url"] is not None:
+                result.append(FileDescriptorSerializer(({'file': uploaded_file, 'file_index': index})).data)
         return result
 
 
