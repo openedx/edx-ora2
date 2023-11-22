@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-25 14:38+0000\n"
+"POT-Creation-Date: 2023-11-21 22:21+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1540,10 +1540,10 @@ msgid "We could not submit your assessment"
 msgstr ""
 "Wé çöüld nöt süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/peer/oa_peer_cancelled.html
-#: templates/openassessmentblock/response/oa_response_cancelled.html
-#: templates/openassessmentblock/self/oa_self_cancelled.html
-#: templates/openassessmentblock/student_training/student_training_cancelled.html
+#: templates/legacy/peer/oa_peer_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
+#: templates/legacy/self/oa_self_cancelled.html
+#: templates/legacy/student_training/student_training_cancelled.html
 msgid "Cancelled"
 msgstr "Çänçélléd Ⱡ'σяєм ιρѕυм ∂σł#"
 
@@ -1624,10 +1624,10 @@ msgstr ""
 "Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf "
 "möré léärnérs hävé süßmïttéd réspönsés. Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/peer/oa_peer_unavailable.html
-#: templates/openassessmentblock/response/oa_response_unavailable.html
-#: templates/openassessmentblock/self/oa_self_unavailable.html
-#: templates/openassessmentblock/student_training/student_training_unavailable.html
+#: templates/legacy/peer/oa_peer_unavailable.html
+#: templates/legacy/response/oa_response_unavailable.html
+#: templates/legacy/self/oa_self_unavailable.html
+#: templates/legacy/student_training/student_training_unavailable.html
 msgid "Not Available"
 msgstr "Nöt Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
@@ -2033,10 +2033,10 @@ msgstr ""
 "∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
 "υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂#"
 
-#: templates/openassessmentblock/response/oa_response_graded.html
-#: templates/openassessmentblock/response/oa_response_submitted.html
-#: templates/openassessmentblock/self/oa_self_complete.html
-#: templates/openassessmentblock/student_training/student_training_complete.html
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/self/oa_self_complete.html
+#: templates/legacy/student_training/student_training_complete.html
 msgid "Complete"
 msgstr "Çömplété Ⱡ'σяєм ιρѕυм ∂#"
 
