@@ -629,6 +629,7 @@ class OpenAssessmentBlock(
             initialize_js_func='OpenAssessmentBlock',
             additional_js_context={
                 "MFE_VIEW_ENABLED": self.mfe_views_enabled and self.mfe_views_supported,
+                "ORA_MICROFRONTEND_URL": getattr(settings, 'ORA_MICROFRONTEND_URL', ''),
             }
         )
 
