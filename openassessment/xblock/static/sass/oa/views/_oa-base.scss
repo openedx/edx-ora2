@@ -8,6 +8,14 @@
   position: relative;
 }
 
+.openassessment-initial-wrapper {
+  display: none;
+  
+  &.is--showing {
+    display: block;
+  }
+}
+
 .openassessment {
   @include direction();
 

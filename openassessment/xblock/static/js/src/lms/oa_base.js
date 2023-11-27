@@ -42,10 +42,19 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.isMobile = window.navigator.userAgent.includes('org.edx.mobile');
-      this.show_mfe_views = data.mfe_views;
 
-      if (!this.show_mfe_views || this.isMobile) {
+      this.show_mfe_views = data.CONTEXT?.MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
+
+      const oraMfeView = $('#ora-mfe-view', this.element);
+      const oraLegacyView = $('#ora-legacy-view', this.element);
+
+      if (this.show_mfe_views) {
+        oraLegacyView.remove();
+        oraMfeView.addClass('is--showing');        
+      }
+      else {
+        oraMfeView.remove();
+        oraLegacyView.addClass('is--showing');
         this.fileUploader = new FileUploader();
 
         this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
@@ -259,8 +268,29 @@ export class BaseView {
      * Asynchronously load each sub-view into the DOM.
      */
     load() {
-      this.responseView.load();
-      this.loadAssessmentModules();
+      if (this.show_mfe_views) {
+        const xblockId = this.getUsageID();
+        // lms used course-id from element data attribute, cms used global course object
+        const courseId = $(this.element).data('course-id') || window.course?.id;
+
+        const oraMfeIframe = $('#ora-mfe-view>iframe', this.element);
+        oraMfeIframe.attr('src', `http://localhost:1992/xblock/${courseId}/${xblockId}`)
+        oraMfeIframe.on('load', function() {
+          window.addEventListener('message', (event) => {
+            if (event.data.type === 'plugin.resize') {
+              const { height } = event.data.payload;
+              oraMfeIframe[0].style.height = `${height}px`;
+            }
+            if ( window.parent.length > 0 && ['plugin.modal', 'plugin.modal-close', 'plugin.resize'].includes(event.data.type)) {
+              window.parent.postMessage(event.data, document.referrer);
+            }
+          });
+        });
+      }
+      else {
+        this.responseView.load();
+        this.loadAssessmentModules();
+      }
       this.staffAreaView.load();
     }
 
