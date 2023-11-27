@@ -8,9 +8,10 @@
   position: relative;
 }
 
+// default to hide and show when it is needed
 .openassessment-initial-wrapper {
   display: none;
-  
+
   &.is--showing {
     display: block;
   }

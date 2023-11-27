@@ -49,11 +49,15 @@ export class BaseView {
       const oraLegacyView = $('#ora-legacy-view', this.element);
 
       if (this.show_mfe_views) {
+        // remove legacy view and show mfe view
         oraLegacyView.remove();
         oraMfeView.addClass('is--showing');
       } else {
+        // remove mfe view and show legacy view
         oraMfeView.remove();
         oraLegacyView.addClass('is--showing');
+
+        // Initialize the views with legacy code
         this.fileUploader = new FileUploader();
 
         this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
@@ -268,6 +272,9 @@ export class BaseView {
      */
     load() {
       if (this.show_mfe_views) {
+        // When using ORA MFE, we add url to iframe and let it load the view
+        // This is to avoid iframe from loading before we decide to show it
+        // Then add event listener to help resize iframe, and handle modal open/close
         const xblockId = this.getUsageID();
         // lms used course-id from element data attribute, cms used global course object
         const courseId = $(this.element).data('course-id') || window.course?.id;
