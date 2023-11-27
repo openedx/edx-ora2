@@ -50,9 +50,8 @@ export class BaseView {
 
       if (this.show_mfe_views) {
         oraLegacyView.remove();
-        oraMfeView.addClass('is--showing');        
-      }
-      else {
+        oraMfeView.addClass('is--showing');
+      } else {
         oraMfeView.remove();
         oraLegacyView.addClass('is--showing');
         this.fileUploader = new FileUploader();
@@ -274,20 +273,21 @@ export class BaseView {
         const courseId = $(this.element).data('course-id') || window.course?.id;
 
         const oraMfeIframe = $('#ora-mfe-view>iframe', this.element);
-        oraMfeIframe.attr('src', `http://localhost:1992/xblock/${courseId}/${xblockId}`)
-        oraMfeIframe.on('load', function() {
+        // TODO: put the ORA MFE URL in a config file
+        oraMfeIframe.attr('src', `http://localhost:1992/xblock/${courseId}/${xblockId}`);
+        /* eslint-disable-next-line prefer-arrow-callback */
+        oraMfeIframe.on('load', function () {
           window.addEventListener('message', (event) => {
             if (event.data.type === 'plugin.resize') {
               const { height } = event.data.payload;
               oraMfeIframe[0].style.height = `${height}px`;
             }
-            if ( window.parent.length > 0 && ['plugin.modal', 'plugin.modal-close', 'plugin.resize'].includes(event.data.type)) {
+            if (window.parent.length > 0 && ['plugin.modal', 'plugin.modal-close', 'plugin.resize'].includes(event.data.type)) {
               window.parent.postMessage(event.data, document.referrer);
             }
           });
         });
-      }
-      else {
+      } else {
         this.responseView.load();
         this.loadAssessmentModules();
       }
