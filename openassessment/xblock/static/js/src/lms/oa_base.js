@@ -282,7 +282,13 @@ export class BaseView {
               const { height } = event.data.payload;
               oraMfeIframe[0].style.height = `${height}px`;
             }
-            if (window.parent.length > 0 && ['plugin.modal', 'plugin.modal-close', 'plugin.resize'].includes(event.data.type)) {
+            // Forward this event from learning MFE to child
+            if (event.data.type === 'plugin.modal-close') {
+              const iframe = document.getElementById(`ora-iframe-${xblockId}`);
+              iframe.contentWindow.postMessage(event.data, '*');
+            }
+            // Forward these 2 events back up to learning mfe from child
+            if (window.parent.length > 0 && ['plugin.modal', 'plugin.resize'].includes(event.data.type)) {
               window.parent.postMessage(event.data, document.referrer);
             }
           });
