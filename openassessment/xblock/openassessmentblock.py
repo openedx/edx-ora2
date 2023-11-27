@@ -559,7 +559,6 @@ class OpenAssessmentBlock(
 
         # All data we intend to pass to the front end.
         context_dict = {
-            "mfe_views": False,
             "leaderboard_modal": leaderboard_model,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
@@ -569,7 +568,14 @@ class OpenAssessmentBlock(
             "xblock_id": self.get_xblock_id(),
         }
         template = get_template("openassessmentblock/base.html")
-        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+        return self._create_fragment(
+            template,
+            context_dict,
+            initialize_js_func='OpenAssessmentBlock',
+            additional_js_context={
+                "MFE_VIEW_ENABLED": False,
+            }
+        )
 
     @togglable_mobile_support
     def student_view(self, context=None):  # pylint: disable=unused-argument
@@ -603,12 +609,9 @@ class OpenAssessmentBlock(
             if model["name"] == "leaderboard":
                 leaderboard_model = model
 
-        use_mfe_views = self.mfe_views_enabled and self.mfe_views_supported
-
         # All data we intend to pass to the front end.
         context_dict = {
             "leaderboard_modal": leaderboard_model,
-            "mfe_views": use_mfe_views,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
@@ -620,7 +623,14 @@ class OpenAssessmentBlock(
         }
 
         template = get_template("openassessmentblock/base.html")
-        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+        return self._create_fragment(
+            template,
+            context_dict,
+            initialize_js_func='OpenAssessmentBlock',
+            additional_js_context={
+                "MFE_VIEW_ENABLED": self.mfe_views_enabled and self.mfe_views_supported,
+            }
+        )
 
     @property
     def uses_default_assessment_order(self):

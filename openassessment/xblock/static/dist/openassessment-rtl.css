@@ -1935,6 +1935,13 @@ hr.divider,
   position: relative;
 }
 
+.openassessment-initial-wrapper {
+  display: none;
+}
+.openassessment-initial-wrapper.is--showing {
+  display: block;
+}
+
 .openassessment {
   direction: rtl;
 }
