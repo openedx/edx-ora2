@@ -277,15 +277,13 @@ export class BaseView {
         oraMfeIframe.attr('src', `http://localhost:1992/xblock/${courseId}/${xblockId}`);
         /* eslint-disable-next-line prefer-arrow-callback */
         oraMfeIframe.on('load', function () {
-          window.addEventListener('message', (event) => {
+          window.addEventListener('message', function (event) {
             if (event.data.type === 'plugin.resize') {
               const { height } = event.data.payload;
               oraMfeIframe[0].style.height = `${height}px`;
-            }
-            // Forward this event from learning MFE to child
-            if (event.data.type === 'plugin.modal-close') {
-              const iframe = document.getElementById(`ora-iframe-${xblockId}`);
-              iframe.contentWindow.postMessage(event.data, '*');
+            } else if (event.data.type === 'plugin.modal-close') {
+              // Forward this event from learning MFE to child
+              oraMfeIframe[0].contentWindow.postMessage(event.data, '*');
             }
             // Forward these 2 events back up to learning mfe from child
             if (window.parent.length > 0 && ['plugin.modal', 'plugin.resize'].includes(event.data.type)) {
