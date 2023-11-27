@@ -43,7 +43,10 @@ export class BaseView {
       this.element = element;
       this.server = server;
 
-      this.show_mfe_views = data.CONTEXT?.MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
+      const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED } = data.CONTEXT || {};
+
+      this.ORA_MICROFRONTEND_URL = ORA_MICROFRONTEND_URL;
+      this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
 
       const oraMfeView = $('#ora-mfe-view', this.element);
       const oraLegacyView = $('#ora-legacy-view', this.element);
@@ -281,9 +284,10 @@ export class BaseView {
 
         const oraMfeIframe = $('#ora-mfe-view>iframe', this.element);
         // TODO: put the ORA MFE URL in a config file
-        oraMfeIframe.attr('src', `http://localhost:1992/xblock/${courseId}/${xblockId}`);
+        oraMfeIframe.attr('src', `${this.ORA_MICROFRONTEND_URL}/xblock/${courseId}/${xblockId}`);
         /* eslint-disable-next-line prefer-arrow-callback */
         oraMfeIframe.on('load', function () {
+          /* eslint-disable-next-line prefer-arrow-callback */
           window.addEventListener('message', function (event) {
             if (event.data.type === 'plugin.resize') {
               const { height } = event.data.payload;
