@@ -46,7 +46,8 @@ export class BaseView {
       const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED } = data.CONTEXT || {};
 
       this.ORA_MICROFRONTEND_URL = ORA_MICROFRONTEND_URL;
-      if ( !this.ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED ) {
+      if (!this.ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED) {
+        // eslint-disable-next-line no-console
         console.error('ORA_MICROFRONTEND_URL is not defined. ORA MFE will not be loaded.');
       }
       this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
@@ -305,7 +306,7 @@ export class BaseView {
             } else if (event.data.type === 'plugin.modal-close') {
               // Forward this event from learning MFE to child
               oraMfeIframe[0].contentWindow.postMessage(event.data, '*');
-            } else if (event.data.type === 'plugin.modal' && windown.parent.length > 0) {
+            } else if (event.data.type === 'plugin.modal' && window.parent.length > 0) {
               window.parent.postMessage(event.data, document.referrer);
             }
           });
