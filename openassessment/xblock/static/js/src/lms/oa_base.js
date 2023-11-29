@@ -292,12 +292,17 @@ export class BaseView {
             if (event.data.type === 'plugin.resize') {
               const { height } = event.data.payload;
               oraMfeIframe[0].style.height = `${height}px`;
+              // can't propagate to learning mfe with this height because of extra element in between
+              window.parent.postMessage({
+                type: 'plugin.resize',
+                payload: {
+                  height: document.body.scrollHeight,
+                },
+              }, document.referrer);
             } else if (event.data.type === 'plugin.modal-close') {
               // Forward this event from learning MFE to child
               oraMfeIframe[0].contentWindow.postMessage(event.data, '*');
-            }
-            // Forward these 2 events back up to learning mfe from child
-            if (window.parent.length > 0 && ['plugin.modal', 'plugin.resize'].includes(event.data.type)) {
+            } else if (event.data.type === 'plugin.modal' && windown.parent.length > 0) {
               window.parent.postMessage(event.data, document.referrer);
             }
           });
