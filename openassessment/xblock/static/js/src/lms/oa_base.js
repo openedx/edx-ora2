@@ -46,6 +46,9 @@ export class BaseView {
       const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED } = data.CONTEXT || {};
 
       this.ORA_MICROFRONTEND_URL = ORA_MICROFRONTEND_URL;
+      if ( !this.ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED ) {
+        console.error('ORA_MICROFRONTEND_URL is not defined. ORA MFE will not be loaded.');
+      }
       this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
 
       const oraMfeView = $('#ora-mfe-view', this.element);
