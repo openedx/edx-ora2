@@ -46,6 +46,10 @@ export class BaseView {
       const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED } = data.CONTEXT || {};
 
       this.ORA_MICROFRONTEND_URL = ORA_MICROFRONTEND_URL;
+      if (!this.ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED) {
+        // eslint-disable-next-line no-console
+        console.error('ORA_MICROFRONTEND_URL is not defined. ORA MFE will not be loaded.');
+      }
       this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
 
       const oraMfeView = $('#ora-mfe-view', this.element);
@@ -292,12 +296,17 @@ export class BaseView {
             if (event.data.type === 'plugin.resize') {
               const { height } = event.data.payload;
               oraMfeIframe[0].style.height = `${height}px`;
+              // can't propagate to learning mfe with this height because of extra element in between
+              window.parent.postMessage({
+                type: 'plugin.resize',
+                payload: {
+                  height: document.body.scrollHeight,
+                },
+              }, document.referrer);
             } else if (event.data.type === 'plugin.modal-close') {
               // Forward this event from learning MFE to child
               oraMfeIframe[0].contentWindow.postMessage(event.data, '*');
-            }
-            // Forward these 2 events back up to learning mfe from child
-            if (window.parent.length > 0 && ['plugin.modal', 'plugin.resize'].includes(event.data.type)) {
+            } else if (event.data.type === 'plugin.modal' && window.parent.length > 0) {
               window.parent.postMessage(event.data, document.referrer);
             }
           });
