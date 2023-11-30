@@ -11,6 +11,7 @@ from rest_framework.serializers import (
     Serializer,
     BooleanField,
 )
+from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
 
 
@@ -91,10 +92,10 @@ class UnweightedPeerAssessmentsSerializer(Serializer):
 
 
 class SubmissionFileSerializer(Serializer):
-    fileUrl = URLField(source="file_key")
-    fileDescription = CharField(source="file_description")
-    fileName = CharField(source="file_name")
-    fileSize = IntegerField(source="file_size")
+    fileUrl = URLField(source="file.url")
+    fileDescription = CharField(source="file.description")
+    fileName = CharField(source="file.name")
+    fileSize = IntegerField(source="file.size")
     fileIndex = IntegerField(source="file_index")
 
 
@@ -169,28 +170,19 @@ class AssessmentResponseSerializer(Serializer):
         return [part["text"] for part in answer_text_parts]
 
     def get_uploadedFiles(self, instance):
-        # coerce to a similar shape for easier serialization
-        files = []
-
         if not instance["answer"].get("file_keys"):
             return None
 
-        for i, file_key in enumerate(instance["answer"]["file_keys"]):
-            file_data = {
-                "file_key": file_key,
-                "file_description": instance["answer"]["files_descriptions"][i],
-                "file_name": instance["answer"]["files_names"][i],
-                "file_size": instance["answer"]["files_sizes"][i],
-                "file_index": i,
-            }
+        response = OraSubmissionAnswerFactory.parse_submission_raw_answer(instance['answer'])
+        uploaded_files = []
 
+        for index, uploaded_file in enumerate(response.get_file_uploads(generate_urls=True)):
             # Don't serialize deleted / missing files
-            if not file_data["file_name"] and not file_data["file_description"]:
+            if uploaded_file.url is None:
                 continue
+            uploaded_files.append(SubmissionFileSerializer(({'file': uploaded_file, 'file_index': index})).data)
 
-            files.append(file_data)
-
-        return [SubmissionFileSerializer(file).data for file in files]
+        return uploaded_files
 
 
 class MfeAssessmentCriterionSerializer(Serializer):

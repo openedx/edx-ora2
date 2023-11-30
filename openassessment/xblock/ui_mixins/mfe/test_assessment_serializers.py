@@ -95,8 +95,9 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
     @patch(
         "openassessment.xblock.apis.submissions.submissions_api.FileAPI.get_uploads_for_submission"
     )
+    @patch("openassessment.data.ZippedListSubmissionAnswer._safe_get_download_url")
     @scenario("data/file_upload_scenario.xml", user_id="Alan")
-    def test_files(self, xblock, mock_get_files):
+    def test_files(self, xblock, mock_get_download_url, mock_get_files):
         # Given we have a response
         submission_text = ["Foo", "Bar"]
         submission = None
@@ -130,23 +131,30 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
             xblock, submission_text=submission_text
         )
 
+        mock_urls = [
+            f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}",
+            None,
+            f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}/2",
+        ]
+
+        mock_get_download_url.side_effect = mock_urls
+
         # When I load my response
         data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response (test URLs use usage ID)
-        expected_url = f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}"
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": [
                 {
-                    "fileUrl": expected_url,
+                    "fileUrl": mock_urls[0],
                     "fileDescription": "bar",
                     "fileName": "foo",
                     "fileSize": 1337,
                     "fileIndex": 0,
                 },
                 {
-                    "fileUrl": f"{expected_url}/2",
+                    "fileUrl": mock_urls[2],
                     "fileDescription": "buzz",
                     "fileName": "baz",
                     "fileSize": 2049,
