@@ -27,7 +27,7 @@ class ORADataAccessor:
 
     @property
     def workflow_data(self):
-        return WorkflowAPI(self._block)
+        return self._block.workflow_data
 
     @property
     def grades_data(self):

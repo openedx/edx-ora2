@@ -293,9 +293,14 @@ class OpenAssessmentBlock(
     def config_data(self):
         return ORAConfigAPI(self)
 
+    _workflow_data = None
+
     @property
     def workflow_data(self):
-        return WorkflowAPI(self)
+        # Initialize Workflow API only once
+        if not self._workflow_data:
+            self._workflow_data = WorkflowAPI(self)
+        return self._workflow_data
 
     @property
     def submission_data(self):
