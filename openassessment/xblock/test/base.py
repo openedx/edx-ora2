@@ -359,7 +359,7 @@ class SubmissionTestMixin:
 
     def create_test_submission(self, xblock, student_item=None, submission_text=None):
         """
-        Helper for creating test submissions
+        Helper for creating test submissions. Also updates workflow status.
 
         Args:
         * xblock: The XBlock to create the submission under
@@ -379,7 +379,7 @@ class SubmissionTestMixin:
         if submission_text is None:
             submission_text = self.DEFAULT_TEST_SUBMISSION_TEXT
 
-        return submissions_actions.create_submission(
+        submission = submissions_actions.create_submission(
             student_item,
             submission_text,
             xblock.config_data,
@@ -387,6 +387,10 @@ class SubmissionTestMixin:
             xblock.workflow_data
         )
 
+        # update workflow
+        xblock.workflow_data.update_workflow_status()
+
+        return submission
 
 class SubmitAssessmentsMixin(SubmissionTestMixin):
     """
@@ -510,7 +514,7 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
 
     def submit_staff_assessment(self, xblock, submission, assessment):
         """
-        Submits a staff assessment for the specified submission.
+        Submits a staff assessment for the specified submission and refreshes workflow
 
         Args:
             xblock: The XBlock being assessed.
@@ -522,3 +526,6 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
         assessment['submission_uuid'] = submission['uuid']
         resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
+
+        # refresh workflow status
+        xblock.workflow_data.update_workflow_status()
