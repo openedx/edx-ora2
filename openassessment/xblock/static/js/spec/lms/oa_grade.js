@@ -46,6 +46,7 @@ describe("OpenAssessment.GradeView", function() {
         // Create and install the view
         var rootElement = $('.step--grade').parent().get(0);
         var data = {
+            TEXT_RESPONSE_EDITOR: 'text',
             AVAILABLE_EDITORS: {
                 'text': {
                     'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']

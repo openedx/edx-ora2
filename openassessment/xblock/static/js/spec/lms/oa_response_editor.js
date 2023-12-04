@@ -77,7 +77,7 @@ describe("OpenAssessment.ResponseEditorLoader", function () {
             })
         })
     
-        it('TinyMCE editor get instantiated properly', async function() {
+        it('TinyMCE editor get instantiated properly', async function(done) {
             loader.load('tinymce', elements).then(editor => {
                 // editor should have response even after the delay
                 expect(editor.response(), response)
