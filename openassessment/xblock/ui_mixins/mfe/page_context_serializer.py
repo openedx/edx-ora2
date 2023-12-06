@@ -343,15 +343,7 @@ class PageDataSerializer(Serializer):
 
         # Peer
         elif requested_step == "peer":
-
-            # If this is the step we're on (not continued grading), get a new submission to assess
-            if current_workflow_step == "peer":
-                response = instance.peer_assessment_data().get_peer_submission()
-
-            # We're revisiting the peer step, get me my active assessment, if I have one in progress...
-            # Otherwise, we're using a separate endpoint to request extra peer submissions to grade.
-            else:
-                response = instance.peer_assessment_data().get_active_assessment_submission()
+            response = instance.peer_assessment_data().get_peer_submission()
 
         # Self / Done - Return your response to view / assess
         elif requested_step in ("self", "done"):

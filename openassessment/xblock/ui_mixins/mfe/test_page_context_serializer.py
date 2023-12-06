@@ -181,19 +181,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         expected_response = {}
         self.assertDictEqual(expected_response, response_data)
 
-    @scenario("data/staff_grade_scenario.xml", user_id="Alan")
-    def test_waiting_response(self, xblock):
-        # Given I'm on the staff step
-        self.create_test_submission(xblock)
-
-        # When I load my response
-        self.context = {"requested_step": "peer", "current_workflow_step": "waiting"}
-        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
-
-        # Then I get an empty object
-        expected_response = {}
-        self.assertDictEqual(expected_response, response_data)
-
     @scenario("data/self_assessment_scenario.xml", user_id="Alan")
     def test_done_response(self, xblock):
         # Given I'm on the done step
@@ -212,32 +199,21 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         }
         self.assertDictEqual(expected_response, response_data)
 
-    @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
-    def test_jump_to_peer_response__no_active_assessment(self, xblock):
-        student_item = xblock.get_student_item_dict()
+    @scenario("data/grade_scenario_peer_only.xml", user_id="Alan")
+    def test_jump_to_peer_not_available(self, xblock):
+        # Given I'm past the peer step
+        self.create_test_submission(xblock)
 
-        # Given responses available for peer grading
-        other_student_item = deepcopy(student_item)
-        other_student_item["student_id"] = "Joan"
-        other_text_responses = ["Answer 1", "Answer 2"]
-        self.create_test_submission(
-            xblock,
-            student_item=other_student_item,
-            submission_text=other_text_responses,
-        )
+        # When I ask for a peer response, but there are none available
+        self.context = {"requested_step": "peer", "current_workflow_step": "waiting"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
-        # ... and I have completed the peer step of an ORA
-        self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
-
-        # When I try to jump back to that step
-        self.context = {"requested_step": "peer", "current_workflow_step": "done"}
-        response_data = PageDataSerializer(xblock, context=self.context).data
-
-        # I receive an empty response because I have not yet requested a submission to assess
-        self.assertDictEqual({}, response_data["response"])
+        # Then I get an empty object
+        expected_response = {}
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
-    def test_jump_to_peer_response__active_assessment(self, xblock):
+    def test_jump_to_peer_available(self, xblock):
         student_item = xblock.get_student_item_dict()
 
         # Given responses available for peer grading
