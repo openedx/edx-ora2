@@ -161,15 +161,6 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             response_format='response'
         )
 
-    def request_assessment_get_peer(self, xblock):
-        return super().request(
-            xblock,
-            'assessment',
-            '{}',
-            suffix=handler_suffixes.ASSESSMENT_GET_PEER,
-            response_format='response'
-        )
-
 
 def assert_error_response(response, status_code, error_code, context=''):
     assert response.status_code == status_code
@@ -1003,16 +994,3 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
                 resp = self.request_assessment_submit(xblock)
 
         assert_error_response(resp, 400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)
-
-
-class AssessmentGetPeerTest(MFEHandlersTestBase):
-
-    @scenario("data/basic_scenario.xml")
-    def test_get_peer(self, xblock):
-        with patch.object(PeerAssessmentAPI, 'get_peer_submission') as mock_get_peer:
-            with patch('openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer') as mock_serializer:
-                mock_serializer().data = str(uuid4())
-                resp = self.request_assessment_get_peer(xblock)
-        assert resp.status_code == 200
-        assert resp.json == mock_serializer().data
-        mock_get_peer.assert_called()

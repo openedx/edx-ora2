@@ -334,28 +334,9 @@ class MfeMixin:
         # Return assessment data for the frontend
         return MfeAssessmentDataSerializer(data).data
 
-    def _assessment_get_peer_handler(self):
-
-        # Raise an exception if we don't have a peer step
-        if "peer-assessment" not in self.assessment_steps:
-            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, error_context="No peer step for ORA")
-
-        # Call get_peer_submission to grab a new peer submission
-        self.peer_assessment_data().get_peer_submission()
-
-        # Then, just return page data
-        serializer_context = {
-            "view": "assessment",
-            "step": "peer",
-        }
-        page_context = PageDataSerializer(self, context=serializer_context)
-        return page_context.data
-
     @XBlock.json_handler
     def assessment(self, data, suffix=""):
         if suffix == handler_suffixes.ASSESSMENT_SUBMIT:
             return self._assessment_submit_handler(data)
-        elif suffix == handler_suffixes.ASSESSMENT_GET_PEER:
-            return self._assessment_get_peer_handler()
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
