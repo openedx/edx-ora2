@@ -102,6 +102,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         }
         var assessmentElement = $('.openassessment').get(0);
         var data = {
+            TEXT_RESPONSE_EDITOR: 'text',
             AVAILABLE_EDITORS: {
                 'text': {
                     'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
@@ -117,6 +118,7 @@ describe('OpenAssessment.StaffAreaView', function() {
     var createGradeAvailableResponsesView = function() {
         var assessmentElement = $('.openassessment').get(0);
         var data = {
+            TEXT_RESPONSE_EDITOR: 'text',
             AVAILABLE_EDITORS: {
                 'text': {
                     'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
