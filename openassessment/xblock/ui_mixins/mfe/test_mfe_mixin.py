@@ -5,7 +5,6 @@ from collections import namedtuple
 from contextlib import contextmanager
 import json
 from unittest.mock import Mock, PropertyMock, patch
-from uuid import uuid4
 
 import ddt
 from django.contrib.auth import get_user_model
