@@ -50,6 +50,9 @@ class SubmissionSerializer(Serializer):
     def get_uploadedFiles(self, response):
         result = []
         for index, uploaded_file in enumerate(response.get_file_uploads(generate_urls=True)):
+            # Don't serialize deleted / missing files
+            if uploaded_file.url is None:
+                continue
             result.append(SubmissionFileSerializer(({'file': uploaded_file, 'file_index': index})).data)
         return result
 
