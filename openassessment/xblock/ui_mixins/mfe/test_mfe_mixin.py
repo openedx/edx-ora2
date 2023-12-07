@@ -968,7 +968,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         assert assess_mocks.training.called == expect_training
         assert assess_mocks.peer.called == expect_peer
 
-    @ddt.data(None, 'cancelled', 'waiting', 'self', 'training', 'done')
+    @ddt.data(None, 'waiting', 'self', 'training', 'done')
     @scenario("data/basic_scenario.xml")
     def test_peer_assess_when_not_in_peer(self, xblock, step):
         with self.mock_assess_functions() as assess_mocks:
@@ -989,6 +989,13 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
             with self.mock_assess_functions(**{workflow_step + '_kwargs': {'side_effect': error}}):
                 resp = self.request_assessment_submit(xblock, step=mfe_step)
         assert_error_response(resp, 500, error_codes.INTERNAL_EXCEPTION, str(error))
+
+    @scenario("data/basic_scenario.xml")
+    def test_cant_submit_when_cancelled(self, xblock):
+        with self.mock_workflow_status('cancelled'):
+            resp = self.request_assessment_submit(xblock, step="peer")
+        assert resp.status_code == 400
+        assert resp.json['error']['errorCode'] == error_codes.INVALID_STATE_TO_ASSESS
 
     @scenario("data/basic_scenario.xml")
     def test_training_assess_corrections(self, xblock):

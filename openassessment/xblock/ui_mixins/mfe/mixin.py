@@ -291,7 +291,6 @@ class MfeMixin:
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
         assessment_data = serializer.to_legacy_format(self)
         requested_step = serializer.data['step']
-        peer_data = self.peer_assessment_data()
         try:
             if self.workflow_data.is_cancelled:
                 raise InvalidStateToAssess()
@@ -302,7 +301,7 @@ class MfeMixin:
                     assessment_data['criterion_feedback'],
                     self.config_data,
                     self.workflow_data,
-                    peer_data,
+                    self.peer_assessment_data(),
                 )
             elif requested_step == 'self':
                 self_assess(
