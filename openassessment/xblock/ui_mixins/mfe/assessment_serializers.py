@@ -9,7 +9,6 @@ from rest_framework.serializers import (
     SerializerMethodField,
     URLField,
     Serializer,
-    BooleanField,
 )
 from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
