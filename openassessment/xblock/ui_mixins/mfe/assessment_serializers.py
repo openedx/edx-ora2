@@ -224,10 +224,11 @@ class AssessmentSubmitRequestSerializer(MfeAssessmentDataSerializer):
             ...
         ],
         overallFeedback: (String / Empty)
+        step: (String): The step for which we are submitting an assessment
     }
     """
 
-    continueGrading = BooleanField(required=False, default=False)
+    step = CharField()
 
     def to_legacy_format(self, xblock):
         """
