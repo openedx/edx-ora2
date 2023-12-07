@@ -476,9 +476,9 @@ class TestAssessmentSubmitRequestSerializer(TestCase):
                 }
             ],
             "overallFeedback": "Foo",
-            "continueGrading": True,
+            "step": "Wham"
         }).data
 
         self.assertEqual(assessment_submit_request_data["overallFeedback"], "Foo")
         self.assertEqual(len(assessment_submit_request_data["criteria"]), 1)
-        self.assertTrue(assessment_submit_request_data["continueGrading"])
+        self.assertEqual(assessment_submit_request_data["step"], "Wham")

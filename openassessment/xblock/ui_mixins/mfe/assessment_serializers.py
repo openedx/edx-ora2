@@ -9,7 +9,6 @@ from rest_framework.serializers import (
     SerializerMethodField,
     URLField,
     Serializer,
-    BooleanField,
 )
 from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
@@ -224,10 +223,11 @@ class AssessmentSubmitRequestSerializer(MfeAssessmentDataSerializer):
             ...
         ],
         overallFeedback: (String / Empty)
+        step: (String): The step for which we are submitting an assessment
     }
     """
 
-    continueGrading = BooleanField(required=False, default=False)
+    step = CharField()
 
     def to_legacy_format(self, xblock):
         """

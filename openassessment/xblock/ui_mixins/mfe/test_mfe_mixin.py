@@ -37,6 +37,7 @@ from openassessment.xblock.test.base import SubmissionTestMixin, XBlockHandlerTe
 from openassessment.xblock.test.test_staff_area import NullUserService, UserStateService
 from openassessment.xblock.test.test_submission import COURSE_ID, setup_mock_team
 from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
+from openassessment.xblock.ui_mixins.mfe.mixin import MFE_STEP_TO_WORKFLOW_MAPPINGS
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
 
@@ -149,9 +150,11 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             response_format='response'
         )
 
-    def request_assessment_submit(self, xblock, payload=None):
+    def request_assessment_submit(self, xblock, step=None, payload=None):
         if payload is None:
             payload = self.DEFAULT_ASSESSMENT_SUBMIT_VALUE
+        if step is not None:
+            payload['step'] = step
         return super().request(
             xblock,
             'assessment',
@@ -926,6 +929,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         {
             'criterionFeedback': {},
             'overallFeedback': '',
+            'step': 'peer'
         },
         {
             'optionsSelected': ['this is a list'],
@@ -939,57 +943,65 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         assert resp.status_code == 400
         assert resp.json['error']['errorCode'] == error_codes.INCORRECT_PARAMETERS
 
-    @ddt.data(None, 'cancelled', 'done', 'ai')
+    @ddt.data("self", "peer", "studentTraining")
     @scenario("data/basic_scenario.xml")
-    def test_not_allowed_step_error(self, xblock, status):
-        with self.mock_workflow_status(status):
-            resp = self.request_assessment_submit(xblock)
+    def test_not_allowed_to_assess_when_cancelled(self, xblock, step):
+        with self.mock_workflow_status("cancelled"):
+            resp = self.request_assessment_submit(xblock, step=step)
         assert resp.status_code == 400
         assert resp.json['error']['errorCode'] == error_codes.INVALID_STATE_TO_ASSESS
 
     @ddt.unpack
     @ddt.data(
         ('self', True, False, False),
-        ('training', False, True, False),
+        ('studentTraining', False, True, False),
         ('peer', False, False, True)
     )
     @scenario("data/basic_scenario.xml")
-    def test_assess(self, xblock, step, expect_self, expect_training, expect_peer):
-        with self.mock_workflow_status(step):
+    def test_assess(self, xblock, mfe_step, expect_self, expect_training, expect_peer):
+        workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[mfe_step]
+        with self.mock_workflow_status(workflow_step):
             with self.mock_assess_functions() as assess_mocks:
-                resp = self.request_assessment_submit(xblock)
+                resp = self.request_assessment_submit(xblock, step=mfe_step)
         assert resp.status_code == 200
         assert assess_mocks.self.called == expect_self
         assert assess_mocks.training.called == expect_training
         assert assess_mocks.peer.called == expect_peer
 
-    @ddt.data(None, 'cancelled', 'waiting', 'self', 'training', 'done')
+    @ddt.data(None, 'waiting', 'self', 'training', 'done')
     @scenario("data/basic_scenario.xml")
-    def test_continue_grading(self, xblock, step):
+    def test_peer_assess_when_not_in_peer(self, xblock, step):
         with self.mock_assess_functions() as assess_mocks:
             with self.mock_workflow_status(step):
-                with self.mock_continue_grading(True):
-                    resp = self.request_assessment_submit(xblock)
+                resp = self.request_assessment_submit(xblock, step="peer")
 
         assert resp.status_code == 200
         assess_mocks.self.assert_not_called()
         assess_mocks.training.assert_not_called()
         assess_mocks.peer.assert_called()
 
-    @ddt.data('self', 'training', 'peer')
+    @ddt.data('self', 'studentTraining', 'peer')
     @scenario("data/basic_scenario.xml")
-    def test_assess_error(self, xblock, step):
+    def test_assess_error(self, xblock, mfe_step):
         error = AssessmentError("there was a problem")
-        with self.mock_workflow_status(step):
-            with self.mock_assess_functions(**{step + '_kwargs': {'side_effect': error}}):
-                resp = self.request_assessment_submit(xblock)
+        workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[mfe_step]
+        with self.mock_workflow_status(workflow_step):
+            with self.mock_assess_functions(**{workflow_step + '_kwargs': {'side_effect': error}}):
+                resp = self.request_assessment_submit(xblock, step=mfe_step)
         assert_error_response(resp, 500, error_codes.INTERNAL_EXCEPTION, str(error))
+
+    @scenario("data/basic_scenario.xml")
+    def test_cant_submit_when_cancelled(self, xblock):
+        with self.mock_workflow_status('cancelled'):
+            resp = self.request_assessment_submit(xblock, step="peer")
+        assert resp.status_code == 400
+        assert resp.json['error']['errorCode'] == error_codes.INVALID_STATE_TO_ASSESS
 
     @scenario("data/basic_scenario.xml")
     def test_training_assess_corrections(self, xblock):
         corrections = {'ferocity': 'sublime', 'element': 'hydrogen'}
         with self.mock_workflow_status('training'):
             with self.mock_assess_functions(training_kwargs={'return_value': corrections}):
-                resp = self.request_assessment_submit(xblock)
+                resp = self.request_assessment_submit(xblock, step='studentTraining')
 
         assert_error_response(resp, 400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)

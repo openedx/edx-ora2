@@ -290,18 +290,20 @@ class MfeMixin:
         if not serializer.is_valid():
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
         assessment_data = serializer.to_legacy_format(self)
-        peer_data = self.peer_assessment_data(serializer.data['continueGrading'])
+        requested_step = serializer.data['step']
         try:
-            if peer_data.continue_grading or self.workflow_data.is_peer:
+            if self.workflow_data.is_cancelled:
+                raise InvalidStateToAssess()
+            if requested_step == 'peer':
                 peer_assess(
                     assessment_data['options_selected'],
                     assessment_data['feedback'],
                     assessment_data['criterion_feedback'],
                     self.config_data,
                     self.workflow_data,
-                    peer_data,
+                    self.peer_assessment_data(),
                 )
-            elif self.workflow_data.is_self:
+            elif requested_step == 'self':
                 self_assess(
                     assessment_data['options_selected'],
                     assessment_data['criterion_feedback'],
@@ -310,7 +312,7 @@ class MfeMixin:
                     self.workflow_data,
                     self.self_data
                 )
-            elif self.workflow_data.is_training:
+            elif requested_step == 'studentTraining':
                 corrections = training_assess(
                     assessment_data['options_selected'],
                     self.config_data,
@@ -324,6 +326,7 @@ class MfeMixin:
             # This catches the error we explicitly raise, as well as any that may be raised from within
             # the assessment logic itself
             context = {
+                'requested_step': requested_step,
                 'student_item': self.config_data.student_item_dict,
                 'workflow': self.workflow_data.workflow,
             }
