@@ -980,7 +980,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         assess_mocks.training.assert_not_called()
         assess_mocks.peer.assert_called()
 
-    @ddt.data('self', 'learnerTraining', 'peer')
+    @ddt.data('self', 'studentTraining', 'peer')
     @scenario("data/basic_scenario.xml")
     def test_assess_error(self, xblock, mfe_step):
         error = AssessmentError("there was a problem")
