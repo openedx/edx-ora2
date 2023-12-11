@@ -169,9 +169,6 @@ class AssessmentResponseSerializer(Serializer):
         return [part["text"] for part in answer_text_parts]
 
     def get_uploadedFiles(self, instance):
-        if not instance["answer"].get("file_keys"):
-            return None
-
         response = OraSubmissionAnswerFactory.parse_submission_raw_answer(instance['answer'])
         uploaded_files = []
 

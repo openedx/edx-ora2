@@ -39,6 +39,7 @@ class FileResponseConfigSerializer(Serializer):
     allowedExtensions = CharListField(source="get_allowed_file_types_or_preset")
     blockedExtensions = CharListField(source="FILE_EXT_BLACK_LIST")
     fileTypeDescription = CharField(source="file_upload_type")
+    maxFileSize = IntegerField(default=524_288_000)  # 500 MB. See AU-1602
 
     def get_enabled(self, block):
         return block.file_upload_response is not None

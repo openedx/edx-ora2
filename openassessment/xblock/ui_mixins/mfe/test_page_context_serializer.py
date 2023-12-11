@@ -112,7 +112,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # I get the appropriate response
         expected_response = {
             "textResponses": ["This is my answer."],
-            "uploadedFiles": None,
+            "uploadedFiles": [],
             "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, response_data)
@@ -148,7 +148,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # I get my current assessment, if I had one, and if I didn't, one is assigned to me
         expected_response = {
             "textResponses": other_text_responses,
-            "uploadedFiles": None,
+            "uploadedFiles": [],
             "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, response_data)
@@ -240,7 +240,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # Then I can continue to receive peer responses to grade
         expected_response = {
             "textResponses": other_text_responses,
-            "uploadedFiles": None,
+            "uploadedFiles": [],
             "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, response_data["response"])

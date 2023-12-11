@@ -325,7 +325,7 @@ class PageDataSerializer(Serializer):
             return None
 
         # Submission (draft OR completed)
-        elif requested_step == "submission":
+        if requested_step == "submission":
             learner_submission_data = instance.get_learner_submission_data()
 
             # Draft response
@@ -336,25 +336,26 @@ class PageDataSerializer(Serializer):
             return SubmissionSerializer(learner_submission_data).data
 
         # Student Training - return next example to practice or None
-        elif requested_step == "studentTraining":
+        if requested_step == "studentTraining":
             response = instance.student_training_data.example
             if response is None:
                 return None
+            return AssessmentResponseSerializer(response).data
 
         # Peer
-        elif requested_step == "peer":
+        if requested_step == "peer":
             response = instance.peer_assessment_data().get_peer_submission()
+            return AssessmentResponseSerializer(response).data
 
         # Self / Done - Return your response to view / assess
-        elif requested_step in ("self", "done"):
+        if requested_step in ("self", "done"):
             learner_submission_data = instance.get_learner_submission_data()
             return SubmissionSerializer(learner_submission_data).data
 
         # Steps without a necessary response
-        elif requested_step in ("staff"):
-            response = None
-
-        return AssessmentResponseSerializer(response).data
+        if requested_step in ("staff"):
+            return {}
+        return None
 
     def get_assessment(self, instance):
         """
