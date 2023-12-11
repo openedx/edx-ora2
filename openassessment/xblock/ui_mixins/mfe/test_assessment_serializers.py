@@ -59,7 +59,7 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
-            "uploadedFiles": None,
+            "uploadedFiles": [],
             "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, data)
@@ -78,7 +78,7 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
-            "uploadedFiles": None,
+            "uploadedFiles": [],
             "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, data)
