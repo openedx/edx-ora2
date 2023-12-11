@@ -287,10 +287,12 @@ export class BaseView {
         const courseId = $(this.element).data('course-id') || window.course?.id;
 
         const oraMfeIframe = $('#ora-mfe-view>iframe', this.element);
+        const loadingEl = $('#ora-mfe-view .ora-loading', this.element);
         // TODO: put the ORA MFE URL in a config file
         oraMfeIframe.attr('src', `${this.ORA_MICROFRONTEND_URL}/xblock/${courseId}/${xblockId}`);
         /* eslint-disable-next-line prefer-arrow-callback */
         oraMfeIframe.on('load', function () {
+          loadingEl.remove();
           /* eslint-disable-next-line prefer-arrow-callback */
           window.addEventListener('message', function (event) {
             if (event.data.type === 'plugin.resize') {
