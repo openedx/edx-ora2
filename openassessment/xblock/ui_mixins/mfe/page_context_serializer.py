@@ -355,6 +355,7 @@ class PageDataSerializer(Serializer):
         # Steps without a necessary response
         if requested_step in ("staff"):
             return {}
+        return None
 
     def get_assessment(self, instance):
         """
