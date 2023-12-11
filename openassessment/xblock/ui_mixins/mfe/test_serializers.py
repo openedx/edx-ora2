@@ -105,21 +105,15 @@ class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
         file_response_config = submission_config["fileResponseConfig"]
 
         # Then I get the expected values
-        self.assertTrue(file_response_config["enabled"])
-        self.assertEqual(
-            file_response_config["fileUploadLimit"], xblock.MAX_FILES_COUNT
-        )
-        self.assertEqual(
-            file_response_config["fileTypeDescription"],
-            xblock.file_upload_type,
-        )
-        self.assertEqual(
-            file_response_config["allowedExtensions"],
-            xblock.get_allowed_file_types_or_preset(),
-        )
-        self.assertEqual(
-            file_response_config["blockedExtensions"], xblock.FILE_EXT_BLACK_LIST
-        )
+        assert file_response_config == {
+            'enabled': True,
+            'required': False,
+            'fileUploadLimit': xblock.MAX_FILES_COUNT,
+            'fileTypeDescription': xblock.file_upload_type,
+            'allowedExtensions': xblock.get_allowed_file_types_or_preset(),
+            'blockedExtensions': xblock.FILE_EXT_BLACK_LIST,
+            'maxFileSize': 524288000,
+        }
 
     @scenario("data/team_submission.xml")
     def test_team_ora_config(self, xblock):
