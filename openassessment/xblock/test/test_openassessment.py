@@ -723,6 +723,18 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Then they are unsupported for team assignments
         self.assertFalse(xblock.mfe_views_supported)
 
+    @ddt.unpack
+    @ddt.data((0, True), (5, False))
+    @patch.object(openassessmentblock.OpenAssessmentBlock, 'leaderboard_show', new_callable=PropertyMock)
+    @scenario('data/simple_self_staff_scenario.xml')
+    def test_mfe_views_supported__leaderboard(self, xblock, mock_value, expected_supported, mock_leaderboard_show):
+        # Given I'm on / not on an ORA with a leaderboard
+        mock_leaderboard_show.return_value = mock_value
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for ORAs with leaderboards
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
 
 class TestDates(XBlockHandlerTestCase):
     """ Test Assessment Dates. """
