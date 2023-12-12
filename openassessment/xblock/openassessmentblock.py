@@ -658,6 +658,7 @@ class OpenAssessmentBlock(
         Unsupported use-cases:
         1) Team assignments
         2) Assignments with reordered assessment steps
+        3) ORAs with leaderboards
 
         Returns:
         - False if we are in one of these unsupported configurations.
@@ -670,6 +671,10 @@ class OpenAssessmentBlock(
 
         # Assessment step reordering is currently unsupported
         if not self.uses_default_assessment_order:
+            return False
+
+        # We currently don't support leaderboards
+        if self.leaderboard_show != 0:
             return False
 
         return True
