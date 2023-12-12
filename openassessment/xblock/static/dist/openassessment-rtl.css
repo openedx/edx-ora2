@@ -1941,6 +1941,23 @@ hr.divider,
 .openassessment-initial-wrapper.is--showing {
   display: block;
 }
+.openassessment-initial-wrapper .ora-loading {
+  background: #d9d9d9;
+  padding: 40px;
+  text-align: center;
+}
+.openassessment-initial-wrapper .ora-loading .wrapper--anim {
+  -webkit-animation: pulse 3s ease-in-out infinite;
+  -moz-animation: pulse 3s ease-in-out infinite;
+  animation: pulse 3s ease-in-out infinite;
+}
+.openassessment-initial-wrapper .ora-loading .icon {
+  display: inline-block;
+  color: #414141;
+}
+.openassessment-initial-wrapper .ora-loading .copy {
+  color: #414141;
+}
 
 .openassessment {
   direction: rtl;
