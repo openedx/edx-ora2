@@ -528,7 +528,7 @@ class PeerWorkflowItem(models.Model):
         return Assessment.objects.filter(
             pk__in=[
                 item.assessment.pk for item in PeerWorkflowItem.objects.filter(
-                    submission_uuid=submission_uuid, scored=scored
+                    submission_uuid=submission_uuid, scored=scored, assessment__isnull=False
                 )
             ]
         )

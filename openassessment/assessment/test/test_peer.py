@@ -1243,6 +1243,19 @@ class TestPeerApi(CacheResetTest):
             tim_answer, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
             peer_api.get_assessment_feedback(tim_answer['uuid'])
 
+    def test_get_assessments_null(self):
+        # Test to fix serialization of incomplete, unscored assessments
+
+        # Tim & Buffy submit
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+
+        # Buffy starts but does not finish assessing Tim's answer
+        peer_api.get_submission_to_assess(buffy_answer['uuid'], REQUIRED_GRADED_BY)
+
+        # Tim gets unscored assessments, this used to throw an error
+        PeerWorkflowItem.get_unscored_assessments(tim_answer["uuid"])
+
     @patch('openassessment.assessment.models.peer.PeerWorkflowItem.get_scored_assessments')
     def test_set_assessment_feedback_error(self, mock_filter):
         with raises(peer_api.PeerAssessmentInternalError):
