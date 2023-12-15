@@ -16,7 +16,9 @@ class WorkflowAPI:
         """
         Update workflow info and return workflow for the submission.
 
-        NOTE - calls workflow update
+        NOTE - Calls workflow update and caches result. When using new ORA
+        experience, this needs to be called instead of the base
+        get_workflow_info to update the cached value correctly.
         """
         self._workflow = self._block.get_workflow_info(submission_uuid)
         return self._workflow

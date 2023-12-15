@@ -36,7 +36,7 @@ class MessageMixin:
         workflow = self.get_workflow_info()
         deadline_info = self._get_deadline_info()
 
-        # Finds the cannonical status of the workflow and the is_closed status of the problem
+        # Finds the canonical status of the workflow and the is_closed status of the problem
         status = workflow.get('status')
         status_details = workflow.get('status_details', {})
 
