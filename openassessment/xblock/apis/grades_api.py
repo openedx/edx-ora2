@@ -10,6 +10,7 @@ from openassessment.assessment.api import staff as staff_api
 class GradesAPI:
     def __init__(self, block):
         self._block = block
+        self.workflow_data = block.workflow_data
 
     def _get_submission_uuid(self):
         return self._block.submission_uuid
@@ -22,7 +23,7 @@ class GradesAPI:
 
         Returns: True if score was overridden by staff, False otherwise.
         """
-        workflow = self._block.get_workflow_info()
+        workflow = self.workflow_data.workflow
         score = workflow['score']
 
         complete = score is not None
