@@ -716,13 +716,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         expected_supported = not mock_teams_assignment
         self.assertEqual(xblock.mfe_views_supported, expected_supported)
 
-    @scenario('data/assessment_steps_reordered.xml')
-    def test_mfe_views_supported__rearranged_steps(self, xblock):
-        # Given this ORA has rearranged our assessment steps
-        # When I see if MFE views are supported
-        # Then they are unsupported for team assignments
-        self.assertFalse(xblock.mfe_views_supported)
-
     @ddt.unpack
     @ddt.data((0, True), (5, False))
     @patch.object(openassessmentblock.OpenAssessmentBlock, 'leaderboard_show', new_callable=PropertyMock)

@@ -634,32 +634,14 @@ class OpenAssessmentBlock(
         )
 
     @property
-    def uses_default_assessment_order(self):
-        """
-        Determine if our steps have been reordered (omission of steps is fine)
-        """
-        mfe_supported_step_ordering = ['student-training', 'self-assessment', 'peer-assessment', 'staff-assessment']
-
-        last_step_index = 0
-        for assessment_step in self.assessment_steps:
-            step_index = mfe_supported_step_ordering.index(assessment_step)
-
-            if step_index < last_step_index:
-                return False
-            last_step_index = step_index
-
-        return True
-
-    @property
     def mfe_views_supported(self):
         """
         Currently, there are some unsupported use-cases for ORA MFE views.
 
         Unsupported use-cases:
         1) Team assignments
-        2) Assignments with reordered assessment steps
-        3) ORAs with leaderboards
-        4) ORAs with LaTeX previews enabled
+        2) ORAs with leaderboards
+        3) ORAs with LaTeX previews enabled
 
         Returns:
         - False if we are in one of these unsupported configurations.
@@ -668,10 +650,6 @@ class OpenAssessmentBlock(
 
         # Team assessments are currently unsupported
         if self.is_team_assignment():
-            return False
-
-        # Assessment step reordering is currently unsupported
-        if not self.uses_default_assessment_order:
             return False
 
         # We currently don't support leaderboards
