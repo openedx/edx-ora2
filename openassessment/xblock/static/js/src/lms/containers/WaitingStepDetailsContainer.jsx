@@ -3,7 +3,7 @@ import { IntlProvider } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   Alert, Container, Row, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { fetchWaitingStepDetails } from '../api/waiting_step_details';
 import WaitingStepContent from '../components/WaitingStepContent';
 
