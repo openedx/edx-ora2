@@ -555,7 +555,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "cancelledBy": None,
                     "teamInfo": {},
                 },
-                "peer": None,
                 "self": {
                     "closed": True,
                     "closedReason": "pastDue",
@@ -587,7 +586,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "cancelledBy": None,
                     "teamInfo": {},
                 },
-                "peer": None,
                 "self": {
                     "closed": True,
                     "closedReason": "notAvailableYet",
