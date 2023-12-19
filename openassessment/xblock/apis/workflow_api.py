@@ -34,6 +34,41 @@ class WorkflowAPI:
     def status_details(self):
         return self.workflow.get("status_details", {})
 
+    @property
+    def next_incomplete_step(self):
+        """
+        Some steps (notably Peer) are "skipable" which means that the workflow auto-progresses
+        past this step if there are steps after it in the workflow.
+
+        This is, for example, to allow working on assignment requirements while waiting for peer
+        grades.
+
+        For certain circumstances, we'd like to just know the next incomplete / skipped step
+        instead of auto-progressing.
+
+        Returns:
+        * "submission" when workflow doesn't exist
+        * Earliest incomplete step when workflow exists
+        * "done" when complete
+        * "cancelled" when cancelled
+        """
+        step_order = self._block.rubric_assessments
+        status = self.status
+        status_details = self.status_details
+
+        if not status_details:
+            return "submission"
+
+        if status in ("done", "cancelled"):
+            return status
+
+        for next_step in [step['name'] for step in step_order]:
+            workflow_step_name = WorkflowStep(next_step).workflow_step_name
+            if status_details[workflow_step_name].get('complete', False) is False:
+                return workflow_step_name
+
+        return "done"
+
     def has_reached_given_step(self, requested_step, current_workflow_step=None):
         """
         Helper to determine if are far enough through a workflow to request data for a step.
