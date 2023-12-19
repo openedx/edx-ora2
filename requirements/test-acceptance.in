@@ -3,8 +3,6 @@
 
 -r test.txt
 
-bok-choy
 ddt
 pytest
 pyinstrument
-selenium

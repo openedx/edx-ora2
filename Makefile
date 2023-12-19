@@ -136,12 +136,6 @@ test-js-debug: render-templates ## Debug JavaScript tests using Karma
 
 test: quality test-python test-js ## Run quality checks and tests for Python and JavaScript
 
-test-acceptance: ## acceptance and a11y tests require a functioning sandbox, and do not run on travis
-	./scripts/test-acceptance.sh tests
-
-test-a11y: ## Run accessibility tests
-	./scripts/test-acceptance.sh accessibility
-
 test-sandbox: test-acceptance test-a11y ## Run acceptance and accessibility tests
 
 install-osx-requirements: ## Install OSX specific requirements using Homebrew
