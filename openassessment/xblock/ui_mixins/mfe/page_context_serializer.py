@@ -266,7 +266,7 @@ class ProgressSerializer(Serializer):
             else:
                 raise UnknownActiveStepException("Workflow is in waiting but no staff or peer step is required.")
         else:
-            return STEP_NAME_MAPPINGS[instance.workflow_data.status]
+            return STEP_NAME_MAPPINGS[instance.workflow_data.next_incomplete_step]
 
 
 class PageDataSerializer(Serializer):

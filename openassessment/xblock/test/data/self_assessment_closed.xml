@@ -43,7 +43,6 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
         <assessment name="self-assessment" due="2000-01-01"/>
     </assessments>
 </openassessment>

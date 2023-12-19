@@ -555,7 +555,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "cancelledBy": None,
                     "teamInfo": {},
                 },
-                "peer": None,
                 "self": {
                     "closed": True,
                     "closedReason": "pastDue",
@@ -587,7 +586,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "cancelledBy": None,
                     "teamInfo": {},
                 },
-                "peer": None,
                 "self": {
                     "closed": True,
                     "closedReason": "notAvailableYet",
@@ -627,6 +625,20 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
         # Expect active step to be staff instead of waiting or peer
         self.assertEqual('staff', progress_data['activeStepName'])
+
+    @scenario("data/peer_assessment_scenario.xml", user_id="Alan")
+    def test_peer_skipped(self, xblock):
+        # Given I have a skipped peer step
+        self.create_test_submission(xblock)
+
+        self.assertTrue(xblock.workflow_data.is_peer_skipped)
+        self.assertTrue(xblock.workflow_data.is_self)
+
+        # When I ask for progress
+        progress_data = ProgressSerializer(xblock).data
+
+        # Expect active step to be staff instead of waiting or peer
+        self.assertEqual('peer', progress_data['activeStepName'])
 
     @scenario("data/self_only_scenario.xml", user_id="Alan")
     def test_waiting_error(self, xblock):
