@@ -3,8 +3,10 @@ Data layer for ORA
 
 XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
+from edx_django_utils.monitoring import function_trace
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
+
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.assessment.errors import AssessmentError
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -65,11 +67,14 @@ MFE_STEP_TO_WORKFLOW_MAPPINGS = {
 
 
 class MfeMixin:
+
+    @function_trace("get_block_info")
     @XBlock.json_handler
     def get_block_info(self, data, suffix=""):  # pylint: disable=unused-argument
         block_info = OraBlockInfoSerializer(self)
         return block_info.data
 
+    @function_trace("get_learner_data")
     @XBlock.json_handler
     def get_learner_data(self, data, suffix=""):  # pylint: disable=unused-argument
         """
@@ -104,6 +109,7 @@ class MfeMixin:
         serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
 
+    @function_trace("submission_draft")
     def _submission_draft_handler(self, data):
         try:
             student_submission_data = data['response']['textResponses']
@@ -115,6 +121,7 @@ class MfeMixin:
         except DraftSaveException as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION) from e
 
+    @function_trace("submission_create")
     def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
@@ -148,6 +155,7 @@ class MfeMixin:
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
+    @function_trace("file_delete")
     def _file_delete_handler(self, data):
         try:
             file_index = int(data['fileIndex'])
@@ -174,6 +182,7 @@ class MfeMixin:
                 return file_entry
         return None
 
+    @function_trace("file_add")
     def _file_add_handler(self, data):
         serializer = AddFileRequestSerializer(data=data)
         if not serializer.is_valid():
@@ -219,6 +228,7 @@ class MfeMixin:
             'fileIndex': newly_added_file.index,
         }
 
+    @function_trace("file_callback")
     def _file_upload_callback_handler(self, data):
         serializer = FileUploadCallbackRequestSerializer(data=data)
         if not serializer.is_valid():
@@ -285,6 +295,7 @@ class MfeMixin:
             'file_data': file_data,
         }
 
+    @function_trace("assessment_submit")
     def _assessment_submit_handler(self, data):
         serializer = AssessmentSubmitRequestSerializer(data=data)
         if not serializer.is_valid():
