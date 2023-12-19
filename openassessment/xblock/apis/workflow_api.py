@@ -39,7 +39,7 @@ class WorkflowAPI:
         Helper to determine if are far enough through a workflow to request data for a step.
 
         Returns:
-        True if we are on or have completed the requested step for this ORA.
+        True if we are on or have skipped / completed the requested step for this ORA.
         False otherwise.
         """
 
@@ -54,9 +54,9 @@ class WorkflowAPI:
         if requested_step == current_workflow_step:
             return True
 
-        # Have reached any step you have completed
+        # Have reached any step you have completed / skipped
         step_status = self.status_details.get(requested_step, {})
-        return step_status.get("complete", False)
+        return step_status.get("complete", False) or step_status.get("skipped", False)
 
     @property
     def is_peer_complete(self):
