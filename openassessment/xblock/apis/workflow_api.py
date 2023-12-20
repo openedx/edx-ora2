@@ -65,8 +65,8 @@ class WorkflowAPI:
         for next_step in [step["name"] for step in step_order]:
             workflow_step_name = WorkflowStep(next_step).workflow_step_name
             if (
-                status_details[workflow_step_name].get("complete", False) is False
-                or staticmethod[workflow_step_name].get("graded", False) is False
+                status_details[workflow_step_name].get("complete", False) is False or
+                staticmethod[workflow_step_name].get("graded", False) is False
             ):
                 return workflow_step_name
 
