@@ -62,10 +62,12 @@ class WorkflowAPI:
         if status in ("done", "cancelled"):
             return status
 
-        for next_step in [step['name'] for step in step_order]:
+        for next_step in [step["name"] for step in step_order]:
             workflow_step_name = WorkflowStep(next_step).workflow_step_name
-            if status_details[workflow_step_name].get('complete', False) is False \
-                or staticmethod[workflow_step_name].get('graded', False) is False:
+            if (
+                status_details[workflow_step_name].get("complete", False) is False
+                or staticmethod[workflow_step_name].get("graded", False) is False
+            ):
                 return workflow_step_name
 
         return "done"
@@ -144,7 +146,7 @@ class WorkflowAPI:
 
     @property
     def has_received_grade(self):
-        return bool(self.workflow.get('score'))
+        return bool(self.workflow.get("score"))
 
     def get_workflow_status_counts(self):
         return self._block.get_workflow_status_counts()
@@ -212,7 +214,7 @@ class WorkflowStep:
 
     @property
     def assessment_module_name(self):
-        """ Get the assessment module name for the step """
+        """Get the assessment module name for the step"""
         for assessment_step, canonical_step in self._assessment_module_mappings.items():
             if canonical_step == self.canonical_step:
                 return assessment_step
@@ -220,7 +222,7 @@ class WorkflowStep:
 
     @property
     def workflow_step_name(self):
-        """ Get the workflow step name for the step """
+        """Get the workflow step name for the step"""
         for workflow_step, canonical_step in self._workflow_step_mappings.items():
             if canonical_step == self.canonical_step:
                 return workflow_step
