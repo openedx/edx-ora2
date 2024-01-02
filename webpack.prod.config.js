@@ -98,7 +98,7 @@ Object.assign(config, {
   optimization: {},
   plugins: [
     // Cleans the dist directory before each build
-    ...process.env.npm_config_clean ? [new CleanWebpackPlugin()]: [],
+    new CleanWebpackPlugin(),
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,
