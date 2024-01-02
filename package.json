@@ -39,10 +39,12 @@
     "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.14",
+    "postcss-loader": "4.2.0",
     "sinon": "^7.5.0",
     "webpack": "^4.46.0",
-    "webpack-manifest-plugin": "^4.0.2",
-    "postcss-loader": "4.2.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-manifest-plugin": "^4.0.2"
   },
   "scripts": {
     "build": "fedx-scripts webpack",
@@ -52,5 +54,10 @@
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
     "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
     "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"
+  },
+  "overrides": {
+    "@edx/frontend-build": {
+      "webpack-cli": "4.10.0"
+    }
   }
 }

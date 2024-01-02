@@ -112,7 +112,7 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    ...process.env.WEBPACK_DEV_SERVER ? [new WebpackManifestPlugin({
+    ...process.env.WEBPACK_SERVE ? [new WebpackManifestPlugin({
       seed: {
         base_url: `http://localhost:${config.devServer.port}/`
       },
