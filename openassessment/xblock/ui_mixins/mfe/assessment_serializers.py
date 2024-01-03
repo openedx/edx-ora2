@@ -37,7 +37,7 @@ class AssessmentCriterionSerializer(Serializer):
         feedback: (String) Feedback for the selected option
     }
     """
-    selectedOption = IntegerField(source="option.order_num")
+    selectedOption = IntegerField(source="option.order_num", allow_null=True)
     feedback = CharField()
 
 
@@ -190,7 +190,7 @@ class MfeAssessmentCriterionSerializer(Serializer):
         feedback: (String / Empty) Feedback for the selected option
     }
     """
-    selectedOption = IntegerField()
+    selectedOption = IntegerField(allow_null=True)
     feedback = CharField(allow_blank=True, allow_null=True)
 
 
@@ -241,8 +241,13 @@ class AssessmentSubmitRequestSerializer(MfeAssessmentDataSerializer):
 
             # Look up the name and value for each given rubric selection
             criterion_name = xblock.rubric_criteria[i]['name']
-            selected_value = xblock.rubric_criteria[i]['options'][criterion_data['selectedOption']]['name']
-            options_selected[criterion_name] = selected_value
+
+            # For feedback-only criteria, there are no options
+            if len(xblock.rubric_criteria[i]['options']) > 0:
+
+                # Otherwise, get the value of the selected option
+                selected_value = xblock.rubric_criteria[i]['options'][criterion_data['selectedOption']]['name']
+                options_selected[criterion_name] = selected_value
 
             # Attach feedback for the criterion
             criterion_feedback[criterion_name] = criterion_data['feedback']
