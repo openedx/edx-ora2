@@ -619,7 +619,6 @@ class OpenAssessmentBlock(
             "title": self.title,
             "xblock_id": self.get_xblock_id(),
             "course_id": self.course_id,
-            "hotjar_site_id": getattr(settings, 'HOTJAR_SITE_ID', '00000'),
         }
 
         template = get_template("openassessmentblock/base.html")
@@ -630,6 +629,7 @@ class OpenAssessmentBlock(
             additional_js_context={
                 "MFE_VIEW_ENABLED": self.mfe_views_enabled and self.mfe_views_supported,
                 "ORA_MICROFRONTEND_URL": getattr(settings, 'ORA_MICROFRONTEND_URL', ''),
+                "HOTJAR_SITE_ID": getattr(settings, 'HOTJAR_SITE_ID', '00000'),
             }
         )
 
