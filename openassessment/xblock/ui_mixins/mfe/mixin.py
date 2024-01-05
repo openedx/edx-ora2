@@ -10,7 +10,7 @@ from xblock.exceptions import JsonHandlerError
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.assessment.errors import AssessmentError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.apis.assessments.errors import InvalidStateToAssess
+from openassessment.xblock.apis.assessments.errors import InvalidStateToAssess, ServerClientUUIDMismatchException
 from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.apis.assessments.self_assessment_api import self_assess
 from openassessment.xblock.apis.assessments.student_training_api import training_assess
@@ -342,6 +342,8 @@ class MfeMixin:
                 'workflow': self.workflow_data.workflow,
             }
             raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
+        except ServerClientUUIDMismatchException:
+            raise OraApiException(404, error_codes.SUBMISSION_NO_LONGER_AVAILABLE, str(e))
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
 
