@@ -342,8 +342,8 @@ class MfeMixin:
                 'workflow': self.workflow_data.workflow,
             }
             raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
-        except ServerClientUUIDMismatchException:
-            raise OraApiException(404, error_codes.SUBMISSION_NO_LONGER_AVAILABLE, str(e))
+        except ServerClientUUIDMismatchException as e:
+            raise OraApiException(404, error_codes.SUBMISSION_NO_LONGER_AVAILABLE, str(e)) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
 
