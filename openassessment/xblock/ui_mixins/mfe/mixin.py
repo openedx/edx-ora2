@@ -269,8 +269,16 @@ class MfeMixin:
     def get_learner_submission_data(self):
         # TODO - Move this out of mixin, this is only here because it accesses
         # private functions in the mixin but should actually be in SubmissionAPI
-        workflow = self.get_team_workflow_info() if self.is_team_assignment() else self.workflow_data.get_workflow_info()
+
+        # Get team / individual workflow
+        workflow = None
+        if self.is_team_assignment():
+            workflow = self.get_team_workflow_info()
+        else:
+            workflow = self.workflow_data.get_workflow_info()
+
         team_info, team_id = self.submission_data.get_submission_team_info(workflow)
+
         # If there is a submission, we do not need to load file upload data separately because files
         # will already have been gathered into the submission. If there is no submission, we need to
         # load file data from learner state and the SharedUpload db model

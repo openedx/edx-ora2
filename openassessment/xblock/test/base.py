@@ -392,6 +392,7 @@ class SubmissionTestMixin:
 
         return submission
 
+
 class SubmitAssessmentsMixin(SubmissionTestMixin):
     """
     A mixin for creating a submission and peer/self assessments so that the user can
