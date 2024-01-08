@@ -743,9 +743,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/assessment_steps_reordered.xml')
     def test_mfe_views_supported__rearranged_steps(self, xblock):
         # Given this ORA has rearranged our assessment steps
-        # When I see if MFE views are supported
-        # Then they are unsupported for team assignments
-        self.assertFalse(xblock.mfe_views_supported)
+        self.assertTrue(xblock.mfe_views_supported)
 
 
 class TestDates(XBlockHandlerTestCase):
