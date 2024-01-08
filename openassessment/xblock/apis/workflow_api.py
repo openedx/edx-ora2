@@ -9,7 +9,6 @@ from enum import Enum
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
-        self.grades = self._block.grades_data
         self._workflow = self._block.get_workflow_info()
 
     def get_workflow_info(self, submission_uuid=None):
