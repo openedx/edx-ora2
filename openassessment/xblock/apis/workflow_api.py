@@ -176,9 +176,10 @@ class WorkflowAPI:
 
     def update_workflow_status(self, submission_uuid=None):
         """
-        NOTE - calls workflow update.
+        Update workflow and cache result
         """
         self._block.update_workflow_status(submission_uuid)
+        self._workflow = self.get_workflow_info()
 
     def create_workflow(self, submission_uuid):
         self._block.create_workflow(submission_uuid)
