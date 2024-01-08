@@ -387,9 +387,6 @@ class SubmissionTestMixin:
             xblock.workflow_data
         )
 
-        # update workflow
-        xblock.workflow_data.update_workflow_status()
-
         return submission
 
 
