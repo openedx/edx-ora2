@@ -267,7 +267,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         assessment['submission_uuid'] = submission['uuid']
 
         with patch('openassessment.xblock.ui_mixins.legacy.views.staff.staff_api') as mock_api:
-            #  Simulate a error
+            #  Simulate an error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentRequestError
             resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])
