@@ -43,14 +43,32 @@ export class BaseView {
       this.element = element;
       this.server = server;
 
-      const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED } = data.CONTEXT || {};
+      const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED, HOTJAR_SITE_ID } = data.CONTEXT || {};
 
       this.ORA_MICROFRONTEND_URL = ORA_MICROFRONTEND_URL;
       if (!this.ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED) {
         // eslint-disable-next-line no-console
         console.error('ORA_MICROFRONTEND_URL is not defined. ORA MFE will not be loaded.');
       }
-      this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !window.navigator.userAgent.includes('org.edx.mobile');
+      const isMobile = window.navigator.userAgent.includes('org.edx.mobile');
+      if (!isMobile && HOTJAR_SITE_ID) {
+        /*
+        * Hotjar shouuld be rewrite and encapsulated and import on use. Window is being share
+        * globally and it's not a good practice to have this override lms/cms `hotjar`.
+        */
+        /* eslint-disable */
+        (function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid: HOTJAR_SITE_ID,hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        /* eslint-enable */
+      }
+
+      this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !isMobile;
 
       const oraMfeView = $('#ora-mfe-view', this.element);
       const oraLegacyView = $('#ora-legacy-view', this.element);
