@@ -156,10 +156,20 @@ class PeerAssessmentAPI(StepDataAPI):
             logger.exception(err)
         return peer_submission
 
-    def assert_assessed_submission_uuid_matches(self, uuid_client):
-        submission = self.get_peer_submission() or {}
+    def assert_assessing_valid_submission(self, uuid_client):
+        """
+        Validate that the forntend and backend agree on which submission is being assessed
+        """
+        # Get the current active submission without pulling a new one
+        submission = self.get_active_assessment_submission()
+
+        # If there is no active submission (expired or never got one somehow), raise
+        if submission is None:
+            raise ServerClientUUIDMismatchException()
+
         uuid_server = submission.get("uuid", None)
 
+        # If the server and client don't agree, raise
         if uuid_server != uuid_client:
             logger.warning(
                 "Irrelevant assessment submission: expected '%s', got '%s'",
@@ -207,8 +217,7 @@ def peer_assess(
     if not workflow_data.has_workflow:
         raise ReviewerMustHaveSubmittedException()
 
-    if assessed_submission_uuid:
-        peer_step_data.assert_assessed_submission_uuid_matches(assessed_submission_uuid)
+    peer_step_data.assert_assessing_valid_submission(assessed_submission_uuid)
 
     try:
         assessment = peer_api.create_assessment(
