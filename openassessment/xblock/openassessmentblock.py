@@ -634,23 +634,6 @@ class OpenAssessmentBlock(
         )
 
     @property
-    def uses_default_assessment_order(self):
-        """
-        Determine if our steps have been reordered (omission of steps is fine)
-        """
-        mfe_supported_step_ordering = ['student-training', 'self-assessment', 'peer-assessment', 'staff-assessment']
-
-        last_step_index = 0
-        for assessment_step in self.assessment_steps:
-            step_index = mfe_supported_step_ordering.index(assessment_step)
-
-            if step_index < last_step_index:
-                return False
-            last_step_index = step_index
-
-        return True
-
-    @property
     def mfe_views_supported(self):
         """
         Currently, there are some unsupported use-cases for ORA MFE views.
@@ -676,10 +659,6 @@ class OpenAssessmentBlock(
 
         # LaTeX previews not enabled yet
         if self.allow_latex:
-            return False
-
-        # Assessment step reordering is currently unsupported
-        if not self.uses_default_assessment_order:
             return False
 
         return True
