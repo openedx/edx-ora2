@@ -92,6 +92,7 @@ class WorkflowAPI:
     def status(self):
         if self.workflow:
             return self.workflow.get("status")
+        return None
 
     def has_reached_given_step(self, requested_step, current_workflow_step=None):
         """
