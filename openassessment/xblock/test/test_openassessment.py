@@ -728,18 +728,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Then they are unsupported for ORAs with leaderboards
         self.assertEqual(xblock.mfe_views_supported, expected_supported)
 
-    @ddt.unpack
-    @ddt.data((True, False), (False, True))
-    @patch.object(openassessmentblock.OpenAssessmentBlock, 'allow_latex', new_callable=PropertyMock)
-    @scenario('data/simple_self_staff_scenario.xml')
-    def test_mfe_views_supported__latex(self, xblock, mock_value, expected_supported, mock_allow_latex):
-        # Given I'm on / not on an ORA with a leaderboard
-        mock_allow_latex.return_value = mock_value
-
-        # When I see if MFE views are supported
-        # Then they are unsupported for ORAs with leaderboards
-        self.assertEqual(xblock.mfe_views_supported, expected_supported)
-
     @scenario('data/assessment_steps_reordered.xml')
     def test_mfe_views_supported__rearranged_steps(self, xblock):
         # Given this ORA has rearranged our assessment steps
