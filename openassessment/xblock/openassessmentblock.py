@@ -641,8 +641,6 @@ class OpenAssessmentBlock(
         Unsupported use-cases:
         1) Team assignments
         2) ORAs with leaderboards
-        3) ORAs with LaTeX previews enabled
-        4) Assignments with reordered assessment steps
 
         Returns:
         - False if we are in one of these unsupported configurations.
@@ -655,10 +653,6 @@ class OpenAssessmentBlock(
 
         # We currently don't support leaderboards
         if self.leaderboard_show != 0:
-            return False
-
-        # LaTeX previews not enabled yet
-        if self.allow_latex:
             return False
 
         return True
