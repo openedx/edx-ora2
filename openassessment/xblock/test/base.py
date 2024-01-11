@@ -3,12 +3,14 @@ Base class for handler-level testing of the XBlock.
 """
 
 
+from contextlib import contextmanager
 import copy
 from functools import wraps
 import json
 import os.path
 
 from unittest import mock
+from mock import PropertyMock, patch
 from workbench.runtime import WorkbenchRuntime
 
 import webob
@@ -503,12 +505,18 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
         xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 
     @staticmethod
-    def set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
-        xblock.get_workflow_info = mock.Mock(return_value={
-            'status': workflow_status,
-            'status_details': status_details,
-            'submission_uuid': submission_uuid
-        })
+    @contextmanager
+    def mock_workflow_status(workflow_status, status_details, submission_uuid):
+        with patch(
+            "openassessment.xblock.apis.workflow_api.WorkflowAPI.workflow",
+            new_callable=PropertyMock,
+        ) as mock_workflow:
+            mock_workflow.return_value = {
+                "status": workflow_status,
+                "status_details": status_details,
+                "submission_uuid": submission_uuid,
+            }
+            yield
 
     def submit_staff_assessment(self, xblock, submission, assessment):
         """
