@@ -167,6 +167,10 @@ class PeerAssessmentAPI(StepDataAPI):
         if submission is None:
             raise ServerClientUUIDMismatchException()
 
+        if uuid_client is None:
+            # If we don't have a uuid from the client, we can't do the next check
+            return
+
         uuid_server = submission.get("uuid", None)
 
         # If the server and client don't agree, raise
