@@ -14,6 +14,7 @@ import ddt
 import pytz
 
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.models.base import Assessment
 from openassessment.assessment.models.peer import PeerWorkflowItem
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.apis.assessments.errors import ServerClientUUIDMismatchException
@@ -318,16 +319,16 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
 
         # Create two submissions, one for sally and one for Hal
         student_item = xblock.get_student_item_dict()
-        sally_student_item = copy.deepcopy(student_item)
-        sally_student_item['student_id'] = "Sally"
-        sally_submission = self.create_test_submission(
-            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
-        )
-
         hal_student_item = copy.deepcopy(student_item)
         hal_student_item['student_id'] = "Hal"
         hal_submission = self.create_test_submission(
             xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
         )
 
         # Sally is given Hal to assess
@@ -354,6 +355,77 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
                 xblock.peer_assessment_data(),
                 assessed_submission_uuid=client_uuid
             )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_peer_assess_mismatch(self, xblock):
+        # Create two submissions, one for sally and one for Hal
+        student_item = xblock.get_student_item_dict()
+
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
+
+        # Sally is given Hal to assess
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assert hal_sub['uuid'] == hal_submission['uuid']
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) == hal_sub
+
+        # An error should  raised when sally tried to submit an assessment
+        # that doesn't match behal's uuid
+        with self.assertRaises(ServerClientUUIDMismatchException):
+            peer_assess(
+                self.ASSESSMENT['options_selected'],
+                self.ASSESSMENT['overall_feedback'],
+                self.ASSESSMENT['criterion_feedback'],
+                xblock.config_data,
+                xblock.workflow_data,
+                xblock.peer_assessment_data(),
+                assessed_submission_uuid='some-other-uuid'
+            )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_peer_assess_no_client_id(self, xblock):
+
+        # Create two submissions, one for sally and one for Hal
+        student_item = xblock.get_student_item_dict()
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
+
+        # Sally is given Hal to assess
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assert hal_sub['uuid'] == hal_submission['uuid']
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) == hal_sub
+
+        peer_assess(
+            self.ASSESSMENT['options_selected'],
+            self.ASSESSMENT['overall_feedback'],
+            self.ASSESSMENT['criterion_feedback'],
+            xblock.config_data,
+            xblock.workflow_data,
+            xblock.peer_assessment_data(),
+            assessed_submission_uuid=None
+        )
+
+        assessment = Assessment.objects.last()
+        assert assessment.scorer_id == 'Sally'
+        assert assessment.submission_uuid == hal_sub['uuid']
 
 
 @ddt.ddt
