@@ -3,12 +3,14 @@ Base class for handler-level testing of the XBlock.
 """
 
 
+from contextlib import contextmanager
 import copy
 from functools import wraps
 import json
 import os.path
 
 from unittest import mock
+from mock import PropertyMock, patch
 from workbench.runtime import WorkbenchRuntime
 
 import webob
@@ -359,7 +361,7 @@ class SubmissionTestMixin:
 
     def create_test_submission(self, xblock, student_item=None, submission_text=None):
         """
-        Helper for creating test submissions
+        Helper for creating test submissions. Also updates workflow status.
 
         Args:
         * xblock: The XBlock to create the submission under
@@ -379,13 +381,15 @@ class SubmissionTestMixin:
         if submission_text is None:
             submission_text = self.DEFAULT_TEST_SUBMISSION_TEXT
 
-        return submissions_actions.create_submission(
+        submission = submissions_actions.create_submission(
             student_item,
             submission_text,
             xblock.config_data,
             xblock.submission_data,
             xblock.workflow_data
         )
+
+        return submission
 
 
 class SubmitAssessmentsMixin(SubmissionTestMixin):
@@ -501,16 +505,22 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
         xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 
     @staticmethod
-    def set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
-        xblock.get_workflow_info = mock.Mock(return_value={
-            'status': workflow_status,
-            'status_details': status_details,
-            'submission_uuid': submission_uuid
-        })
+    @contextmanager
+    def mock_workflow_status(workflow_status, status_details, submission_uuid):
+        with patch(
+            "openassessment.xblock.apis.workflow_api.WorkflowAPI.workflow",
+            new_callable=PropertyMock,
+        ) as mock_workflow:
+            mock_workflow.return_value = {
+                "status": workflow_status,
+                "status_details": status_details,
+                "submission_uuid": submission_uuid,
+            }
+            yield
 
     def submit_staff_assessment(self, xblock, submission, assessment):
         """
-        Submits a staff assessment for the specified submission.
+        Submits a staff assessment for the specified submission and refreshes workflow
 
         Args:
             xblock: The XBlock being assessed.
@@ -522,3 +532,6 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
         assessment['submission_uuid'] = submission['uuid']
         resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
+
+        # refresh workflow status
+        xblock.workflow_data.update_workflow_status()

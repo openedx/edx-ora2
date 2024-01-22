@@ -146,7 +146,7 @@ class StudentTrainingAPI(StepDataAPI):
         if not example:
             return (
                 {},
-                "No training example was returned fromt he API for student with Submission UUID {}".format(
+                "No training example was returned from the API for student with Submission UUID {}".format(
                     self._block.submission_uuid
                 ),
             )

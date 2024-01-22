@@ -2,7 +2,6 @@
 from openassessment.xblock.apis.grades_api import GradesAPI
 from openassessment.xblock.apis.ora_config_api import ORAConfigAPI
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
-from openassessment.xblock.apis.workflow_api import WorkflowAPI
 from openassessment.xblock.apis.assessments.peer_assessment_api import PeerAssessmentAPI
 from openassessment.xblock.apis.assessments.self_assessment_api import SelfAssessmentAPI
 from openassessment.xblock.apis.assessments.staff_assessment_api import (
@@ -27,7 +26,7 @@ class ORADataAccessor:
 
     @property
     def workflow_data(self):
-        return WorkflowAPI(self._block)
+        return self._block.workflow_data
 
     @property
     def grades_data(self):

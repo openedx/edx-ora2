@@ -95,34 +95,30 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
 
         # Verify that once the required step (self assessment) is done, the staff grade is shown as complete.
         status_details = {'peer': {'complete': True}}
-        self.set_mock_workflow_info(
-            xblock, workflow_status='done', status_details=status_details, submission_uuid=submission['uuid']
-        )
-        self._assert_path_and_context(
-            xblock,
-            {
-                'status_value': 'Complete',
-                'icon_class': 'fa-check',
-                'step_classes': 'is--showing',
-                'button_active': 'aria-expanded="true"',
-                'xblock_id': xblock.scope_ids.usage_id
-            }
-        )
+        with self.mock_workflow_status('done', status_details, submission["uuid"]):
+            self._assert_path_and_context(
+                xblock,
+                {
+                    'status_value': 'Complete',
+                    'icon_class': 'fa-check',
+                    'step_classes': 'is--showing',
+                    'button_active': 'aria-expanded="true"',
+                    'xblock_id': xblock.scope_ids.usage_id
+                }
+            )
 
         # Verify that if the problem is cancelled, the staff grade reflects this.
-        self.set_mock_workflow_info(
-            xblock, workflow_status='cancelled', status_details=status_details, submission_uuid=submission['uuid']
-        )
-        self._assert_path_and_context(
-            xblock,
-            {
-                'status_value': 'Cancelled',
-                'icon_class': 'fa-exclamation-triangle',
-                'button_active': 'disabled="disabled" aria-expanded="false"',
-                'step_classes': 'is--unavailable',
-                'xblock_id': xblock.scope_ids.usage_id
-            }
-        )
+        with self.mock_workflow_status('cancelled', status_details, submission['uuid']):
+            self._assert_path_and_context(
+                xblock,
+                {
+                    'status_value': 'Cancelled',
+                    'icon_class': 'fa-exclamation-triangle',
+                    'button_active': 'disabled="disabled" aria-expanded="false"',
+                    'step_classes': 'is--unavailable',
+                    'xblock_id': xblock.scope_ids.usage_id
+                }
+            )
 
     @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
     def test_staff_grade_templates_no_peer(self, xblock):
@@ -267,7 +263,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         assessment['submission_uuid'] = submission['uuid']
 
         with patch('openassessment.xblock.ui_mixins.legacy.views.staff.staff_api') as mock_api:
-            #  Simulate a error
+            #  Simulate an error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentRequestError
             resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])

@@ -3,7 +3,6 @@ Data layer for ORA
 
 XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
-from edx_django_utils.monitoring import function_trace
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 
@@ -68,13 +67,11 @@ MFE_STEP_TO_WORKFLOW_MAPPINGS = {
 
 class MfeMixin:
 
-    @function_trace("get_block_info")
     @XBlock.json_handler
     def get_block_info(self, data, suffix=""):  # pylint: disable=unused-argument
         block_info = OraBlockInfoSerializer(self)
         return block_info.data
 
-    @function_trace("get_learner_data")
     @XBlock.json_handler
     def get_learner_data(self, data, suffix=""):  # pylint: disable=unused-argument
         """
@@ -109,7 +106,6 @@ class MfeMixin:
         serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
 
-    @function_trace("submission_draft")
     def _submission_draft_handler(self, data):
         try:
             student_submission_data = data['response']['textResponses']
@@ -121,7 +117,6 @@ class MfeMixin:
         except DraftSaveException as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION) from e
 
-    @function_trace("submission_create")
     def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
@@ -155,7 +150,6 @@ class MfeMixin:
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
-    @function_trace("file_delete")
     def _file_delete_handler(self, data):
         try:
             file_index = int(data['fileIndex'])
@@ -182,7 +176,6 @@ class MfeMixin:
                 return file_entry
         return None
 
-    @function_trace("file_add")
     def _file_add_handler(self, data):
         serializer = AddFileRequestSerializer(data=data)
         if not serializer.is_valid():
@@ -228,7 +221,6 @@ class MfeMixin:
             'fileIndex': newly_added_file.index,
         }
 
-    @function_trace("file_callback")
     def _file_upload_callback_handler(self, data):
         serializer = FileUploadCallbackRequestSerializer(data=data)
         if not serializer.is_valid():
@@ -269,8 +261,16 @@ class MfeMixin:
     def get_learner_submission_data(self):
         # TODO - Move this out of mixin, this is only here because it accesses
         # private functions in the mixin but should actually be in SubmissionAPI
-        workflow = self.get_team_workflow_info() if self.is_team_assignment() else self.get_workflow_info()
+
+        # Get team / individual workflow
+        workflow = None
+        if self.is_team_assignment():
+            workflow = self.get_team_workflow_info()
+        else:
+            workflow = self.workflow_data.get_workflow_info()
+
         team_info, team_id = self.submission_data.get_submission_team_info(workflow)
+
         # If there is a submission, we do not need to load file upload data separately because files
         # will already have been gathered into the submission. If there is no submission, we need to
         # load file data from learner state and the SharedUpload db model
@@ -295,7 +295,6 @@ class MfeMixin:
             'file_data': file_data,
         }
 
-    @function_trace("assessment_submit")
     def _assessment_submit_handler(self, data):
         serializer = AssessmentSubmitRequestSerializer(data=data)
         if not serializer.is_valid():

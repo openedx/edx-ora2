@@ -9,14 +9,30 @@ from enum import Enum
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
-        self.grades = self._block.grades_data
+        self._workflow = self._block.get_workflow_info()
 
     def get_workflow_info(self, submission_uuid=None):
-        return self._block.get_workflow_info(submission_uuid)
+        """
+        Update workflow info and return workflow for the submission.
+
+        NOTE - Calls workflow update and caches result. When using new ORA
+        experience, this needs to be called instead of the base
+        get_workflow_info to update the cached value correctly.
+        """
+        self._workflow = self._block.get_workflow_info(submission_uuid)
+        return self._workflow
 
     @property
     def workflow(self):
-        return self.get_workflow_info()
+        """
+        Getter for workflow, used to keep us from updating workflow every time
+        we ask for info.
+
+        NOTE - when there isn't a workflow, this will try to refresh workflow.
+        """
+        if not self._workflow:
+            return self.get_workflow_info()
+        return self._workflow
 
     @property
     def has_workflow(self):
@@ -71,6 +87,12 @@ class WorkflowAPI:
                 return workflow_step_name
 
         return "done"
+
+    @property
+    def status(self):
+        if self.workflow:
+            return self.workflow.get("status")
+        return None
 
     def has_reached_given_step(self, requested_step, current_workflow_step=None):
         """
@@ -141,10 +163,6 @@ class WorkflowAPI:
         return self._block.workflow_requirements()
 
     @property
-    def status(self):
-        return self.workflow.get("status")
-
-    @property
     def has_received_grade(self):
         return bool(self.workflow.get("score"))
 
@@ -158,7 +176,11 @@ class WorkflowAPI:
         return self._block.get_course_workflow_settings()
 
     def update_workflow_status(self, submission_uuid=None):
+        """
+        Update workflow and cache result
+        """
         self._block.update_workflow_status(submission_uuid)
+        self._workflow = self.get_workflow_info()
 
     def create_workflow(self, submission_uuid):
         self._block.create_workflow(submission_uuid)

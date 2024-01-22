@@ -71,10 +71,10 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
         reflect their done status with regards to the new requirements.
         """
         # Setup the peer grading scenario, using the default requirements
+        mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
         self._sally_and_hal_grade_each_other_helper(xblock)
 
         # Verify that Sally's workflow is not marked done, as the requirements are higher than 1.
-        mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
         workflow_info = xblock.get_workflow_info()
 
         # peer step is skipable. So we expect next status to be current status.
