@@ -63,7 +63,12 @@
       </div>
 
       <div class="openassessment-initial-wrapper" id="ora-mfe-view">
-        <div class="ora-loading">Loading Open Response Assessment...</div>
+        <div class="ora-loading">
+          <span class="wrapper--anim">
+            <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
+            <span class="copy">{% trans "Loading Open Response Assessment..." %}</span>
+          </span>
+        </div>
         <iframe
           title="title"
           allow="microphone *; camera *; midi *; geolocation *; encrypted-media *, clipboard-write *"

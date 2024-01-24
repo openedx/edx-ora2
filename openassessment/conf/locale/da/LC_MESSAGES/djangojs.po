@@ -4,23 +4,19 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Frode Arntsen <frode.arntsen@unit.no>, 2016-2017
-# Frode Arntsen <frode.arntsen@unit.no>, 2018
-# Joakim S. Johnson, 2016
-# Øyvind Eide <oaeide@gmail.com>, 2014
-# a72439d066a62002909e04c2f19d8d08_d8eb3f3 <12b2c0ce52fb807293954de1aaa16dd6_175391>, 2014
+# Pia Jensen, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-14 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: Frode Arntsen <frode.arntsen@unit.no>, 2018\n"
-"Language-Team: Norwegian Bokmål (http://app.transifex.com/open-edx/edx-platform/language/nb/)\n"
+"Last-Translator: Pia Jensen, 2023\n"
+"Language-Team: Danish (http://app.transifex.com/open-edx/edx-platform/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nb\n"
+"Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
@@ -28,134 +24,134 @@ msgstr ""
 #: xblock/static/js/src/oa_server.js:77 xblock/static/js/src/oa_server.js:113
 #: xblock/static/js/src/oa_server.js:137
 msgid "This section could not be loaded."
-msgstr "Denne delen kunne ikke lastes inn."
+msgstr "Denne sektion kunne ikke indlæses."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:158
 msgid "The staff assessment form could not be loaded."
-msgstr "Personalets vurderingsskjema kunne ikke lastes inn."
+msgstr "Personalevurderingsformularen kunne ikke indlæses."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:180
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr "Visning av ikke-vurderte og avklarte svar kunne ikke lastes inn."
+msgstr "Visningen af uklassificerede og udtjekkede svar kunne ikke indlæses."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:214
 msgid "This response could not be submitted."
-msgstr "Dette svaret kunne ikke leveres."
+msgstr "Dette svar kunne ikke indsendes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:237
 msgid "Please check your internet connection."
-msgstr ""
+msgstr "Tjek venligst din internetforbindelse."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:262
 msgid "This feedback could not be submitted."
-msgstr "Denne tilbakemeldingen kunne ikke leveres."
+msgstr "Denne feedback kunne ikke sendes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:287 xblock/static/js/src/oa_server.js:378
 #: xblock/static/js/src/oa_server.js:401
 msgid "This assessment could not be submitted."
-msgstr "Denne vurderingen kunne ikke leveres."
+msgstr "Denne vurdering kunne ikke indsendes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:424
 msgid "One or more rescheduling tasks failed."
-msgstr "Ett eller flere forsøk på ombooking feilet."
+msgstr "En eller flere omlægningsopgaver mislykkedes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:484
 msgid "This problem could not be saved."
-msgstr "Dette problemet kunne ikke lagres."
+msgstr "Dette problem kunne ikke gemmes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:505
 msgid "The server could not be contacted."
-msgstr "Serveren kan ikke kontaktes."
+msgstr "Serveren kunne ikke kontaktes."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:531
 msgid "Could not retrieve upload url."
-msgstr "Kunne ikke hente opplastings url."
+msgstr "Kunne ikke hente upload-url."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:550 xblock/static/js/src/oa_server.js:569
 msgid "Server error."
-msgstr "Serverfeil."
+msgstr "Server Fejl."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:589
 msgid "Could not retrieve download url."
-msgstr "Kunne ikke hente nedlastings url."
+msgstr "Kunne ikke hente download-url."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:615
 msgid "The submission could not be removed from the grading pool."
-msgstr "Innleveringen kunne ikke fjernes fra karaktersettingsoversikten."
+msgstr "Indsendelsen kunne ikke fjernes fra karakterpuljen."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:671
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "Flere hold vendte tilbage til kursus"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:678
 msgid "Could not load teams information."
-msgstr ""
+msgstr "Kunne ikke indlæse teamoplysninger."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:700
 msgid "User lookup failed"
-msgstr ""
+msgstr "Brugeropslag mislykkedes"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:705
 msgid "Error when looking up username"
-msgstr ""
+msgstr "Fejl ved søgning efter brugernavn"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:729
 msgid "Failed to clone rubric"
-msgstr ""
+msgstr "Rubrikken kunne ikke klones"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "View and grade responses"
-msgstr ""
+msgstr "Se og bedømme svar"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "Demo den nye karakteroplevelse"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Unit Name"
-msgstr "Navn på enheten"
+msgstr "Enhedens navn"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Units"
-msgstr "Enheter"
+msgstr "Enheder"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessment"
@@ -167,15 +163,15 @@ msgstr "Vurderinger"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Total Responses"
-msgstr "Totalt antall svar"
+msgstr "Samlede svar"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Training"
-msgstr "Øver"
+msgstr "Uddannelse"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr "Likemann"
+msgstr "Peer"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
@@ -187,279 +183,279 @@ msgstr "Venter"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr "Personell"
+msgstr "Personale"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
-msgstr "Endelig karakter oppnådd"
+msgstr "Endelig karakter modtaget"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff Grader"
-msgstr ""
+msgstr "Personale vurdering"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "List of Open Assessments is unavailable"
-msgstr "Liste over åpne vurderinger er ikke tilgjengelig"
+msgstr "Liste over åbne vurderinger er ikke tilgængelig"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr "Vennligst vent"
+msgstr "Vent venligst"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
-msgstr "Blokkvisning er utilgjengelig"
+msgstr "Blokvisning er ikke tilgængelig"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Back to Full List"
-msgstr "Tilbake til hele listen"
+msgstr "Tilbage til den fulde liste"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Bekræft"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Annuller"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr ""
+msgstr "Der er stadig filupload i gang. Vent venligst, indtil det er færdigt."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:243
 msgid "Cannot submit empty response even everything is optional."
-msgstr ""
+msgstr "Kan ikke indsende et tomt svar, selv alt er valgfrit."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr ""
+msgstr "Upload venligst en fil."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:228
 msgid "Please provide a response."
-msgstr ""
+msgstr "Giv venligst et svar."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr ""
+msgstr "Ingen filer valgt til upload."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr ""
+msgstr "Angiv venligst en beskrivelse for hver fil, du uploader."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:344
 msgid "Your file has been deleted or path has been changed: "
-msgstr ""
+msgstr "Din fil er blevet slettet, eller stien er blevet ændret:"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving draft"
-msgstr ""
+msgstr "Gemmer kladde"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:446
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr "Hvis du forlater denne siden uten å lagre eller sende inn svaret ditt, vil alt arbeid du har gjort på svaret ditt gå tapt."
+msgstr "Hvis du forlader denne side uden at gemme eller indsende dit svar, mister du alt arbejde, du har udført på svaret."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:461
 msgid "Saving draft..."
-msgstr ""
+msgstr "Gemmer kladde..."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:477
 msgid "Draft saved!"
-msgstr ""
+msgstr "Udkast gemt!"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:490
 msgid "Error"
-msgstr "Feil"
+msgstr "Fejl"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:511
 msgid "Confirm Submit Response"
-msgstr ""
+msgstr "Bekræft Send svar"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:514
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "Du er i ferd med å levere ditt svar på denne oppgaven. Etter at du leverer svaret kan du ikke endre det eller levere et nytt svar."
+msgstr "Du er ved at indsende dit svar på denne opgave. Når du har indsendt dette svar, kan du ikke ændre det eller indsende et nyt svar."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:589
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "Individuel filstørrelse skal være {max_files_mb} MB eller mindre."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:603
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "Filupload mislykkedes: ikke-understøttet filtype. Kun de understøttede filtyper kan uploades. Hvis du har spørgsmål, er du velkommen til at kontakte kursusteamet."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:614
 msgid "The maximum number files that can be saved is "
-msgstr ""
+msgstr "Det maksimale antal filer, der kan gemmes er"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:682
 #: xblock/static/js/src/lms/oa_response.js:688
 msgid "Describe "
-msgstr "Beskriv"
+msgstr "Beskrive"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:682
 msgid "(required):"
-msgstr "(nødvendig):"
+msgstr "(påkrævet):"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:702
 msgid "Thumbnail view of "
-msgstr "Miniatyrbilde av"
+msgstr "Miniaturevisning af"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:779
 msgid "Confirm Delete Uploaded File"
-msgstr ""
+msgstr "Bekræft slet uploadet fil"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:804
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "Er du sikker på, at du vil slette følgende fil? Det kan ikke gendannes.\n Fil:"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_self.js:138
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr "Dersom du forlater denne siden uten å levere din egenvurdering, vil du miste alt arbeidet du har gjort."
+msgstr "Hvis du forlader denne side uden at indsende din selvvurdering, mister du alt arbejde, du har udført."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:143
 #: xblock/static/js/src/lms/oa_staff_area.js:253
 msgid "Unexpected server error."
-msgstr "Uventet serverfeil."
+msgstr "Uventet serverfejl."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:147
 msgid "You must provide a learner name."
-msgstr "Du må oppgi et navn på kursdeltager."
+msgstr "Du skal angive et kursistnavn."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:214
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "Denne karakter vil blive anvendt på alle medlemmer af holdet. Vil du fortsætte?"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:218
 msgid "Confirm Grade Team Submission"
-msgstr ""
+msgstr "Bekræft indsendelse af karakterteam"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:304
 msgid "Error getting the number of ungraded responses"
-msgstr "Det oppstod en feil ved forsøk på å finne antall ikke-rettede svar"
+msgstr "Fejl ved hentning af antallet af svar uden karakter"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr "Dersom du forlater denne siden uten å levere din personal-vurdering, vil du miste alt arbeidet du har gjort."
+msgstr "Hvis du forlader denne side uden at indsende din personalevurdering, mister du alt arbejde, du har udført."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_training.js:130
 msgid "Feedback available for selection."
-msgstr "Tilbakemelding kan velges."
+msgstr "Feedback tilgængelig for valg."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_peer.js:217
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr "Dersom du forlater denne siden uten å levere din hverandrevurdering, vil det arbeidet du har gjort gå tapt."
+msgstr "Hvis du forlader denne side uden at indsende din peer-vurdering, mister du alt arbejde, du har udført."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Refresh"
-msgstr ""
+msgstr "Opdater"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "Brugernavn"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
-msgstr ""
+msgstr "Peers vurderet"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peer Responses Received"
-msgstr ""
+msgstr "Peer-svar modtaget"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Time Spent On Current Step"
-msgstr ""
+msgstr "Tid brugt på nuværende trin"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Staff assessment"
-msgstr ""
+msgstr "Personalevurdering"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Grade Status"
-msgstr ""
+msgstr "Karakterstatus"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "Problemet \"{name}\" er konfigureret til at kræve et minimum af {min_grades} peer-karakterer og anmoder om at gennemgå {min_graded} peers."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
-msgstr ""
+msgstr "Der er i øjeblikket {stuck_learners} kursister i ventetilstand, hvilket betyder, at de endnu ikke har opfyldt alle krav til Peer Assessment."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr ""
+msgstr "Imidlertid har {overwritten_count} af disse kursister allerede modtaget en karakter gennem personalekaraktertilsidesættelsesværktøjet."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Error while fetching student data."
-msgstr ""
+msgstr "Fejl under hentning af kursistdata."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 #: xblock/static/js/src/lms/oa_base.js:424
 msgid "Unable to load"
-msgstr "Ikke i stand til å laste"
+msgstr "Kan ikke indlæses"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr "Avsnitt"
+msgstr "Afsnit"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr "Forhåndsformatert"
+msgstr "Forudformateret"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
@@ -484,22 +480,22 @@ msgstr "Overskrift 6"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43
 msgid "Unnamed Option"
-msgstr "Alternativ uten navn"
+msgstr "Unavngiven mulighed"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:53
 msgid "Not Selected"
-msgstr "Ikke valgt"
+msgstr "Ikke valg"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_rubric.js:124
 msgid "Problem cloning rubric"
-msgstr ""
+msgstr "Problem kloning rubrik"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
-msgstr "Kriteria lagt til"
+msgstr "Kriterium tilføjet"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:102
@@ -507,13 +503,13 @@ msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Assessment "
 "Steps tab."
-msgstr ""
+msgstr "Du har tilføjet et kriterium. Du skal vælge en mulighed for kriteriet i læretrinnet. For at gøre dette skal du klikke på fanen Vurderingstrin."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:150
 #: xblock/static/js/src/studio/oa_edit_listeners.js:186
 msgid "Option Deleted"
-msgstr "Opsjon slettet"
+msgstr "Valgmulighed slettet"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:152
@@ -521,26 +517,26 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr "Du har slettet et alternativ. Dette alternativet er fjernet fra kriteriet i prøveresponsene i \"Learner Training\" trinnet. Du må kanskje velge et nytt alternativ for kriteriet."
+msgstr "Du har slettet en mulighed. Denne mulighed er blevet fjernet fra sit kriterium i prøvesvarene i trinnet for kursisttræning. Du skal muligvis vælge en ny mulighed for kriteriet."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:188
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "Du har slettet alle alternativene for dette kriteriet. Kriteriet er fjernet fra eksempelsvarene i \"Learner Training\" trinnet."
+msgstr "Du har slettet alle mulighederne for dette kriterium. Kriteriet er blevet fjernet fra prøvesvarene i kursisttræningstrinnet."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:214
 msgid "Criterion Deleted"
-msgstr "Kriterie slettet"
+msgstr "Kriterium slettet"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:216
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr "Du har slettet et kriterium. Kriteriet er fjernet fra eksempelresponsene i \"Learner Training\" trinnet."
+msgstr "Du har slettet et kriterium. Kriteriet er blevet fjernet fra eksempelsvarene i kursisttræningstrinnet."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:394
@@ -552,35 +548,35 @@ msgstr "Advarsel"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr "Endringer i trinn som ikke er valgt som en del av oppgaven, blir ikke lagret."
+msgstr "Ændringer af trin, der ikke er valgt som en del af opgaven, vil ikke blive gemt."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
-msgstr "Filtyper kan ikke være tomme."
+msgstr "Filtyper må ikke være tomme."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:101
 msgid "The following file types are not allowed: "
-msgstr "Følgende filtyper er ikke tillatt:"
+msgstr "Følgende filtyper er ikke tilladt:"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:183
 msgid "Save Unsuccessful"
-msgstr ""
+msgstr "Gem mislykkedes"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:184
 msgid "Errors detected on the following tabs: "
-msgstr ""
+msgstr "Fejl fundet på følgende faner:"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
-msgstr ""
+msgstr "Denne ORA er allerede blevet frigivet. Ændringer vil kun påvirke kursister, der foretager nye afleveringer. Eksisterende indsendelser vil ikke blive ændret af denne ændring."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:319
 msgid "error count: "
-msgstr ""
+msgstr "antal fejl:"

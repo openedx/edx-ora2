@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-21 22:21+0000\n"
+"POT-Creation-Date: 2024-01-23 14:54+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2783,6 +2783,11 @@ msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 "Thé Léärnér Träïnïng Stép öf thïs ässïgnmént çöüld nöt ßé löädéd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/openassessmentblock/base.html
+msgid "Loading Open Response Assessment..."
+msgstr ""
+"Löädïng Öpén Réspönsé Àsséssmént... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/grade_mixin.py xblock/leaderboard_mixin.py
 msgid "An unexpected error occurred."

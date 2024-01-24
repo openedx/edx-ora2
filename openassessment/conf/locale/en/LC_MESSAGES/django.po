@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-21 22:21+0000\n"
+"POT-Creation-Date: 2024-01-23 14:54+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1110,14 +1110,14 @@ msgstr ""
 msgid "The instructions for this step could not be loaded."
 msgstr ""
 
-#: templates/legacy/oa_base.html:15 templates/openassessmentblock/base.html:21
+#: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response field."
 msgstr ""
 
-#: templates/legacy/oa_base.html:36 templates/openassessmentblock/base.html:42
-#: templates/openassessmentblock/base.html:82
+#: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
+#: templates/openassessmentblock/base.html:105
 msgid "Loading"
 msgstr ""
 
@@ -2201,6 +2201,10 @@ msgstr ""
 
 #: templates/legacy/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
+msgstr ""
+
+#: templates/openassessmentblock/base.html:69
+msgid "Loading Open Response Assessment..."
 msgstr ""
 
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
