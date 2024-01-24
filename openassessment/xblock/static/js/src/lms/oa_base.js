@@ -312,7 +312,7 @@ export class BaseView {
         // Other way would be detecting url started with preview. Either way isn't ideal.
         // The ideal way is to pass the argument from backend like IS_STUDIO. However, it seems
         // that openassessment.in_studio_preview is not working.
-        const isPreview = $('.wrapper-preview-menu') != null;
+        const isPreview = $('.wrapper-preview-menu')?.length > 0;
         let xblockPath = 'xblock';
         if (IS_STUDIO) {
           xblockPath = 'xblock_studio';
