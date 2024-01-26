@@ -384,24 +384,8 @@ class MfeMixin:
         if suffix == handler_suffixes.ASSESSMENT_SUBMIT:
             step_name = data.get("step")
 
-            # Get the info for the current step
-            step_data = None
-            if step_name == "studentTraining":
-                step_data = self.student_training_data
-            elif step_name == "peer":
-                step_data = self.peer_assessment_data()
-            elif step_name == "self":
-                step_data = self.self_assessment_data
-            elif step_name == "staff":
-                step_data = self.staff_assessment_data
-
-            # Return an error if we are trying to assess from a bad step
-            if not step_data:
-                raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS)
-
-            # Return an error if the step is currently closed
-            if step_data.problem_closed:
-                raise OraApiException(400, error_codes.INACCESSIBLE_STEP)
+            if not self._step_is_open(step_name):
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {step_name}")
 
             # Continue on to assessing
             return self._assessment_submit_handler(data)
