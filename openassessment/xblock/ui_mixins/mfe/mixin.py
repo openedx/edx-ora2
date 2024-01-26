@@ -146,6 +146,9 @@ class MfeMixin:
         if suffix == handler_suffixes.SUBMISSION_DRAFT:
             return self._submission_draft_handler(data)
         elif suffix == handler_suffixes.SUBMISSION_SUBMIT:
+            # Return an error if the submission step is not open
+            if self.submission_data.problem_closed:
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP)
             return self._submission_create_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
@@ -350,6 +353,28 @@ class MfeMixin:
     @XBlock.json_handler
     def assessment(self, data, suffix=""):
         if suffix == handler_suffixes.ASSESSMENT_SUBMIT:
+            step_name = data.get("step")
+
+            # Get the info for the current step
+            step_data = None
+            if step_name == "studentTraining":
+                step_data = self.student_training_data
+            elif step_name == "peer":
+                step_data = self.peer_assessment_data()
+            elif step_name == "self":
+                step_data = self.self_assessment_data
+            elif step_name == "staff":
+                step_data = self.staff_assessment_data
+
+            # Return an error if we are trying to assess from a bad step
+            if not step_data:
+                raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS)
+
+            # Return an error if the step is currently closed
+            if step_data.problem_closed:
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP)
+
+            # Continue on to assessing
             return self._assessment_submit_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
