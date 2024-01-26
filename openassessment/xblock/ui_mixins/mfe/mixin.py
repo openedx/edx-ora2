@@ -94,6 +94,10 @@ class MfeMixin:
         if not requested_step:
             return PageDataSerializer(self, context=serializer_context).data
 
+        # Raise error if step is closed
+        elif not self._step_is_open(requested_step):
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
+
         # Check to see if user can access this workflow step
         requested_workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[requested_step]
         if not self.workflow_data.has_reached_given_step(
@@ -105,6 +109,31 @@ class MfeMixin:
         # If they have access to this step, return the associated data
         serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
+
+    def _step_is_open(self, step_name):
+        """
+        Determine whether or not the requested step is open
+
+        Return: If the problem is open or not (Bool)
+        Raises: OraApiException if the step name is invalid
+        """
+        step_data = None
+
+        # Get the info for the current step
+        if step_name == "studentTraining":
+            step_data = self.student_training_data
+        elif step_name == "peer":
+            step_data = self.peer_assessment_data()
+        elif step_name == "self":
+            step_data = self.self_assessment_data
+        elif step_name == "staff":
+            step_data = self.staff_assessment_data
+
+        if not step_data:
+            raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS)
+
+        # Return an error if the step is currently closed
+        return not step_data.problem_closed
 
     def _submission_draft_handler(self, data):
         try:
