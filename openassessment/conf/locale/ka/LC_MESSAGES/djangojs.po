@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Giorgi Goderdzishvili <biggeorgian@gmail.com>, 2016\n"
 "Language-Team: Georgian (http://app.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -172,7 +172,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr ""
+msgstr "კურსელი"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr ""
+msgstr "თანამშრომლები"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr ""
+msgstr "გთხოვთ დაიცადოთ"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
@@ -213,12 +213,12 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "დადასტურება"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "გაუქმება"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -399,7 +399,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "მომხმარებლის სახელი"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
@@ -451,32 +451,32 @@ msgstr "არ იტვირთება"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "პარაგრაფი"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr ""
+msgstr "წინასწარ დაფორმატებული"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr ""
+msgstr "სათაური 3"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr ""
+msgstr "სათაური 4"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr ""
+msgstr "სათაური 5"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr ""
+msgstr "სათაური 6"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43

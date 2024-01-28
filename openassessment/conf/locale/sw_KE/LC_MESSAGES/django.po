@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: YAHAYA MWAVURIZI <translations_1@camara.ie>, 2017\n"
 "Language-Team: Swahili (Kenya) (http://app.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
@@ -78,7 +78,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "Namba ya Swali"
 
 #: data.py:868
 msgid "Submission ID"
@@ -387,7 +387,7 @@ msgstr "Utaratibu"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Ratiba"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1139,7 +1139,7 @@ msgstr "Angalia mafaili yanayohusiana na wasilisho hili:"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Imepakiwa na "
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1417,7 +1417,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Hiari)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1452,7 +1452,7 @@ msgstr "Hatukuweza kuhifadhi maendeleo ya kazi yako"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Hali halisi ya majibu Yako"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1492,7 +1492,7 @@ msgstr "Pakia mafaili"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Pakia faili"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1626,7 +1626,7 @@ msgstr "\nBado unahitajika kukamilisha %(start_tag)s hatua za tathmini binafsi%(
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Hitilafu"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2291,7 +2291,7 @@ msgstr "Huna ruhusa ya kuingia kwenye kipengele cha utoaji daraja wa walimu kwa 
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Inasubiri uamuzi"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2299,7 +2299,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "Haitumiki"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2307,7 +2307,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Imewasilishwa"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

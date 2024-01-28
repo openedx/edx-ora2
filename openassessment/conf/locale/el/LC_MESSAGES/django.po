@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ειρήνη Απέργη, 2023\n"
 "Language-Team: Greek (http://app.transifex.com/open-edx/edx-platform/language/el/)\n"
@@ -38,7 +38,7 @@ msgstr ""
 
 #: assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
-msgstr ""
+msgstr "Δεν μπορούν να αναλυθούν οι επιμέρους κατηγορίες"
 
 #: assessment/api/student_training.py:191
 msgid ""
@@ -49,7 +49,7 @@ msgstr "Εάν η αλληλοαξιολόγησή σας περιλαμβάνε
 #: assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "Το παράδειγμα {example_number} έχει σφάλμα τεκμηρίωσης: {error}"
 
 #: assessment/api/student_training.py:217
 #, python-brace-format
@@ -61,12 +61,12 @@ msgstr "Το παράδειγμα {example_number} έχει μια λανθασ�
 #: assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr ""
+msgstr "Το παράδειγμα {example_number} έχει μια επιπλέον επιλογή για το \"{criterion_name}\""
 
 #: assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr ""
+msgstr "Το παράδειγμα {example_number} υπολείπεται μια επιλογής για το \"{criterion_name}\""
 
 #: data.py:534
 #, python-brace-format
@@ -76,7 +76,7 @@ msgstr ""
 #: data.py:536
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "Μονάδες {number}"
 
 #: data.py:537
 #, python-brace-format
@@ -123,7 +123,7 @@ msgstr ""
 #: data.py:917
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
-msgstr ""
+msgstr "Συνολικός σχολιασμός"
 
 #: data.py:918
 msgid "Assessment Score Earned"
@@ -163,11 +163,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit.html:28
 msgid "Save"
-msgstr ""
+msgstr "Αποθήκευση"
 
 #: templates/legacy/edit/oa_edit.html:32
 msgid "Cancel"
-msgstr ""
+msgstr "Ακύρωση"
 
 #: templates/legacy/edit/oa_edit_assessment_steps.html:6
 msgid ""
@@ -179,21 +179,21 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr ""
+msgstr "Όνομα προβολής"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "Το εμφανιζόμενο όνομα για αυτό το στοιχείο."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "Απαντηση κειμένου"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "Καθορίστε εάν οι σπουδαστές πρέπει να περιλαμβάνουν μια απάντηση που να βασίζεται σε κείμενο στην προτροπή αυτού του προβλήματος."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
@@ -207,13 +207,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr ""
+msgstr "Απόκριση μεταφόρτωσης αρχείων"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "Καθορίστε εάν οι σπουδαστές μπορούν να μεταφορτώνουν αρχεία ως μέρος της απάντησής τους."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
@@ -225,7 +225,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
-msgstr ""
+msgstr "Ψευδές"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:53
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
@@ -233,7 +233,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr ""
+msgstr "Αληθές"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:56
 msgid ""
@@ -244,19 +244,19 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr ""
+msgstr "Τύποι μεταφόρτωσης αρχείων"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "PDF ή αρχεία εικόνας"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr ""
+msgstr "Αρχεία εικόνας"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
-msgstr ""
+msgstr "Προσαρμοσμένοι τύποι αρχείων"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:66
 msgid ""
@@ -265,13 +265,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
-msgstr ""
+msgstr "Τύποι αρχείων"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "Εισάγετε, χωρισμένους με κόμμα, τους τύπους αρχείων τους οποίους θέλετε να μπορούν να μεταφορτώσουν οι εκπαιδευόμενοι. Για παράδειγμα: pdf,doc,docx."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:84
 msgid ""
@@ -281,11 +281,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "Να επιτρέπονται απαντήσεις LaTeX"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "Καθορίστε εάν οι σπουδαστές μπορούν να γράφουν συμβολοσειρές με μορφοποίηση LaTeX"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:102
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:8
@@ -334,38 +334,38 @@ msgstr ""
 #: templates/legacy/staff_area/oa_student_info.html:122
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "Κριτήριο"
 
 #: templates/legacy/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr ""
+msgstr "Δεν μπορείτε να διαγράψετε ένα κριτήριο μετά τη δημοσίευση της εργασίας."
 
 #: templates/legacy/edit/oa_edit_criterion.html:9
 #: templates/legacy/edit/oa_edit_option.html:7
 #: templates/legacy/edit/oa_edit_prompt.html:10
 #: templates/legacy/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr ""
+msgstr "Αφαίρεση"
 
 #: templates/legacy/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr ""
+msgstr "Όνομα κριτηρίου"
 
 #: templates/legacy/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr ""
+msgstr "Προτροπή κριτηρίου"
 
 #: templates/legacy/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr ""
+msgstr "Προσθήκη Επιλογής"
 
 #: templates/legacy/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr ""
+msgstr "Σχόλια για αυτό το κριτήριο"
 
 #: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
 msgid "None"
-msgstr ""
+msgstr "Ουδέν"
 
 #: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
 msgid "Optional"
@@ -391,15 +391,15 @@ msgstr "Εργασία αλληλοαξιολόγησης"
 #: templates/legacy/edit/oa_edit_header_and_validation.html:8
 #: templates/legacy/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr ""
+msgstr "άμεσος"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
-msgstr ""
+msgstr "Ρουμπρίκα"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Πρόγραμμα"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -407,23 +407,23 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
-msgstr ""
+msgstr "Ρυθμίσεις"
 
 #: templates/legacy/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr ""
+msgstr "Επιλογή"
 
 #: templates/legacy/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr ""
+msgstr "Όνομα Επιλογής"
 
 #: templates/legacy/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr ""
+msgstr "Βαθμοί Επιλογής"
 
 #: templates/legacy/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr ""
+msgstr "Εξήγηση"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
@@ -449,7 +449,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
-msgstr ""
+msgstr "Υποχρεωτικά Βαθμολογημένο"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:32
 msgid ""
@@ -459,7 +459,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
-msgstr ""
+msgstr "Βαθμολογήθηκε από"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:39
 msgid ""
@@ -496,7 +496,7 @@ msgstr "Ημερομηνία Έναρξης"
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr ""
+msgstr "Ώρα Έναρξης"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
@@ -519,17 +519,17 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr ""
+msgstr "Δεν μπορείτε να διαγράψετε ένα μήνυμα προτροπής μετά την διάθεση της εργασίας."
 
 #: templates/legacy/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr ""
+msgstr "Προτροπές. Αντικαταστήστε το δείγμα κειμένου με το δικό σας κείμενο. Για περισσότερες πληροφορίες, ανατρέξτε στην τεκμηρίωση της ORA."
 
 #: templates/legacy/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
-msgstr ""
+msgstr "Προσθήκη προτροπής"
 
 #: templates/legacy/edit/oa_edit_rubric.html:14
 msgid ""
@@ -537,35 +537,35 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr ""
+msgstr "Οι ρουμπρίκες αποτελούνται από κριτήρια, τα οποία συνήθως περιέχουν μία ή περισσότερες επιλογές. Κάθε επιλογή έχει μια τιμή βαθμού. Αυτό το υπόδειγμα περιέχει δύο δείγματα κριτηρίων και τις επιλογές τους. Αντικαταστήστε το δείγμα κειμένου με το δικό σας κείμενο. Για περισσότερες πληροφορίες, ανατρέξτε στην τεκμηρίωση ORA."
 
 #: templates/legacy/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr ""
+msgstr "Προσθήκη κριτηρίου"
 
 #: templates/legacy/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
-msgstr ""
+msgstr "Σχόλια για αυτήν την απάντηση"
 
 #: templates/legacy/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
-msgstr ""
+msgstr "Οδηγίες σχολιασμού"
 
 #: templates/legacy/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "Ενθαρρύνετε τους σπουδαστές να παρέχουν σχόλια σχετικά με την απάντηση που έχουν βαθμολογήσει. Μπορείτε να αντικαταστήσετε το δείγμα κειμένου με το δικό σας."
 
 #: templates/legacy/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
-msgstr ""
+msgstr "Προεπιλεγμένο κείμενο σχολίων"
 
 #: templates/legacy/edit/oa_edit_rubric.html:53
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr ""
+msgstr "Εισαγάγετε κείμενο σχολίων που θα βλέπουν οι σπουδαστές προτού εισαγάγουν τα δικά τους σχόλια. Χρησιμοποιήστε αυτό το κείμενο για να δείξετε στους σπουδαστές ένα καλό παράδειγμα αξιολόγησης από συναδέλφους."
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
@@ -597,15 +597,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
-msgstr ""
+msgstr "Ημερομηνία έναρξης ανταπόκρισης"
 
 #: templates/legacy/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
-msgstr ""
+msgstr "Ώρα έναρξης απόκρισης"
 
 #: templates/legacy/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
-msgstr ""
+msgstr "Η ημερομηνία και ώρα από την οποία οι εκπαιδευόμενοι μπορούν να ξεκινήσουν να υποβάλλουν απαντήσεις."
 
 #: templates/legacy/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
@@ -617,7 +617,7 @@ msgstr "Ώρα λήξης της προθεσμίας υποβολής της ε
 
 #: templates/legacy/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
-msgstr ""
+msgstr "Η ημερομηνία και ώρα από την οποία οι εκπαιδευόμενοι δε μπορούν να υποβάλλουν πλέον απαντήσεις."
 
 #: templates/legacy/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
@@ -653,7 +653,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
-msgstr ""
+msgstr "Βήμα: Εκπαίδευση σπουδαστών"
 
 #: templates/legacy/edit/oa_edit_student_training.html:14
 msgid ""
@@ -676,7 +676,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
-msgstr ""
+msgstr "Προσθήκη δείγματος απάντησης"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
@@ -712,19 +712,19 @@ msgstr ""
 
 #: templates/legacy/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr ""
+msgstr "Βαθμολογούμενη απάντηση"
 
 #: templates/legacy/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr ""
+msgstr "Βαθμολογία απάντησης"
 
 #: templates/legacy/edit/oa_training_example.html:27
 msgid "Response"
-msgstr ""
+msgstr "Απάντηση"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr ""
+msgstr "Δεν επιλέχθηκε"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:15
 #: templates/legacy/oa_rubric.html:43
@@ -738,7 +738,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n              "
 
 #: templates/legacy/grade/oa_assessment_title.html:7
 #, python-format
@@ -756,7 +756,7 @@ msgstr[1] "\n%(assessment_title)s - %(points)s μονάδες"
 #: templates/legacy/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr ""
+msgstr "Περισσότερες πληροφορίες για τον %(name)s"
 
 #: templates/legacy/grade/oa_grade_cancelled.html:14
 #: templates/legacy/grade/oa_grade_complete.html:15
@@ -777,7 +777,7 @@ msgstr "\n%(points_earned)s από %(points_possible)s"
 
 #: templates/legacy/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
-msgstr ""
+msgstr "Η υποβολή σας ακυρώθηκε."
 
 #: templates/legacy/grade/oa_grade_complete.html:19
 #, python-format
@@ -824,7 +824,7 @@ msgstr "Τρέχουσα κατάσταση"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
-msgstr ""
+msgstr "Συνόλικός βαθμός"
 
 #: templates/legacy/grade/oa_grade_complete.html:70
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:28
@@ -841,7 +841,7 @@ msgstr "Σχολιάστε τις αξιολογήσεις που λάβατε"
 
 #: templates/legacy/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
-msgstr ""
+msgstr "Καταχώρηση Κριτικής"
 
 #: templates/legacy/grade/oa_grade_complete.html:134
 msgid ""
@@ -888,7 +888,7 @@ msgstr "Θεωρώ πως τα σχόλια που έλαβα ήταν..."
 
 #: templates/legacy/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
-msgstr ""
+msgstr "Δεν μπορέσαμε να υποβάλουμε τα σχόλιά σας"
 
 #: templates/legacy/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
@@ -908,7 +908,7 @@ msgstr "Δεν έχετε ακόμη υποβάλει την εργασία σα
 
 #: templates/legacy/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
-msgstr ""
+msgstr "Δεν έχετε ακόμη ξεκινήσει την εργασία σας."
 
 #: templates/legacy/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
@@ -927,13 +927,13 @@ msgstr "Έχετε ολοκληρώσει τις αξιολογήσεις των
 #: templates/legacy/staff_area/oa_staff_area.html:18
 #: templates/legacy/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
-msgstr ""
+msgstr "Βαθμολογία διαθέσιμων απαντήσεων"
 
 #: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "Η επιλογή 'Βαθμολόγηση διαθέσιμων απαντήσεων' δεν είναι διαθέσιμη. Αυτό το στοιχείο δεν έχει διαμορφωθεί για Αξιολόγηση προσωπικού."
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
@@ -1007,20 +1007,20 @@ msgstr "Έχετε ολοκληρώσει την εργασία. Δείτε το
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "Η εργασία είναι σε εξέλιξη. Η διαδικασία εξάσκησης θα λήξει σύντομα. Ολοκληρώστε την εξάσκηση για να προχωρήσετε στο επόμενο βήμα."
 
 #: templates/legacy/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "Η εργασία είναι σε εξέλιξη. Ολοκληρώστε την εξάσκηση για να προχωρήσετε στο επόμενο βήμα."
 
 #: templates/legacy/message/oa_message_incomplete.html:15
 #: templates/legacy/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "Η εργασία είναι σε εξέλιξη. Ελέγξτε αργότερα για το αν έχει ξεκινήσει η διαδικασία αλληλοξιολόγησης."
 
 #: templates/legacy/message/oa_message_incomplete.html:20
 #, python-format
@@ -1102,11 +1102,11 @@ msgstr "\nΓια να βαθμολογηθείτε για αυτή την εργ
 
 #: templates/legacy/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
-msgstr ""
+msgstr "Οδηγίες μη διαθέσιμες"
 
 #: templates/legacy/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η φόρτωση των οδηγιών για αυτό το βήμα."
 
 #: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
 msgid ""
@@ -1118,15 +1118,15 @@ msgstr "Η διαδικασία αλληλοαξιολόγησης έχει πο
 #: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
 #: templates/openassessmentblock/base.html:100
 msgid "Loading"
-msgstr ""
+msgstr "Φόρτωση"
 
 #: templates/legacy/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "Προεπισκόπηση σε LaTeX"
 
 #: templates/legacy/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "Κάντε κλικ για προεπισκόπηση της υποβολής σας σε LaTeX."
 
 #: templates/legacy/oa_latex_preview.html:14
 msgid "Preview Response"
@@ -1134,7 +1134,7 @@ msgstr "Προεπισκόπηση εργασίας"
 
 #: templates/legacy/oa_rubric.html:53
 msgid "Comments"
-msgstr ""
+msgstr "Σχόλια"
 
 #: templates/legacy/oa_submission_answer.html:8
 msgid "The question for this section"
@@ -1147,11 +1147,11 @@ msgstr ""
 #: templates/legacy/oa_team_uploaded_files.html:28
 #: templates/legacy/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "Προβολή των αρχείων που σχετίζονται με αυτήν την υποβολή:"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Ανέβηκε από"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1162,11 +1162,11 @@ msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr ""
+msgstr "Προσοχή: Αυτά τα αρχεία μεταφορτώθηκαν από άλλον σπουδαστή του μαθήματος και δεν έχουν επαληθευτεί, ελεγχθεί ή εγκριθεί από τον διαχειριστή του ιστότοπου. Εάν ανοίξετε τα αρχεία, το κάνετε με δική σας ευθύνη."
 
 #: templates/legacy/peer/oa_peer_assessment.html:36
 msgid "Assess Peers"
-msgstr ""
+msgstr "Αξιολογήστε συμφοιτητές σας"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
@@ -1210,7 +1210,7 @@ msgstr "Διαβάστε και αξιολογήστε την παρακάτω �
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:38
 #: templates/legacy/staff_area/oa_student_info.html:63
 msgid "Associated Files"
-msgstr ""
+msgstr "Συσχετισμένα αρχεία"
 
 #: templates/legacy/peer/oa_peer_assessment.html:101
 #: templates/legacy/peer/oa_peer_turbo_mode.html:70
@@ -1225,7 +1225,7 @@ msgstr "Δεν ήταν εφικτή η υποβολή της αξιολόγησ
 #: templates/legacy/self/oa_self_cancelled.html:21
 #: templates/legacy/student_training/student_training_cancelled.html:18
 msgid "Cancelled"
-msgstr ""
+msgstr "Ακυρώθηκε"
 
 #: templates/legacy/peer/oa_peer_closed.html:20
 #, python-format
@@ -1233,7 +1233,7 @@ msgid ""
 "\n"
 "            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\nΔεν έχει ολοκληρωθεί (%(num_graded)s από %(num_must_grade)s)"
 
 #: templates/legacy/peer/oa_peer_closed.html:35
 msgid ""
@@ -1261,7 +1261,7 @@ msgstr "Δεν υπάρχουν περαιτέρω εργασίες προς α�
 
 #: templates/legacy/peer/oa_peer_complete.html:43
 msgid "Continue Assessing Peers"
-msgstr ""
+msgstr "Συνεχίστε να αξιολογείτε συμφοιτητές σας"
 
 #: templates/legacy/peer/oa_peer_turbo_mode.html:26
 #: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:20
@@ -1270,13 +1270,13 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr ""
+msgstr "\n        Ολοκληρωμένο (%(num_graded)s)\n      "
 
 #: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "Όλες οι υποβληθείσες απαντήσεις από συμφοιτητές έχουν αξιολογηθεί. Ελέγξτε ξανά αργότερα για να δείτε εάν περισσότεροι σπουδαστές έχουν υποβάλει απαντήσεις."
 
 #: templates/legacy/peer/oa_peer_unavailable.html:16
 #: templates/legacy/response/oa_response_unavailable.html:17
@@ -1429,7 +1429,7 @@ msgstr "(Υποχρεωτικό πεδίο)"
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Προαιρετικό)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1464,7 +1464,7 @@ msgstr "Δεν ήταν δυνατή η αποθήκευση της εργασί
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Κατάσταση της εργασίας σας"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1492,7 +1492,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "Επιλέξτε ένα αρχείο για μεταφόρτωση για αυτήν την υποβολή."
 
 #: templates/legacy/response/oa_response.html:280
 msgid "Supported file types: "
@@ -1504,7 +1504,7 @@ msgstr "Μεταφόρτωση αρχείων"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Μεταφόρτωση Αρχείου"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1548,7 +1548,7 @@ msgstr "Υποβάλετε την εργασία σας και προχωρήσ�
 
 #: templates/legacy/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "Η υποβολή σας ακυρώθηκε."
 
 #: templates/legacy/response/oa_response_cancelled.html:37
 #, python-format
@@ -1556,7 +1556,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                                Η υποβολή σας ακυρώθηκε από τον/την %(removed_by_username)s στις %(removed_datetime)s\n                            "
 
 #: templates/legacy/response/oa_response_cancelled.html:41
 #, python-format
@@ -1564,7 +1564,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                               Η υποβολή σας ακυρώθηκε στις %(removed_datetime)s\n                            "
 
 #: templates/legacy/response/oa_response_cancelled.html:48
 #, python-format
@@ -1572,7 +1572,7 @@ msgid ""
 "\n"
 "                            Comments: %(comments)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Σχόλια: %(comments)s\n                        "
 
 #: templates/legacy/response/oa_response_closed.html:19
 #: templates/legacy/self/oa_self_closed.html:20
@@ -1593,7 +1593,7 @@ msgstr "Η προθεσμία ολοκλήρωσης αυτού του βήμα�
 #: templates/legacy/self/oa_self_complete.html:18
 #: templates/legacy/student_training/student_training_complete.html:17
 msgid "Complete"
-msgstr ""
+msgstr "Ολοκληρώθηκε"
 
 #: templates/legacy/response/oa_response_graded.html:30
 #: templates/legacy/response/oa_response_submitted.html:51
@@ -1604,7 +1604,7 @@ msgstr "Η απάντησή σας στο θέμα της εργασίας"
 #: templates/legacy/response/oa_response_graded.html:33
 #: templates/legacy/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "Τα μεταφορτωμένα αρχεία σας"
 
 #: templates/legacy/response/oa_response_submitted.html:32
 msgid ""
@@ -1638,7 +1638,7 @@ msgstr "\nΘα πρέπει να ολοκληρώστε τη διαδικασί�
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1695,7 +1695,7 @@ msgstr "Βαθμός Διδάσκοντα"
 #: templates/legacy/staff_area/oa_staff_area.html:8
 #: templates/legacy/staff_area/oa_staff_area.html:35
 msgid "Manage Individual Learners"
-msgstr ""
+msgstr "Διαχείριση μεμονωμένων σπουδαστών"
 
 #: templates/legacy/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
@@ -1704,7 +1704,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:13
 #: templates/legacy/staff_area/oa_staff_area.html:71
 msgid "View Assignment Statistics"
-msgstr ""
+msgstr "Προβολή στατιστικών εργασιών"
 
 #: templates/legacy/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
@@ -1726,7 +1726,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
-msgstr ""
+msgstr "Εισαγάγετε το όνομα χρήστη ή το email ενός μεμονωμένου εκπαιδευόμενου"
 
 #: templates/legacy/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
@@ -1738,37 +1738,37 @@ msgstr "Υποβολή"
 
 #: templates/legacy/staff_area/oa_staff_area.html:78
 msgid "Response total"
-msgstr ""
+msgstr "Σύνολο ανταπόκρισης"
 
 #: templates/legacy/staff_area/oa_staff_area.html:84
 msgid "Location"
-msgstr ""
+msgstr "Τόπος διαμονής"
 
 #: templates/legacy/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
-msgstr ""
+msgstr "Πρόοδος σπουδαστή"
 
 #: templates/legacy/staff_area/oa_staff_area.html:94
 #: templates/legacy/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
-msgstr ""
+msgstr "Βήμα προβλήματος"
 
 #: templates/legacy/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
-msgstr ""
+msgstr "Ενεργοί μαθητές στο βήμα"
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
-msgstr ""
+msgstr "Ημερομηνίες"
 
 #: templates/legacy/staff_area/oa_staff_area.html:118
 msgid "Release Date"
-msgstr ""
+msgstr "Ημερομηνία διάθεσης"
 
 #: templates/legacy/staff_area/oa_staff_area.html:131
 #: templates/legacy/staff_area/oa_staff_area.html:137
 msgid "N/A"
-msgstr ""
+msgstr "ΔΥ"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
@@ -1780,7 +1780,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
-msgstr ""
+msgstr "Βαθμολογήστε τον σπουδαστή χρησιμοποιώντας τη ρουμπρίκα του προβλήματος."
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
 #, python-format
@@ -1797,12 +1797,12 @@ msgid ""
 "\n"
 "                                        Response for: %(student_username)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        Απάντηση για τον/την: %(student_username)s\n                                    "
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:34
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
-msgstr ""
+msgstr "Απάντηση σπουδαστή"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:39
 msgid "The teams's response to the prompt above"
@@ -1812,7 +1812,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:32
 #: templates/legacy/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "Η απάντηση του σπουδαστή στην παραπάνω προτροπή"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:57
@@ -1833,7 +1833,7 @@ msgstr "\n%(ungraded)s Διαθέσιμα και %(in_progress)s Διορθωμ�
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr ""
+msgstr "Παρακάμψτε τον τρέχοντα βαθμό αυτού του σπουδαστή χρησιμοποιώντας τη ρουμπρίκα του προβλήματος."
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:9
 msgid "Override this team's current grade using the problem's rubric."
@@ -1866,7 +1866,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
-msgstr ""
+msgstr "Απάντηση σπουδαστή"
 
 #: templates/legacy/staff_area/oa_student_info.html:30
 msgid "Team's Response"
@@ -1878,7 +1878,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Η υποβολή σπουδαστή καταργήθηκε από τον/την %(removed_by_username)s στις%(removed_datetime)s\n                        "
 
 #: templates/legacy/staff_area/oa_student_info.html:43
 #, python-format
@@ -1886,7 +1886,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Η υποβολή σπουδαστή καταργήθηκε στις %(removed_datetime)s\n                        "
 
 #: templates/legacy/staff_area/oa_student_info.html:50
 #, python-format
@@ -1894,7 +1894,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\n                        Σχόλια: %(comments)s\n                    "
 
 #: templates/legacy/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
@@ -1918,7 +1918,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
-msgstr ""
+msgstr "Τελική βαθμολογία σπουδαστή"
 
 #: templates/legacy/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
@@ -1934,7 +1934,7 @@ msgstr "\nΤελικός βαθμός:  %(points_earned)s από %(points_possib
 
 #: templates/legacy/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
-msgstr ""
+msgstr "Λεπτομέρειες τελικού βαθμού"
 
 #: templates/legacy/staff_area/oa_student_info.html:139
 #, python-format
@@ -1951,7 +1951,7 @@ msgstr[1] "\n%(assessment_label)s-%(points)s μονάδες"
 
 #: templates/legacy/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
-msgstr ""
+msgstr "Καταγράφηκαν τα σχόλια"
 
 #: templates/legacy/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
@@ -1962,7 +1962,7 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "Η υποβολή του σπουδαστή έχει αφαιρεθεί από την αξιολόγηση από συναδέλφους. Ο σπουδαστής λαμβάνει βαθμό μηδέν, εκτός εάν διαγράψετε την κατάσταση του σπουδαστή για το πρόβλημα για να του επιτρέψετε να υποβάλει ξανά μια απάντηση."
 
 #: templates/legacy/staff_area/oa_student_info.html:172
 msgid ""
@@ -1981,7 +1981,7 @@ msgstr "Οι απαιτούμενες διαδικασίες δεν έχουν �
 
 #: templates/legacy/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
-msgstr ""
+msgstr "Παράκαμψη υποβολής βαθμού αξιολόγησης"
 
 #: templates/legacy/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
@@ -2006,7 +2006,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:230
 msgid "Remove Submission From Peer Grading"
-msgstr ""
+msgstr "Κατάργηση υποβολής από βαθμολόγηση συναδέλφου"
 
 #: templates/legacy/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
@@ -2014,13 +2014,13 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
-msgstr ""
+msgstr "Προσοχή: Αυτή η ενέργεια δεν μπορεί να αναιρεθεί"
 
 #: templates/legacy/staff_area/oa_student_info.html:244
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
-msgstr ""
+msgstr "Η κατάργηση της υποβολής ενός σπουδαστή δεν μπορεί να αναιρεθεί και θα πρέπει να γίνεται με προσοχή."
 
 #: templates/legacy/staff_area/oa_student_info.html:246
 msgid ""
@@ -2030,15 +2030,15 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:252
 msgid "Comments:"
-msgstr ""
+msgstr "Σχόλια:"
 
 #: templates/legacy/staff_area/oa_student_info.html:261
 msgid "Remove submission"
-msgstr ""
+msgstr "Κατάργηση υποβολής"
 
 #: templates/legacy/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
-msgstr ""
+msgstr "Δεν βρέθηκε απάντηση για αυτόν τον σπουδαστή."
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:16
 #, python-format
@@ -2054,11 +2054,11 @@ msgstr "Λεπτομέρειες Αξιολόγησης"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "Επιλεγμένη επιλογή"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
-msgstr ""
+msgstr "Σχόλια"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
@@ -2142,7 +2142,7 @@ msgstr "Η επιλογή σας δεν είναι η ίδια με αυτή π�
 
 #: templates/legacy/student_training/student_training.html:144
 msgid "We could not check your assessment"
-msgstr ""
+msgstr "Δεν μπορέσαμε να ελέγξουμε την αξιολόγησή σας"
 
 #: templates/legacy/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
@@ -2157,11 +2157,11 @@ msgstr "Η προθεσμία για αυτή την διαδικασία έχε
 
 #: templates/legacy/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
-msgstr ""
+msgstr "Σφάλμα κατά τη φόρτωση των παραδειγμάτων εκπαίδευσης σπουδαστών"
 
 #: templates/legacy/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η φόρτωση του βήματος εκπαίδευσης σπουδαστή αυτής της εργασίας."
 
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
 msgid "An unexpected error occurred."
@@ -2181,11 +2181,11 @@ msgstr "Δεν μπόρεσαν να αποθηκευτούν τα σχόλια 
 
 #: xblock/grade_mixin.py:232
 msgid "Feedback saved."
-msgstr ""
+msgstr "Ανατροφοδότηση αποθηκεύτηκε."
 
 #: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
-msgstr ""
+msgstr "Σχόλια προσωπικού"
 
 #: xblock/grade_mixin.py:372
 msgid "Peer Median Grade"
@@ -2210,7 +2210,7 @@ msgstr "Η Αυτοαξιολόγησή σας"
 
 #: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
 msgid "Your Comments"
-msgstr ""
+msgstr "Τα σχόλια σας"
 
 #: xblock/grade_mixin.py:485
 msgid "Waiting for peer reviews"
@@ -2218,7 +2218,7 @@ msgstr "Αναμείνατε την αξιολόγηση των συμφοιτη
 
 #: xblock/grade_mixin.py:524
 msgid "Peer"
-msgstr ""
+msgstr "Συνάδελφος"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
@@ -2283,27 +2283,27 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
-msgstr ""
+msgstr "Δεν έχετε άδεια να προγραμματίσετε προπόνηση"
 
 #: xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
-msgstr ""
+msgstr "Δεν έχετε άδεια να επαναπρογραμματίσετε εργασίες."
 
 #: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
-msgstr ""
+msgstr "Δεν έχετε άδεια πρόσβασης στην περιοχή προσωπικού του ORA"
 
 #: xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
-msgstr ""
+msgstr "Δεν έχετε άδεια πρόσβασης στις πληροφορίες σπουδαστών του ORA."
 
 #: xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
-msgstr ""
+msgstr "Δεν έχετε άδεια πρόσβασης στη βαθμολόγηση προσωπικού ORA."
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Σε αναμονή"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2311,7 +2311,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "Μη εφαρμόσιμο"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2319,15 +2319,15 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Έχει υποβληθεί"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
-msgstr ""
+msgstr "Σφάλμα λήψης πληροφοριών σπουδαστή."
 
 #: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
-msgstr ""
+msgstr "Σφάλμα κατά τη φόρτωση της ελεγμένης απάντησης του σπουδαστή."
 
 #: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
@@ -2335,15 +2335,15 @@ msgstr "Δεν υπάρχουν αυτή τη στιγμή άλλες εργασ
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr ""
+msgstr "Σφάλμα λήψης πληροφοριών βαθμού προσωπικού."
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
-msgstr ""
+msgstr "Σφάλμα λήψης καταμέτρησης του βαθμού προσωπικού που δεν έχει βαθμολογηθεί και έχει ελεγχθεί."
 
 #: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
-msgstr ""
+msgstr "Εισαγάγετε έγκυρο λόγο για την κατάργηση της υποβολής."
 
 #: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
@@ -2358,7 +2358,7 @@ msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "Η υποβολή του σπουδαστή έχει αφαιρεθεί από την αξιολόγηση από συμφοιτητές. Ο σπουδαστής λαμβάνει βαθμό μηδέν, εκτός εάν διαγράψετε την κατάσταση του σπουδαστή για το πρόβλημα για να τους επιτρέψετε να υποβάλουν ξανά μια απάντηση."
 
 #: xblock/staff_area_mixin.py:789
 msgid ""
@@ -2369,7 +2369,7 @@ msgstr ""
 
 #: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
-msgstr ""
+msgstr "Σφάλμα κατά την ενημέρωση της διαμόρφωσης XBlock"
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
@@ -2388,116 +2388,116 @@ msgstr ""
 #: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr ""
+msgstr "Σφάλμα Αυθεντικοποίησης: {error}"
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
+msgstr "Το OpenAssessment XBlock ενημερώθηκε με επιτυχία"
 
 #: xblock/utils/data_conversion.py:315
 msgid "You must provide options selected in the assessment."
-msgstr ""
+msgstr "Πρέπει να παρέχετε επιλογές που έχουν επιλεγεί στην αξιολόγηση."
 
 #: xblock/utils/data_conversion.py:318
 msgid "You must provide overall feedback in the assessment."
-msgstr ""
+msgstr "Πρέπει να παρέχετε γενικό σχολιασμό στην αξιολόγηση."
 
 #: xblock/utils/data_conversion.py:321
 msgid "You must provide feedback for criteria in the assessment."
-msgstr ""
+msgstr "Πρέπει να παρέχετε σχόλια για κριτήρια στην αξιολόγηση."
 
 #: xblock/utils/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
-msgstr ""
+msgstr "Η μορφή \"{date}\" δεν είναι έγκυρη. Βεβαιωθείτε ότι η ημερομηνία έχει μορφοποιηθεί ως ΕΕΕΕ-ΜΜ-ΗΗΤΩΩ:ΛΛ:ΔΔ."
 
 #: xblock/utils/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
-msgstr ""
+msgstr "Το \"{date}\" πρέπει να είναι μια συμβολοσειρά ημερομηνίας ή ημερομηνία/ώρα"
 
 #: xblock/utils/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
-msgstr ""
+msgstr "Η ημερομηνία έναρξης αυτού του βήματος \"{start}\" δεν μπορεί να είναι προγενέστερη από την ημερομηνία έναρξης του προηγούμενου βήματος \"{prev}\"."
 
 #: xblock/utils/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
-msgstr ""
+msgstr "Η ημερομηνία λήξης αυτού του βήματος \"{due}\" δεν μπορεί να είναι μεταγενέστερη από την ημερομηνία λήξης του επόμενου βήματος \"{prev}\"."
 
 #: xblock/utils/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr ""
+msgstr "Η ημερομηνία έναρξης \"{start}\" δεν μπορεί να είναι μεταγενέστερη από την ημερομηνία λήξης \"{due}\""
 
 #: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
-msgstr ""
+msgstr "Αυτό το πρόβλημα πρέπει να περιλαμβάνει τουλάχιστον μία αξιολόγηση."
 
 #: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
-msgstr ""
+msgstr "Η σειρά αξιολόγησης που επιλέξατε δεν είναι έγκυρη."
 
 #: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr ""
+msgstr "Στην αξιολόγηση από συναδέλφους, η τιμή \"Απαραίτητη βαθμολόγηση\" πρέπει να είναι θετικός ακέραιος."
 
 #: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr ""
+msgstr "Στην αξιολόγηση από συναδέλφους, η τιμή \"Βαθμολογήθηκε από\" πρέπει να είναι θετικός ακέραιος."
 
 #: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
-msgstr ""
+msgstr "Στην αξιολόγηση από συναδέλφους, η τιμή \"Απαραίτητη βαθμολόγηση\" πρέπει να είναι μεγαλύτερη ή ίση με την τιμή \"Βαθμολογήθηκε από\"."
 
 #: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
-msgstr ""
+msgstr "Πρέπει να παρέχετε τουλάχιστον ένα παράδειγμα απάντησης για την εκπαίδευση των σπουδαστών."
 
 #: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
-msgstr ""
+msgstr "Κάθε παράδειγμα απάντησης για εκπαίδευση σπουδαστών πρέπει να είναι μοναδικό."
 
 #: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr ""
+msgstr "Η \"απαιτούμενη\" τιμή πρέπει να είναι αληθής εάν η αξιολόγηση προσωπικού είναι το μόνο βήμα."
 
 #: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr ""
+msgstr "Ο αριθμός των αξιολογήσεων δεν μπορεί να αλλάξει μετά τη διάθεση του προβλήματος."
 
 #: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr ""
+msgstr "Ο τύπος αξιολόγησης δεν μπορεί να αλλάξει μετά την διάθεση του προβλήματος."
 
 #: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
-msgstr ""
+msgstr "Ο ορισμός της ρουμπρίκας δεν είναι έγκυρος."
 
 #: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
+msgstr "Οι επιλογές στο \"{criterion}\" έχουν διπλά ονόματα: {duplicates}"
 
 #: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
-msgstr ""
+msgstr "Τα κριτήρια χωρίς επιλογές πρέπει να απαιτούν γραπτά σχόλια."
 
 #: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr ""
+msgstr "Δεν είναι δυνατή η δημιουργία ή η διαγραφή μηνυμάτων μετά την διάθεση ενός προβλήματος."
 
 #: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
@@ -2513,16 +2513,16 @@ msgstr "Ο αριθμός των επιλογών δε μπορεί να αλλ�
 
 #: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
-msgstr ""
+msgstr "Οι τιμές των βαθμών δεν μπορούν να αλλάξουν μετά την επίλυση ενός προβλήματος."
 
 #: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "Η εξάσκηση των σπουδαστών πρέπει να διαθέτει τουλάχιστον ένα παράδειγμα."
 
 #: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
-msgstr ""
+msgstr "Ο αριθμός βαθμολογικού πίνακα δεν είναι έγκυρος."
 
 #: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
-msgstr ""
+msgstr "Ο τύπος υποβολής είναι εσφαλμένος."

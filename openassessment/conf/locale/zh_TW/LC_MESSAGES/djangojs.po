@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Mose Chen <mosechen@gmail.com>, 2017\n"
 "Language-Team: Chinese (Taiwan) (http://app.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -101,7 +101,7 @@ msgstr "無法找到上傳網址"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:550 xblock/static/js/src/oa_server.js:569
 msgid "Server error."
-msgstr ""
+msgstr "服務器錯誤"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -165,7 +165,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessment"
-msgstr ""
+msgstr "評量"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessments"
@@ -181,11 +181,11 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr ""
+msgstr "同儕"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
-msgstr ""
+msgstr "自己"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Waiting"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr ""
+msgstr "工作人員"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
@@ -209,7 +209,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr ""
+msgstr "請稍候"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
@@ -222,12 +222,12 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "確認"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -408,7 +408,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "使用者帳號"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
@@ -460,32 +460,32 @@ msgstr "無法載入"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "段落"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr ""
+msgstr "預設格式"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr ""
+msgstr "標題 3"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr ""
+msgstr "標題 4"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr ""
+msgstr "標題 5"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr ""
+msgstr "標題 6"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43

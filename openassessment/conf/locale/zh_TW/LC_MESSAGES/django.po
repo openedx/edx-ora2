@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: 黃蕙君 <huanghc@mail.fcu.edu.tw>, 2020\n"
 "Language-Team: Chinese (Taiwan) (http://app.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -93,7 +93,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "選項編號"
 
 #: data.py:868
 msgid "Submission ID"
@@ -178,7 +178,7 @@ msgid ""
 " a rubric based open response assessment sequence. The steps available below"
 " can be enabled, disable, and ordered for a flexible set of pedagogical "
 "needs."
-msgstr ""
+msgstr "開放式響應評估允許您在基於規則的開放式響應評估序列中配置一個或多個作答步驟。 可以根據教學需求靈活使用，禁用和排序以下可用步驟。"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
@@ -186,17 +186,17 @@ msgstr "顯示名稱"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "此元件的顯示名稱"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "文字回覆"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "學習者是否必須針對此題目提供文字的作答。"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
@@ -210,13 +210,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr ""
+msgstr "需要檔案上傳"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "學習者是否必須針對此題目上傳檔案。"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
@@ -247,15 +247,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr ""
+msgstr "檔案上傳類型"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "PDF或圖片"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr ""
+msgstr "圖片"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
@@ -280,7 +280,7 @@ msgstr "輸入文件名，並用逗號分隔，您希望學習者能夠上傳。
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
-msgstr ""
+msgstr "要增加更多檔案類型，請選擇“自定義文件類型”，然後輸入檔案類型的完整列表。"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
@@ -402,11 +402,11 @@ msgstr "評分準則"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "時程表"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
-msgstr ""
+msgstr "評分步驟"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
@@ -437,7 +437,7 @@ msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
 "always, this step is preceded by Self Assessment or Learner Training steps."
-msgstr ""
+msgstr "同儕互評允許學習者向其他學習者提供意見，並在最終成績中獲得其他人的意見。 在此步驟之前可以先進行“自我評量”或“評分訓練”步驟。"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:18
 msgid ""
@@ -489,7 +489,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
-msgstr ""
+msgstr "同儕互評截止時間"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
@@ -634,7 +634,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:5
 msgid "Self Assessment Deadlines"
-msgstr ""
+msgstr "自我評分截止時間"
 
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing their responses."
@@ -775,7 +775,7 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr ""
+msgstr "\n%(points_earned)s超出%(points_possible)s"
 
 #: templates/legacy/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
@@ -822,7 +822,7 @@ msgstr "對您作答的評分。"
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "狀態"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -839,7 +839,7 @@ msgstr "對您作答的額外評論"
 
 #: templates/legacy/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "提供對同儕互評的反饋"
 
 #: templates/legacy/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
@@ -861,7 +861,7 @@ msgstr "當課程工作人員審核課程記錄時，他們可以查看您發表
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "選擇以下最能反映您的同儕互評經驗的陳述。"
 
 #: templates/legacy/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
@@ -922,14 +922,14 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr ""
+msgstr "你已經在評分完成你得步驟,  但有些評分仍然需要被完成在你的作答。當您作答評分被完成, 你將會看到每一個人對你的作答評分並回饋,然後您將收到你的最終成績。"
 
 #: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:15
 #: templates/legacy/staff_area/oa_staff_area.html:16
 #: templates/legacy/staff_area/oa_staff_area.html:18
 #: templates/legacy/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
-msgstr ""
+msgstr "工作人員評分"
 
 #: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
@@ -939,7 +939,7 @@ msgstr ""
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "請稍候"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -960,7 +960,7 @@ msgstr "%(num_points)s 點"
 #: templates/legacy/peer/oa_peer_assessment.html:84
 #: templates/legacy/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "根據以上提示，您同儕的回應"
 
 #: templates/legacy/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
@@ -1100,7 +1100,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n該作業包含幾個步驟。首先，您將對問題作答。其他步驟會在%(start_tag)s您的作答%(end_tag)s之後出現。"
 
 #: templates/legacy/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -1115,7 +1115,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "該作業包含幾個步驟。首先，您將對問題作答。其他步驟會在您的作答之後出現。"
 
 #: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
 #: templates/openassessmentblock/base.html:100
@@ -1128,7 +1128,7 @@ msgstr "Latex格式預覽"
 
 #: templates/legacy/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "點擊以在LaTeX中預覽您的提交。"
 
 #: templates/legacy/oa_latex_preview.html:14
 msgid "Preview Response"
@@ -1140,7 +1140,7 @@ msgstr "評論"
 
 #: templates/legacy/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr ""
+msgstr "本章節的問題"
 
 #: templates/legacy/oa_team_uploaded_files.html:9
 msgid "Files that were uploaded by your teammates:"
@@ -1149,11 +1149,11 @@ msgstr ""
 #: templates/legacy/oa_team_uploaded_files.html:28
 #: templates/legacy/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "查看與此提交關聯的文件："
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "上傳者是"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1179,7 +1179,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -1190,7 +1190,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: templates/legacy/peer/oa_peer_assessment.html:61
 #, python-format
@@ -1212,7 +1212,7 @@ msgstr "讀取並評量您的同儕送來的答案。"
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:38
 #: templates/legacy/staff_area/oa_student_info.html:63
 msgid "Associated Files"
-msgstr ""
+msgstr "相關檔案"
 
 #: templates/legacy/peer/oa_peer_assessment.html:101
 #: templates/legacy/peer/oa_peer_turbo_mode.html:70
@@ -1316,7 +1316,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1327,7 +1327,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: templates/legacy/response/oa_response.html:54
 #: templates/legacy/self/oa_self_assessment.html:56
@@ -1359,7 +1359,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "輸入您的回答。"
 
 #: templates/legacy/response/oa_response.html:92
 msgid ""
@@ -1395,7 +1395,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:134
 msgid "The prompt for this section"
-msgstr ""
+msgstr "本題的題目"
 
 #: templates/legacy/response/oa_response.html:148
 msgid "You are on team "
@@ -1431,7 +1431,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(可選填)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1446,7 +1446,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "輸入您對以上提示的回答。"
 
 #: templates/legacy/response/oa_response.html:211
 #, python-format
@@ -1466,7 +1466,7 @@ msgstr "我們無法儲存您的進度"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "您的作答之狀態"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1482,7 +1482,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:261
 msgid "We could not upload files"
-msgstr ""
+msgstr "我們無法上傳文件"
 
 #: templates/legacy/response/oa_response.html:267
 msgid "We could not delete files"
@@ -1502,11 +1502,11 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:285
 msgid "Upload files"
-msgstr ""
+msgstr "上傳文件"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "上傳檔案"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1550,7 +1550,7 @@ msgstr "送出您的回應並移動至下一步"
 
 #: templates/legacy/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "您的提交已被取消。"
 
 #: templates/legacy/response/oa_response_cancelled.html:37
 #, python-format
@@ -1601,12 +1601,12 @@ msgstr "完成"
 #: templates/legacy/response/oa_response_submitted.html:51
 #: templates/legacy/self/oa_self_assessment.html:67
 msgid "Your response"
-msgstr ""
+msgstr "您的回應"
 
 #: templates/legacy/response/oa_response_graded.html:33
 #: templates/legacy/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "您所上傳的檔案"
 
 #: templates/legacy/response/oa_response_submitted.html:32
 msgid ""
@@ -1640,7 +1640,7 @@ msgstr "\n你仍需要完成 %(start_tag)s自我評量%(end_tag)s的步驟。"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "錯誤"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1666,7 +1666,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1677,7 +1677,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
 
 #: templates/legacy/self/oa_self_assessment.html:88
 msgid "Submit your assessment"
@@ -1692,7 +1692,7 @@ msgstr ""
 
 #: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
 msgid "Staff Grade"
-msgstr ""
+msgstr "將工作人員分類"
 
 #: templates/legacy/staff_area/oa_staff_area.html:8
 #: templates/legacy/staff_area/oa_staff_area.html:35
@@ -1757,7 +1757,7 @@ msgstr "問題步驟"
 
 #: templates/legacy/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
-msgstr ""
+msgstr "活躍於此步驟的學生"
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
@@ -1782,7 +1782,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
-msgstr ""
+msgstr "提供學習者分辨問題的分類標準。"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
 #, python-format
@@ -1814,7 +1814,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:32
 #: templates/legacy/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "根據對以上提示，學生的回應"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:57
@@ -1831,11 +1831,11 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr ""
+msgstr "\n可用%(ungraded)s 和檢查%(in_progress)s "
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr ""
+msgstr "使用問題專欄超過此學習者當前分數。"
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:9
 msgid "Override this team's current grade using the problem's rubric."
@@ -1912,7 +1912,7 @@ msgstr "學生的自我評量"
 
 #: templates/legacy/staff_area/oa_student_info.html:87
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "對於學習者的評估"
 
 #: templates/legacy/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
@@ -1932,7 +1932,7 @@ msgid ""
 "\n"
 "                            Final grade: %(points_earned)s out of %(points_possible)s\n"
 "                        "
-msgstr ""
+msgstr "\n最後分數：%(points_earned)s 沒有%(points_possible)s"
 
 #: templates/legacy/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
@@ -1952,7 +1952,7 @@ msgstr[0] "\n%(assessment_label)s - %(points)s 分數"
 
 #: templates/legacy/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
-msgstr ""
+msgstr "已記錄意見"
 
 #: templates/legacy/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
@@ -1963,7 +1963,7 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "學習者意見已將從同儕互評中刪除。除非你刪除了學習者已提交回應意見的問題，學習者收到零分分數。"
 
 #: templates/legacy/staff_area/oa_student_info.html:172
 msgid ""
@@ -2086,7 +2086,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -2097,7 +2097,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: templates/legacy/student_training/student_training.html:58
 #: templates/legacy/student_training/student_training.html:66
@@ -2186,7 +2186,7 @@ msgstr "反饋意見已儲存。"
 
 #: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
-msgstr ""
+msgstr "工作人員評論"
 
 #: xblock/grade_mixin.py:372
 msgid "Peer Median Grade"
@@ -2199,7 +2199,7 @@ msgstr "同儕 {peer_index}"
 
 #: xblock/grade_mixin.py:378
 msgid "Peer Comments"
-msgstr ""
+msgstr "同儕評論"
 
 #: xblock/grade_mixin.py:388
 msgid "Self Assessment Grade"
@@ -2223,30 +2223,30 @@ msgstr "同儕"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
-msgstr ""
+msgstr "該作業的成績來自老師評分的成績。"
 
 #: xblock/grade_mixin.py:657
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
-msgstr ""
+msgstr "該作業的成績取決於您同儕互評的平均成績。"
 
 #: xblock/grade_mixin.py:660
 msgid "The grade for this problem is determined by your Self Assessment."
-msgstr ""
+msgstr "該作業的成績來自您自我評分的成績。"
 
 #: xblock/grade_mixin.py:666
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
-msgstr ""
+msgstr "您已成功完成此問題，並收到了{earned_points}/{total_points}."
 
 #: xblock/grade_mixin.py:674
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
-msgstr ""
+msgstr "您尚未收到必要數量的同行評分，以計算您的成績。"
 
 #: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
@@ -2292,19 +2292,19 @@ msgstr "您沒有權限重新排序任務。"
 
 #: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
-msgstr ""
+msgstr "你沒有權限存取工作人員的ORA區塊"
 
 #: xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
-msgstr ""
+msgstr "你沒有權限存取ORA學習者的資訊"
 
 #: xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
-msgstr ""
+msgstr "你沒有權限存取工作人員的ORA評分"
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "暫停"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2312,7 +2312,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "不適用"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2320,27 +2320,27 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "已提交"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
-msgstr ""
+msgstr "錯誤獲取學習者資訊。"
 
 #: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
-msgstr ""
+msgstr "檢查學習者的回答錯誤得讀取"
 
 #: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
-msgstr ""
+msgstr "此時已無其他學習者的作業可進行評分。"
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr ""
+msgstr "獲得同學分數訊息的錯誤"
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
-msgstr ""
+msgstr "同儕評分發生錯誤，請再次檢查。"
 
 #: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
@@ -2359,7 +2359,7 @@ msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "此學習者的意見已將從同儕互評中刪除。除非你刪除了學習者已提交回應意見的問題，學習者會收到零分。"
 
 #: xblock/staff_area_mixin.py:789
 msgid ""
@@ -2397,15 +2397,15 @@ msgstr "成功更新 OpenAssessment XBlock"
 
 #: xblock/utils/data_conversion.py:315
 msgid "You must provide options selected in the assessment."
-msgstr ""
+msgstr "您必須經過評估提供可選擇的選項。"
 
 #: xblock/utils/data_conversion.py:318
 msgid "You must provide overall feedback in the assessment."
-msgstr ""
+msgstr "您必須經過評估提供整體的回饋。"
 
 #: xblock/utils/data_conversion.py:321
 msgid "You must provide feedback for criteria in the assessment."
-msgstr ""
+msgstr "您必須依據評估標準提供回饋。"
 
 #: xblock/utils/resolve_dates.py:52
 #, python-brace-format
@@ -2470,7 +2470,7 @@ msgstr "每一個評分練習範例回應一定是唯一的。"
 
 #: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr ""
+msgstr "如果同儕回饋是唯一的步驟，那在“required”的條件必須是準確的。"
 
 #: xblock/utils/validation.py:162
 msgid ""
@@ -2518,7 +2518,7 @@ msgstr "問題釋出後您不能再修改分數值。"
 
 #: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "學生培訓必須至少有一個培訓範例。"
 
 #: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."

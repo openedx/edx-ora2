@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Edukometrija <jolitad@mruni.eu>, 2015\n"
 "Language-Team: Lithuanian (Lithuania) (http://app.transifex.com/open-edx/edx-platform/language/lt_LT/)\n"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessment"
-msgstr ""
+msgstr "Įvertinimas"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessments"
@@ -172,11 +172,11 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr ""
+msgstr "Bendrakursių"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
-msgstr ""
+msgstr "Savęs"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Waiting"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr ""
+msgstr "Personalas"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr ""
+msgstr "Prašome palaukti"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
@@ -213,12 +213,12 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Patvirtinti"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Atšaukti"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -399,7 +399,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "Naudotojo vardas"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
@@ -451,32 +451,32 @@ msgstr ""
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "Pastraipa"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr ""
+msgstr "Iš anksto suformatuota"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr ""
+msgstr "3 pavadinimas"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr ""
+msgstr "4 pavadinimas"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr ""
+msgstr "5 pavadinimas"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr ""
+msgstr "6 pavadinimas"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43

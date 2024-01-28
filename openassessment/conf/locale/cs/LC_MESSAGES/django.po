@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Jiří Podhorecký, 2023\n"
 "Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
@@ -470,7 +470,7 @@ msgid ""
 "This feature is being enabled by the course-level setting. It can be found "
 "under the Open Response Assessment Settings card on the Pages & Resources "
 "studio page."
-msgstr ""
+msgstr "Tato funkce je povolena nastavením na úrovni kurzu. Naleznete jej pod kartou Nastavení hodnocení otevřených odpovědí na stránce studia Stránky a zdroje."
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -557,31 +557,31 @@ msgstr "Zadejte text zpětné vazby, který studenti uvidí, než zadají vlastn
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
-msgstr ""
+msgstr "Konfigurace termínů"
 
 #: templates/legacy/edit/oa_edit_schedule.html:9
 msgid "Select a deadline configuration option"
-msgstr ""
+msgstr "Vyberte možnost konfigurace termínu"
 
 #: templates/legacy/edit/oa_edit_schedule.html:13
 msgid " NEW"
-msgstr ""
+msgstr "NOVÉ"
 
 #: templates/legacy/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
-msgstr ""
+msgstr "Nakonfigurujte termíny ručně"
 
 #: templates/legacy/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
-msgstr ""
+msgstr "Přiřaďte termíny termínu platnosti podsekce"
 
 #: templates/legacy/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
-msgstr ""
+msgstr "Přizpůsobte termíny datu ukončení kurzu"
 
 #: templates/legacy/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
-msgstr ""
+msgstr "Přečtěte si další informace o nastavení data otevřené odpovědi"
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
@@ -1331,19 +1331,19 @@ msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
 "                      "
-msgstr ""
+msgstr "\nVaše práce se automaticky uloží a vy se můžete kdykoli před termínem odevzdání vrátit a dokončit odpověď svého týmu."
 
 #: templates/legacy/response/oa_response.html:81
 msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time.\n"
 "                      "
-msgstr ""
+msgstr "\nVaše práce se automaticky uloží a vy se můžete kdykoli vrátit a dokončit odpověď svého týmu."
 
 #: templates/legacy/response/oa_response.html:86
 msgid ""
 "After you submit a response on behalf of your team, it cannot be edited."
-msgstr ""
+msgstr "Po odeslání odpovědi jménem týmu ji nelze upravovat."
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
@@ -1353,25 +1353,25 @@ msgstr "Zadejte svou odpověď na výzvu."
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the subsection due date "
-msgstr ""
+msgstr "Vaše práce se automaticky uloží a vy se můžete vrátit a dokončit svou odpověď kdykoli před termínem dokončení podsekce"
 
 #: templates/legacy/response/oa_response.html:94
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the course ends "
-msgstr ""
+msgstr "Vaše práce se automaticky uloží a můžete se vrátit a dokončit svou odpověď kdykoli před koncem kurzu"
 
 #: templates/legacy/response/oa_response.html:96
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the due date "
-msgstr ""
+msgstr "Vaše práce se automaticky uloží a vy se můžete vrátit a dokončit svou odpověď kdykoli před datem splatnosti"
 
 #: templates/legacy/response/oa_response.html:108
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
-msgstr ""
+msgstr "Vaše práce se automaticky uloží a vy se můžete kdykoli vrátit a odpověď dokončit."
 
 #: templates/legacy/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
@@ -1454,7 +1454,7 @@ msgstr "Nepodařilo se nám uložit váš postup"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Stav vaší odpovědi"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Manish Manish <manish@manprax.com>, 2021\n"
 "Language-Team: Hindi (http://app.transifex.com/open-edx/edx-platform/language/hi/)\n"
@@ -31,13 +31,13 @@ msgstr "यह खंड लोड नहीं किया जा सका."
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:158
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "स्टाफ अससेस्समेंट फोरम लोड नही होपाया|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:180
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "यह उपग्रदेड और चेक्केद आउट रेसपोनस का डिस्प्ले लोड नहीं किया जासकता|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -80,7 +80,7 @@ msgstr "इस प्रश्न को सुरक्षित नहीं �
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:505
 msgid "The server could not be contacted."
-msgstr ""
+msgstr "सर्वर से संपर्क नहीं किया जा सका."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -92,43 +92,43 @@ msgstr "अपलोड यू.आर.ऐल. प्राप्त नहीं
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:550 xblock/static/js/src/oa_server.js:569
 msgid "Server error."
-msgstr ""
+msgstr "सर्वर एर्र|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:589
 msgid "Could not retrieve download url."
-msgstr ""
+msgstr "डाउनलोड यू.आर.ऐल. प्राप्त नहीं किया जा सका."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:615
 msgid "The submission could not be removed from the grading pool."
-msgstr ""
+msgstr "सबमिस्स्न को रिमूव नही किया जासकता ग्रेडिंग पूल से|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:671
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "मल्टिपल टीम रिटर्ण्ड होगई कोर्स के लिए "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:678
 msgid "Could not load teams information."
-msgstr ""
+msgstr "टीमस इन्फॉर्मेशन लोड नही होसका|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:700
 msgid "User lookup failed"
-msgstr ""
+msgstr "उसेर लूकप फ़ैलद "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:705
 msgid "Error when looking up username"
-msgstr ""
+msgstr "एर्र होरहा जब यूसर्नेम देखा जा रहा है "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -148,47 +148,47 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Unit Name"
-msgstr ""
+msgstr "यूनिट नेम "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Units"
-msgstr ""
+msgstr "इकाइयों"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessment"
-msgstr ""
+msgstr "आंकलन"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessments"
-msgstr ""
+msgstr "अस्सेस्मेंट्स"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Total Responses"
-msgstr ""
+msgstr "टोटल रेस्पोंसेस "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Training"
-msgstr ""
+msgstr "ट्रेनिंग "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr ""
+msgstr "सहपाठी"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
-msgstr ""
+msgstr "स्वयं"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Waiting"
-msgstr ""
+msgstr "वेटिंग "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr ""
+msgstr "कर्मचारी"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
-msgstr ""
+msgstr "फ़ाइनल ग्रेड रिसीव्ड "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff Grader"
@@ -196,29 +196,29 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "ओपन अससेस्समेंट्स का लिसट अनअवेईलेबल है|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr ""
+msgstr "कृपया प्रतीक्षा करें"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
-msgstr ""
+msgstr "ब्लॉक व्यू अनअवेईलेबल है|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Back to Full List"
-msgstr ""
+msgstr "बॅक तो फुल्ललिस्ट "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "पुष्टि करें"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "रद्द करना"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -266,7 +266,7 @@ msgstr ""
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "अगर तुम इस पेज को बिना सबमिट या सेव किए छोरोगे, आपके सभी काम हट जाएंगे इस रेसपोनस से|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:461
@@ -281,7 +281,7 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:490
 msgid "Error"
-msgstr ""
+msgstr "त्रुटि"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:511
@@ -293,19 +293,19 @@ msgstr ""
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr ""
+msgstr "आप अपना रेसपोनस बस सबमिट करने ही वाले है इस असाइन्मंट के लिए| एक बार अपने यह रेसपोनस सबमिट कर दिया, तो आप ना चेंज करपाएँगे और ना ही नया रेसपोनस सबमिट करपाएँगे|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:589
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "इंडिविदूयल फ़ाइल का साइज़ {max_files_mb} MB या कम|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:603
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "फ़ाइल अपलोड फ़ेलएड होगया: अनसपपोर्टेड फ़ाइल टाइप| केवल सपपोर्टेड फ़ाइल टाइप अपलोड हो सक्ता है| अगर आपके पास कोई सवाल हो, कृपया कोर्स टीम को संपर्क करे|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:614
@@ -316,17 +316,17 @@ msgstr ""
 #: xblock/static/js/src/lms/oa_response.js:682
 #: xblock/static/js/src/lms/oa_response.js:688
 msgid "Describe "
-msgstr ""
+msgstr "डिस्क्राइब "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:682
 msgid "(required):"
-msgstr ""
+msgstr "(रिक्वाइर्ड):"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:702
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "थमनेल व्यू ऑफ "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:779
@@ -338,32 +338,32 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "क्या आप पक्का है आप इस फ़ाइल को डिलीट करना चाहते है? यह रिस्टोरड नही किया जा सकता है|\nफ़ाइल:"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_self.js:138
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "अगर आप इस पेज को बिना सेल्फ असेस्समेंट सबमिट किए लीव करते है, आपका काम खतम होजाएगा जो अपने किया है|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:143
 #: xblock/static/js/src/lms/oa_staff_area.js:253
 msgid "Unexpected server error."
-msgstr ""
+msgstr "अनएक्सपेक्टेड सर्वर एर्र|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:147
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "तुम्हें ज़रूर एक लेयर्नर नेम प्रोवाइड करना चाहिए|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:214
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "यह ग्रेड अप्लाइड होगा सभी मेम्बर्स के लिए टीम के| क्या आप कंटिन्यू करना चाहते है?"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:218
@@ -373,25 +373,25 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:304
 msgid "Error getting the number of ungraded responses"
-msgstr ""
+msgstr "अनग्रदेड रेसपोनस का नंबर लेने के लिए एर्र आ रहा है "
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "अगर आप इस पेज को बिना अपने स्टाफ अससेस्समेंट को सबमिट किए छोरते है, तो आपका सारा काम खतम होजाएगा|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_training.js:130
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "फीडबक्क अवाईलेबल है सेलेक्स्न के लिए|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_peer.js:217
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "अगर आप इस पेज को बिना अपने पीर अससेस्समेंट को सबमिट किए छोरते है, तो आपका काम खतम होजाएगा|"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Refresh"
@@ -399,7 +399,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "उपयोगकर्ता नाम"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
@@ -446,47 +446,47 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 #: xblock/static/js/src/lms/oa_base.js:424
 msgid "Unable to load"
-msgstr ""
+msgstr "लोड करने में अनएबल "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "पैराग्राफ"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr ""
+msgstr "पूर्वस्‍वरूपित"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr ""
+msgstr "शीर्षक क्रमांक 3"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr ""
+msgstr "शीर्षक ४"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr ""
+msgstr "शीर्षक क्रमांक 5"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr ""
+msgstr "शीर्षक क्रमांक 6"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43
 msgid "Unnamed Option"
-msgstr ""
+msgstr "अननेमड ओप्स्न "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:53
 msgid "Not Selected"
-msgstr ""
+msgstr "अचयनित"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_rubric.js:124
@@ -496,7 +496,7 @@ msgstr ""
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
-msgstr ""
+msgstr "क्रिटेरीयन अद्देद "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:102
@@ -510,7 +510,7 @@ msgstr ""
 #: xblock/static/js/src/studio/oa_edit_listeners.js:150
 #: xblock/static/js/src/studio/oa_edit_listeners.js:186
 msgid "Option Deleted"
-msgstr ""
+msgstr "ओप्स्न डेलीटेड "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:152
@@ -518,48 +518,48 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr ""
+msgstr "आपने एक ओप्स्न डिलीट कर दिया| यह ओप्स्न हट चुका है इस सैंपल रेसपोनस लयर्नर ट्रेनिंग स्टेप से इस क्रिटेरिअन से| आपको शायद नया ओप्स्न सिलैक्ट करना होगा इस कृतेरियन के लिए|"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:188
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr ""
+msgstr "आपने सभी ओप्स्न को डिलीट कर दिया है इस कृतेरियन से| यह कृतेरियन हट चुका है सैंपले रेस्पोंसेस इन लेयर्नर ट्रेनिंग स्टेप से| "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:214
 msgid "Criterion Deleted"
-msgstr ""
+msgstr "क्रटेरियन डेलीटेड "
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:216
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr ""
+msgstr "आपने एक क्रटेरियान डिलीट केआर दिया है| यह क्रटेरियान हट चुका है एक्जाम्पल रेस्पोंसेस से लर्निंग ट्रेनिंग स्टेप में|"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:394
 msgid "Warning"
-msgstr ""
+msgstr "चेतावनी"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:395
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr ""
+msgstr "स्टेप में चेंजेस जो सिलैक्ट नहीं किया गया है अस्सीग्न्मेंट के सेवद नहीं होगा|"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
-msgstr ""
+msgstr "फ़ाइल टाइप एम्प्ती नहीं रह सकता|"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:101
 msgid "The following file types are not allowed: "
-msgstr ""
+msgstr "फॉलोइंग फ़ाइल टाइप अल्लोएड नहीं है|"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:183

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: Latvian (http://app.transifex.com/open-edx/edx-platform/language/lv/)\n"
@@ -211,12 +211,12 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Apstiprināt"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Atcelt"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -397,7 +397,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "Lietotājvārds"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"

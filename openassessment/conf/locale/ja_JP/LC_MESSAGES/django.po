@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Kyoto University <edxkyotoux@gmail.com>, 2017,2019\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
@@ -82,7 +82,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "アイテムID"
 
 #: data.py:868
 msgid "Submission ID"
@@ -391,7 +391,7 @@ msgstr "ルーブリック"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "スケジュール"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1142,7 +1142,7 @@ msgstr "この提出に関連するファイルを見る:"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "アップロード: "
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1187,7 +1187,7 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr ""
+msgstr "\n                     (%(num_must_grade)s 中 %(review_number)s まで進行中 )\n                "
 
 #: templates/legacy/peer/oa_peer_assessment.html:75
 #: templates/legacy/peer/oa_peer_turbo_mode.html:45
@@ -1420,7 +1420,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(オプション)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1455,7 +1455,7 @@ msgstr "進捗を保存できませんでした"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "あなたの返信のステータス"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1495,7 +1495,7 @@ msgstr "ファイルをアップロード"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "ファイルをアップロード"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1629,7 +1629,7 @@ msgstr "\n                        引き続き%(start_tag)sセルフ・アセス
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "エラー"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2064,7 +2064,7 @@ msgid ""
 "\n"
 "                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                  "
-msgstr ""
+msgstr "\n                     ( %(training_available_num)s 中 %(current_progress_num)s まで進行中)\n                  "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -2293,7 +2293,7 @@ msgstr "ORAスタッフ採点へのアクセスがはありません。"
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "待機中"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2309,7 +2309,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "提出済"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

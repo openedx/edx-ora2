@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Jirayu Chamamahattana <mman2x@gmail.com>, 2015\n"
 "Language-Team: Thai (http://app.transifex.com/open-edx/edx-platform/language/th/)\n"
@@ -158,7 +158,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessment"
-msgstr ""
+msgstr "การประเมิน"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Assessments"
@@ -174,11 +174,11 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Peer"
-msgstr ""
+msgstr "เพื่อน"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Self"
-msgstr ""
+msgstr "ตนเอง"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Waiting"
@@ -186,7 +186,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff"
-msgstr ""
+msgstr "เจ้าหน้าที่"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Final Grade Received"
@@ -202,7 +202,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Please wait"
-msgstr ""
+msgstr "กรุณารอสักครู่"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Block view is unavailable"
@@ -215,12 +215,12 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Confirm"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
@@ -401,7 +401,7 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Username"
-msgstr ""
+msgstr "Username"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
@@ -453,32 +453,32 @@ msgstr ""
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "ย่อหน้า"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr ""
+msgstr "ข้อความที่ไม่ได้จัดรูปแบบ"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr ""
+msgstr "หัวเรื่องที่ 3"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr ""
+msgstr "หัวเรื่องที่ 4"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr ""
+msgstr "หัวเรื่องที่ 5"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr ""
+msgstr "หัวเรื่องที่ 6"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43

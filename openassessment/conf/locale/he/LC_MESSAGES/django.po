@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>, 2019,2021\n"
 "Language-Team: Hebrew (http://app.transifex.com/open-edx/edx-platform/language/he/)\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "מזהה פריט"
 
 #: data.py:868
 msgid "Submission ID"
@@ -181,7 +181,7 @@ msgstr "שם התצוגה עבור רכיב זה"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "תגובה בטקסט"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
@@ -393,7 +393,7 @@ msgstr "כותרת"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "קבע תאריך"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -929,11 +929,11 @@ msgstr "דרג תשובות זמינות"
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "לא ניתן לבצע כעת דירוג של תגובות זמינות. פריט זה אינו מוגדר לצורך הערכת חברי צוות."
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "נא המתן"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -1147,7 +1147,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "הועלה על ידי"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1415,7 +1415,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:173
 msgid "Your Response "
-msgstr ""
+msgstr "תשובתך"
 
 #: templates/legacy/response/oa_response.html:177
 #: templates/legacy/response/oa_response.html:247
@@ -1425,7 +1425,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(רשות)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1460,11 +1460,11 @@ msgstr "לא הצלחנו לשמור את התקדמותך"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "סטטוס תשובתך"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
-msgstr ""
+msgstr "העלאת קבצים"
 
 #: templates/legacy/response/oa_response.html:253
 msgid ""
@@ -1492,7 +1492,7 @@ msgstr "בחר קובץ להעלאה עבור הגשה זו."
 
 #: templates/legacy/response/oa_response.html:280
 msgid "Supported file types: "
-msgstr ""
+msgstr "סוגי קבצים נתמכים:"
 
 #: templates/legacy/response/oa_response.html:285
 msgid "Upload files"
@@ -1500,7 +1500,7 @@ msgstr "העלה את הקובץ"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "העלה קובץ"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1634,7 +1634,7 @@ msgstr "\n                       עליך להשלים עדיין את שלב %(
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "שגיאה"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2301,7 +2301,7 @@ msgstr "אין לך הרשאה לגשת לדירוג הצוות של ORA."
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "בהמתנה"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2309,7 +2309,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "לא ישים"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2317,7 +2317,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "הוגש"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

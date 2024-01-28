@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Frode Arntsen <frode.arntsen@unit.no>, 2014,2016-2017\n"
 "Language-Team: Norwegian Bokmål (http://app.transifex.com/open-edx/edx-platform/language/nb/)\n"
@@ -386,7 +386,7 @@ msgstr "Rubrikk"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Plan"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1138,7 +1138,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Lastet opp av"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1416,7 +1416,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Valgfitt)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1451,7 +1451,7 @@ msgstr "Ditt arbeid kunne ikke lagres"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Status på ditt svar"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1491,7 +1491,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Last opp fil"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1625,7 +1625,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Feil"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2290,7 +2290,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Venter"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2306,7 +2306,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Levert"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

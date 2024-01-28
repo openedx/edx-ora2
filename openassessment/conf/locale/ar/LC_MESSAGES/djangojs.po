@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2021\n"
 "Language-Team: Arabic (http://app.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -60,7 +60,7 @@ msgstr "تعذّر تقديم هذا الرد."
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:237
 msgid "Please check your internet connection."
-msgstr ""
+msgstr "الرجاء التحقق من اتصال الانترنت الخاص بك."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -145,17 +145,17 @@ msgstr "خطأ في العثور على اسم المستخدم"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:729
 msgid "Failed to clone rubric"
-msgstr ""
+msgstr "فشل استنساخ القاعدة"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "View and grade responses"
-msgstr ""
+msgstr "عرض الردود وتقديرها"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "قم بتجربة تجربة التقدير الجديدة"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Unit Name"
@@ -203,7 +203,7 @@ msgstr "الدرجة النهائية المستحقة"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "Staff Grader"
-msgstr ""
+msgstr "ممهدة الموظفين"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
 msgid "List of Open Assessments is unavailable"
@@ -224,53 +224,53 @@ msgstr "العودة إلى القائمة الكاملة"
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "تأكيد"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr ""
+msgstr "لا يزال هناك ملف قيد التقدم. من فضلك انتظر حتى تنتهي"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:243
 msgid "Cannot submit empty response even everything is optional."
-msgstr ""
+msgstr "لا يمكن تقديم استجابة فارغة حتى كل شيء اختياري."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr ""
+msgstr "الرجاء تحميل ملف."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:228
 msgid "Please provide a response."
-msgstr ""
+msgstr "يرجى تقديم رد."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr ""
+msgstr "لم يتم تحديد ملفات للتحميل."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr ""
+msgstr "يرجى تقديم وصف لكل ملف تقوم بتحميله."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:344
 msgid "Your file has been deleted or path has been changed: "
-msgstr ""
+msgstr "تم حذف ملفك أو تم تغيير المسار:"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving draft"
-msgstr ""
+msgstr "حفظ المسودة"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:446
@@ -282,12 +282,12 @@ msgstr "ستفقد أي تغيير كنت قد أجريته على الردّ إ
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:461
 msgid "Saving draft..."
-msgstr ""
+msgstr "جارٍ حفظ المسودة ..."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:477
 msgid "Draft saved!"
-msgstr ""
+msgstr "تم حفظ المسودة!"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:490
@@ -297,7 +297,7 @@ msgstr "حدث خطأ"
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:511
 msgid "Confirm Submit Response"
-msgstr ""
+msgstr "Confirm Submit Response"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:514
@@ -321,7 +321,7 @@ msgstr "فشل تحميل الملف: صيغة الملف غير مدعومة. �
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:614
 msgid "The maximum number files that can be saved is "
-msgstr ""
+msgstr "الحد الأقصى لعدد الملفات التي يمكن حفظها هو"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:682
@@ -342,7 +342,7 @@ msgstr "صورة مصغرة لـ"
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:779
 msgid "Confirm Delete Uploaded File"
-msgstr ""
+msgstr "Confirm Delete Uploaded File"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:804
@@ -379,7 +379,7 @@ msgstr "سيتم اعتماد هذه الدرجة لجميع أعضاء الفر
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:218
 msgid "Confirm Grade Team Submission"
-msgstr ""
+msgstr "Confirm Grade Team Submission"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_staff_area.js:304
@@ -414,11 +414,11 @@ msgstr "اسم المستخدم"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peers Assessed"
-msgstr ""
+msgstr "تقييم الأقران"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Peer Responses Received"
-msgstr ""
+msgstr "تلقي ردود الأقران"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid "Time Spent On Current Step"
@@ -436,7 +436,7 @@ msgstr "حالة الدرجة"
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "تم تكوين مشكلة \"{name}\" لتتطلب حدًا أدنى من {min_grades} درجات أقران ، وتطلب مراجعة {min_graded} من الأقران."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
 msgid ""
@@ -502,7 +502,7 @@ msgstr "لم يجرِ تحديده"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_rubric.js:124
 msgid "Problem cloning rubric"
-msgstr ""
+msgstr "مشكلة في الاستنساخ"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:100
@@ -515,7 +515,7 @@ msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Assessment "
 "Steps tab."
-msgstr ""
+msgstr "لقد قمت بإضافة معيار. ستحتاج إلى تحديد خيار للمعيار في خطوة تدريب المتعلم. للقيام بذلك ، انقر فوق علامة التبويب خطوات التقييم."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:150
@@ -580,15 +580,15 @@ msgstr "حفظ غير ناجح"
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:184
 msgid "Errors detected on the following tabs: "
-msgstr ""
+msgstr "تم اكتشاف أخطاء في علامات التبويب التالية:"
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
-msgstr ""
+msgstr "تم إصدار ORA هذا بالفعل. ستؤثر التغييرات فقط على المتعلمين الذين يقدمون عمليات إرسال جديدة. لن يتم تعديل عمليات الإرسال الحالية من خلال هذا التغيير."
 
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_edit.js:319
 msgid "error count: "
-msgstr ""
+msgstr "عدد الأخطاء:"

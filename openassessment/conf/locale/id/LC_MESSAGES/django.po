@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Faizar Septiawan <faizarsangster@gmail.com>, 2023\n"
 "Language-Team: Indonesian (http://app.transifex.com/open-edx/edx-platform/language/id/)\n"
@@ -62,38 +62,38 @@ msgstr "Contoh {example_number} melewatkan pilihan untuk \"{criterion_name}\""
 #: data.py:534
 #, python-brace-format
 msgid "Criterion {number}: {label}"
-msgstr ""
+msgstr "Kriteria {number}: {label}"
 
 #: data.py:536
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "Poin {number}"
 
 #: data.py:537
 #, python-brace-format
 msgid "Median Score {number}"
-msgstr ""
+msgstr "Skor Median {number}"
 
 #: data.py:538
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr ""
+msgstr "Umpan balik {number}"
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "ID Item"
 
 #: data.py:868
 msgid "Submission ID"
-msgstr ""
+msgstr "ID Pengajuan"
 
 #: data.py:880
 msgid "Anonymized Student ID"
-msgstr ""
+msgstr "ID Siswa yang dianonimkan"
 
 #: data.py:911
 msgid "Assessment ID"
-msgstr ""
+msgstr "ID Penilaian"
 
 #: data.py:912
 msgid "Assessment Scored Date"
@@ -105,7 +105,7 @@ msgstr ""
 
 #: data.py:914
 msgid "Assessment Type"
-msgstr ""
+msgstr "Jenis Penilaian"
 
 #: data.py:915
 msgid "Anonymous Scorer Id"
@@ -130,11 +130,11 @@ msgstr ""
 
 #: data.py:921
 msgid "Final Score Earned"
-msgstr ""
+msgstr "Skor Akhir yang Diperoleh"
 
 #: data.py:922
 msgid "Final Score Possible"
-msgstr ""
+msgstr "Kemungkinan Skor Akhir"
 
 #: data.py:923
 msgid "Feedback Statements Selected"
@@ -146,11 +146,11 @@ msgstr ""
 
 #: data.py:926
 msgid "Response Files"
-msgstr ""
+msgstr "File Tanggapan"
 
 #: data.py:1317
 msgid "No description provided."
-msgstr ""
+msgstr "Tidak ada deskripsi yang diberikan."
 
 #: templates/legacy/edit/oa_edit.html:28
 msgid "Save"
@@ -188,13 +188,13 @@ msgstr "Tentukan apakah peserta harus meliputi teks berdasarkan respon terkait p
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
-msgstr ""
+msgstr "Editor Tanggapan"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:33
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
-msgstr ""
+msgstr "Pilih editor mana yang akan digunakan peserta didik untuk menyertakan respons berbasis teks terhadap perintah soal ini."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
@@ -293,7 +293,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "Tentukan jumlah tanggapan skor teratas untuk ditampilkan setelah pelajar mengirimkan tanggapan. Angka yang valid adalah 0 hingga 99. Jika angkanya 0, bagian Jawaban Terpopuler tidak ditampilkan kepada peserta didik."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
@@ -390,7 +390,7 @@ msgstr "Rubrik"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Jadwal"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1141,7 +1141,7 @@ msgstr "Lihat file yang terkait dengan kiriman ini:"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Diunggah oleh"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1419,7 +1419,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Opsi)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1454,7 +1454,7 @@ msgstr "Kami tidak dapat menyimpan kemajuan Anda"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Status respon Anda"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1494,7 +1494,7 @@ msgstr "Unggah file"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Unggah berkas"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1628,7 +1628,7 @@ msgstr "\n                        Anda masih harus menyelesaikan langkah %(start
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Kesalahan"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2292,7 +2292,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Ditunda"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2300,7 +2300,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "Tidak berlaku"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2308,7 +2308,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Terkirim"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Diana Huang <dkh@edx.org>, 2022\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
@@ -294,7 +294,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "Specificare il numero di risposte con il punteggio più alto da visualizzare dopo che lo studente ha inviato una risposta. I numeri validi sono compresi tra 0 e 99. Se il numero è 0, la sezione Risposte principali non viene visualizzata dagli studenti."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
@@ -474,7 +474,7 @@ msgid ""
 "This feature is being enabled by the course-level setting. It can be found "
 "under the Open Response Assessment Settings card on the Pages & Resources "
 "studio page."
-msgstr ""
+msgstr "Questa funzione è abilitata dall&#39;impostazione a livello di corso. Può essere trovato nella scheda Impostazioni di valutazione della risposta aperta nella pagina dello studio Pagine e risorse."
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -561,31 +561,31 @@ msgstr "Immettere il testo del feedback che verrà visualizzato dagli studenti p
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
-msgstr ""
+msgstr "Configurazione delle scadenze"
 
 #: templates/legacy/edit/oa_edit_schedule.html:9
 msgid "Select a deadline configuration option"
-msgstr ""
+msgstr "Seleziona un&#39;opzione di configurazione della scadenza"
 
 #: templates/legacy/edit/oa_edit_schedule.html:13
 msgid " NEW"
-msgstr ""
+msgstr "NUOVO"
 
 #: templates/legacy/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
-msgstr ""
+msgstr "Configura manualmente le scadenze"
 
 #: templates/legacy/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
-msgstr ""
+msgstr "Abbina le scadenze alla data di scadenza della sottosezione"
 
 #: templates/legacy/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
-msgstr ""
+msgstr "Far corrispondere le scadenze alla data di fine del corso"
 
 #: templates/legacy/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
-msgstr ""
+msgstr "Ulteriori informazioni sulle impostazioni della data di risposta aperta"
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
@@ -1334,19 +1334,19 @@ msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
 "                      "
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare a completare la risposta del tuo team in qualsiasi momento prima della data di scadenza"
 
 #: templates/legacy/response/oa_response.html:81
 msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time.\n"
 "                      "
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare a completare la risposta del tuo team in qualsiasi momento."
 
 #: templates/legacy/response/oa_response.html:86
 msgid ""
 "After you submit a response on behalf of your team, it cannot be edited."
-msgstr ""
+msgstr "Dopo aver inviato una risposta per conto del tuo team, non può essere modificata."
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
@@ -1356,25 +1356,25 @@ msgstr "Scrivi la tua risposta."
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the subsection due date "
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare per completare la risposta in qualsiasi momento prima della data di scadenza della sottosezione"
 
 #: templates/legacy/response/oa_response.html:94
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the course ends "
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare per completare la risposta in qualsiasi momento prima della fine del corso"
 
 #: templates/legacy/response/oa_response.html:96
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the due date "
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare per completare la risposta in qualsiasi momento prima della data di scadenza"
 
 #: templates/legacy/response/oa_response.html:108
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
-msgstr ""
+msgstr "Il tuo lavoro verrà salvato automaticamente e potrai tornare a completare la tua risposta in qualsiasi momento."
 
 #: templates/legacy/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
@@ -1457,7 +1457,7 @@ msgstr "Impossibile salvare i tuoi progressi "
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Stato della Tua Risposta"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Myagmarjav Enkhbileg <miigaa.lucky@gmail.com>, 2021\n"
 "Language-Team: Mongolian (http://app.transifex.com/open-edx/edx-platform/language/mn/)\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
-msgstr ""
+msgstr "Serialized гэсэн бүлэгт задлан ялгал хийж чадахгүй байна"
 
 #: assessment/api/student_training.py:191
 msgid ""
@@ -35,34 +35,34 @@ msgstr ""
 #: assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "Example {example_number} has a validation error: {error}"
 
 #: assessment/api/student_training.py:217
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "Example {example_number} has an invalid option for \"{criterion_name}\": \"{option_name}\""
 
 #: assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr ""
+msgstr "Example {example_number} has an extra option for \"{criterion_name}\""
 
 #: assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr ""
+msgstr "Example {example_number} is missing an option for \"{criterion_name}\""
 
 #: data.py:534
 #, python-brace-format
 msgid "Criterion {number}: {label}"
-msgstr ""
+msgstr "Шалгуур {number}: {label}"
 
 #: data.py:536
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "Оноо {тоо}"
 
 #: data.py:537
 #, python-brace-format
@@ -72,11 +72,11 @@ msgstr ""
 #: data.py:538
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr ""
+msgstr "{number} санал хүсэлт"
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "Item ID"
 
 #: data.py:868
 msgid "Submission ID"
@@ -88,19 +88,19 @@ msgstr ""
 
 #: data.py:911
 msgid "Assessment ID"
-msgstr ""
+msgstr "Үнэлгээний ID"
 
 #: data.py:912
 msgid "Assessment Scored Date"
-msgstr ""
+msgstr "Үнэлгээ авсан огноо"
 
 #: data.py:913
 msgid "Assessment Scored Time"
-msgstr ""
+msgstr "Үнэлгээ авсан цаг"
 
 #: data.py:914
 msgid "Assessment Type"
-msgstr ""
+msgstr "Үнэлгээний Төрөл"
 
 #: data.py:915
 msgid "Anonymous Scorer Id"
@@ -109,7 +109,7 @@ msgstr ""
 #: data.py:917
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
-msgstr ""
+msgstr "Overall Feedback"
 
 #: data.py:918
 msgid "Assessment Score Earned"
@@ -125,11 +125,11 @@ msgstr ""
 
 #: data.py:921
 msgid "Final Score Earned"
-msgstr ""
+msgstr "Цуглуулсан оноо"
 
 #: data.py:922
 msgid "Final Score Possible"
-msgstr ""
+msgstr "Боломжит оноо"
 
 #: data.py:923
 msgid "Feedback Statements Selected"
@@ -149,11 +149,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit.html:28
 msgid "Save"
-msgstr ""
+msgstr "Хадгалах"
 
 #: templates/legacy/edit/oa_edit.html:32
 msgid "Cancel"
-msgstr ""
+msgstr "Болих"
 
 #: templates/legacy/edit/oa_edit_assessment_steps.html:6
 msgid ""
@@ -165,15 +165,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr ""
+msgstr "Дэлгэцний нэр"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "Энэ бүрэлдэхүүний харагдах нэр"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "Бичвэр хариулт"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
@@ -211,7 +211,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
-msgstr ""
+msgstr "Буруу"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:53
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
@@ -219,7 +219,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr ""
+msgstr "Зөв"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:56
 msgid ""
@@ -277,7 +277,7 @@ msgstr ""
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:8
 #: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
-msgstr ""
+msgstr "Шилдэг  хариултууд"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
@@ -320,7 +320,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_student_info.html:122
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "Шалгуур"
 
 #: templates/legacy/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
@@ -331,38 +331,38 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_prompt.html:10
 #: templates/legacy/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr ""
+msgstr "Хасах"
 
 #: templates/legacy/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr ""
+msgstr "Шалгуур нэр"
 
 #: templates/legacy/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr ""
+msgstr "Criterion Prompt"
 
 #: templates/legacy/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr ""
+msgstr "Сонголт нэм"
 
 #: templates/legacy/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr ""
+msgstr "Шалгуурын хүсэлт"
 
 #: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
 msgid "None"
-msgstr ""
+msgstr "Хоосон"
 
 #: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
 msgid "Optional"
-msgstr ""
+msgstr "Optional"
 
 #: templates/legacy/edit/oa_edit_criterion.html:56
 #: templates/legacy/oa_rubric.html:13
 #: templates/legacy/student_training/student_training.html:93
 #: xblock/studio_mixin.py:55
 msgid "Required"
-msgstr ""
+msgstr "Шаардлага"
 
 #: templates/legacy/edit/oa_edit_criterion.html:61
 msgid ""
@@ -377,15 +377,15 @@ msgstr "Нээлттэй хариулах асуултын үнэлгээ"
 #: templates/legacy/edit/oa_edit_header_and_validation.html:8
 #: templates/legacy/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr ""
+msgstr "Prompt"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
-msgstr ""
+msgstr "Гарчиг"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Төлөвлөх"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -397,23 +397,23 @@ msgstr "Тохиргоо"
 
 #: templates/legacy/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr ""
+msgstr "Сонголт"
 
 #: templates/legacy/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr ""
+msgstr "Сонголтын нэр"
 
 #: templates/legacy/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr ""
+msgstr "Сонголтын цэгүүд"
 
 #: templates/legacy/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr ""
+msgstr "Сонголтын тайлбар"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
-msgstr ""
+msgstr "Үе шат: Ижил даалгавар"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:15
 msgid ""
@@ -445,7 +445,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
-msgstr ""
+msgstr "Graded By"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:39
 msgid ""
@@ -477,12 +477,12 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
-msgstr ""
+msgstr "Эхлэх хугацаа"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr ""
+msgstr "Эхлэх цаг"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
@@ -492,12 +492,12 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:31
 #: templates/legacy/staff_area/oa_staff_area.html:119
 msgid "Due Date"
-msgstr ""
+msgstr "Дуусах хугацаа"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:40
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
-msgstr ""
+msgstr "Дуусах өдөр"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
@@ -527,15 +527,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr ""
+msgstr "Шалгуур үзүүлэлт нэм"
 
 #: templates/legacy/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
-msgstr ""
+msgstr "Хариулах хүсэлт"
 
 #: templates/legacy/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
-msgstr ""
+msgstr "Зааврын хүсэлт"
 
 #: templates/legacy/edit/oa_edit_rubric.html:44
 msgid ""
@@ -583,11 +583,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
-msgstr ""
+msgstr "Хариулт эхлэх хугацаа"
 
 #: templates/legacy/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
-msgstr ""
+msgstr "Хариулт эхлэх цаг"
 
 #: templates/legacy/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
@@ -595,11 +595,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
-msgstr ""
+msgstr "Хариулт дуусах хугацаа "
 
 #: templates/legacy/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
-msgstr ""
+msgstr "Хариулт дуусах цаг"
 
 #: templates/legacy/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
@@ -702,7 +702,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr ""
+msgstr "Хариултын оноо"
 
 #: templates/legacy/edit/oa_training_example.html:27
 msgid "Response"
@@ -710,13 +710,13 @@ msgstr "Хариулт"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr ""
+msgstr "Сонгогдоогүй"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:15
 #: templates/legacy/oa_rubric.html:43
 #: templates/legacy/student_training/student_training.html:128
 msgid "points"
-msgstr ""
+msgstr "Оноонууд"
 
 #: templates/legacy/grade/oa_assessment_feedback.html:8
 #, python-format
@@ -806,7 +806,7 @@ msgstr "Таны хариултын үнэлгээ"
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Статус "
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -819,7 +819,7 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_complete.html:96
 msgid "Additional comments on your response"
-msgstr ""
+msgstr "Таны хариултаны нэмэлт тайлбарууд"
 
 #: templates/legacy/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
@@ -890,11 +890,11 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_not_started.html:16
 msgid "Not Started"
-msgstr ""
+msgstr "Эхлүүлээгүй"
 
 #: templates/legacy/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
-msgstr ""
+msgstr "Та энэ асуултыг хараахан эхлүүлээгүй байна."
 
 #: templates/legacy/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
@@ -923,7 +923,7 @@ msgstr ""
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "Түр хүлээн үү"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -1099,12 +1099,12 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Энэ даалгавар нь хэд хэдэн үе шаттай. Та эхлээд асуултуудын хариуг бөглөх ёстой. Бусад алхамууд нь таны хариултуудын доор гарч ирнэ."
 
 #: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
 #: templates/openassessmentblock/base.html:100
 msgid "Loading"
-msgstr ""
+msgstr "Ачаалал"
 
 #: templates/legacy/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
@@ -1120,7 +1120,7 @@ msgstr ""
 
 #: templates/legacy/oa_rubric.html:53
 msgid "Comments"
-msgstr ""
+msgstr "Тайлбарууд"
 
 #: templates/legacy/oa_submission_answer.html:8
 msgid "The question for this section"
@@ -1137,7 +1137,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Ачаалсан"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1269,7 +1269,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_unavailable.html:17
 #: templates/legacy/student_training/student_training_unavailable.html:16
 msgid "Not Available"
-msgstr ""
+msgstr "Боломжгүй"
 
 #: templates/legacy/peer/oa_peer_waiting.html:20
 #, python-format
@@ -1316,7 +1316,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:54
 #: templates/legacy/self/oa_self_assessment.html:56
 msgid "In Progress"
-msgstr ""
+msgstr "Явагдаж байна"
 
 #: templates/legacy/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
@@ -1343,7 +1343,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "Асуултын хариултыг энд оруулна уу!"
 
 #: templates/legacy/response/oa_response.html:92
 msgid ""
@@ -1379,7 +1379,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:134
 msgid "The prompt for this section"
-msgstr ""
+msgstr "Энэ хэсгийн асуулт"
 
 #: templates/legacy/response/oa_response.html:148
 msgid "You are on team "
@@ -1405,17 +1405,17 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:173
 msgid "Your Response "
-msgstr ""
+msgstr "Таны хариулт"
 
 #: templates/legacy/response/oa_response.html:177
 #: templates/legacy/response/oa_response.html:247
 msgid "(Required)"
-msgstr ""
+msgstr "(Заавал)"
 
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Нэмэлт)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1430,7 +1430,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "Дээрх асуултын хариултыг энд бичнэ үү."
 
 #: templates/legacy/response/oa_response.html:211
 #, python-format
@@ -1450,7 +1450,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Таны хариултын төлөв"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1490,7 +1490,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Файл оруулах"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1526,7 +1526,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:322
 msgid "We could not submit your response"
-msgstr ""
+msgstr "Бид таны хариултыг гаргаж чадсангүй."
 
 #: templates/legacy/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
@@ -1564,7 +1564,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_closed.html:20
 #: templates/legacy/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr ""
+msgstr "Гүйцээгээгүй"
 
 #: templates/legacy/response/oa_response_closed.html:32
 msgid ""
@@ -1579,13 +1579,13 @@ msgstr ""
 #: templates/legacy/self/oa_self_complete.html:18
 #: templates/legacy/student_training/student_training_complete.html:17
 msgid "Complete"
-msgstr ""
+msgstr "Гүйцээсэн"
 
 #: templates/legacy/response/oa_response_graded.html:30
 #: templates/legacy/response/oa_response_submitted.html:51
 #: templates/legacy/self/oa_self_assessment.html:67
 msgid "Your response"
-msgstr ""
+msgstr "Таны хариулт"
 
 #: templates/legacy/response/oa_response_graded.html:33
 #: templates/legacy/response/oa_response_submitted.html:54
@@ -1624,7 +1624,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Алдаа"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1704,7 +1704,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:69
 #: templates/legacy/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr ""
+msgstr "Хаах"
 
 #: templates/legacy/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
@@ -1720,15 +1720,15 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:56
 msgid "Submit"
-msgstr ""
+msgstr "Илгээх"
 
 #: templates/legacy/staff_area/oa_staff_area.html:78
 msgid "Response total"
-msgstr ""
+msgstr "Бүх хариулт"
 
 #: templates/legacy/staff_area/oa_staff_area.html:84
 msgid "Location"
-msgstr ""
+msgstr "Байршил"
 
 #: templates/legacy/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
@@ -1737,7 +1737,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:94
 #: templates/legacy/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
-msgstr ""
+msgstr "Үе шатын асуудал"
 
 #: templates/legacy/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
@@ -1745,16 +1745,16 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
-msgstr ""
+msgstr "Хугацаанууд"
 
 #: templates/legacy/staff_area/oa_staff_area.html:118
 msgid "Release Date"
-msgstr ""
+msgstr "Хугацааны мэдээлэл"
 
 #: templates/legacy/staff_area/oa_staff_area.html:131
 #: templates/legacy/staff_area/oa_staff_area.html:137
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
@@ -1959,7 +1959,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
-msgstr ""
+msgstr "Энэ асуулт хадгалагдаагүй байна."
 
 #: templates/legacy/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
@@ -2040,7 +2040,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "Сонгогдсон сонголт"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
@@ -2048,11 +2048,11 @@ msgstr "Санал шүүмж"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
-msgstr ""
+msgstr "Боломжтой цэгүүд"
 
 #: templates/legacy/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
-msgstr ""
+msgstr "Хариултанд нэвтрэх боломжийг сурах"
 
 #: templates/legacy/student_training/student_training.html:27
 #, python-format
@@ -2087,7 +2087,7 @@ msgstr ""
 #: templates/legacy/student_training/student_training.html:58
 #: templates/legacy/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
-msgstr ""
+msgstr "Хариултанд нэвтрэх боломжийг судлаж байна."
 
 #: templates/legacy/student_training/student_training.html:61
 msgid ""
@@ -2115,24 +2115,24 @@ msgstr ""
 
 #: templates/legacy/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
-msgstr ""
+msgstr "Таны сонгосон сонголт багшийн сонгосон сонголт юм."
 
 #: templates/legacy/student_training/student_training.html:105
 msgid "Selected Options Differ"
-msgstr ""
+msgstr "Сонгосон сонголтын зөрөөтэй байдал"
 
 #: templates/legacy/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr ""
+msgstr "Таны сонгосон сонголт багшийн сонгосон сонголт биш юм."
 
 #: templates/legacy/student_training/student_training.html:144
 msgid "We could not check your assessment"
-msgstr ""
+msgstr "Даалгаврыг шалгаж чадсангүй."
 
 #: templates/legacy/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
-msgstr ""
+msgstr "Өөрийн сонголтоо багшийн сонголттой харьцуул."
 
 #: templates/legacy/student_training/student_training_closed.html:29
 msgid ""
@@ -2151,23 +2151,23 @@ msgstr ""
 
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Гэнэтийн алдаа гарлаа."
 
 #: xblock/grade_mixin.py:179
 msgid "Peer Assessment"
-msgstr ""
+msgstr "Ижил даалгавар"
 
 #: xblock/grade_mixin.py:181
 msgid "Self Assessment"
-msgstr ""
+msgstr "Хувийн даалгавар"
 
 #: xblock/grade_mixin.py:221
 msgid "Assessment feedback could not be saved."
-msgstr ""
+msgstr "Даалгаврын хүсэлт хадгалагдсангүй."
 
 #: xblock/grade_mixin.py:232
 msgid "Feedback saved."
-msgstr ""
+msgstr "Хүсэлт хадгалагдсан."
 
 #: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
@@ -2204,7 +2204,7 @@ msgstr ""
 
 #: xblock/grade_mixin.py:524
 msgid "Peer"
-msgstr ""
+msgstr "Жигд"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
@@ -2269,7 +2269,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
-msgstr ""
+msgstr "Сургалтын цагийн хуваарь руу нэвтрэх эрх байхгүй байна."
 
 #: xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
@@ -2289,7 +2289,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Хүлээгдэж байна"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2305,7 +2305,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Илгээгдсэн"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
@@ -2355,7 +2355,7 @@ msgstr ""
 
 #: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
-msgstr ""
+msgstr "Error updating XBlock configuration"
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
@@ -2374,11 +2374,11 @@ msgstr ""
 #: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr ""
+msgstr "Үнэлгээний алдаа : {error}"
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
+msgstr "Successfully updated OpenAssessment XBlock"
 
 #: xblock/utils/data_conversion.py:315
 msgid "You must provide options selected in the assessment."
@@ -2425,25 +2425,25 @@ msgstr ""
 
 #: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
-msgstr ""
+msgstr "Асуудал наад зах нь нэг даалгавар агуулсан байна."
 
 #: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
-msgstr ""
+msgstr "Таны сонгосон даалгаврын захиалга хүчингүй байна."
 
 #: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr ""
+msgstr "In peer assessment, the \"Must Grade\" value must be a positive integer."
 
 #: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr ""
+msgstr "In peer assessment, the \"Graded By\" value must be a positive integer."
 
 #: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
-msgstr ""
+msgstr "In peer assessment, the \"Must Grade\" value must be greater than or equal to the \"Graded By\" value."
 
 #: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
@@ -2461,25 +2461,25 @@ msgstr ""
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr ""
+msgstr "Асуудал гарсан дараа даалгаврын  тоог өөрчилж чадахгүй."
 
 #: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr ""
+msgstr "Асуудал гарсан даалгаврын төрөл өөрчлөх боломжгүй"
 
 #: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
-msgstr ""
+msgstr "Гарчгийн тодорхойлолт хүчингүй."
 
 #: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
+msgstr "Options in '{criterion}' have duplicate name(s): {duplicates}"
 
 #: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
-msgstr ""
+msgstr "Ямар ч сонголттойгоор шалгуур санал бичгээр шаардаж байх ёстой."
 
 #: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
@@ -2487,19 +2487,19 @@ msgstr ""
 
 #: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr ""
+msgstr "Асуудал гарсны дараа шалгуур тоог өөрчилж чадахгүй."
 
 #: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr ""
+msgstr "Асуудал гарсны дараа шалгуур нэрийг өөрчлөх боломжгүй"
 
 #: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
-msgstr ""
+msgstr "Асуудал гарсны дараа хувилбарын дугаарыг өөрчилж чадахгүй."
 
 #: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
-msgstr ""
+msgstr "Асуудал гарсны дараа цэг утгыг өөрчилж чадахгүй"
 
 #: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
@@ -2507,7 +2507,7 @@ msgstr ""
 
 #: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
-msgstr ""
+msgstr "Тэргүүлэгчдийн тоо буруу байна."
 
 #: xblock/utils/validation.py:379
 msgid "The submission format is invalid."

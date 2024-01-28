@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: 亚峰 乔 <qiao_yafeng@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -103,7 +103,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "项目编号"
 
 #: data.py:868
 msgid "Submission ID"
@@ -323,11 +323,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:129
 msgid "Teams Enabled"
-msgstr ""
+msgstr "群组已启用"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:136
 msgid "Specify whether team submissions are allowed for this response."
-msgstr ""
+msgstr "指定是否允许团队提交此响应。"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
@@ -412,7 +412,7 @@ msgstr "评分标准"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "时间表"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1163,7 +1163,7 @@ msgstr "查看此提交的关联文件"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "上传者："
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1409,11 +1409,11 @@ msgstr "题目要求"
 
 #: templates/legacy/response/oa_response.html:148
 msgid "You are on team "
-msgstr ""
+msgstr "你不在团队"
 
 #: templates/legacy/response/oa_response.html:150
 msgid "Team Members: "
-msgstr ""
+msgstr "团队成员："
 
 #: templates/legacy/response/oa_response.html:155
 #, python-format
@@ -1441,7 +1441,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(非必填)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1476,7 +1476,7 @@ msgstr "我们无法保存您的进度。"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "您的答案的状态"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1496,7 +1496,7 @@ msgstr "无法上传文件"
 
 #: templates/legacy/response/oa_response.html:267
 msgid "We could not delete files"
-msgstr ""
+msgstr "我们不能删除文件"
 
 #: templates/legacy/response/oa_response.html:274
 msgid "Select one or more files to upload for this submission."
@@ -1516,7 +1516,7 @@ msgstr "上传文件"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "上传文件"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1650,7 +1650,7 @@ msgstr "\n                        您仍然需要完成%(start_tag)s自我评估
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2260,7 +2260,7 @@ msgstr ""
 
 #: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
-msgstr ""
+msgstr "仅限同行评估"
 
 #: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
@@ -2314,7 +2314,7 @@ msgstr "您无权访问教员评分"
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "等待"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2322,7 +2322,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "不适用"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2330,7 +2330,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "已提交"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

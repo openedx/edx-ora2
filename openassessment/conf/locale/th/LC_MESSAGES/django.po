@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Noppadol Choti <noppadol@thaicyberu.go.th>, 2019\n"
 "Language-Team: Thai (http://app.transifex.com/open-edx/edx-platform/language/th/)\n"
@@ -33,7 +33,7 @@ msgstr "ไม่สามารถแจงกฎรูบริคที่ต
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr ""
+msgstr "หากการมอบหมายของคุณมีขั้นตอนการฝึกอบรมผู้เรียน, รูบริกต้องมีเกณฑ์อย่างน้อยหนึ่งเกณฑ์ และเกณฑ์นั้นต้องมีอย่างน้อยหนึ่งตัวเลือก"
 
 #: assessment/api/student_training.py:203
 #, python-brace-format
@@ -79,7 +79,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "ID ไอเท็ม"
 
 #: data.py:868
 msgid "Submission ID"
@@ -172,17 +172,17 @@ msgstr "ชื่อที่แสดง"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "ชื่อที่แสดงสำหรับส่วนประกอบนี้"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "ข้อความตอบสนอง"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "ระบุว่า ผู้เรียนต้องรวมข้อความตอบกลับพื้นฐานต่อปัญหานี้ด้วยหรือไม่"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
@@ -196,13 +196,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr ""
+msgstr "การตอบสนองการอัพโหลดไฟล์"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "ระบุว่าผู้เรียนสามารถอัพโหลดไฟล์เป็นส่วนหนึ่งของการตอบกลับได้หรือไม่"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
@@ -233,19 +233,19 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr ""
+msgstr "ประเภทการอัพโหลดไฟล์"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "ไฟล์รูปภาพหรือ PDF"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr ""
+msgstr "ไฟล์ภาพ"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
-msgstr ""
+msgstr "ประเภทไฟล์ที่กำหนดเอง"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:66
 msgid ""
@@ -254,13 +254,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
-msgstr ""
+msgstr "ประเภทไฟล์"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "ป้อนนามสกุลไฟล์, คั่นด้วยเครื่องหมายจุลภาค ที่คุณต้องการให้ผู้เรียนสามารถอัพโหลดได้ ตัวอย่างเช่น pdf, doc, docx"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:84
 msgid ""
@@ -270,11 +270,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "อนุญาตการตอบสนองแบบ LaTeX"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "ระบุว่าผู้เรียนสามารถเขียนสตริงที่จัดรูปแบบ LaTeX ได้หรือไม่"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:102
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:8
@@ -388,7 +388,7 @@ msgstr "กฎรูบริค"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Schedule"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -544,7 +544,7 @@ msgstr "คำแนะนำผลตอบกลับ"
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "กระตุ้นให้ผู้เรียนให้ข้อเสนอแนะ การตอบสนองต่อคะแนนที่ได้ คุณสามารถแทนที่ข้อความตัวอย่างด้วยตัวคุณเอง"
 
 #: templates/legacy/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
@@ -554,7 +554,7 @@ msgstr "ข้อความผลตอบกลับเริ่มต้น
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr ""
+msgstr "ป้อนข้อความความคิดเห็นที่ผู้เรียนจะเห็นก่อนที่พวกเขาจะป้อนความคิดเห็นของตนเอง ใช้ข้อความนี้เพื่อแสดงให้ผู้เรียนเห็นตัวอย่างการประเมินที่ดี"
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
@@ -594,7 +594,7 @@ msgstr "เวลาเริ่มตอบ"
 
 #: templates/legacy/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
-msgstr ""
+msgstr "วันที่และเวลา ที่ผู้เรียนสามารถเริ่มส่งคำตอบ"
 
 #: templates/legacy/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
@@ -606,7 +606,7 @@ msgstr "เวลากำหนดส่งคำตอบ"
 
 #: templates/legacy/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
-msgstr ""
+msgstr "วันที่และเวลา ที่ผู้เรียนไม่สามารถตอบกลับได้อีกต่อไป"
 
 #: templates/legacy/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
@@ -808,7 +808,7 @@ msgstr "การประเมินสำหรับคำตอบของ
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "สถานะ"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -925,7 +925,7 @@ msgstr ""
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "กรุณารอสักครู่"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -1139,7 +1139,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "อัพโหลดโดย"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1417,7 +1417,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Optional)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1452,7 +1452,7 @@ msgstr "เราไม่สามารถบันทึกความก้
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "สถานะผลตอบกลับของคุณ"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1480,7 +1480,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "เลือกไฟล์สำหรับการอัพโหลด"
 
 #: templates/legacy/response/oa_response.html:280
 msgid "Supported file types: "
@@ -1492,7 +1492,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Upload file"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1626,7 +1626,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1706,7 +1706,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:69
 #: templates/legacy/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr ""
+msgstr "ปิด"
 
 #: templates/legacy/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
@@ -1805,7 +1805,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
-msgstr ""
+msgstr "ยืนยันการประเมินผล"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
@@ -1882,7 +1882,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\nความคิดเห็น: %(comments)s"
 
 #: templates/legacy/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
@@ -2290,7 +2290,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Pending"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2306,7 +2306,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "ยอมรับ"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

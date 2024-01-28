@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Abel Camacho <abelcama@gmail.com>, 2019-2020\n"
 "Language-Team: Basque (Spain) (http://app.transifex.com/open-edx/edx-platform/language/eu_ES/)\n"
@@ -76,7 +76,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "Elementuaren IDa"
 
 #: data.py:868
 msgid "Submission ID"
@@ -1450,7 +1450,7 @@ msgstr "Ezin izan dugu zure aurrerapena gorde"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Zure erantzunaren egoera"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -2289,7 +2289,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Zain"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2305,7 +2305,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Bidalita"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

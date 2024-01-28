@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Domenico Casanica <domenico.casanica@sistinf.it>, 2021\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
@@ -54,7 +54,7 @@ msgstr "Impossibile inoltrare la risposta."
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
 #: xblock/static/js/src/oa_server.js:237
 msgid "Please check your internet connection."
-msgstr ""
+msgstr "Per favore controlla la tua connessione Internet."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
@@ -229,32 +229,32 @@ msgstr "Annulla"
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr ""
+msgstr "È ancora in corso il caricamento del file. Si prega di attendere fino al termine."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:243
 msgid "Cannot submit empty response even everything is optional."
-msgstr ""
+msgstr "Impossibile inviare una risposta vuota anche se tutto è facoltativo."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr ""
+msgstr "Si prega di caricare un file."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:228
 msgid "Please provide a response."
-msgstr ""
+msgstr "Si prega di fornire una risposta."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr ""
+msgstr "Nessun file selezionato per il caricamento."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr ""
+msgstr "Fornisci una descrizione per ogni file che stai caricando."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:344
@@ -264,7 +264,7 @@ msgstr "Il tuo file è stato eliminato o il percorso è stato modificato:"
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving draft"
-msgstr ""
+msgstr "Bozza di salvataggio"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:446
@@ -276,12 +276,12 @@ msgstr "Se si esce da questa pagina senza salvare o inoltrare la propria rispost
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:461
 msgid "Saving draft..."
-msgstr ""
+msgstr "Salvataggio bozza..."
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:477
 msgid "Draft saved!"
-msgstr ""
+msgstr "Bozza salvata!"
 
 #: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
 #: xblock/static/js/src/lms/oa_response.js:490

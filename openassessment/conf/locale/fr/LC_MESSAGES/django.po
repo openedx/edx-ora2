@@ -44,7 +44,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: alexis swyngedauw, 2022\n"
 "Language-Team: French (http://app.transifex.com/open-edx/edx-platform/language/fr/)\n"
@@ -320,7 +320,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "Spécifiez le nombre de réponses les mieux notées à afficher une fois que l'étudiant a soumis une réponse. Les nombres valides vont de 0 à 99. Si le nombre est 0, la section Meilleures Réponses n'apparaît pas aux étudiants."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
@@ -1483,7 +1483,7 @@ msgstr "Votre réponse n'a pas pu être enregistrée"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Statut de votre réponse"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "

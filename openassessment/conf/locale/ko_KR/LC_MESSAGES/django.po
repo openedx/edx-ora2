@@ -1,0 +1,2523 @@
+# #-#-#-#-#  django.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+# 김수연 <amelia9981@ajou.ac.kr>, 2020
+# bossnm11 <bossnm11@gmail.com>, 2014
+# exit850 <exit850@hotmail.com>, 2014
+# David10000 <gameness@naver.com>, 2014
+# kmooc <shevious@gmail.com>, 2015
+# shevious <shevious@yahoo.com>, 2015
+# jeon <bluerespect@nate.com>, 2014-2015
+# gscavanger0209 <gscavanger@gmail.com>, 2016
+# Jong-Dae Park <jdpark7@gmail.com>, 2014
+# Gu Hong Min <placidmoon1@gmail.com>, 2015
+# lion kang <river@kotech.co.kr>, 2017
+# 김문만 <moonman0429@ajou.ac.kr>, 2022
+# eddie94 <myeddie@naver.com>, 2018
+# kmooc <shevious@gmail.com>, 2016
+# 31b8d27abb93dede0220e915427f8870_95840c8, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
+"PO-Revision-Date: 2014-06-11 13:03+0000\n"
+"Last-Translator: 김문만 <moonman0429@ajou.ac.kr>, 2022\n"
+"Language-Team: Korean (Korea) (http://app.transifex.com/open-edx/edx-platform/language/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: assessment/api/student_training.py:179
+msgid "Could not parse serialized rubric"
+msgstr "serialized rubric을 해석할수 없습니다."
+
+#: assessment/api/student_training.py:191
+msgid ""
+"If your assignment includes a learner training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
+msgstr "학습자 평가 연습단계를 가지려면, 채점 기준표에 최소 1개 이상의 평가 항목이 있어야 하고, 평가 항목에는 최소 1개 이상의 평가 기준이 있어야 합니다."
+
+#: assessment/api/student_training.py:203
+#, python-brace-format
+msgid "Example {example_number} has a validation error: {error}"
+msgstr "예 {example_number} 에 유효성 오류 : {error} 가 있습니다."
+
+#: assessment/api/student_training.py:217
+#, python-brace-format
+msgid ""
+"Example {example_number} has an invalid option for \"{criterion_name}\": "
+"\"{option_name}\""
+msgstr "예 {example_number}은 \"{criterion_name}\"에 대한 잘못된 옵션 : \"{option_name}\""
+
+#: assessment/api/student_training.py:227
+#, python-brace-format
+msgid "Example {example_number} has an extra option for \"{criterion_name}\""
+msgstr "예 {example_number} \"{criterion_name}\"에 대한 추가 옵션이 있습니다"
+
+#: assessment/api/student_training.py:240
+#, python-brace-format
+msgid "Example {example_number} is missing an option for \"{criterion_name}\""
+msgstr "예 {example_number}은  \"{criterion_name}\"에 대한 옵션이 없습니다"
+
+#: data.py:534
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr "기준 {number}: {label}"
+
+#: data.py:536
+#, python-brace-format
+msgid "Points {number}"
+msgstr "점수 {number}"
+
+#: data.py:537
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr "중앙값 {number}"
+
+#: data.py:538
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr "피드백 {number}"
+
+#: data.py:867
+msgid "Item ID"
+msgstr "아이템 ID"
+
+#: data.py:868
+msgid "Submission ID"
+msgstr "제출 ID"
+
+#: data.py:880
+msgid "Anonymized Student ID"
+msgstr "익명의 학생 ID"
+
+#: data.py:911
+msgid "Assessment ID"
+msgstr "평가 ID"
+
+#: data.py:912
+msgid "Assessment Scored Date"
+msgstr "평가 점수 날짜"
+
+#: data.py:913
+msgid "Assessment Scored Time"
+msgstr "평가 점수 시간"
+
+#: data.py:914
+msgid "Assessment Type"
+msgstr "평가 유형"
+
+#: data.py:915
+msgid "Anonymous Scorer Id"
+msgstr "익명의 득점원 ID"
+
+#: data.py:917
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
+msgid "Overall Feedback"
+msgstr "전체 의견"
+
+#: data.py:918
+msgid "Assessment Score Earned"
+msgstr "평가 점수 획득"
+
+#: data.py:919
+msgid "Assessment Scored At"
+msgstr "평가 점수"
+
+#: data.py:920
+msgid "Date/Time Final Score Given"
+msgstr "주어진 날짜/시간 최종 점수"
+
+#: data.py:921
+msgid "Final Score Earned"
+msgstr "최종 점수 획득"
+
+#: data.py:922
+msgid "Final Score Possible"
+msgstr "최종 점수 가능"
+
+#: data.py:923
+msgid "Feedback Statements Selected"
+msgstr "피드백 진술이 선택됨"
+
+#: data.py:924
+msgid "Feedback on Assessment"
+msgstr "평가에 대한 피드백"
+
+#: data.py:926
+msgid "Response Files"
+msgstr "응답 파일"
+
+#: data.py:1317
+msgid "No description provided."
+msgstr "설명이 제공되지 않았습니다."
+
+#: templates/legacy/edit/oa_edit.html:28
+msgid "Save"
+msgstr "저장"
+
+#: templates/legacy/edit/oa_edit.html:32
+msgid "Cancel"
+msgstr "취소"
+
+#: templates/legacy/edit/oa_edit_assessment_steps.html:6
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr "개방형 응답 평가를 사용하면 루브릭 기반 개방형 응답 평가 시퀀스에서 단일 또는 다중 단계를 구성할 수 있습니다. 아래에서 사용 가능한 단계는 유연한 교육적 요구 사항에 따라 활성화, 비활성화 및 주문할 수 있습니다."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:5
+msgid "Display Name "
+msgstr "표시될 이름"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:8
+msgid "The display name for this component."
+msgstr "이 구성요소에 대한 메뉴명."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:12
+msgid "Text Response"
+msgstr "텍스트 응답"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:20
+msgid ""
+"Specify whether learners must include a text based response to this "
+"problem's prompt."
+msgstr "이 문제의 입력창에 문자 기반의 응답을 포함해야 되는지에 대한 여부"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:25
+msgid "Response Editor"
+msgstr "응답 편집기"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:33
+msgid ""
+"Select which editor learners will use to include a text based response to "
+"this problem's prompt."
+msgstr "학습자가 이 문제의 프롬프트에 대한 텍스트 기반 응답을 포함하는 데 사용할 편집기를 선택합니다."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:38
+msgid "File Uploads Response"
+msgstr "파일 업로드 응답"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:46
+msgid ""
+"Specify whether learners are able to upload files as a part of their "
+"response."
+msgstr "학습자들이 응답의 일부로서 파일을 업로드할 수 있는지에 대한 여부"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:50
+msgid "Allow Multiple Files"
+msgstr "다중 파일 허용"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:52
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:93
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:131
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_peer_assessment.html:45
+msgid "False"
+msgstr "False"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:53
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:94
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:132
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_peer_assessment.html:46
+msgid "True"
+msgstr "True"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:56
+msgid ""
+"Specify whether learners can upload more than one file. This has no effect "
+"if File Uploads Response is set to None. This is automatically set to True "
+"for Team Assignments. "
+msgstr "학습자가 하나 이상의 파일을 업로드할 수 있는지 구체적으로 알려주세요. 파일 업로드 응답이 없다고 설정이 되어있어도 이 부분에 영향을 주지 않습니다. 이것은 자동으로 조별 과제에 대해서 True로 설정됩니다."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:58
+msgid "File Upload Types"
+msgstr "파일 업로드 형식"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:60
+msgid "PDF or Image Files"
+msgstr "PDF 혹은 이미지 파일"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:61
+msgid "Image Files"
+msgstr "이미지 파일"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:62
+msgid "Custom File Types"
+msgstr "사용자 정의 파일 형식"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:66
+msgid ""
+"Specify whether learners can submit files along with their text responses."
+msgstr "학습자가 그들의 응답과 함께 파일을 제출할 수 있는지 설정하세요."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:70
+msgid "File Types"
+msgstr "파일 형식"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:79
+msgid ""
+"Enter the file extensions, separated by commas, that you want learners to be"
+" able to upload. For example: pdf,doc,docx."
+msgstr "파일 확장자를 쉼표로 구분해 입력하세요. 예를 들어: pdf, doc, docx 형태로 입력하면 됩니다."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:84
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr "더 많은 파일 확장명을 추가하려면,  사용자 정의 파일 형식을 선택하고 포함할 수 있는 파일 확장명의 전체 목록을 입력해주세요."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:91
+msgid "Allow LaTeX Responses"
+msgstr "LaTeX 답변 허용하기"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:97
+msgid "Specify whether learners can write LaTeX formatted strings"
+msgstr "학습자가 LaTeX 형식 스트링을 사용할 수 있는지 설정하세요."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:102
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:8
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
+msgid "Top Responses"
+msgstr "우수 답변"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:104
+msgid " (Disabled)"
+msgstr "(비활성)"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:117
+msgid ""
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:122
+msgid "When Teams Enabled is set to true, Top Responses will be disabled."
+msgstr "Teams Enabled가 true로 설정되면 Top Responses가 비활성화됩니다."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:129
+msgid "Teams Enabled"
+msgstr "사용 가능한 팀"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:136
+msgid "Specify whether team submissions are allowed for this response."
+msgstr "조별 과제 제출이 이 응답으로 가능한지 설정하세요."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:141
+msgid "Select Team-Set"
+msgstr "팀 세트 선택"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:155
+msgid "Show Rubric During Response"
+msgstr "응답 중 루브릭 표시"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:162
+msgid ""
+"Specify whether learners can see the rubric while they are working on their "
+"response."
+msgstr "학습자가 응답을 작성하는 동안 루브릭을 볼 수 있는지 여부를 지정합니다."
+
+#: templates/legacy/edit/oa_edit_criterion.html:6
+#: templates/legacy/staff_area/oa_student_info.html:122
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
+msgid "Criterion"
+msgstr "평가 항목"
+
+#: templates/legacy/edit/oa_edit_criterion.html:7
+msgid "You cannot delete a criterion after the assignment has been released."
+msgstr "과제가 공지되고 난 후에는 평가 항목을 삭제할 수 없습니다."
+
+#: templates/legacy/edit/oa_edit_criterion.html:9
+#: templates/legacy/edit/oa_edit_option.html:7
+#: templates/legacy/edit/oa_edit_prompt.html:10
+#: templates/legacy/edit/oa_training_example.html:10
+msgid "Remove"
+msgstr "제거"
+
+#: templates/legacy/edit/oa_edit_criterion.html:17
+msgid "Criterion Name"
+msgstr "평가 항목"
+
+#: templates/legacy/edit/oa_edit_criterion.html:29
+msgid "Criterion Prompt"
+msgstr "평가 항목 프롬프트 "
+
+#: templates/legacy/edit/oa_edit_criterion.html:44
+msgid "Add Option"
+msgstr "평가 기준 추가"
+
+#: templates/legacy/edit/oa_edit_criterion.html:52
+msgid "Feedback for This Criterion"
+msgstr "평가 항목에 대한 피드백"
+
+#: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
+msgid "None"
+msgstr "없음"
+
+#: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
+msgid "Optional"
+msgstr "선택 사항"
+
+#: templates/legacy/edit/oa_edit_criterion.html:56
+#: templates/legacy/oa_rubric.html:13
+#: templates/legacy/student_training/student_training.html:93
+#: xblock/studio_mixin.py:55
+msgid "Required"
+msgstr "필수 입력 사항"
+
+#: templates/legacy/edit/oa_edit_criterion.html:61
+msgid ""
+"Select one of the options above. This describes whether or not the reviewer "
+"will have to provide criterion feedback."
+msgstr "위의 옵션 중 하나를 선택하십시오. 이것은 검토자가 기준 피드백을 제공해야 하는지 여부를 설명합니다."
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:3
+msgid "Open Response Assessment"
+msgstr "개방형 응답 평가"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:8
+#: templates/legacy/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "프롬프트"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:15
+msgid "Rubric"
+msgstr "지시문"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:22
+msgid "Schedule"
+msgstr "일정"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:31
+msgid "Assessment steps"
+msgstr "평가 단계"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:38
+msgid "Settings"
+msgstr "설정"
+
+#: templates/legacy/edit/oa_edit_option.html:5
+msgid "Option"
+msgstr "평가 기준"
+
+#: templates/legacy/edit/oa_edit_option.html:16
+msgid "Option Name"
+msgstr "평가 기준 이름"
+
+#: templates/legacy/edit/oa_edit_option.html:29
+msgid "Option Points"
+msgstr "평가 기준 포인트 "
+
+#: templates/legacy/edit/oa_edit_option.html:42
+msgid "Option Explanation"
+msgstr "평가 기준 설명"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:10
+msgid "Step: Peer Assessment"
+msgstr "단계 : 상호 평가"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:15
+msgid ""
+"Peer Assessment allows students to provide feedback to other students and "
+"also receive feedback from others in their final grade. Often, though not "
+"always, this step is preceded by Self Assessment or Learner Training steps."
+msgstr "상호 평가는 학생들이 다른 학생들에게 피드백을 제공할 수 있도록 하고 또한 그들의 최종 성적에서 다른 사람들로 부터 피드백을 받을 수 있도록 합니다. 항상은 아니지만, 종종, 이 단계는 자가 평가 또는 학습자 교육 단계가 선행됩니다."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:18
+msgid ""
+"Configuration: For this step to be configured you must specify the number of"
+" peer reviews a student will be assessed with, and the number of peer a "
+"student must grade. Additional options can be specified."
+msgstr "설정: 이 단계가 구성되려면 학생이 평가할 동료 평가의 수와 학생이 점수를 줘야하는 동료의 수를 지정해야합니다. 추가 옵션은 지정될 수 있습니다."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:23
+msgid "View Options & Configuration"
+msgstr "보기 옵션 및 구성"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:29
+msgid "Must Grade"
+msgstr "채점해야할 수"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:32
+msgid ""
+"Specify the number of peer assessments that each learner must complete. "
+"Valid numbers are 1 to 99."
+msgstr "각 학습자가 완료해야 하는 동료 평가의 수를 지정합니다. 유효한 숫자는 1~99입니다."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:36
+msgid "Graded By"
+msgstr "채점받아야할 수"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:39
+msgid ""
+"Specify the number of learners that each response must be assessed by. Valid"
+" numbers are 1 to 99."
+msgstr "각 응답을 평가해야 하는 학습자 수를 지정합니다. 유효한 숫자는 1~99입니다."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:43
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr "유연한 피어 등급 평균 활성화"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:49
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr "활성화된 경우 필수 항목의 30%% 이상을 받은 학습자\\"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:53
+msgid ""
+"This feature is being enabled by the course-level setting. It can be found "
+"under the Open Response Assessment Settings card on the Pages & Resources "
+"studio page."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
+msgid "Peer Assessment Deadlines"
+msgstr "동료 평가 마감일"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
+msgid "Start Date"
+msgstr "시작일"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
+msgid "Start Time"
+msgstr "시작 시간"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing peer responses."
+msgstr "학습자가 동료 응답 평가를 시작할 수 있는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:31
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:119
+msgid "Due Date"
+msgstr "마감일"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:40
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:40
+msgid "Due Time"
+msgstr "마감 시간"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:48
+msgid "The date and time when all peer assessments must be complete."
+msgstr "모든 동료 평가를 완료해야 하는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_prompt.html:8
+msgid "You cannot delete a prompt after the assignment has been released."
+msgstr "과제가 이미 게시된 후에는 프롬프트를 삭제할 수 없습니다."
+
+#: templates/legacy/edit/oa_edit_prompts.html:10
+msgid ""
+"Prompts. Replace the sample text with your own text. For more information, "
+"see the ORA documentation."
+msgstr "문제와 예문을 바꾸세요. 이에 관해 도움말이 필요하면 ORA 도움말을 참고하세요."
+
+#: templates/legacy/edit/oa_edit_prompts.html:22
+msgid "Add Prompt"
+msgstr "문제 추가"
+
+#: templates/legacy/edit/oa_edit_rubric.html:14
+msgid ""
+"Rubrics are made up of criteria, which usually contain one or more options. "
+"Each option has a point value. This template contains two sample criteria "
+"and their options. Replace the sample text with your own text. For more "
+"information, see the ORA documentation."
+msgstr "루브릭은 평가 항목으로 구성되어 있으며, 1개 이상의 평가 기준을 포함하고 있습니다. 각 평가기준은 1점으로 점수값이 매겨져 있습니다. 이 템플릿은 두 가지 평가 항목과 각각의 평가 기준 예시를 포함하고 있습니다. 예시 텍스트를 새로 작성하셔도 좋습니다. 더 자세한 정보는, ORA 도움말을 참고하세요."
+
+#: templates/legacy/edit/oa_edit_rubric.html:29
+msgid "Add Criterion"
+msgstr "평가 항목 추가"
+
+#: templates/legacy/edit/oa_edit_rubric.html:35
+msgid "Feedback for This Response"
+msgstr "이 응답에 대한 피드백"
+
+#: templates/legacy/edit/oa_edit_rubric.html:40
+msgid "Feedback Instructions"
+msgstr "피드백 지시사항"
+
+#: templates/legacy/edit/oa_edit_rubric.html:44
+msgid ""
+"Encourage learners to provide feedback on the response they have graded. You"
+" can replace the sample text with your own."
+msgstr "학습자가 채점을 완료한 답변에 대해 피드백을 입력하도록 권장하세요. 예제 텍스트를 대체하여 입력하면 됩니다."
+
+#: templates/legacy/edit/oa_edit_rubric.html:49
+msgid "Default Feedback Text"
+msgstr "기본 피드백 텍스트"
+
+#: templates/legacy/edit/oa_edit_rubric.html:53
+msgid ""
+"Enter feedback text that learners will see before they enter their own "
+"feedback. Use this text to show learners a good example peer assessment."
+msgstr "학습자가 직접 피드백을 입력하기 전에 보게 될 피드백 텍스트를 입력하세요. 이 텍스트를 통해 학습자에게 좋은 상호 평가 예제를 보여주세요."
+
+#: templates/legacy/edit/oa_edit_schedule.html:5
+msgid "Deadlines Configuration"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:13
+msgid " NEW"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:19
+msgid "Configure deadlines manually"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:23
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:27
+msgid "Match deadlines to the course end date"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:30
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_schedule.html:40
+msgid "Response Start Date"
+msgstr "답변 시작일"
+
+#: templates/legacy/edit/oa_edit_schedule.html:53
+msgid "Response Start Time"
+msgstr "답변 시작 시간"
+
+#: templates/legacy/edit/oa_edit_schedule.html:62
+msgid "The date and time when learners can begin submitting responses."
+msgstr "학습자가 답변 제출을 시작할 수 있는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_schedule.html:70
+msgid "Response Due Date"
+msgstr "답변 마감일"
+
+#: templates/legacy/edit/oa_edit_schedule.html:83
+msgid "Response Due Time"
+msgstr "답변 마감 시간"
+
+#: templates/legacy/edit/oa_edit_schedule.html:92
+msgid "The date and time when learners can no longer submit responses."
+msgstr "학습자가 더이상 답변을 제출할 수 없는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:8
+msgid "Step: Self Assessment"
+msgstr "단계 :  자기평가"
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:12
+msgid ""
+"Self Assessment asks learners to grade their own submissions against the "
+"rubric."
+msgstr "자체 평가는 학습자에게 루브릭에 대해 자신의 제출물을 채점하도록 요청합니다."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:5
+msgid "Self Assessment Deadlines"
+msgstr "자체 평가 마감일"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing their responses."
+msgstr "학습자가 응답 평가를 시작할 수 있는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:48
+msgid "The date and time when all self assessments must be complete."
+msgstr "모든 자체 평가를 완료해야 하는 날짜 및 시간입니다."
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:8
+msgid "Step: Staff Assessment"
+msgstr "단계: 운영팀 평가"
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:12
+msgid ""
+"Staff Assessment gates sets the final grade for students if enabled with "
+"other steps, though it can also be used as a standalone step."
+msgstr "교직원 평가 게이트는 다른 단계에서 활성화된 경우 학생의 최종 성적을 설정하지만 독립 단계로 사용할 수도 있습니다."
+
+#: templates/legacy/edit/oa_edit_student_training.html:9
+msgid "Step: Learner Training"
+msgstr "단계: 학습자 안내"
+
+#: templates/legacy/edit/oa_edit_student_training.html:14
+msgid ""
+"Learner Training is used to help students practice grading a simulated peer "
+"submission in order to train them on the rubric and ensure learner's "
+"understand the rubric for either Self or Peer Assessment steps."
+msgstr "학습자 교육은 학생들이 루브릭에 대해 교육하고 학습자가 자체 또는 동료 평가 단계에 대한 루브릭을 이해하도록 하기 위해 시뮬레이션된 동료 제출물을 채점하는 연습을 하는 데 사용됩니다."
+
+#: templates/legacy/edit/oa_edit_student_training.html:17
+msgid ""
+"Configuration: For this step to be fully configured you must provide one or "
+"more graded sample responses. Learners must then match this instructor score"
+" to advance and are provided feedback when their score doesn't match the "
+"sample response."
+msgstr "구성: 이 단계를 완전히 구성하려면 하나 이상의 채점된 샘플 응답을 제공해야 합니다. 그런 다음 학습자는 이 강사 점수와 일치해야 진급할 수 있으며 점수가 샘플 응답과 일치하지 않을 경우 피드백이 제공됩니다."
+
+#: templates/legacy/edit/oa_edit_student_training.html:22
+msgid "View / Add Sample Responses"
+msgstr "샘플 응답 보기/추가"
+
+#: templates/legacy/edit/oa_edit_student_training.html:32
+msgid "Add Sample Response"
+msgstr "예시 응답 추가하기"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:4
+msgid "Clone Rubric"
+msgstr "루브릭 복제"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:7
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only affect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr "게시되거나 게시되지 않은 기존 초안에서 루브릭을 복제하려면 블록 ID로 검색할 수 있습니다. 복제는 단방향이므로 복제 후 변경 사항은 수정되는 기준표에만 영향을 미치고 원본 기준표는 수정하지 않습니다."
+
+#: templates/legacy/edit/oa_rubric_reuse.html:9
+msgid "Block ID For this ORA:"
+msgstr "이 ORA의 블록 ID:"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:19
+msgid "Block ID"
+msgstr "블록 ID"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:21
+msgid "No other Open Response Assessments found in course"
+msgstr "강좌에서 다른 개방형 응답 평가를 찾을 수 없습니다."
+
+#: templates/legacy/edit/oa_rubric_reuse.html:31
+msgid "Clone"
+msgstr "복제"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:37
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr "블록 ID에서 루브릭 복제 성공:"
+
+#: templates/legacy/edit/oa_training_example.html:7
+msgid "Scored Response"
+msgstr "체점된 응답"
+
+#: templates/legacy/edit/oa_training_example.html:16
+msgid "Response Score"
+msgstr "응답 점수"
+
+#: templates/legacy/edit/oa_training_example.html:27
+msgid "Response"
+msgstr "응답"
+
+#: templates/legacy/edit/oa_training_example_criterion.html:10
+msgid "Not Selected"
+msgstr "선택되지 않았습니다."
+
+#: templates/legacy/edit/oa_training_example_criterion.html:15
+#: templates/legacy/oa_rubric.html:43
+#: templates/legacy/student_training/student_training.html:128
+msgid "points"
+msgstr "포인트"
+
+#: templates/legacy/grade/oa_assessment_feedback.html:8
+#, python-format
+msgid ""
+"\n"
+"                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
+"              "
+msgstr "\n%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n "
+
+#: templates/legacy/grade/oa_assessment_title.html:7
+#, python-format
+msgid ""
+"\n"
+"                      %(assessment_title)s - %(points)s point\n"
+"                  "
+msgid_plural ""
+"\n"
+"                      %(assessment_title)s - %(points)s points\n"
+"                  "
+msgstr[0] "\n%(assessment_title)s - %(points)s 점\n "
+
+#: templates/legacy/grade/oa_assessment_title.html:24
+#, python-format
+msgid "More information about %(name)s"
+msgstr "%(name)s 에 대한 추가정보"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:14
+#: templates/legacy/grade/oa_grade_complete.html:15
+#: templates/legacy/grade/oa_grade_complete.html:26
+#: templates/legacy/grade/oa_grade_incomplete.html:14
+#: templates/legacy/grade/oa_grade_not_started.html:14
+#: templates/legacy/grade/oa_grade_waiting.html:14
+msgid "Your Grade"
+msgstr "당신의 점수는 "
+
+#: templates/legacy/grade/oa_grade_cancelled.html:19
+#, python-format
+msgid ""
+"\n"
+"                                        %(points_earned)s out of %(points_possible)s\n"
+"                                    "
+msgstr "\n%(points_possible)s 중 %(points_earned)s"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:38
+msgid "Your submission has been cancelled."
+msgstr "제출이 취소되었습니다."
+
+#: templates/legacy/grade/oa_grade_complete.html:19
+#, python-format
+msgid ""
+"\n"
+"                                            %(points_earned)s out of %(points_possible)s\n"
+"                                        "
+msgstr "\n%(points_possible)s중 %(points_earned)s\n   "
+
+#: templates/legacy/grade/oa_grade_complete.html:38
+#: templates/legacy/response/oa_response.html:29
+msgid "Your Response"
+msgstr "응답"
+
+#: templates/legacy/grade/oa_grade_complete.html:41
+msgid "Your Upload"
+msgstr "업로드 내역"
+
+#: templates/legacy/grade/oa_grade_complete.html:46
+msgid "Assessments of Your Response"
+msgstr "귀하의 응답에 대한 평가"
+
+#: templates/legacy/grade/oa_grade_complete.html:50
+#: templates/legacy/grade/oa_grade_complete.html:132
+#: templates/legacy/grade/oa_grade_incomplete.html:28
+#: templates/legacy/grade/oa_grade_waiting.html:28
+#: templates/legacy/message/oa_message_cancelled.html:4
+#: templates/legacy/message/oa_message_closed.html:4
+#: templates/legacy/message/oa_message_complete.html:4
+#: templates/legacy/message/oa_message_incomplete.html:4
+#: templates/legacy/peer/oa_peer_closed.html:33
+#: templates/legacy/peer/oa_peer_complete.html:30
+#: templates/legacy/peer/oa_peer_turbo_mode.html:40
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:34
+#: templates/legacy/peer/oa_peer_waiting.html:34
+#: templates/legacy/response/oa_response_cancelled.html:31
+#: templates/legacy/response/oa_response_closed.html:29
+#: templates/legacy/response/oa_response_submitted.html:30
+#: templates/legacy/response/oa_response_team_already_submitted.html:25
+#: templates/legacy/self/oa_self_closed.html:30
+#: templates/legacy/student_training/student_training_closed.html:27
+msgid "Status"
+msgstr "상태"
+
+#: templates/legacy/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "전체 점수"
+
+#: templates/legacy/grade/oa_grade_complete.html:70
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "점"
+
+#: templates/legacy/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "귀하의 응답에 대한 추가 의견"
+
+#: templates/legacy/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr "동료의 평가에 대한 피드백을 제공"
+
+#: templates/legacy/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "피드백 제출하기 "
+
+#: templates/legacy/grade/oa_grade_complete.html:134
+msgid ""
+"Your feedback has been submitted. Course staff will be able to see this "
+"feedback when they review course records."
+msgstr "제출하신 피드백이 접수되었습니다. 과정 관리자가 과정 기록 검토 시에 이 피드백을 확인 할 수 있습니다. "
+
+#: templates/legacy/grade/oa_grade_complete.html:140
+msgid ""
+"Course staff will be able to see any feedback that you provide here when "
+"they review course records."
+msgstr "강좌 스태프가 과정 기록 검토 시에  제공된 피드백을 확인 할 수 있습니다. "
+
+#: templates/legacy/grade/oa_grade_complete.html:146
+msgid ""
+"Select the statements below that best reflect your experience with peer "
+"assessments."
+msgstr "상호평가의 경험을 가장 잘 반영하는 아래의 진술을 선택하세요"
+
+#: templates/legacy/grade/oa_grade_complete.html:155
+msgid "These assessments were useful."
+msgstr "과제물들은 유용하였습니다."
+
+#: templates/legacy/grade/oa_grade_complete.html:164
+msgid "These assessments were not useful."
+msgstr "과제물들은 불필요하였습니다. "
+
+#: templates/legacy/grade/oa_grade_complete.html:173
+msgid "I disagree with one or more of the peer assessments of my response."
+msgstr "내 응답에 대한 평가에 동의하지 않습니다."
+
+#: templates/legacy/grade/oa_grade_complete.html:182
+msgid "Some comments I received were inappropriate."
+msgstr "내가 받은 어떤 코멘트들은 적절하지 않았습니다. "
+
+#: templates/legacy/grade/oa_grade_complete.html:187
+msgid ""
+"Provide feedback on the grade or comments that you received from your peers."
+msgstr "상호 평가에서 받은 성적이나 의견에 대한 피드백을 입력하세요."
+
+#: templates/legacy/grade/oa_grade_complete.html:190
+msgid "I feel the feedback I received was..."
+msgstr "제가 받은 피드백에 대한 느낌은..."
+
+#: templates/legacy/grade/oa_grade_complete.html:200
+msgid "We could not submit your feedback"
+msgstr "당신의 피드백을 제출 할 수 업습니다 "
+
+#: templates/legacy/grade/oa_grade_complete.html:206
+msgid "Submit feedback on peer assessments"
+msgstr "상호 평가에 대한 피드백 제출하기"
+
+#: templates/legacy/grade/oa_grade_incomplete.html:16
+msgid "Not Completed"
+msgstr "완성되지 않았습니다. "
+
+#: templates/legacy/grade/oa_grade_incomplete.html:33
+msgid "You have not completed all the steps of this problem."
+msgstr "이 문제에 대한 모든 과정을 완료하지 않았습니다. "
+
+#: templates/legacy/grade/oa_grade_not_started.html:16
+msgid "Not Started"
+msgstr "시작되지 않았습니다."
+
+#: templates/legacy/grade/oa_grade_not_started.html:27
+msgid "You have not started this problem yet."
+msgstr "이 문제에 대해서 아직 시작하지 않으셨습니다."
+
+#: templates/legacy/grade/oa_grade_waiting.html:16
+msgid "Waiting for Assessments"
+msgstr "평가 대기중"
+
+#: templates/legacy/grade/oa_grade_waiting.html:33
+msgid ""
+"You have completed your steps in the assignment, but some assessments still "
+"need to be done on your response. When the assessments of your response are "
+"complete, you will see feedback from everyone who assessed your response, "
+"and you will receive your final grade."
+msgstr "과제에서 모든 단계를 마쳤지만 제출한 답변에 대해 아직 평가가 완료되지 않았을 수 있습니다. 답변에 대한 평가가 완료되면 평가에 참여한 학습자의 피드백을 볼 수 있고 최종 성적을 부여받게 됩니다."
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:15
+#: templates/legacy/staff_area/oa_staff_area.html:16
+#: templates/legacy/staff_area/oa_staff_area.html:18
+#: templates/legacy/staff_area/oa_staff_area.html:153
+msgid "Grade Available Responses"
+msgstr "답변 채점하기"
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr "학년 응답을 사용할 수 없습니다. 이 항목은 직원 평가 구성되어 있지 않습니다."
+
+#: templates/legacy/instructor_dashboard/oa_listing.html:6
+msgid "Please wait"
+msgstr "잠시 기다려 주십시오."
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
+msgid "Waiting Step Details"
+msgstr "대기 단계 세부 정보"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:24
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr "대기 단계 세부정보 보기를 사용할 수 없습니다. 이 항목은 동료 평가를 위해 구성되지 않았습니다."
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:20
+#, python-format
+msgid "%(num_points)s points"
+msgstr "%(num_points)s 점"
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:24
+#: templates/legacy/peer/oa_peer_assessment.html:84
+#: templates/legacy/peer/oa_peer_turbo_mode.html:53
+msgid "Your peer's response to the prompt above"
+msgstr "위 입력에 대한 상호 평가"
+
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:19
+msgid ""
+"After you complete all the steps of this assignment, you can see the top-"
+"scoring responses from your peers."
+msgstr "모든 단계를 완료한 후,  최고 점수를 받은 우수 응답을 볼 수 있습니다."
+
+#: templates/legacy/message/oa_message_cancelled.html:8
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr "팀 제출이 취소되었습니다. 강좌 직원이 팀에서 응답을 다시 제출할 수 있도록 평가를 재설정하지 않는 한 팀은 0점을 받습니다."
+
+#: templates/legacy/message/oa_message_cancelled.html:10
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr "제출이 취소되었습니다. 강좌 직원이 귀하가 응답을 다시 제출할 수 있도록 평가를 재설정하지 않는 한 귀하는 0점을 받게 됩니다."
+
+#: templates/legacy/message/oa_message_closed.html:8
+msgid ""
+"This task is not yet available. Check back to complete the assignment once "
+"this section has opened."
+msgstr "작업을 아직 수행할 수 없습니다. 이 주제가 공개되면, 과제를 완수했는지 다시 확인해주세요."
+
+#: templates/legacy/message/oa_message_closed.html:10
+msgid ""
+"This assignment has closed. One or more deadlines for this assignment have "
+"passed. You will receive an incomplete grade for this assignment."
+msgstr "이 과제는 마감되었습니다. 이 과제에 대한 마감일이 지나, 점수가 깍이게 됩니다."
+
+#: templates/legacy/message/oa_message_complete.html:8
+msgid ""
+"You have completed this assignment. Your final grade will be available when "
+"the assessments of your response are complete."
+msgstr "과제를 완료하셨습니다. 최종 성적은 제출한 답변에 대한 평가가 완료되면 부여됩니다."
+
+#: templates/legacy/message/oa_message_complete.html:10
+msgid ""
+"You have completed this assignment. Review your grade and your assessment "
+"details."
+msgstr "과제를 완료하셨습니다. 평가 세부 사항와 점수를 확인합니다."
+
+#: templates/legacy/message/oa_message_incomplete.html:9
+msgid ""
+"This assignment is in progress. Learner training will close soon. Complete "
+"the learner training step to move on."
+msgstr "과제가 진행중입니다. 학습자 안내가 곧 끝납니다. 학습자 안내 단계를 완료하고 다음으로 넘어가세요."
+
+#: templates/legacy/message/oa_message_incomplete.html:11
+msgid ""
+"This assignment is in progress. Complete the learner training step to move "
+"on."
+msgstr "과제가 진행중입니다. 학습자 안내 단계를 완료하고 다음으로 넘어가세요."
+
+#: templates/legacy/message/oa_message_incomplete.html:15
+#: templates/legacy/message/oa_message_incomplete.html:33
+msgid ""
+"This assignment is in progress. Check back later when the assessment period "
+"has started."
+msgstr "과제가 진행중입니다. 평가 기간이 시작되면 다시 확인하세요."
+
+#: templates/legacy/message/oa_message_incomplete.html:20
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n%(start_strong)s과제가 진행중입니다. 자기 평가 단계 기간이 곧 끝납니다.%(end_strong)s아직 %(start_link)s자기 평가%(end_link)s단계가 남았습니다."
+
+#: templates/legacy/message/oa_message_incomplete.html:24
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n과제가 진행중입니다. 아직 %(start_link)s자기 평가%(end_link)s 단계가 남았습니다.\n "
+
+#: templates/legacy/message/oa_message_incomplete.html:38
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n과제가 진행중입니다. %(start_strong)s상호 평가 단계가 곧 종료됩니다. %(end_strong)s제출된 답변에 대한 모든 상호 평가가 완료되었습니다. 아직 %(start_link)s상호 평가%(end_link)s단계가 남았습니다.\n "
+
+#: templates/legacy/message/oa_message_incomplete.html:42
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n과제가 진행중입니다. 제출된 답변에 대한 모든 상호 평가가 완료되었습니다. 아직 %(start_link)s상호 평가%(end_link)s 단계가 남았습니다.\n "
+
+#: templates/legacy/message/oa_message_incomplete.html:46
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n과제가 진행중입니다. %(start_strong)s상호 평가 단계가 곧 종료됩니다. %(end_strong)s아직 %(start_link)s상호 평가%(end_link)s 단계가 남았습니다.\n  "
+
+#: templates/legacy/message/oa_message_incomplete.html:50
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "\n과제가 진행중입니다. 아직 %(start_link)s상호 평가%(end_link)s단계가 남았습니다."
+
+#: templates/legacy/message/oa_message_no_team.html:4
+msgid "Team membership is required to view this assignment"
+msgstr "이 과제를 보려면 팀 구성원이 필요합니다"
+
+#: templates/legacy/message/oa_message_no_team.html:7
+#, python-format
+msgid ""
+"\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
+msgstr "\n이것은 팀 세트 \"%(teamset_name)s\"에 대한 팀 과제입니다. \n귀하는 현재 \"%(teamset_name)s\" 팀 세트의 팀에 속해 있지 않습니다.\n이 팀 과제에 액세스하려면 \"%(teamset_name)s\" 팀 세트의 팀에 있어야 합니다."
+
+#: templates/legacy/message/oa_message_open.html:7
+#, python-format
+msgid ""
+"\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "\n과제 제출이 곧 마감됩니다. 성적을 받기 위해서, 먼저 입력창에 답변을 입력하고 아래의 %(start_tag)s나의 응답%(end_tag)s 단계를 완료하세요."
+
+#: templates/legacy/message/oa_message_open.html:11
+#, python-format
+msgid ""
+"\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "\n본 과제에는 몇가지 단계가 있습니다. 첫 번째 단계로, 질문에 대한 응답을 입력창에 입력하세요. 그후 다른 단계들이 %(start_tag)s나의 응답%(end_tag)s 영역 아래에 나타날 것입니다."
+
+#: templates/legacy/message/oa_message_unavailable.html:4
+msgid "Instructions Unavailable"
+msgstr "사용할 수없는 지시사항입니다."
+
+#: templates/legacy/message/oa_message_unavailable.html:6
+msgid "The instructions for this step could not be loaded."
+msgstr "이 단계에 대한 지시사항은 로드될 수 없습니다."
+
+#: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the prompt. The other steps appear below the Your Response "
+"field."
+msgstr "본 과제에는 멏가지 단계가 있습니다. 첫 번째 단계로, 질문에 대한 응답을 입력창에 입력하세요. 그후 다른 단계들이 입력하신 응답 아래 영역에 나타날 것입니다."
+
+#: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
+#: templates/openassessmentblock/base.html:100
+msgid "Loading"
+msgstr "로딩"
+
+#: templates/legacy/oa_latex_preview.html:6
+msgid "Preview in LaTeX"
+msgstr "LaTeX로 미리보기"
+
+#: templates/legacy/oa_latex_preview.html:9
+msgid "Click to preview your submission in LaTeX."
+msgstr "LaTeX를 통한 제출 미리보기"
+
+#: templates/legacy/oa_latex_preview.html:14
+msgid "Preview Response"
+msgstr "답변 미리보기"
+
+#: templates/legacy/oa_rubric.html:53
+msgid "Comments"
+msgstr "코멘트"
+
+#: templates/legacy/oa_submission_answer.html:8
+msgid "The question for this section"
+msgstr "이 주제의 질문"
+
+#: templates/legacy/oa_team_uploaded_files.html:9
+msgid "Files that were uploaded by your teammates:"
+msgstr "귀하의 팀동료가 업로드한 파일:"
+
+#: templates/legacy/oa_team_uploaded_files.html:28
+#: templates/legacy/oa_uploaded_file.html:34
+msgid "View the files associated with this submission:"
+msgstr "이 제출과 연동된 파일을 조회합니다."
+
+#: templates/legacy/oa_team_uploaded_files.html:32
+msgid "Uploaded by"
+msgstr "올린이:"
+
+#: templates/legacy/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr "귀하가 업로드한 파일:"
+
+#: templates/legacy/oa_uploaded_file.html:48
+msgid ""
+"Caution: These files were uploaded by another course learner and have not "
+"been verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you access the files, you do so at your own risk.)"
+msgstr "주의: 이 파일은 다른 강좌 학습자가 업로드한 것으로서 사이트 관리자가 확인, 승인 및 검초하지 않았습니다. 파일에 접근하면 모든 책임은 본인이 지게 됩니다.)"
+
+#: templates/legacy/peer/oa_peer_assessment.html:36
+msgid "Assess Peers"
+msgstr "상호 평가"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
+#. 5 days and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:44
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
+#. and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:51
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#: templates/legacy/peer/oa_peer_assessment.html:61
+#, python-format
+msgid ""
+"\n"
+"                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"                "
+msgstr "\n진도 : (%(num_must_grade)s 중 %(review_number)s)\n "
+
+#: templates/legacy/peer/oa_peer_assessment.html:75
+#: templates/legacy/peer/oa_peer_turbo_mode.html:45
+msgid "Read and assess the following response from one of your peers."
+msgstr "읽고 다른 학습자의 답변을 평가합니다. "
+
+#: templates/legacy/peer/oa_peer_assessment.html:87
+#: templates/legacy/peer/oa_peer_turbo_mode.html:56
+#: templates/legacy/self/oa_self_assessment.html:70
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:45
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:38
+#: templates/legacy/staff_area/oa_student_info.html:63
+msgid "Associated Files"
+msgstr "연동된 파일"
+
+#: templates/legacy/peer/oa_peer_assessment.html:101
+#: templates/legacy/peer/oa_peer_turbo_mode.html:70
+#: templates/legacy/self/oa_self_assessment.html:81
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:57
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:50
+msgid "We could not submit your assessment"
+msgstr "평가를 제출할 수 없습니다."
+
+#: templates/legacy/peer/oa_peer_cancelled.html:19
+#: templates/legacy/response/oa_response_cancelled.html:21
+#: templates/legacy/self/oa_self_cancelled.html:21
+#: templates/legacy/student_training/student_training_cancelled.html:18
+msgid "Cancelled"
+msgstr "취소됨"
+
+#: templates/legacy/peer/oa_peer_closed.html:20
+#, python-format
+msgid ""
+"\n"
+"            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr "\n(%(num_must_grade)s 중에 %(num_graded)s )가 완료되지 못했습니다. "
+
+#: templates/legacy/peer/oa_peer_closed.html:35
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete peer assessments or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "이 단계에 대한 마감일이 지났습니다. 이 단계는 종료됩니다. 더이상 상호 평가 혹은 과제를 계속할 수 없습니다. 미완성에 대한 성적을 받을것입니다."
+
+#: templates/legacy/peer/oa_peer_complete.html:13
+msgid "Completed"
+msgstr "완료됨"
+
+#: templates/legacy/peer/oa_peer_complete.html:31
+#: templates/legacy/peer/oa_peer_turbo_mode.html:41
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:36
+msgid ""
+"You have successfully completed all of the required peer assessments for "
+"this assignment. You may assess additional peer responses if you want to. "
+"Completing additional assessments will not affect your final grade."
+msgstr "꼭 해야 하는 분량에 대한 상호 평가를 모두 완료했습니다. 원할 경우 다른 답변을 더 평가할 수 있으며, 이것이 귀하의 최종 성적에 영향을 미치진 않습니다."
+
+#: templates/legacy/peer/oa_peer_complete.html:36
+msgid "We could not retrieve additional submissions for assessment"
+msgstr "평가의 추가 제출을 검색 할 수 없습니다"
+
+#: templates/legacy/peer/oa_peer_complete.html:43
+msgid "Continue Assessing Peers"
+msgstr "상호 평가 계속하기"
+
+#: templates/legacy/peer/oa_peer_turbo_mode.html:26
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"        Complete (%(num_graded)s)\n"
+"      "
+msgstr "\n(%(num_graded)s) 완료"
+
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses."
+msgstr "모든 답변이 평가되고 있습니다. 추가로 더 많은 답변이 제출되었는지 여부를 나중에 다시 확인해보세요."
+
+#: templates/legacy/peer/oa_peer_unavailable.html:16
+#: templates/legacy/response/oa_response_unavailable.html:17
+#: templates/legacy/self/oa_self_unavailable.html:17
+#: templates/legacy/student_training/student_training_unavailable.html:16
+msgid "Not Available"
+msgstr "이용할 수 없습니다."
+
+#: templates/legacy/peer/oa_peer_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"          In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"        "
+msgstr "\n진도 (%(num_must_grade)s중 %(review_number)s)\n "
+
+#: templates/legacy/peer/oa_peer_waiting.html:37
+msgid ""
+"All available peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses. You will receive your grade after "
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
+msgstr "제출된 답변 전체가 평가되었습니다. 더 많은 학습자가 추가로 어떤 답변을 완료했는지 여부를 나중에 확인해주세요. 귀하가 이 문제의 모든 단계를 완료하고, 다른 학습자가 귀하의 답변 평가를 완료하면 점수를 확인할 수 있습니다."
+
+#: templates/legacy/response/oa_response.html:27
+msgid "Your Team's Response"
+msgstr "우리 팀의 응답"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/response/oa_response.html:39
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/response/oa_response.html:46
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#: templates/legacy/response/oa_response.html:54
+#: templates/legacy/self/oa_self_assessment.html:56
+msgid "In Progress"
+msgstr "진행중입니다"
+
+#: templates/legacy/response/oa_response.html:66
+msgid "Enter your team's response to the prompt."
+msgstr "우리 팀의 응답을 입력창에 입력하세요."
+
+#: templates/legacy/response/oa_response.html:68
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
+"                      "
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:81
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time.\n"
+"                      "
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:86
+msgid ""
+"After you submit a response on behalf of your team, it cannot be edited."
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:89
+msgid "Enter your response to the prompt."
+msgstr "입력창에 답변을 입력하세요."
+
+#: templates/legacy/response/oa_response.html:92
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:94
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:96
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:108
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time."
+msgstr ""
+
+#: templates/legacy/response/oa_response.html:110
+msgid "After you submit your response, you cannot edit it"
+msgstr "답변을 제출한 후에는 수정할 수 없습니다."
+
+#: templates/legacy/response/oa_response.html:120
+msgid "What will this assignment be graded on?"
+msgstr "이 과제는 무엇으로 평가됩니까?"
+
+#: templates/legacy/response/oa_response.html:134
+msgid "The prompt for this section"
+msgstr "이 주제의 문제"
+
+#: templates/legacy/response/oa_response.html:148
+msgid "You are on team "
+msgstr "당신은 팀에 있습니다"
+
+#: templates/legacy/response/oa_response.html:150
+msgid "Team Members: "
+msgstr "팀 구성원:"
+
+#: templates/legacy/response/oa_response.html:155
+#, python-format
+msgid ""
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              have/has already submitted a response to this assignment with another team,\n"
+"                                              and will not be a part of your team's submission or assignment grade.\n"
+"                                          "
+msgstr "\n%(team_members_with_external_submissions)s\n이미 이 과제에 대해 다른 팀과 함께 응답이 제출되었으며,\n귀하의 팀의 제출이나 과제 점수에 일부가 되지 않습니다."
+
+#: templates/legacy/response/oa_response.html:171
+msgid "Team Response "
+msgstr "팀 응답"
+
+#: templates/legacy/response/oa_response.html:173
+msgid "Your Response "
+msgstr "내 응답"
+
+#: templates/legacy/response/oa_response.html:177
+#: templates/legacy/response/oa_response.html:247
+msgid "(Required)"
+msgstr "(필수 입력 사항)"
+
+#: templates/legacy/response/oa_response.html:179
+#: templates/legacy/response/oa_response.html:249
+msgid "(Optional)"
+msgstr "(선택사항)"
+
+#: templates/legacy/response/oa_response.html:183
+msgid ""
+"\n"
+"                                              Teams should designate one team member to submit a response on behalf of the\n"
+"                                              entire team.  All team members can use this space to work on draft responses,\n"
+"                                              but you will not be able to see your teammates' drafts made in this space, so\n"
+"                                              please coordinate with them to decide on the final response the designated team\n"
+"                                              member should submit.\n"
+"                                          "
+msgstr "\n팀은 \n전체 팀을 대신하여 응답을 제출할 팀원 한 명을 지정해야 합니다. 모든 팀원이 이 공간을 사용하여 초안 응답 작업을 할 수 있지만 \n이 공간에서 팀원이 작성한 초안을 볼 수는 없으므로 \n지정된 팀 구성원이 제출해야 할 최종 응답을 결정하려면 \n팀원들과 조정하십시오."
+
+#: templates/legacy/response/oa_response.html:197
+msgid "Enter your response to the prompt above."
+msgstr "다음 입력창에 응답을 입력하세요."
+
+#: templates/legacy/response/oa_response.html:211
+#, python-format
+msgid ""
+"\n"
+"                                      You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                      when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                      response and will receive the same grade for this assignment as your former teammates.\n"
+"                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                      receive a grade for their submission.\n"
+"                                  "
+msgstr "\n당신은 현재 %(team_name)s 팀에 있습니다. A 팀이 이 과제에 대한 응답을 제출했을 때 귀하는%(previous_team_name)s팀에 있었기 때문에 \n%(previous_team_name)s 팀의 응답을 보게 되며 \n이 과제에 대해 이전 팀원과 동일한 등급을 받게 됩니다.\n귀하는 이 과제에 대한 %(team_name)s 팀의 제출에 참여하지 않으며 \n제출에 대한 점수를 받지 않습니다."
+
+#: templates/legacy/response/oa_response.html:224
+msgid "We could not save your progress"
+msgstr "진도를 저장할 수 없습니다."
+
+#: templates/legacy/response/oa_response.html:232
+msgid "Status of Your Response"
+msgstr "귀하의 응답 상태"
+
+#: templates/legacy/response/oa_response.html:245
+msgid "File Uploads "
+msgstr "파일 업로드"
+
+#: templates/legacy/response/oa_response.html:253
+msgid ""
+"\n"
+"                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                  descriptions to your files to help your teammates identify them.\n"
+"                              "
+msgstr "\n아래에서 귀하와 귀하의 팀원이 업로드한 파일을 업로드하고 파일을 검토하십시오. 팀원이 파일을 식별할 수 있도록 \n파일에 설명을 추가해야 합니다."
+
+#: templates/legacy/response/oa_response.html:261
+msgid "We could not upload files"
+msgstr "파일을 업로드할 수 없었습니다"
+
+#: templates/legacy/response/oa_response.html:267
+msgid "We could not delete files"
+msgstr "파일을 삭제할 수 없습니다."
+
+#: templates/legacy/response/oa_response.html:274
+msgid "Select one or more files to upload for this submission."
+msgstr "제출을 위해 업로드할 하나이상의 파일을 선택하세요."
+
+#: templates/legacy/response/oa_response.html:276
+msgid "Select a file to upload for this submission."
+msgstr "업로드할 파일을 선택하세요."
+
+#: templates/legacy/response/oa_response.html:280
+msgid "Supported file types: "
+msgstr "지원되는 파일 형식:"
+
+#: templates/legacy/response/oa_response.html:285
+msgid "Upload files"
+msgstr "파일 업로드"
+
+#: templates/legacy/response/oa_response.html:287
+msgid "Upload file"
+msgstr "파일 올리기"
+
+#: templates/legacy/response/oa_response.html:304
+msgid "This is a team submission."
+msgstr "팀 과제 제출물 입니다."
+
+#: templates/legacy/response/oa_response.html:306
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr "팀원 중 한 명이 팀의 공유 파일과 함께 전체 팀을 대신하여 텍스트 응답을 제출해야 합니다."
+
+#: templates/legacy/response/oa_response.html:308
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr "팀 구성원 한 명이 전체 팀을 대신하여 팀의 공유 파일과 함께 응답을 제출해야 합니다."
+
+#: templates/legacy/response/oa_response.html:310
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr "팀 구성원 한 명이 전체 팀을 대신하여 텍스트 응답을 제출해야 합니다."
+
+#: templates/legacy/response/oa_response.html:312
+msgid "One team member should submit on behalf of the entire team."
+msgstr "한 명의 팀원이 전체 팀을 대신하여 제출해야 합니다."
+
+#: templates/legacy/response/oa_response.html:314
+msgid ""
+"\n"
+"                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
+"                  "
+msgstr "\n여기에서 팀 과제에 대해 자세히 알아보십시오: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)"
+
+#: templates/legacy/response/oa_response.html:322
+msgid "We could not submit your response"
+msgstr "귀하의 답변을 제출할 수 없습니다."
+
+#: templates/legacy/response/oa_response.html:332
+msgid "Submit your response and move to the next step"
+msgstr "답변을 제출하고 다음 단계로 이동합니다."
+
+#: templates/legacy/response/oa_response_cancelled.html:34
+msgid "Your submission was cancelled. "
+msgstr "제출이 취소되었습니다."
+
+#: templates/legacy/response/oa_response_cancelled.html:37
+#, python-format
+msgid ""
+"\n"
+"                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
+msgstr "\n%(removed_by_username)s on %(removed_datetime)s 가 제출을 취소하였습니다."
+
+#: templates/legacy/response/oa_response_cancelled.html:41
+#, python-format
+msgid ""
+"\n"
+"                               Your submission was cancelled on %(removed_datetime)s\n"
+"                            "
+msgstr "\n%(removed_datetime)s에 제출이 취소되었습니다\n "
+
+#: templates/legacy/response/oa_response_cancelled.html:48
+#, python-format
+msgid ""
+"\n"
+"                            Comments: %(comments)s\n"
+"                        "
+msgstr "\n코멘트: %(comments)s"
+
+#: templates/legacy/response/oa_response_closed.html:19
+#: templates/legacy/self/oa_self_closed.html:20
+#: templates/legacy/student_training/student_training_closed.html:17
+msgid "Incomplete"
+msgstr "미완성"
+
+#: templates/legacy/response/oa_response_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer submit a response or continue with this problem, and you will receive"
+" a grade of Incomplete. If you saved but did not submit a response, the "
+"response appears in the course records."
+msgstr "이 단계에 대한 마감일이 지났습니다. 이 단계는 마감되었습니다. 답변을 이제 제출할 수 없고, 미완성에 대한 점수를 받게될 것입니다. 답변을 저장했지만 재출하지 않은 경우, 답변이 강좌 기록에 보일 것입니다. "
+
+#: templates/legacy/response/oa_response_graded.html:20
+#: templates/legacy/response/oa_response_submitted.html:20
+#: templates/legacy/self/oa_self_complete.html:18
+#: templates/legacy/student_training/student_training_complete.html:17
+msgid "Complete"
+msgstr "완료"
+
+#: templates/legacy/response/oa_response_graded.html:30
+#: templates/legacy/response/oa_response_submitted.html:51
+#: templates/legacy/self/oa_self_assessment.html:67
+msgid "Your response"
+msgstr "내 응답"
+
+#: templates/legacy/response/oa_response_graded.html:33
+#: templates/legacy/response/oa_response_submitted.html:54
+msgid "Your Uploaded Files"
+msgstr "업로드한 파일"
+
+#: templates/legacy/response/oa_response_submitted.html:32
+msgid ""
+"Your response has been submitted. You will receive your grade after all "
+"steps are complete and your response is fully assessed."
+msgstr "응답이 제출되었습니다. 모든 단계가 끝나고 답변 평가가 완료되면 최종 성적을 부여받게 됩니다."
+
+#: templates/legacy/response/oa_response_submitted.html:34
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr "\n아직 %(peer_start_tag)speer assessment%(end_tag)s 및 %(self_start_tag)sself assessment%(end_tag)s 단계가 남았습니다."
+
+#: templates/legacy/response/oa_response_submitted.html:38
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr "\n아직 %(start_tag)speer assessment%(end_tag)s 단계가 남았습니다."
+
+#: templates/legacy/response/oa_response_submitted.html:42
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr "\n아직 %(start_tag)sself assessment%(end_tag)s 단계가 남았습니다."
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr "오류"
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr "\n당신은 %(team_name)s팀에 이 과제에 대한 응답을 제출한 후에 합류했습니다\n그래서 그들의 응답에 대해서 점수를 받을 수 없습니다. 또한 이전에 다른 팀과 이 과제에 대한 응답을 \n제출하지 않았습니다. 강의 조교에게 이 과제에 대한 \n대안 책을 선택하기 위해 연락해 주세요. "
+
+#: templates/legacy/self/oa_self_assessment.html:33
+msgid "Assess Your Response"
+msgstr "답변 자기 평가"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/self/oa_self_assessment.html:41
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/self/oa_self_assessment.html:48
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#: templates/legacy/self/oa_self_assessment.html:88
+msgid "Submit your assessment"
+msgstr "평가 제출하기"
+
+#: templates/legacy/self/oa_self_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete a self assessment or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "이 단계에 대한 마감일이 지났습니다. 이 단계는 마감됩니다. 더이상 상호 평가 혹은 과제를 계속할 수 없습니다. 미완성에 대한 점수를 받을것입니다."
+
+#: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
+msgid "Staff Grade"
+msgstr "운영팀 성적"
+
+#: templates/legacy/staff_area/oa_staff_area.html:8
+#: templates/legacy/staff_area/oa_staff_area.html:35
+msgid "Manage Individual Learners"
+msgstr "개별 학습자 관리하기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:10
+msgid "Manage Team Responses"
+msgstr "팀 응답 관리하기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:13
+#: templates/legacy/staff_area/oa_staff_area.html:71
+msgid "View Assignment Statistics"
+msgstr "과제 통계 조회"
+
+#: templates/legacy/staff_area/oa_staff_area.html:22
+msgid "Demo the new Grading Experience"
+msgstr "새로운 채점 경험 데모"
+
+#: templates/legacy/staff_area/oa_staff_area.html:26
+msgid "View ORA in Studio"
+msgstr "Studio에서 ORA 보기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:69
+#: templates/legacy/staff_area/oa_staff_area.html:151
+msgid "Close"
+msgstr "닫기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:37
+msgid "Manage Teams"
+msgstr "팀 관리하기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:50
+msgid "Enter an individual learner's username or email"
+msgstr "개별 학습자 사용자 이름이나 이메일 입력하기"
+
+#: templates/legacy/staff_area/oa_staff_area.html:52
+msgid "Enter a team member's username or edX email"
+msgstr "팀 구성원으 아이디 또는 edX 이메일을 입력하세요."
+
+#: templates/legacy/staff_area/oa_staff_area.html:56
+msgid "Submit"
+msgstr "제출"
+
+#: templates/legacy/staff_area/oa_staff_area.html:78
+msgid "Response total"
+msgstr "전체 답변"
+
+#: templates/legacy/staff_area/oa_staff_area.html:84
+msgid "Location"
+msgstr "위치"
+
+#: templates/legacy/staff_area/oa_staff_area.html:90
+msgid "Learner Progress"
+msgstr "학습자 성과"
+
+#: templates/legacy/staff_area/oa_staff_area.html:94
+#: templates/legacy/staff_area/oa_staff_area.html:117
+msgid "Problem Step"
+msgstr "문제 단계"
+
+#: templates/legacy/staff_area/oa_staff_area.html:95
+msgid "Active Learners in Step"
+msgstr "이 단계에서 활동중인 학습자들"
+
+#: templates/legacy/staff_area/oa_staff_area.html:113
+msgid "Dates"
+msgstr "날짜"
+
+#: templates/legacy/staff_area/oa_staff_area.html:118
+msgid "Release Date"
+msgstr "공개 날짜"
+
+#: templates/legacy/staff_area/oa_staff_area.html:131
+#: templates/legacy/staff_area/oa_staff_area.html:137
+msgid "N/A"
+msgstr "N/A"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners.html:7
+msgid "Staff Assessment"
+msgstr "운영팀 평가"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr "문제 루브릭을 활용하여 이 팀에게 성적을 부여하세요."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
+msgid "Give this learner a grade using the problem's rubric."
+msgstr "문제 루브릭을 활용해 이 학습자에게 성적을 부여하세요."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr "\n%(team_usernames)s인 %(team_name)s에 대한 응답"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:30
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:20
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(student_username)s\n"
+"                                    "
+msgstr "\n%(student_username)s 에 대한 답변"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:34
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:24
+msgid "Learner Response"
+msgstr "학습자 답변"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr "위 질문에 대한 팀의 답변"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:41
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:32
+#: templates/legacy/staff_area/oa_student_info.html:57
+msgid "The learner's response to the prompt above"
+msgstr "위 질문에 대한 학습자의 답변"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:57
+msgid "Submit assessment"
+msgstr " 평가 제출"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
+msgid "Submit assessment and continue grading"
+msgstr "평가를 제출하고 계속 채점합니다"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_count.html:6
+#, python-format
+msgid ""
+"\n"
+"                %(ungraded)s Available and %(in_progress)s Checked Out\n"
+"            "
+msgstr "\n%(ungraded)s 가 가능하며 %(in_progress)s 가 확인되었습니다\n            "
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:7
+msgid "Override this learner's current grade using the problem's rubric."
+msgstr "문제 루브릭을 활용해 이 학습자의 현재 성적을 수정합니다."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:9
+msgid "Override this team's current grade using the problem's rubric."
+msgstr "문제 루브릭을 활용해 팀의 현재 성적을 수정합니다."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:27
+msgid "Team Response"
+msgstr "팀 응답"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:34
+#: templates/legacy/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr "위 질문에 대한 팀의 답변"
+
+#: templates/legacy/staff_area/oa_student_info.html:11
+#, python-format
+msgid ""
+"\n"
+"                    Viewing learner: %(learner)s\n"
+"                "
+msgstr "\n학습자 조회: %(learner)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:15
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr "\n팀 조회: %(team)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:28
+msgid "Learner's Response"
+msgstr "학습자 답변"
+
+#: templates/legacy/staff_area/oa_student_info.html:30
+msgid "Team's Response"
+msgstr "팀의 답변"
+
+#: templates/legacy/staff_area/oa_student_info.html:39
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr "\n%(removed_datetime)s 에 %(removed_by_username)s 가 학습자 제출을 삭제하였습니다"
+
+#: templates/legacy/staff_area/oa_student_info.html:43
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed on %(removed_datetime)s\n"
+"                        "
+msgstr "\n%(removed_datetime)s 에 학습자 제출이 삭제되었습니다"
+
+#: templates/legacy/staff_area/oa_student_info.html:50
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
+msgstr "\n코멘트: %(comments)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:71
+msgid "Peer Assessments for This Learner"
+msgstr "이 학습자에 대한 상호 평가"
+
+#: templates/legacy/staff_area/oa_student_info.html:76
+msgid "Peer Assessments Completed by This Learner"
+msgstr "이 학습자가 완료한 상호 평가"
+
+#: templates/legacy/staff_area/oa_student_info.html:81
+msgid "Learner's Self Assessment"
+msgstr "학습자 자기 평가"
+
+#: templates/legacy/staff_area/oa_student_info.html:87
+msgid "Staff Assessment for This Learner"
+msgstr "이 학습자에 대한 운영팀 평가"
+
+#: templates/legacy/staff_area/oa_student_info.html:89
+msgid "Staff Assessment for this Team"
+msgstr "이 팀에 대한 운영팀의  평가"
+
+#: templates/legacy/staff_area/oa_student_info.html:100
+msgid "Learner's Final Grade"
+msgstr "학습자 최종 성적"
+
+#: templates/legacy/staff_area/oa_student_info.html:102
+msgid "Team's Final Grade"
+msgstr "팀의 최종 성적"
+
+#: templates/legacy/staff_area/oa_student_info.html:112
+#, python-format
+msgid ""
+"\n"
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr "\n최종 성적: %(points_possible)s 중 %(points_earned)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:119
+msgid "Final Grade Details"
+msgstr "최종 성적 세부사항"
+
+#: templates/legacy/staff_area/oa_student_info.html:139
+#, python-format
+msgid ""
+"\n"
+"                                        %(assessment_label)s - %(points)s point\n"
+"                                    "
+msgid_plural ""
+"\n"
+"                                        %(assessment_label)s - %(points)s points\n"
+"                                    "
+msgstr[0] "\n%(assessment_label)s - %(points)s 점"
+
+#: templates/legacy/staff_area/oa_student_info.html:154
+msgid "Feedback Recorded"
+msgstr "피드백 저장"
+
+#: templates/legacy/staff_area/oa_student_info.html:165
+msgid "The submission is waiting for assessments."
+msgstr "이 답변에 대한 평가가 완료되지 않았습니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:170
+msgid ""
+"The learner's submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "학습자가 제출한 답변이 상호 평가에서 제외되었습니다. 학습자 상태를 수정해 답변을 재제출할 수 있도록 하지 않으면 이 학습자는 0점을 획득하게 됩니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:172
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
+msgstr "팀이 제출한 답변이 상호 평가에서 제외되었습니다. 문제에 대한 팀 구성원의 상태를 삭제하여 팀의 답변을 재 제출하지 않으면 이 팀은 0점을 획득하게 됩니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:177
+msgid "The problem has not been started."
+msgstr "이 문제는 시작되지 않았습니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:181
+msgid "The problem has not been completed."
+msgstr "이 문제는 완료되지 않았습니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:193
+msgid "Submit Assessment Grade Override"
+msgstr "수정된 평가 성적 제출하기"
+
+#: templates/legacy/staff_area/oa_student_info.html:195
+msgid "Submit Team Grade Override"
+msgstr "수정된 팀 점수 제출하기"
+
+#: templates/legacy/staff_area/oa_student_info.html:204
+msgid "Unable to perform grade override"
+msgstr "등급 재정의를 수행할 수 없음"
+
+#: templates/legacy/staff_area/oa_student_info.html:207
+msgid ""
+"Grades are frozen. Grades are automatically frozen 30 days after the course "
+"end date."
+msgstr "등급이 동결됩니다. 성적은 강좌 종료일로부터 30일 후에 자동으로 동결됩니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:212
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to delete the learner’s state for this problem to "
+"allow them to resubmit."
+msgstr "이 제출은 취소되었으며 성적을 받을 수 없습니다. 학습자가 다시 제출할 수 있도록 이 문제에 대한 학습자의 상태를 삭제하는 방법에 대한 문서를 참조하십시오."
+
+#: templates/legacy/staff_area/oa_student_info.html:230
+msgid "Remove Submission From Peer Grading"
+msgstr "답변을 상호 평가에서 제외하기"
+
+#: templates/legacy/staff_area/oa_student_info.html:232
+msgid "Remove Team Submission from Grading"
+msgstr "팀 제출물을 평가에서 제외하기"
+
+#: templates/legacy/staff_area/oa_student_info.html:242
+msgid "Caution: This Action Cannot Be Undone"
+msgstr "주의: 이 작업은 되돌릴 수 없습니다"
+
+#: templates/legacy/staff_area/oa_student_info.html:244
+msgid ""
+"Removing a learner's submission cannot be undone and should be done with "
+"caution."
+msgstr "학습자의 답변을 제거하게 되면 되돌릴 수 없으므로 주의해야 합니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:246
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr "팀의 답변을 제거하게 되면 되돌릴 수 없으므로 주의해야 합니다."
+
+#: templates/legacy/staff_area/oa_student_info.html:252
+msgid "Comments:"
+msgstr "코멘트:"
+
+#: templates/legacy/staff_area/oa_student_info.html:261
+msgid "Remove submission"
+msgstr "제출 삭제"
+
+#: templates/legacy/staff_area/oa_student_info.html:276
+msgid "A response was not found for this learner."
+msgstr "이 학습자의 답변을 찾을 수 없었습니다."
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:16
+#, python-format
+msgid ""
+"\n"
+"                            Assessment %(assessment_num)s:\n"
+"                        "
+msgstr "\n평가 %(assessment_num)s:"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:22
+msgid "Assessment Details"
+msgstr "평가 세부사항"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
+msgid "Selected Option"
+msgstr "선택된 옵션"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
+msgid "Feedback"
+msgstr "피드백"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
+msgid "Points Possible"
+msgstr "가능한 점수"
+
+#: templates/legacy/student_training/student_training.html:18
+msgid "Learn to Assess Responses"
+msgstr "답변 평가 방법 학습"
+
+#: templates/legacy/student_training/student_training.html:27
+#, python-format
+msgid ""
+"\n"
+"                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
+"                  "
+msgstr "\n진도 (%(training_available_num)s중 %(current_progress_num)s)\n "
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/student_training/student_training.html:38
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/student_training/student_training.html:45
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
+
+#: templates/legacy/student_training/student_training.html:58
+#: templates/legacy/student_training/student_training.html:66
+msgid "Learning to Assess Responses"
+msgstr "답변 평가 방법 학습"
+
+#: templates/legacy/student_training/student_training.html:61
+msgid ""
+"Before you begin to assess your peers' responses, you'll learn how to "
+"complete peer assessments by reviewing responses that instructors have "
+"already assessed. If you select the same options for the response that the "
+"instructor selected, you'll move to the next step. If you don't select the "
+"same options, you'll review the response and try again."
+msgstr "상호 평가를 시작하기 전, 교수자의 평가 방법을 참고하며 평가 방법을 배우게 됩니다. 교수자와 같게 평가하였다면, 다음 단계로 넘어가게 되는 방식입니다."
+
+#: templates/legacy/student_training/student_training.html:69
+msgid ""
+"Your assessment differs from the instructor's assessment of this response. "
+"Review the response and consider why the instructor may have assessed it "
+"differently. Then, try the assessment again."
+msgstr "귀하의 평가가 교수자의 평가와 다릅니다. 다시 답변을 검토하고, 교수자와 다르게 평가한 이유를 고려해 다시 평가해보세요."
+
+#: templates/legacy/student_training/student_training.html:76
+msgid "The response to the prompt above:"
+msgstr "위 질문에 대한 답변:"
+
+#: templates/legacy/student_training/student_training.html:98
+msgid "Selected Options Agree"
+msgstr "선택한 항목이 일치합니다."
+
+#: templates/legacy/student_training/student_training.html:101
+msgid "The option you selected is the option that the instructor selected."
+msgstr "여러분이 선택한 평가기준과 교수자가 선택한 평가기준이 일치합니다."
+
+#: templates/legacy/student_training/student_training.html:105
+msgid "Selected Options Differ"
+msgstr "선택한 항목이 다릅니다."
+
+#: templates/legacy/student_training/student_training.html:108
+msgid ""
+"The option you selected is not the option that the instructor selected."
+msgstr "여러분이 선택한 평가기준과 교수자가 선택한 평가기준이 일치하지 않습니다."
+
+#: templates/legacy/student_training/student_training.html:144
+msgid "We could not check your assessment"
+msgstr "평가를 확인 할 수 없습니다"
+
+#: templates/legacy/student_training/student_training.html:151
+msgid "Compare your selections with the instructor's selections"
+msgstr "교수자의 항목과 귀하의 항목을 비교해보세요."
+
+#: templates/legacy/student_training/student_training_closed.html:29
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer continue with this assignment, and you will receive a grade of "
+"Incomplete."
+msgstr "이 단계에 대한 마감일이 지났습니다. 이 단계는 종료됩니다. 더이상 과제를 계속할 수 없고 미완성 에대한 성적을 받을것입니다."
+
+#: templates/legacy/student_training/student_training_error.html:18
+msgid "Error Loading Learner Training Examples"
+msgstr "학습자 안내 예제 불러오기 중 오류가 발생했습니다"
+
+#: templates/legacy/student_training/student_training_error.html:21
+msgid "The Learner Training Step of this assignment could not be loaded."
+msgstr "이 과제에 대한 학습자 안내 단계를 불러올 수 없었습니다"
+
+#: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
+msgid "An unexpected error occurred."
+msgstr "알 수 없는 오류가 발생했습니다."
+
+#: xblock/grade_mixin.py:179
+msgid "Peer Assessment"
+msgstr "상호 평가"
+
+#: xblock/grade_mixin.py:181
+msgid "Self Assessment"
+msgstr "자기평가"
+
+#: xblock/grade_mixin.py:221
+msgid "Assessment feedback could not be saved."
+msgstr "평가 피드백을 저장할 수 없습니다."
+
+#: xblock/grade_mixin.py:232
+msgid "Feedback saved."
+msgstr "피드백이 저장되었습니다."
+
+#: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
+msgid "Staff Comments"
+msgstr "운영팀 의견"
+
+#: xblock/grade_mixin.py:372
+msgid "Peer Median Grade"
+msgstr "상호 평가 성적 중간값"
+
+#: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
+#, python-brace-format
+msgid "Peer {peer_index}"
+msgstr "상호 {peer_index}"
+
+#: xblock/grade_mixin.py:378
+msgid "Peer Comments"
+msgstr "상호 의견"
+
+#: xblock/grade_mixin.py:388
+msgid "Self Assessment Grade"
+msgstr "자기 평가 성적"
+
+#: xblock/grade_mixin.py:388
+msgid "Your Self Assessment"
+msgstr "자기 평가"
+
+#: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
+msgid "Your Comments"
+msgstr "본인 의견"
+
+#: xblock/grade_mixin.py:485
+msgid "Waiting for peer reviews"
+msgstr "상호 평가 대기중입니다"
+
+#: xblock/grade_mixin.py:524
+msgid "Peer"
+msgstr "다른 학습자"
+
+#: xblock/grade_mixin.py:655
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr "이 문제에 대한 성적은 운영팀에 의해 결정되었습니다."
+
+#: xblock/grade_mixin.py:657
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr "이 문제에 대한 성적은 상호 평가 성적 중간값으로 결정되었습니다."
+
+#: xblock/grade_mixin.py:660
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr "이 문제에 대한 성적은 자기 평가에 의해 결정되었습니다."
+
+#: xblock/grade_mixin.py:666
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr "귀하는 성공적으로 이 문제를 해결했고,  {earned_points} / {total_points} 를 받았습니다."
+
+#: xblock/grade_mixin.py:674
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr "아직 최종 성적을 결정하기에 필요한 모든 상호 평가를 받지 못했습니다."
+
+#: xblock/openassesment_template_mixin.py:66
+msgid "Peer Assessment Only"
+msgstr "상호 평가만"
+
+#: xblock/openassesment_template_mixin.py:67
+msgid "Self Assessment Only"
+msgstr "자가 평가만"
+
+#: xblock/openassesment_template_mixin.py:68
+msgid "Staff Assessment Only"
+msgstr "운영팀 평가만"
+
+#: xblock/openassesment_template_mixin.py:69
+msgid "Self Assessment to Peer Assessment"
+msgstr "자가 평가에서 상호 평가로"
+
+#: xblock/openassesment_template_mixin.py:70
+msgid "Self Assessment to Staff Assessment"
+msgstr "자가 평가에서 운영팀 평가로"
+
+#: xblock/rubric_reuse_mixin.py:62
+msgid "You must specify a block id from which to copy a rubric."
+msgstr "루브릭을 복사할 블록 ID를 지정해야 합니다."
+
+#: xblock/rubric_reuse_mixin.py:66
+msgid "Invalid block id."
+msgstr "잘못된 블록 ID."
+
+#: xblock/rubric_reuse_mixin.py:72
+#, python-brace-format
+msgid ""
+"No Open Response Assessment found in {course_id} with block id {block_id}"
+msgstr "블록 ID가 {block_id}인 {course_id}에서 공개 응답 평가를 찾을 수 없습니다."
+
+#: xblock/staff_area_mixin.py:42
+msgid "You do not have permission to schedule training"
+msgstr "트레이닝을 예약할 권한이 없습니다."
+
+#: xblock/staff_area_mixin.py:43
+msgid "You do not have permission to reschedule tasks."
+msgstr "일정 조절 작업에 액세스할 수 있는 권한이 없습니다"
+
+#: xblock/staff_area_mixin.py:69
+msgid "You do not have permission to access the ORA staff area"
+msgstr "개방형 응답 평가 운영팀 페이지에 접속할 권한이 없습니다"
+
+#: xblock/staff_area_mixin.py:70
+msgid "You do not have permission to access ORA learner information."
+msgstr "개방형 응답 평가 학습자 정보 페이지에 접속할 권한이 없습니다."
+
+#: xblock/staff_area_mixin.py:71
+msgid "You do not have permission to access ORA staff grading."
+msgstr "개방형 응답 평가 운영팀 성적 페이지에 접속할 권한이 없습니다."
+
+#: xblock/staff_area_mixin.py:242
+msgid "Pending"
+msgstr "대기중"
+
+#: xblock/staff_area_mixin.py:243
+msgid "Complete/Overwritten"
+msgstr "완료/덮어쓰기"
+
+#: xblock/staff_area_mixin.py:246
+msgid "Not applicable"
+msgstr "해당 없음"
+
+#: xblock/staff_area_mixin.py:247
+msgid "Not submitted"
+msgstr "제출하지 않은"
+
+#: xblock/staff_area_mixin.py:248
+msgid "Submitted"
+msgstr "제출완료"
+
+#: xblock/staff_area_mixin.py:342
+msgid "Error getting learner information."
+msgstr "학습자 정보 불러오기 중 오류가 발생했습니다."
+
+#: xblock/staff_area_mixin.py:385
+msgid "Error loading the checked out learner response."
+msgstr "이미 확인한 학습자 답변 불러오기 중 오류가 발생했습니다."
+
+#: xblock/staff_area_mixin.py:386
+msgid "No other learner responses are available for grading at this time."
+msgstr "현재 채점이 가능한 학습자 답변이 없습니다."
+
+#: xblock/staff_area_mixin.py:388
+msgid "Error getting staff grade information."
+msgstr "운영팀 성적 정보 불러오기 중 오류가 발생했습니다."
+
+#: xblock/staff_area_mixin.py:409
+msgid "Error getting staff grade ungraded and checked out counts."
+msgstr "운영팀이 채점하지 않은 답변과 확인한 답변의 숫자를 불러오는 중 오류가 발생했습니다."
+
+#: xblock/staff_area_mixin.py:703
+msgid "Please enter valid reason to remove the submission."
+msgstr "제출을 취소하기 위한 타당한 이유를 입력하세요."
+
+#: xblock/staff_area_mixin.py:714
+msgid "Submission not found"
+msgstr "제출물을 찾지 못했습니다."
+
+#: xblock/staff_area_mixin.py:725
+msgid "Submission for team assignment has no associated team submission"
+msgstr "팀 과제에 대한 제출물이 팀 제출과 연관이 없습니다."
+
+#: xblock/staff_area_mixin.py:754
+msgid ""
+"The learner submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "학습자가 제출한 답변이 상호 평가에서 제외되었습니다. 학습자 상태를 수정해 답변을 재제출할 수 있도록 하지 않으면 이 학습자는 0점을 획득하게 됩니다."
+
+#: xblock/staff_area_mixin.py:789
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete a team member’s state for the problem to "
+"allow the team to resubmit a response."
+msgstr "팀이 제출한 답변이 성적에서 제외되었습니다. 문제에 대한 팀 구성원의 상태를 삭제하여 재 제출하지 않으면 팀은 0점을 획득하게 됩니다."
+
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
+msgid "Error updating XBlock configuration"
+msgstr "XBlock 설정을 업데이트 하는 도중에 오류가 발생했습니다."
+
+#: xblock/studio_mixin.py:260
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr "오류: 텍스트 응답 및 파일 업로드 응답을 모두 비활성화할 수 없습니다"
+
+#: xblock/studio_mixin.py:264
+msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr "오류: 텍스트 응답이 비활성화된 경우 파일 업로드 응답이 필요합니다"
+
+#: xblock/studio_mixin.py:267
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr "오류: 파일 업로드 응답이 비활성화된 경우 텍스트 응답이 필요합니다"
+
+#: xblock/studio_mixin.py:291
+#, python-brace-format
+msgid "Validation error: {error}"
+msgstr "확인 오류:{error}"
+
+#: xblock/studio_mixin.py:323
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr "성공적으로 OpenAssessment XBlock이 업데이트되었습니다."
+
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "평가에서 선택한 옵션을 제공해야 합니다."
+
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "평가에 대한 전체적인 피드백을 제공해야 합니다."
+
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "과제의 기준에 대한 피드백을 제공해야 합니다."
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}'는 올바르지 않는 날짜 형식입니다. 날짜 형식이 YYYY-MM-DDTHH:MM:SS 이 되도록 바꿔주시길 바랍니다."
+
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "'{date}'는 무조건 날짜 문자열이거나 날짜와 시간만 나타내야 합니다."
+
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "이번 단계의 시작날짜 '{start}'는 다음 단계  시작날짜 '{prev}'  이후 일 수 없습니다."
+
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "이번 단계의 마감일 '{due}'는 다음 단계 마감일 '{prev}' 이후 일 수 없습니다."
+
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "개강일 '{start}'은 '{due}' 보다 이후가 될 수 없습니다."
+
+#: xblock/utils/validation.py:118
+msgid "This problem must include at least one assessment."
+msgstr "이 문제는 적어도 하나의 평가를 포함해야합니다."
+
+#: xblock/utils/validation.py:122
+msgid "The assessment order you selected is invalid."
+msgstr "선택한 평가 순서가 잘못되었습니다."
+
+#: xblock/utils/validation.py:132
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr "상호 평가에서, 채점 필수 항목 값은 반드시 양수이어야 합니다."
+
+#: xblock/utils/validation.py:135
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr "상호 평가에서 채점자 값은 반드시 양수이어야 합니다."
+
+#: xblock/utils/validation.py:139
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr "상호 평가에서, 채점 필수 항목값이 채점자 값보다 크거나 같아야 합니다."
+
+#: xblock/utils/validation.py:148
+msgid "You must provide at least one example response for learner training."
+msgstr "학습자 안내의 예제 답변중 하나 이상을 완료해야 합니다."
+
+#: xblock/utils/validation.py:151
+msgid "Each example response for learner training must be unique."
+msgstr "학습자 안내의 각 예제 답변은 모두 상이해야 합니다."
+
+#: xblock/utils/validation.py:158
+msgid "The \"required\" value must be true if staff assessment is the only step."
+msgstr "운영팀 평가가 유일한 단계인 경우 \"필수\" 값이 true로 설정되어야 합니다."
+
+#: xblock/utils/validation.py:162
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr "문제가 공개되고 나면 평가 수는 변경될 수 없습니다."
+
+#: xblock/utils/validation.py:167
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr "문제가 공개되고 나면 평가 방식은 변경될 수 없습니다."
+
+#: xblock/utils/validation.py:190
+msgid "This rubric definition is not valid."
+msgstr "루브릭 정의가 유효하지 않습니다."
+
+#: xblock/utils/validation.py:196
+#, python-brace-format
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr "'{criterion}'의 평가 기준 사본 이름(들) : {duplicates}"
+
+#: xblock/utils/validation.py:204
+msgid "Criteria with no options must require written feedback."
+msgstr "평가기준이 없는 평가항목은 피드백 작성이 필요합니다."
+
+#: xblock/utils/validation.py:213
+msgid "Prompts cannot be created or deleted after a problem is released."
+msgstr "프롬프트는 문제가 배포된 후에는 생성 및 삭제 될 수 없습니다."
+
+#: xblock/utils/validation.py:217
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr "문제가 공개되고 나면기 기준 개수를 변경할 수 없습니다."
+
+#: xblock/utils/validation.py:230
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr "문제가 공개되고 나면 기준 이름은 변경될 수 없습니다."
+
+#: xblock/utils/validation.py:235
+msgid "The number of options cannot be changed after a problem is released."
+msgstr "문제가 공개되고 나면 평가 기준의 개수를 변경할 수 없습니다."
+
+#: xblock/utils/validation.py:240
+msgid "Point values cannot be changed after a problem is released."
+msgstr "문제가 공개되고 나면 점수를 변경할 수 없습니다."
+
+#: xblock/utils/validation.py:291
+msgid "Learner training must have at least one training example."
+msgstr "학습자 안내는 최소한 하나의 예제가 있어야 합니다."
+
+#: xblock/utils/validation.py:356
+msgid "Leaderboard number is invalid."
+msgstr "Leaderboard 번호가 잘못되었습니다."
+
+#: xblock/utils/validation.py:379
+msgid "The submission format is invalid."
+msgstr "제출 형식이 유효하지 않습니다."

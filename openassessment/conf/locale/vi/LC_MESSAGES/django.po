@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Lam Nguyen <lamnguyen.cis@gmail.com>, 2020\n"
 "Language-Team: Vietnamese (http://app.transifex.com/open-edx/edx-platform/language/vi/)\n"
@@ -39,13 +39,13 @@ msgstr ""
 
 #: assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
-msgstr ""
+msgstr "Không thể phân tích cấu trúc chuỗi hướng dẫn"
 
 #: assessment/api/student_training.py:191
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr ""
+msgstr "Nếu bài tập của bạn bao gồm phần đào tạo học viên, phần phiếu tự đánh giá phải có ít nhất một tiêu chí và tiêu chí đó phải có ít nhất một lựa chọn"
 
 #: assessment/api/student_training.py:203
 #, python-brace-format
@@ -57,17 +57,17 @@ msgstr "Ví dụ {example_number} có một lỗi xác nhận: {error}"
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "Ví dụ {example_number} có một tùy chọn không hợp lệ cho \"{criterion_name} \": \"{option_name} \""
 
 #: assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr ""
+msgstr "Ví dụ {example_number} có một tùy chọn thêm cho \"{criterion_name} \""
 
 #: assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr ""
+msgstr "Ví dụ {example_number} đang bị mất một lựa chọn cho \"{criterion_name}\""
 
 #: data.py:534
 #, python-brace-format
@@ -91,7 +91,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "Item ID"
 
 #: data.py:868
 msgid "Submission ID"
@@ -184,17 +184,17 @@ msgstr "Hiểu thị tên"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "Tên hiển thị cho thành phần này."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "Phản hồi bằng Văn bản"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "Có bắt buộc người học phải có một câu trả lời bằng văn bản đúng với câu hỏi này."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
@@ -208,13 +208,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr ""
+msgstr "Phản hồi dạng Tệp tải lên"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "Có cho phép người học tải các tệp lên như một phần của phản hồi của họ hay không."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
@@ -245,19 +245,19 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr ""
+msgstr "Các loại Tệp tải lên"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "PDF hoặc Hình ảnh"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr ""
+msgstr "Tệp Ảnh"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
-msgstr ""
+msgstr "Các loại Tệp Tùy chỉnh"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:66
 msgid ""
@@ -266,13 +266,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
-msgstr ""
+msgstr "Loại tập tin"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "Nhập phần mở rộng tệp, được phân tách bằng dấu phẩy, mà bạn muốn người học có thể tải lên. Ví dụ: pdf, doc, docx."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:84
 msgid ""
@@ -282,17 +282,17 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "Cho phép Trả lời bằng LaTeX"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "Cho phép người học có thể viết các chuỗi được định dạng LaTeX"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:102
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:8
 #: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
-msgstr ""
+msgstr "Top Responses"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
@@ -311,15 +311,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:129
 msgid "Teams Enabled"
-msgstr ""
+msgstr "Nhóm Đã kích hoạt"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:136
 msgid "Specify whether team submissions are allowed for this response."
-msgstr ""
+msgstr "Có cho phép nộp bài theo nhóm cho vấn đề này không."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
-msgstr ""
+msgstr "Chọn đội nhóm"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
@@ -335,11 +335,11 @@ msgstr ""
 #: templates/legacy/staff_area/oa_student_info.html:122
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "Tiêu chuẩn"
 
 #: templates/legacy/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr ""
+msgstr "Bạn không thể xóa một tiêu chí sau khi bài tập đã được phát hành."
 
 #: templates/legacy/edit/oa_edit_criterion.html:9
 #: templates/legacy/edit/oa_edit_option.html:7
@@ -350,11 +350,11 @@ msgstr "Loại bỏ"
 
 #: templates/legacy/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr ""
+msgstr "Tiêu chí Name"
 
 #: templates/legacy/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr ""
+msgstr "Tiêu chí Prompt"
 
 #: templates/legacy/edit/oa_edit_criterion.html:44
 msgid "Add Option"
@@ -362,11 +362,11 @@ msgstr "Thêm Tùy chọn"
 
 #: templates/legacy/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr ""
+msgstr "Thông tin phản hồi cho Tiêu chuẩn này"
 
 #: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
 msgid "None"
-msgstr ""
+msgstr "Không chứng chỉ"
 
 #: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
 msgid "Optional"
@@ -400,7 +400,7 @@ msgstr "Phiếu tự đánh giá"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "Lịch trình"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -424,11 +424,11 @@ msgstr "Lựa chọn điểm"
 
 #: templates/legacy/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr ""
+msgstr "Giải thích lựa chọn"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
-msgstr ""
+msgstr "Bước: Đánh giá Bạn học"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:15
 msgid ""
@@ -450,7 +450,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
-msgstr ""
+msgstr "Phải Đánh giá"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:32
 msgid ""
@@ -520,13 +520,13 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr ""
+msgstr "Bạn không thể xóa một dấu nhắc sau khi bài tập đã được phát hành."
 
 #: templates/legacy/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr ""
+msgstr "Nhắc nhở. Thay thế văn bản mẫu với văn bản của riêng bạn. Để biết thêm thông tin, hãy xem tài liệu ORA."
 
 #: templates/legacy/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
@@ -538,25 +538,25 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr ""
+msgstr "Phiếu tự đánh giá được làm bởi những tiêu chí, trong đó thường có chứa một hoặc nhiều lựa chọn hơn. Mỗi tùy chọn đều có một giá trị điểm. Mẫu này có hai chỉ tiêu mẫu và lựa chọn của họ. Thay thế văn bản mẫu với văn bản của riêng bạn. Để biết thêm thông tin, hãy xem tài liệu ORA."
 
 #: templates/legacy/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr ""
+msgstr "Thêm Criterion"
 
 #: templates/legacy/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
-msgstr ""
+msgstr "Thông tin phản hồi cho Response này"
 
 #: templates/legacy/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
-msgstr ""
+msgstr "Hướng dẫn thông tin phản hồi"
 
 #: templates/legacy/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "Khuyến khích người học có phản hồi về kết quả mà họ đã đánh giá. Bạn có thể thay thế văn bản mẫu bằng của riêng bạn."
 
 #: templates/legacy/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
@@ -566,7 +566,7 @@ msgstr "Mặc định Phản hồi văn bản"
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr ""
+msgstr "Nhập văn bản phản hồi mà người học sẽ thấy trước khi họ nhập phản hồi của chính họ. Sử dụng văn bản này cho người học xem một ví dụ về đánh giá bạn học."
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
@@ -598,27 +598,27 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
-msgstr ""
+msgstr "Response Ngày bắt đầu"
 
 #: templates/legacy/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
-msgstr ""
+msgstr "Phản ứng Giờ"
 
 #: templates/legacy/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
-msgstr ""
+msgstr "Ngày và giờ khi người học có thể bắt đầu gửi câu trả lời."
 
 #: templates/legacy/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
-msgstr ""
+msgstr "Response Due Date"
 
 #: templates/legacy/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
-msgstr ""
+msgstr "Thời gian đáp ứng Do"
 
 #: templates/legacy/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
-msgstr ""
+msgstr "Ngày và giờ khi người học không thể gửi câu trả lời."
 
 #: templates/legacy/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
@@ -644,7 +644,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
-msgstr ""
+msgstr "Bước: Đánh giá Nhân viên"
 
 #: templates/legacy/edit/oa_edit_staff_assessment.html:12
 msgid ""
@@ -654,7 +654,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
-msgstr ""
+msgstr "Bước: Đào tạo Người học"
 
 #: templates/legacy/edit/oa_edit_student_training.html:14
 msgid ""
@@ -677,7 +677,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
-msgstr ""
+msgstr "Thêm Response mẫu"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
@@ -713,7 +713,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr ""
+msgstr "Response ghi bàn"
 
 #: templates/legacy/edit/oa_training_example.html:16
 msgid "Response Score"
@@ -739,7 +739,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n              "
 
 #: templates/legacy/grade/oa_assessment_title.html:7
 #, python-format
@@ -751,12 +751,12 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
+msgstr[0] "\n                      %(assessment_title)s - %(points)s điểm\n                  "
 
 #: templates/legacy/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr ""
+msgstr "Thêm thông tin về %(name)s "
 
 #: templates/legacy/grade/oa_grade_cancelled.html:14
 #: templates/legacy/grade/oa_grade_complete.html:15
@@ -773,7 +773,7 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        %(points_earned)s trên %(points_possible)s\n                                    "
 
 #: templates/legacy/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
@@ -785,7 +785,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n                                            %(points_earned)s trên %(points_possible)s\n                                        "
 
 #: templates/legacy/grade/oa_grade_complete.html:38
 #: templates/legacy/response/oa_response.html:29
@@ -794,7 +794,7 @@ msgstr "Trả Lời Của Bạn"
 
 #: templates/legacy/grade/oa_grade_complete.html:41
 msgid "Your Upload"
-msgstr ""
+msgstr "Tải lên Của bạn"
 
 #: templates/legacy/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
@@ -820,7 +820,7 @@ msgstr "Đánh Giá Trả Lời Của Bạn"
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Trạng Thái"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -837,7 +837,7 @@ msgstr "Nhận xét bổ sung về câu trả lời của bạn"
 
 #: templates/legacy/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "Cung cấp phản hồi về những đánh giá bạn học"
 
 #: templates/legacy/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
@@ -847,19 +847,19 @@ msgstr "Đang gửi phản hồi"
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr ""
+msgstr "Thông tin phản hồi của bạn đã được gửi. Giáo viên sẽ nhìn thấy thông tin phản hồi này khi họ xem xét hồ sơ của lớp."
 
 #: templates/legacy/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
-msgstr ""
+msgstr "Giáo viên tất nhiên sẽ có thể nhìn thấy bất kỳ thông tin phản hồi mà bạn đã cung cấp khi họ xem xét hồ sơ lớp."
 
 #: templates/legacy/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "Chọn các câu dưới đây phản ánh tốt nhất kinh nghiệm của bạn với các đánh giá bạn học."
 
 #: templates/legacy/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
@@ -880,7 +880,7 @@ msgstr "Một số ý kiến ​​tôi nhận được không phù hợp."
 #: templates/legacy/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
-msgstr ""
+msgstr "Cung cấp phản hồi về điểm số hoặc nhận xét mà bạn nhận được từ bạn học của bạn."
 
 #: templates/legacy/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
@@ -892,7 +892,7 @@ msgstr "Chúng tôi không thể gửi phản hồi của bạn"
 
 #: templates/legacy/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
-msgstr ""
+msgstr "Gửi phản hồi về đánh giá của bạn học"
 
 #: templates/legacy/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
@@ -920,24 +920,24 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr ""
+msgstr "Bạn đã hoàn thành các bước cảu bạn trong bài tập, nhưng một số đánh giá vẫn cần được hoàn thành trên phần trả lời của bạn. Khi những đánh giá trả lời của bạn đã hoàn tất, bạn sẽ thấy phản hồi từ tất cả mọi người đã đánh giá trả lời của bạn và bạn sẽ nhận được điểm cuối cùng."
 
 #: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:15
 #: templates/legacy/staff_area/oa_staff_area.html:16
 #: templates/legacy/staff_area/oa_staff_area.html:18
 #: templates/legacy/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
-msgstr ""
+msgstr "Đánh giá Phần Trả lời"
 
 #: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "Đánh giá Phần Trả lời chưa kích hoạt. Mục này chưa được cấu hình cho Đánh giá Nhân viên."
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "Vui lòng chờ"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -958,13 +958,13 @@ msgstr "%(num_points)s điểm"
 #: templates/legacy/peer/oa_peer_assessment.html:84
 #: templates/legacy/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "Phản hồi của bạn học của bạn cho lời nhắc trên"
 
 #: templates/legacy/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
-msgstr ""
+msgstr "Sau khi bạn hoàn thành tất cả các bước của bài tập này, bạn có thể thấy những câu trả lời được điểm cao từ các bạn học."
 
 #: templates/legacy/message/oa_message_cancelled.html:8
 msgid ""
@@ -983,44 +983,44 @@ msgstr ""
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "Nhiệm vụ này chưa kích hoạt. Kiểm tra lại sau để hoàn thành bài tập khi phần này được mở."
 
 #: templates/legacy/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "Bài tập này đã đóng. Một hoặc nhiều thời hạn cho bài tập này đã qua. Bạn sẽ nhận được điểm chưa hoàn thành cho bài tập này."
 
 #: templates/legacy/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "Bạn đã hoàn thành bài tập này. Điểm cuối cùng của bạn sẽ có khi các đánh giá trả lời của bạn được hoàn tất."
 
 #: templates/legacy/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "Bạn đã hoàn thành bài tập này. Xem lại điểm của bạn và đánh giá chi tiết của bạn."
 
 #: templates/legacy/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "Bài tập này đang được tiến hành. Đào tạo học viên sẽ sớm kết thúc. Hoàn thành bước đào tạo học viên để tiếp tục."
 
 #: templates/legacy/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "Bài tập này đang được tiến hành. Hoàn thành bước đào tạo học viên để tiếp tục."
 
 #: templates/legacy/message/oa_message_incomplete.html:15
 #: templates/legacy/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "Bài tập này đang được tiến hành. Kiểm tra lại sau khi thời gian đánh giá bắt đầu."
 
 #: templates/legacy/message/oa_message_incomplete.html:20
 #, python-format
@@ -1028,7 +1028,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    %(start_strong)sBài tập này đang được tiến hành. Bước tự đánh giá sẽ kết thúc sớm.%(end_strong)s Bạn vẫn cần phải hoàn thành bước %(start_link)stự đánh giá%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_incomplete.html:24
 #, python-format
@@ -1036,7 +1036,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Bài tập này đang được tiến hành. Bạn vẫn cần phải hoàn thành bước %(start_link)stự đánh giá%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_incomplete.html:38
 #, python-format
@@ -1044,7 +1044,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Bài tập này đang tiến hành.%(start_strong)sBước đánh giá bạn học của bạn học sẽ sớm kết thúc.%(end_strong)s Tất cả các trả lời của các bạn học đã gửi đã được đánh giá. Kiểm tra lại sau để xem có thêm học viên gửi câu trả lời hay không. Bạn vẫn cần phải hoàn thành bước %(start_link)sđánh giá bạn học%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_incomplete.html:42
 #, python-format
@@ -1052,7 +1052,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Bài tập này đang được tiến hành. Tất cả trả lời đã gửi đã được đánh giá. Kiểm tra lại sau để xem có thêm học viên gửi câu trả lời hay không. Bạn vẫn cần phải hoàn thành bước %(start_link)sđánh giá bạn học%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_incomplete.html:46
 #, python-format
@@ -1060,7 +1060,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Bài tập này đang được tiến hành. %(start_strong)sBước đánh giá bạn học sẽ sớm kết thúc.%(end_strong)s Bạn vẫn cần phải hoàn thành bước %(start_link)sđánh giá bạn học%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_incomplete.html:50
 #, python-format
@@ -1068,11 +1068,11 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Bài tập này đang được tiến hành. Bạn vẫn cần phải hoàn thành bước %(start_link)sđánh giá bạn học%(end_link)s.\n                                "
 
 #: templates/legacy/message/oa_message_no_team.html:4
 msgid "Team membership is required to view this assignment"
-msgstr ""
+msgstr "Bạn cần là thành viên nhóm để xem bài tập này"
 
 #: templates/legacy/message/oa_message_no_team.html:7
 #, python-format
@@ -1082,7 +1082,7 @@ msgid ""
 "            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
 "            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
-msgstr ""
+msgstr "\nđây là bài tập nhóm \"%(teamset_name)s\".\nBạn hiện tại không thuộc một nhóm của danh dánh sách nhóm \"%(teamset_name)s\".\nBạn bắt buộc phải trong một nhóm trong danh sách nhóm \"%(teamset_name)s\" để truy cập vào bài tập này."
 
 #: templates/legacy/message/oa_message_open.html:7
 #, python-format
@@ -1090,7 +1090,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    Việc gửi bài tập sẽ sớm kết thúc. Để nhận điểm, trước tiên hãy trả lời những nhắc nhở, sau đó hoàn thành các bước bên dưới mục %(start_tag)sTrả lời Của bạn%(end_tag)s.\n                "
 
 #: templates/legacy/message/oa_message_open.html:11
 #, python-format
@@ -1098,7 +1098,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    Bài tập này có vài bước. Trong bước đầu tiên, bạn sẽ cung cấp câu trả lời cho lời nhắc. Các bước khác xuất hiện bên dưới mục %(start_tag)sTrả lời Của bạn%(end_tag)s.\n                "
 
 #: templates/legacy/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -1106,14 +1106,14 @@ msgstr "Hướng dẫn không có sẵn"
 
 #: templates/legacy/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
-msgstr ""
+msgstr "Các hướng dẫn cho các bước này không thể được nạp."
 
 #: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Bài tập này có vài bước. Trong bước đầu tiên, bạn sẽ cung cấp câu trả lời cho lời nhắc. Các bước khác xuất hiện dưới mục Trả lời Của bạn."
 
 #: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
 #: templates/openassessmentblock/base.html:100
@@ -1122,15 +1122,15 @@ msgstr "Đang tải"
 
 #: templates/legacy/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "Xem trước bằng LaTeX"
 
 #: templates/legacy/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "Bấm để xem trước bản gửi đi của bạn bằng LaTeX."
 
 #: templates/legacy/oa_latex_preview.html:14
 msgid "Preview Response"
-msgstr ""
+msgstr "Xem trước Phản hồi"
 
 #: templates/legacy/oa_rubric.html:53
 msgid "Comments"
@@ -1138,35 +1138,35 @@ msgstr "Nhận xét"
 
 #: templates/legacy/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr ""
+msgstr "Câu hỏi cho phần này"
 
 #: templates/legacy/oa_team_uploaded_files.html:9
 msgid "Files that were uploaded by your teammates:"
-msgstr ""
+msgstr "Tệp được tải lên bởi bạn cùng nhóm: "
 
 #: templates/legacy/oa_team_uploaded_files.html:28
 #: templates/legacy/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "Xem các tệp được liên kết với bản gửi đi này:"
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Được tải lên bởi"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
-msgstr ""
+msgstr "Tệp được tải lên bởi bạn:"
 
 #: templates/legacy/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr ""
+msgstr "Chú ý: Những tệp này đã được tải lên bởi một người học khác và chưa được xác minh, sàng lọc, phê duyệt, xem xét hoặc chứng thực bởi quản trị viên trang web. Nếu bạn truy cập các tệp, bạn tự chịu rủi ro.)"
 
 #: templates/legacy/peer/oa_peer_assessment.html:36
 msgid "Assess Peers"
-msgstr ""
+msgstr "Đánh giá Bạn học"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
@@ -1177,7 +1177,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -1188,7 +1188,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: templates/legacy/peer/oa_peer_assessment.html:61
 #, python-format
@@ -1196,12 +1196,12 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr ""
+msgstr "\n                        Đang tiến hành (%(review_number)s of %(num_must_grade)s)\n                    "
 
 #: templates/legacy/peer/oa_peer_assessment.html:75
 #: templates/legacy/peer/oa_peer_turbo_mode.html:45
 msgid "Read and assess the following response from one of your peers."
-msgstr ""
+msgstr "Đọc và đánh giá trả lời sau đây từ một trong những bạn học của bạn."
 
 #: templates/legacy/peer/oa_peer_assessment.html:87
 #: templates/legacy/peer/oa_peer_turbo_mode.html:56
@@ -1210,7 +1210,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:38
 #: templates/legacy/staff_area/oa_student_info.html:63
 msgid "Associated Files"
-msgstr ""
+msgstr "Tệp Liên kết"
 
 #: templates/legacy/peer/oa_peer_assessment.html:101
 #: templates/legacy/peer/oa_peer_turbo_mode.html:70
@@ -1218,14 +1218,14 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:57
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
-msgstr ""
+msgstr "Chúng tôi không thể gửi đánh giá của bạn"
 
 #: templates/legacy/peer/oa_peer_cancelled.html:19
 #: templates/legacy/response/oa_response_cancelled.html:21
 #: templates/legacy/self/oa_self_cancelled.html:21
 #: templates/legacy/student_training/student_training_cancelled.html:18
 msgid "Cancelled"
-msgstr ""
+msgstr "Đã hủy"
 
 #: templates/legacy/peer/oa_peer_closed.html:20
 #, python-format
@@ -1233,14 +1233,14 @@ msgid ""
 "\n"
 "            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\n chưa hoàn tất (%(num_graded)s của %(num_must_grade)s) \n        "
 
 #: templates/legacy/peer/oa_peer_closed.html:35
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "Ngày đáo hạn cho bước này đã qua. Bước này bây giờ đã đóng. Bạn không thể hoàn thành đánh giá bạn học hoặc tiếp tục với bài tập này, và bạn sẽ nhận được điểm Chưa hoàn thành."
 
 #: templates/legacy/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -1257,11 +1257,11 @@ msgstr "Bạn đã hoàn thành tất cả các đánh giá ngang hàng cần th
 
 #: templates/legacy/peer/oa_peer_complete.html:36
 msgid "We could not retrieve additional submissions for assessment"
-msgstr ""
+msgstr "Chúng tôi không thể lấy đệ trình bổ sung để đánh giá"
 
 #: templates/legacy/peer/oa_peer_complete.html:43
 msgid "Continue Assessing Peers"
-msgstr ""
+msgstr "Tiếp tục Đánh giá Bạn học"
 
 #: templates/legacy/peer/oa_peer_turbo_mode.html:26
 #: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:20
@@ -1270,13 +1270,13 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr ""
+msgstr "\n Hoàn (%(num_graded)s) \n      "
 
 #: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "Tất cả các trả lời của bạn học đã gửi đều đã được đánh giá. Kiểm tra lại sau để xem có thêm bạn học gửi câu trả lời hay không."
 
 #: templates/legacy/peer/oa_peer_unavailable.html:16
 #: templates/legacy/response/oa_response_unavailable.html:17
@@ -1291,7 +1291,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\n          Đang tiến hành (%(review_number)s of %(num_must_grade)s)\n        "
 
 #: templates/legacy/peer/oa_peer_waiting.html:37
 msgid ""
@@ -1299,7 +1299,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "Tất cả các trả lời đủ điều kiện đã được đánh giá. Kiểm tra lại sau để xem có thêm bạn học gửi câu trả lời hay không. Bạn sẽ nhận được điểm của mình sau khi bạn hoàn thành tất cả các bước cho bài tập này và bạn học của bạn đã đánh giá trả lời của bạn."
 
 #: templates/legacy/response/oa_response.html:27
 msgid "Your Team's Response"
@@ -1314,7 +1314,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1325,7 +1325,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: templates/legacy/response/oa_response.html:54
 #: templates/legacy/self/oa_self_assessment.html:56
@@ -1357,7 +1357,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "Nhập câu trả lời của bạn vào dấu nhắc."
 
 #: templates/legacy/response/oa_response.html:92
 msgid ""
@@ -1393,15 +1393,15 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:134
 msgid "The prompt for this section"
-msgstr ""
+msgstr "Dấu nhắc cho phần này"
 
 #: templates/legacy/response/oa_response.html:148
 msgid "You are on team "
-msgstr ""
+msgstr "Bạn đang thuộc nhóm"
 
 #: templates/legacy/response/oa_response.html:150
 msgid "Team Members: "
-msgstr ""
+msgstr "Thành viên nhóm:"
 
 #: templates/legacy/response/oa_response.html:155
 #, python-format
@@ -1429,7 +1429,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(Không bắt buộc)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1444,7 +1444,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "Nhập câu trả lời của bạn vào lời nhắc ở trên."
 
 #: templates/legacy/response/oa_response.html:211
 #, python-format
@@ -1464,7 +1464,7 @@ msgstr "Chúng tôi không thể lưu tiến độ của bạn"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Trạng Thái Trả Lời Của Bạn"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1480,11 +1480,11 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:261
 msgid "We could not upload files"
-msgstr ""
+msgstr "Chúng tôi không thể tải tệp lên"
 
 #: templates/legacy/response/oa_response.html:267
 msgid "We could not delete files"
-msgstr ""
+msgstr "Không thể xoá tệp"
 
 #: templates/legacy/response/oa_response.html:274
 msgid "Select one or more files to upload for this submission."
@@ -1492,7 +1492,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "Chọn tệp để tải lên cho lần gửi này."
 
 #: templates/legacy/response/oa_response.html:280
 msgid "Supported file types: "
@@ -1500,11 +1500,11 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:285
 msgid "Upload files"
-msgstr ""
+msgstr "Tải tệp lên"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Tải lên tập tin"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1540,7 +1540,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:322
 msgid "We could not submit your response"
-msgstr ""
+msgstr "Chúng tôi không thể gửi trả lời của bạn"
 
 #: templates/legacy/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
@@ -1548,7 +1548,7 @@ msgstr "Gửi trả lời của bạn và chuyển sang bước tiếp theo"
 
 #: templates/legacy/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "Nội dung gửi đi của bạn đã bị hủy."
 
 #: templates/legacy/response/oa_response_cancelled.html:37
 #, python-format
@@ -1556,7 +1556,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                                Nội dung bạn gửi đã bị hủy bởi %(removed_by_username)s ngày %(removed_datetime)s\n                            "
 
 #: templates/legacy/response/oa_response_cancelled.html:41
 #, python-format
@@ -1564,7 +1564,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                               Nội dung bạn gửi đã bị hủy vào ngày %(removed_datetime)s\n                            "
 
 #: templates/legacy/response/oa_response_cancelled.html:48
 #, python-format
@@ -1586,7 +1586,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "Ngày đáo hạn cho bước này đã qua. Bước này bây giờ đã đóng. Bạn không còn có thể gửi câu trả lời hoặc tiếp tục với bài tập này và bạn sẽ nhận được điểm Không hoàn thành. Nếu bạn đã lưu nhưng không gửi phản hồi, phản hồi sẽ xuất hiện trong hồ sơ khóa học."
 
 #: templates/legacy/response/oa_response_graded.html:20
 #: templates/legacy/response/oa_response_submitted.html:20
@@ -1599,18 +1599,18 @@ msgstr "Hoàn tất"
 #: templates/legacy/response/oa_response_submitted.html:51
 #: templates/legacy/self/oa_self_assessment.html:67
 msgid "Your response"
-msgstr ""
+msgstr "Phản hồi của bạn"
 
 #: templates/legacy/response/oa_response_graded.html:33
 #: templates/legacy/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "Những tệp đã tải lên của bạn"
 
 #: templates/legacy/response/oa_response_submitted.html:32
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr ""
+msgstr "Phản hồi của bạn đã được gửi. Bạn sẽ nhận được điểm của mình sau khi tất cả các bước đều hoàn thành và phản hồi của bạn được đánh giá đầy đủ."
 
 #: templates/legacy/response/oa_response_submitted.html:34
 #, python-format
@@ -1618,7 +1618,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Bạn vẫn cần phải hoàn thành các bước %(peer_start_tag)sđánh giá bạn học%(end_tag)s và %(self_start_tag)stự đánh giá%(end_tag)s.\n                    "
 
 #: templates/legacy/response/oa_response_submitted.html:38
 #, python-format
@@ -1626,7 +1626,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Bạn vẫn cần phải hoàn thành bước %(start_tag)sđánh giá bạn học%(end_tag)s.\n                    "
 
 #: templates/legacy/response/oa_response_submitted.html:42
 #, python-format
@@ -1634,11 +1634,11 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Bạn vẫn cần phải hoàn thành bước %(start_tag)stự đánh giá%(end_tag)s.\n                    "
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Lỗi"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1664,7 +1664,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1675,36 +1675,36 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: templates/legacy/self/oa_self_assessment.html:88
 msgid "Submit your assessment"
-msgstr ""
+msgstr "Gửi đánh giá của bạn"
 
 #: templates/legacy/self/oa_self_closed.html:32
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "Ngày đáo hạn cho bước này đã qua. Bước này bây giờ đã đóng. Bạn không còn có thể tự mình đánh giá hoặc tiếp tục bài tập này, và bạn sẽ nhận được điểm Chưa hoàn thành."
 
 #: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
 msgid "Staff Grade"
-msgstr ""
+msgstr "Phân cấp Nhân viên"
 
 #: templates/legacy/staff_area/oa_staff_area.html:8
 #: templates/legacy/staff_area/oa_staff_area.html:35
 msgid "Manage Individual Learners"
-msgstr ""
+msgstr "Quản lý Học viên Cá nhân"
 
 #: templates/legacy/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
-msgstr ""
+msgstr "Quản lý các câu trả lời của nhóm"
 
 #: templates/legacy/staff_area/oa_staff_area.html:13
 #: templates/legacy/staff_area/oa_staff_area.html:71
 msgid "View Assignment Statistics"
-msgstr ""
+msgstr "Xem Thống kê Bài tập"
 
 #: templates/legacy/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
@@ -1718,19 +1718,19 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:69
 #: templates/legacy/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr ""
+msgstr "Thoát"
 
 #: templates/legacy/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
-msgstr ""
+msgstr "Quản lý nhóm"
 
 #: templates/legacy/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
-msgstr ""
+msgstr "Nhập tên người dùng hoặc email của người học cá nhân"
 
 #: templates/legacy/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
-msgstr ""
+msgstr "Tìm tên đăng nhập hoặc edX email của một thành viên nhóm"
 
 #: templates/legacy/staff_area/oa_staff_area.html:56
 msgid "Submit"
@@ -1746,7 +1746,7 @@ msgstr "Địa chỉ"
 
 #: templates/legacy/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
-msgstr ""
+msgstr "Tiến độ Học viên"
 
 #: templates/legacy/staff_area/oa_staff_area.html:94
 #: templates/legacy/staff_area/oa_staff_area.html:117
@@ -1755,7 +1755,7 @@ msgstr "Các bước của vấn đề"
 
 #: templates/legacy/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
-msgstr ""
+msgstr "Học viên Hoạt động theo các Bước"
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
@@ -1772,15 +1772,15 @@ msgstr "Không áp dụng"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr ""
+msgstr "Đánh giá Nhân viên"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
 msgid "Give this team a grade using the problem's rubric."
-msgstr ""
+msgstr "Cho điểm nhóm này bằng cách sử dụng phiếu tự đánh giá của bài tập."
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
-msgstr ""
+msgstr "Cung cấp cho người học này một điểm bằng cách sử dụng phiếu tự đánh giá của bài tập."
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
 #, python-format
@@ -1788,7 +1788,7 @@ msgid ""
 "\n"
 "                                        Response for: %(team_name)s with %(team_usernames)s\n"
 "                                    "
-msgstr ""
+msgstr "\nPhản hồi cho: %(team_name)s với %(team_usernames)s"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:30
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:20
@@ -1797,31 +1797,31 @@ msgid ""
 "\n"
 "                                        Response for: %(student_username)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        Phản hồi cho: %(student_username)s\n                                    "
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:34
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
-msgstr ""
+msgstr "Phản hồi Người học"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:39
 msgid "The teams's response to the prompt above"
-msgstr ""
+msgstr "Phản hồi của nhóm cho lời nhắc trên"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:41
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:32
 #: templates/legacy/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "Phản hồi của người học cho lời nhắc trên"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
-msgstr ""
+msgstr "Gửi đánh giá"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
-msgstr ""
+msgstr "Gửi đánh giá và tiếp tục phân loại"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
@@ -1829,24 +1829,24 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr ""
+msgstr "\n                %(ungraded)s Sẵn sàng và %(in_progress)s Đã kiểm tra\n            "
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr ""
+msgstr "Ghi đè mức hiện tại của người học sử dụng phiếu tự đánh giá của bài tập."
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:9
 msgid "Override this team's current grade using the problem's rubric."
-msgstr ""
+msgstr "Ghi đè điểm hiện tại của nhóm bằng phiếu tự đánh giá của bài tập."
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:27
 msgid "Team Response"
-msgstr ""
+msgstr "Phản hồi của nhóm"
 
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:34
 #: templates/legacy/staff_area/oa_student_info.html:59
 msgid "The team's response to the prompt above"
-msgstr ""
+msgstr "Phản hồi của nhóm cho lời nhắc trên"
 
 #: templates/legacy/staff_area/oa_student_info.html:11
 #, python-format
@@ -1854,7 +1854,7 @@ msgid ""
 "\n"
 "                    Viewing learner: %(learner)s\n"
 "                "
-msgstr ""
+msgstr "\nĐang xem người học: %(learner)s"
 
 #: templates/legacy/staff_area/oa_student_info.html:15
 #, python-format
@@ -1862,15 +1862,15 @@ msgid ""
 "\n"
 "                    Viewing team: %(team)s\n"
 "                "
-msgstr ""
+msgstr "\nĐang xem nhóm: %(team)s"
 
 #: templates/legacy/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
-msgstr ""
+msgstr "Phản hồi của Người học"
 
 #: templates/legacy/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr ""
+msgstr "Phản hồi của nhóm"
 
 #: templates/legacy/staff_area/oa_student_info.html:39
 #, python-format
@@ -1878,7 +1878,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Nội dung người học gửi đã bị huỷ bởi %(removed_by_username)s ngày %(removed_datetime)s\n                        "
 
 #: templates/legacy/staff_area/oa_student_info.html:43
 #, python-format
@@ -1886,7 +1886,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Nội dung của người học gửi đã bị huỷ ngày %(removed_datetime)s\n                        "
 
 #: templates/legacy/staff_area/oa_student_info.html:50
 #, python-format
@@ -1894,35 +1894,35 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\n Bình luận: %(comments)s \n                    "
 
 #: templates/legacy/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
-msgstr ""
+msgstr "Đánh giá Bạn học cho Học viên này"
 
 #: templates/legacy/staff_area/oa_student_info.html:76
 msgid "Peer Assessments Completed by This Learner"
-msgstr ""
+msgstr "Đánh giá Bạn học Hoàn thành bởi Học viên này"
 
 #: templates/legacy/staff_area/oa_student_info.html:81
 msgid "Learner's Self Assessment"
-msgstr ""
+msgstr "Tự Đánh giá của Người học"
 
 #: templates/legacy/staff_area/oa_student_info.html:87
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "Đánh giá Nhân viên cho Người học này"
 
 #: templates/legacy/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
-msgstr ""
+msgstr "Đánh giá Nhân viên cho Nhóm này"
 
 #: templates/legacy/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
-msgstr ""
+msgstr "Đanh giá Cuối cùng Học viên"
 
 #: templates/legacy/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr ""
+msgstr "Điểm tổng kết nhóm"
 
 #: templates/legacy/staff_area/oa_student_info.html:112
 #, python-format
@@ -1930,11 +1930,11 @@ msgid ""
 "\n"
 "                            Final grade: %(points_earned)s out of %(points_possible)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Đánh giá cuối cùng: %(points_earned)s out of %(points_possible)s\n                        "
 
 #: templates/legacy/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
-msgstr ""
+msgstr "Chi tiết Đánh giá Cuối cùng"
 
 #: templates/legacy/staff_area/oa_student_info.html:139
 #, python-format
@@ -1946,45 +1946,45 @@ msgid_plural ""
 "\n"
 "                                        %(assessment_label)s - %(points)s points\n"
 "                                    "
-msgstr[0] ""
+msgstr[0] "\n                                        %(assessment_label)s - %(points)s điểm\n                                    "
 
 #: templates/legacy/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
-msgstr ""
+msgstr "Thông tin Phản hồi"
 
 #: templates/legacy/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
-msgstr ""
+msgstr "Nội dung đã gửi đang chờ đánh giá."
 
 #: templates/legacy/staff_area/oa_student_info.html:170
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "Nội dung học viên gửi đã bị loại bỏ khỏi đánh giá bạn học. Học viên sẽ nhận được điểm không, trừ khi bạn xóa trạng thái của học viên cho bài tập để cho phép họ gửi lại câu trả lời."
 
 #: templates/legacy/staff_area/oa_student_info.html:172
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
-msgstr ""
+msgstr "Nội dung nhóm gửi đã bị loại bỏ khỏi đánh giá bạn học. Đội sẽ nhận được điểm không, trừ khi bạn xóa trạng thái của nhóm cho bài tập để cho phép họ gửi lại câu trả lời."
 
 #: templates/legacy/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
-msgstr ""
+msgstr "Bài tập vẫn chưa được bắt đầu."
 
 #: templates/legacy/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
-msgstr ""
+msgstr "Bài tập vẫn chưa được hoàn thành."
 
 #: templates/legacy/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
-msgstr ""
+msgstr "Gửi Đánh giá Phân loại Thay thế"
 
 #: templates/legacy/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
-msgstr ""
+msgstr "Gửi Ghi đè Điểm của nhóm"
 
 #: templates/legacy/staff_area/oa_student_info.html:204
 msgid "Unable to perform grade override"
@@ -2005,27 +2005,27 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info.html:230
 msgid "Remove Submission From Peer Grading"
-msgstr ""
+msgstr "Loại bỏ Thông tin Trong Chấm điểm Bạn học"
 
 #: templates/legacy/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
-msgstr ""
+msgstr "Gỡ bỏ bài nộp của nhóm khỏi mục chấm điểm"
 
 #: templates/legacy/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
-msgstr ""
+msgstr "Chú ý: Thao tác này không thể hoàn tác"
 
 #: templates/legacy/staff_area/oa_student_info.html:244
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
-msgstr ""
+msgstr "Xóa nội dung của người học đã gửi sẽ không thể khôi phục lại và phải được thực hiện mọt cách cẩn thận."
 
 #: templates/legacy/staff_area/oa_student_info.html:246
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
-msgstr ""
+msgstr "Xóa nội dung của nhóm đã gửi sẽ không thể khôi phục lại và phải được thực hiện một cách cẩn thận."
 
 #: templates/legacy/staff_area/oa_student_info.html:252
 msgid "Comments:"
@@ -2037,7 +2037,7 @@ msgstr "Gỡ bỏ bài nộp"
 
 #: templates/legacy/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
-msgstr ""
+msgstr "Không có phản hồi nào cho người học này."
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:16
 #, python-format
@@ -2045,15 +2045,15 @@ msgid ""
 "\n"
 "                            Assessment %(assessment_num)s:\n"
 "                        "
-msgstr ""
+msgstr "\n                            Đánh giá %(assessment_num)s:\n                        "
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:22
 msgid "Assessment Details"
-msgstr ""
+msgstr "Chi tiết Đánh giá"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "Lựa chọn chọn"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
@@ -2061,7 +2061,7 @@ msgstr "Phản hồi"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
-msgstr ""
+msgstr "Chỉ có thể xảy ra"
 
 #: templates/legacy/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
@@ -2073,7 +2073,7 @@ msgid ""
 "\n"
 "                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                  "
-msgstr ""
+msgstr "\n                          Đang tiến hành (%(current_progress_num)s trên %(training_available_num)s)\n                      "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -2084,7 +2084,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -2095,12 +2095,12 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n "
 
 #: templates/legacy/student_training/student_training.html:58
 #: templates/legacy/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
-msgstr ""
+msgstr "Học để đánh giá sự Responses"
 
 #: templates/legacy/student_training/student_training.html:61
 msgid ""
@@ -2109,35 +2109,35 @@ msgid ""
 "already assessed. If you select the same options for the response that the "
 "instructor selected, you'll move to the next step. If you don't select the "
 "same options, you'll review the response and try again."
-msgstr ""
+msgstr "Trước khi bạn bắt đầu đánh giá những trả lời của bạn học, bạn sẽ học cách làm thế nào để hoàn thành đánh giá bạn học bằng cách xem những câu trả lời mà giáo viên hướng dẫn đã đánh giá. Nếu bạn chọn tùy chọn tương tự cho câu trả lời mà giảng viên đã lựa chọn, bạn sẽ chuyển sang bước tiếp theo. Nếu bạn không chọn các tùy chọn tương tự, bạn sẽ xem xét câu trả lời và thử lại."
 
 #: templates/legacy/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
-msgstr ""
+msgstr "Đánh giá của bạn khác với đánh giá của người hướng dẫn của phản ứng này. Xem lại các phản ứng và xem xét tại sao các giảng viên có thể đánh giá nó một cách khác nhau. Sau đó, hãy thử đánh giá lại."
 
 #: templates/legacy/student_training/student_training.html:76
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "Phản hồi cho lời nhắc trên:"
 
 #: templates/legacy/student_training/student_training.html:98
 msgid "Selected Options Agree"
-msgstr ""
+msgstr "Tùy chọn Đồng ý"
 
 #: templates/legacy/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
-msgstr ""
+msgstr "Các tùy chọn mà bạn chọn là tùy chọn mà người hướng dẫn lựa chọn."
 
 #: templates/legacy/student_training/student_training.html:105
 msgid "Selected Options Differ"
-msgstr ""
+msgstr "Tùy chọn Khác nhau"
 
 #: templates/legacy/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr ""
+msgstr "Các tùy chọn mà bạn chọn không phải là lựa chọn mà người hướng dẫn lựa chọn."
 
 #: templates/legacy/student_training/student_training.html:144
 msgid "We could not check your assessment"
@@ -2145,22 +2145,22 @@ msgstr "Chúng tôi không thể kiểm tra đánh giá của bạn"
 
 #: templates/legacy/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
-msgstr ""
+msgstr "So sánh lựa chọn của bạn với các lựa chọn của người hướng dẫn"
 
 #: templates/legacy/student_training/student_training_closed.html:29
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr ""
+msgstr "Ngày đáo hạn cho bước này đã qua. Bước này bây giờ đã đóng. Bạn không còn có thể tiếp tục bài tập này, và bạn sẽ nhận được điểm Chưa hoàn thành."
 
 #: templates/legacy/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
-msgstr ""
+msgstr "Lỗi Tải các Ví dụ Đào tạo Học viên"
 
 #: templates/legacy/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
-msgstr ""
+msgstr "Không tải được bước Đào tạo Học viên của bài tập này."
 
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
 msgid "An unexpected error occurred."
@@ -2184,24 +2184,24 @@ msgstr "Phản hồi lưu."
 
 #: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
-msgstr ""
+msgstr "Nhận xét Nhân viên"
 
 #: xblock/grade_mixin.py:372
 msgid "Peer Median Grade"
-msgstr ""
+msgstr "Điềm Trung bình Giữa các học viên"
 
 #: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
 #, python-brace-format
 msgid "Peer {peer_index}"
-msgstr ""
+msgstr "Bạn học {peer_index}"
 
 #: xblock/grade_mixin.py:378
 msgid "Peer Comments"
-msgstr ""
+msgstr "Nhận xét Bạn học"
 
 #: xblock/grade_mixin.py:388
 msgid "Self Assessment Grade"
-msgstr ""
+msgstr "Điểm Tự Đánh giá"
 
 #: xblock/grade_mixin.py:388
 msgid "Your Self Assessment"
@@ -2209,11 +2209,11 @@ msgstr "Tự đánh giá"
 
 #: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
 msgid "Your Comments"
-msgstr ""
+msgstr "Nhận xét Của bạn"
 
 #: xblock/grade_mixin.py:485
 msgid "Waiting for peer reviews"
-msgstr ""
+msgstr "Đang đợi đánh giá của bạn học"
 
 #: xblock/grade_mixin.py:524
 msgid "Peer"
@@ -2221,30 +2221,30 @@ msgstr "Bạn học"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
-msgstr ""
+msgstr "Điểm số cho câu hỏi này được quyết định bởi Nhân viên chấm điểm."
 
 #: xblock/grade_mixin.py:657
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
-msgstr ""
+msgstr "Điểm số cho câu hỏi này được quyết định bởi số điểm trung vị từ phiên Chấm điểm Bạn học"
 
 #: xblock/grade_mixin.py:660
 msgid "The grade for this problem is determined by your Self Assessment."
-msgstr ""
+msgstr "Điểm số cho câu hỏi này được quyết định bởi phần tự đánh giá của bạn."
 
 #: xblock/grade_mixin.py:666
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
-msgstr ""
+msgstr "Bạn đã giải thành công câu hỏi này và nhận được {earned_points}/{total_points} điểm."
 
 #: xblock/grade_mixin.py:674
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
-msgstr ""
+msgstr "Bạn chưa nhận được đủ số bài đánh giá của bạn học cần thiết để có điểm tổng kết."
 
 #: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
@@ -2290,19 +2290,19 @@ msgstr "Bạn không có quyền để sắp xếp lại các nhiệm vụ."
 
 #: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
-msgstr ""
+msgstr "Bạn không có quyền truy cập vào khu vực nhân sự của ORA"
 
 #: xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
-msgstr ""
+msgstr "Bạn không có quyền truy cập thông tin người học ORA."
 
 #: xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
-msgstr ""
+msgstr "Bạn không có quyền truy cập vào phân loại nhân viên của ORA."
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Đang đợi"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2310,7 +2310,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "Không áp dụng"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2318,57 +2318,57 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Đã gửi"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
-msgstr ""
+msgstr "Lỗi lấy thông tin học viên."
 
 #: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
-msgstr ""
+msgstr "Lỗi khi tải câu trả lời đã kiểm tra của học viên."
 
 #: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
-msgstr ""
+msgstr "Không có câu trả lời của học viên khác để phân loại vào thời điểm này."
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr ""
+msgstr "Lỗi lấy thông tin về phân loại nhân viên."
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
-msgstr ""
+msgstr "Lỗi lấy thông tin phân loại nhân viên chưa phân loại và đếm số đã kiểm tra."
 
 #: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
-msgstr ""
+msgstr "Vui lòng nhập lý do hợp lý để loại bỏ bải nộp."
 
 #: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
-msgstr ""
+msgstr "Không tìm thấy bài nộp"
 
 #: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
-msgstr ""
+msgstr "Bài nộp của nhóm này không được liên kết với nhóm nào"
 
 #: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr ""
+msgstr "Nội dung học viên gửi đã bị xoá khỏi đánh giá bạn học. Học viên sẽ nhận được điểm không, trừ khi bạn xóa trạng thái của người học cho bài tập để cho phép họ gửi lại câu trả lời."
 
 #: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
-msgstr ""
+msgstr "Nội dung nhóm gửi đã bị loại bỏ khỏi đánh giá bạn học. Đội sẽ nhận được điểm không, trừ khi bạn xóa trạng thái của nhóm cho bài tập để cho phép họ gửi lại câu trả lời."
 
 #: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
-msgstr ""
+msgstr "Lỗi cập nhật cấu hình XBlock"
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
@@ -2391,50 +2391,50 @@ msgstr "Xác nhận lỗi: {error}"
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
+msgstr "Cập nhật thành công OpenAssessment XBlock"
 
 #: xblock/utils/data_conversion.py:315
 msgid "You must provide options selected in the assessment."
-msgstr ""
+msgstr "Bạn phải cung cấp lựa chọn được chọn trong đánh giá."
 
 #: xblock/utils/data_conversion.py:318
 msgid "You must provide overall feedback in the assessment."
-msgstr ""
+msgstr "Bạn phải cung cấp phản hồi tổng thể trong đánh giá."
 
 #: xblock/utils/data_conversion.py:321
 msgid "You must provide feedback for criteria in the assessment."
-msgstr ""
+msgstr "Bạn phải cung cấp phản hồi cho các tiêu chí trong đánh giá."
 
 #: xblock/utils/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
-msgstr ""
+msgstr "'{date}' là một định dạng ngày tháng hợp lệ. Hãy chắc chắn rằng thời gian được định dạng như YYYY-MM-DDTHH: MM: SS."
 
 #: xblock/utils/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
-msgstr ""
+msgstr "'{date}' phải là một chuỗi ngày hoặc datetime"
 
 #: xblock/utils/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
-msgstr ""
+msgstr "Ngày bắt đầu của bước này '{start}' không thể sớm hơn bước ngày bắt đầu bước trước '{prev}'."
 
 #: xblock/utils/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
-msgstr ""
+msgstr "Ngày kết thúc của bước này '{due}' không thể muộn hơn ngày kết thúc của bước tiếp theo '{prev}'."
 
 #: xblock/utils/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr ""
+msgstr "Ngày bắt đầu '{start}' không thể muộn hơn ngày kết thúc '{due}'"
 
 #: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
@@ -2446,7 +2446,7 @@ msgstr "Trình tự đánh giá bạn chọn không hợp lệ."
 
 #: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr ""
+msgstr "Trong đánh giá bạn học, các mục \"Phải Đánh Giá\" phải là một số nguyên dương."
 
 #: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
@@ -2460,67 +2460,67 @@ msgstr "Trong đánh phần giá giữa các học viên, giá trị của mục
 
 #: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
-msgstr ""
+msgstr "Bạn phải cung cấp ít nhất một ví dụ về phản hồi cho việc huấn luyện người học."
 
 #: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
-msgstr ""
+msgstr "Mỗi ví dụ về phẩn hồi cho việc đào tạo người học phải là duy nhất."
 
 #: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr ""
+msgstr "Giá trị \"bắt buộc\" phải đúng nếu đánh giá nhân viên là bước duy nhất."
 
 #: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr ""
+msgstr "Số lượng các đánh giá không thể thay đổi sau khi vấn đề đã được phát hành."
 
 #: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr ""
+msgstr "Các loại đánh giá không thể thay đổi sau khi vấn đề đã được phát hành."
 
 #: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
-msgstr ""
+msgstr "Định nghĩa cho loại này không hợp lệ."
 
 #: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
+msgstr "Tùy chọn trong '{criterion}' có (các) tên trùng lặp: {duplicates}"
 
 #: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
-msgstr ""
+msgstr "Tiêu chuẩn không có tùy chọn phải yêu cầu bằng văn bản phản hồi."
 
 #: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr ""
+msgstr "Nhắc nhở không thể được tạo ra hoặc sau khi xóa một vấn đề được phát hành."
 
 #: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr ""
+msgstr "Số lượng các tiêu chí không thể được thay đổi sau khi một vấn đề được phát hành."
 
 #: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr ""
+msgstr "Tên tiêu chí không thể được thay đổi sau khi một vấn đề được phát hành"
 
 #: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
-msgstr ""
+msgstr "Số lượng các tùy chọn không thể thay đổi sau khi một vấn đề được phát hành."
 
 #: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
-msgstr ""
+msgstr "Điểm giá trị không thể thay đổi sau khi một vấn đề được phát hành."
 
 #: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "Đào tạo học viên phải có ít nhất một ví dụ đào tạo."
 
 #: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
-msgstr ""
+msgstr "Số Leaderboard là không hợp lệ."
 
 #: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
