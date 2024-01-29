@@ -3,6 +3,7 @@ Tests for XBlock handlers for the ORA MFE BFF
 """
 from collections import namedtuple
 from contextlib import contextmanager
+import copy
 import json
 from unittest.mock import Mock, PropertyMock, patch
 
@@ -727,7 +728,7 @@ class FileUploadTest(MFEHandlersTestBase):
             'fileName': 'n1',
             'fileSize': -1,
             'contentType': 'text',
-        }
+        },
     )
     @scenario("data/basic_scenario.xml")
     def test_bad_inputs(self, xblock, payload):
@@ -783,16 +784,22 @@ class FileUploadTest(MFEHandlersTestBase):
         assert_error_response(resp, expected_status, expected_code, expected_context)
         mock_delete_file.assert_called_once_with(self.VALID_FILE_UPLOAD_OBJ.index)
 
+    @ddt.data(False, True)
     @scenario("data/basic_scenario.xml")
-    def test_upload_files(self, xblock):
+    def test_upload_files(self, xblock, blank_content_type):
         """ Test for file upload happy path"""
         url = 'www.someurl.xyz/fileUpload'
         mock_args = {
             'get_upload_url.return_value': url,
             'append_file_data.return_value': [self.VALID_FILE_UPLOAD_OBJ],
         }
+
+        payload = copy.deepcopy(self.VALID_FILE_UPLOAD_PAYLOAD)
+        if blank_content_type:
+            payload['contentType'] = ''
+
         with self._mock_submissions_actions(**mock_args):
-            resp = self.request_upload_files(xblock, self.VALID_FILE_UPLOAD_PAYLOAD)
+            resp = self.request_upload_files(xblock, payload)
         assert resp.status_code == 200
         assert resp.json == {
             'fileUrl': url,

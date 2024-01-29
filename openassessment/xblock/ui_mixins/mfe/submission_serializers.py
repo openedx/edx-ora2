@@ -136,7 +136,7 @@ class AddFileRequestSerializer(Serializer):
     fileDescription = CharField(source='description')
     fileName = CharField(source='name')
     fileSize = IntegerField(source='size', min_value=0)
-    contentType = CharField()
+    contentType = CharField(allow_blank=True)
 
 
 class FileUploadCallbackRequestSerializer(Serializer):
