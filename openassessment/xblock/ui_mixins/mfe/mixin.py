@@ -120,6 +120,8 @@ class MfeMixin:
         step_data = None
 
         # Get the info for the current step
+        if step_name == "submission":
+            step_data = self.submission_data
         if step_name == "studentTraining":
             step_data = self.student_training_data
         elif step_name == "peer":
