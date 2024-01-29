@@ -727,6 +727,12 @@ class FileUploadTest(MFEHandlersTestBase):
             'fileName': 'n1',
             'fileSize': -1,
             'contentType': 'text',
+        },
+        {
+            'fileDescription': 'd1',
+            'fileName': 'n1',
+            'fileSize': 7,
+            'contentType': '',
         }
     )
     @scenario("data/basic_scenario.xml")
@@ -1005,3 +1011,5 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
                 resp = self.request_assessment_submit(xblock, step='studentTraining')
 
         assert_error_response(resp, 400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)
+
+    
