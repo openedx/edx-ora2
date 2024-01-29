@@ -336,8 +336,14 @@ class MfeMixin:
         assessment_data = serializer.to_legacy_format(self)
         requested_step = serializer.data['step']
         try:
+            # Block assessing a closed step
+            if not self._step_is_open(requested_step):
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
+
+            # Block assessing a cancelled submission
             if self.workflow_data.is_cancelled:
                 raise InvalidStateToAssess()
+
             if requested_step == 'peer':
                 peer_assess(
                     assessment_data['options_selected'],
@@ -384,12 +390,6 @@ class MfeMixin:
     @XBlock.json_handler
     def assessment(self, data, suffix=""):
         if suffix == handler_suffixes.ASSESSMENT_SUBMIT:
-            step_name = data.get("step")
-
-            if not self._step_is_open(step_name):
-                raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {step_name}")
-
-            # Continue on to assessing
             return self._assessment_submit_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
