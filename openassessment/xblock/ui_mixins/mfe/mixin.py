@@ -354,7 +354,7 @@ class MfeMixin:
                     assessment_data['feedback'],
                     self.config_data,
                     self.workflow_data,
-                    self.self_data
+                    self.self_assessment_data
                 )
             elif requested_step == 'studentTraining':
                 corrections = training_assess(
