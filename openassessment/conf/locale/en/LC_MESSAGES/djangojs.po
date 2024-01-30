@@ -466,6 +466,16 @@ msgstr ""
 msgid "Heading 4"
 msgstr ""
 
+#: xblock/static/dist/openassessment-lms.c35235ec22759cc829ff.js:375
+#: xblock/static/dist/openassessment-lms.cfa4306d06eca91a34e5.js:375
+msgid "Action"
+msgstr ""
+
+#: xblock/static/dist/openassessment-lms.c35235ec22759cc829ff.js:375
+#: xblock/static/dist/openassessment-lms.cfa4306d06eca91a34e5.js:375
+msgid "Review"
+msgstr ""
+
 #: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"

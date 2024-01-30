@@ -16,6 +16,7 @@ from django.template.loader import get_template
 from bleach.sanitizer import Cleaner
 from lazy import lazy
 from webob import Response
+from edx_toggles.toggles import SettingDictToggle
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
@@ -68,6 +69,10 @@ from openassessment.xblock.apis.assessments.student_training_api import StudentT
 from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW = SettingDictToggle(
+    "FEATURES", "ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW", default=False, module_name=__name__
+)
 
 
 def load(path):
@@ -756,6 +761,7 @@ class OpenAssessmentBlock(
         context_dict = {
             "title": self.title,
             "peer_assessment_required": peer_assessment_required,
+            "selectable_learners_enabled": ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW.is_enabled(),
         }
 
         if peer_assessment_required:
