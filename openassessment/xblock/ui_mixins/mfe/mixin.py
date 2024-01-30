@@ -95,7 +95,7 @@ class MfeMixin:
             return PageDataSerializer(self, context=serializer_context).data
 
         # Raise error if step is closed
-        elif not self._step_is_open(requested_step):
+        elif not self.is_step_open(requested_step):
             raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
 
         # Check to see if user can access this workflow step
@@ -110,7 +110,7 @@ class MfeMixin:
         serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
 
-    def _step_is_open(self, step_name):
+    def is_step_open(self, step_name):
         """
         Determine whether or not the requested step is open
 
@@ -184,7 +184,7 @@ class MfeMixin:
             return self._submission_draft_handler(data)
         elif suffix == handler_suffixes.SUBMISSION_SUBMIT:
             # Return an error if the submission step is not open
-            if self.submission_data.problem_closed:
+            if not self.is_step_open("submission"):
                 raise OraApiException(400, error_codes.INACCESSIBLE_STEP)
             return self._submission_create_handler(data)
         else:
@@ -343,7 +343,7 @@ class MfeMixin:
         requested_step = serializer.data['step']
         try:
             # Block assessing a closed step
-            if not self._step_is_open(requested_step):
+            if not self.is_step_open(requested_step):
                 raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
 
             # Block assessing a cancelled submission
