@@ -119,10 +119,17 @@ class MfeMixin:
         """
         step_data = None
 
-        # Get the info for the current step
+        # Users can always view a submission they've previously submitted
+        if step_name == "submission" and self.submission_data.has_submitted:
+            return True
+        # And whether they can get to grades, depends on the workflow being "done"
+        elif step_name == "done":
+            return self.workflow_data.is_done
+
+        # Otherwise, get the info for the current step to determine access
         if step_name == "submission":
             step_data = self.submission_data
-        if step_name == "studentTraining":
+        elif step_name == "studentTraining":
             step_data = self.student_training_data
         elif step_name == "peer":
             step_data = self.peer_assessment_data()
@@ -130,11 +137,10 @@ class MfeMixin:
             step_data = self.self_assessment_data
         elif step_name == "staff":
             step_data = self.staff_assessment_data
+        else:
+            raise OraApiException(400, error_codes.UNKNOWN_SUFFIX, error_context=f"Bad step name: {step_name}")
 
-        if not step_data:
-            raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS)
-
-        # Return an error if the step is currently closed
+        # Return if the step is currently open
         return not step_data.problem_closed
 
     def _submission_draft_handler(self, data):
