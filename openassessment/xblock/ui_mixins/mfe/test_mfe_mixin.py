@@ -685,9 +685,8 @@ class SubmissionCreateTest(MFEHandlersTestBase):
     @scenario("data/basic_scenario.xml")
     def test_blocks_submit_when_step_closed(self, xblock, mock_is_step_open):
         mock_is_step_open.return_value = False
-        with self._mock_create_submission() as mock_submit:
+        with self._mock_create_submission():
             resp = self.request_create_submission(xblock)
-
             assert_error_response(resp, 400, error_codes.INACCESSIBLE_STEP)
 
 
