@@ -208,7 +208,7 @@ class StepInfoSerializer(Serializer):
     submission = SubmissionStepInfoSerializer(source="submission_data")
     studentTraining = StudentTrainingStepInfoSerializer(source="student_training_data")
     peer = PeerStepInfoSerializer(source="peer_assessment_data")
-    _self = SelfStepInfoSerializer(source="self_data")
+    _self = SelfStepInfoSerializer(source="self_assessment_data")
 
     def get_fields(self):
         # Hack to name one of the output fields "self", a reserved word

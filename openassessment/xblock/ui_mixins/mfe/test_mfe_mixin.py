@@ -681,6 +681,14 @@ class SubmissionCreateTest(MFEHandlersTestBase):
             assert resp.status_code == 200
             assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE["submission"]["textResponses"], 3)
 
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.MfeMixin.is_step_open")
+    @scenario("data/basic_scenario.xml")
+    def test_blocks_submit_when_step_closed(self, xblock, mock_is_step_open):
+        mock_is_step_open.return_value = False
+        with self._mock_create_submission():
+            resp = self.request_create_submission(xblock)
+            assert_error_response(resp, 400, error_codes.INACCESSIBLE_STEP)
+
 
 @ddt.ddt
 class FileUploadTest(MFEHandlersTestBase):
@@ -1012,3 +1020,17 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
                 resp = self.request_assessment_submit(xblock, step='studentTraining')
 
         assert_error_response(resp, 400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.MfeMixin.is_step_open")
+    @ddt.data('self', 'studentTraining', 'peer')
+    @scenario("data/basic_scenario.xml")
+    def test_blocks_assess_when_step_closed(self, xblock, mfe_step, mock_is_step_open):
+        mock_is_step_open.return_value = False
+        with self.mock_assess_functions() as assess_mocks:
+            with self.mock_workflow_status(mfe_step):
+                resp = self.request_assessment_submit(xblock, step=mfe_step)
+
+        assert_error_response(resp, 400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {mfe_step}")
+        assess_mocks.self.assert_not_called()
+        assess_mocks.training.assert_not_called()
+        assess_mocks.peer.assert_not_called()

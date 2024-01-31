@@ -295,7 +295,7 @@ class LegacyHandlersMixin:
                 data['overall_feedback'],
                 self.config_data,
                 self.workflow_data,
-                self.self_data,
+                self.self_assessment_data,
             )
         except ReviewerMustHaveSubmittedException:
             return failure_response('You must submit a response before you can perform a self-assessment.')
@@ -376,7 +376,7 @@ class LegacyHandlersMixin:
                 data['overall_feedback'],
                 data.get('assess_type', 'regrade'),
                 self.config_data,
-                self.staff_data,
+                self.staff_assessment_data,
             )
         except (StaffAssessmentRequestError, StaffAssessmentInternalError):
             return failure_response('Your team assessment could not be submitted.')

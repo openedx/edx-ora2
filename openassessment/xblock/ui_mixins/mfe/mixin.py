@@ -94,6 +94,10 @@ class MfeMixin:
         if not requested_step:
             return PageDataSerializer(self, context=serializer_context).data
 
+        # Raise error if step is closed
+        elif not self.is_step_open(requested_step):
+            raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
+
         # Check to see if user can access this workflow step
         requested_workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[requested_step]
         if not self.workflow_data.has_reached_given_step(
@@ -105,6 +109,39 @@ class MfeMixin:
         # If they have access to this step, return the associated data
         serializer_context["requested_step"] = requested_step
         return PageDataSerializer(self, context=serializer_context).data
+
+    def is_step_open(self, step_name):
+        """
+        Determine whether or not the requested step is open
+
+        Return: If the problem is open or not (Bool)
+        Raises: OraApiException if the step name is invalid
+        """
+        step_data = None
+
+        # Users can always view a submission they've previously submitted
+        if step_name == "submission" and self.submission_data.has_submitted:
+            return True
+        # And whether they can get to grades, depends on the workflow being "done"
+        elif step_name == "done":
+            return self.workflow_data.is_done
+
+        # Otherwise, get the info for the current step to determine access
+        if step_name == "submission":
+            step_data = self.submission_data
+        elif step_name == "studentTraining":
+            step_data = self.student_training_data
+        elif step_name == "peer":
+            step_data = self.peer_assessment_data()
+        elif step_name == "self":
+            step_data = self.self_assessment_data
+        elif step_name == "staff":
+            step_data = self.staff_assessment_data
+        else:
+            raise OraApiException(400, error_codes.UNKNOWN_SUFFIX, error_context=f"Bad step name: {step_name}")
+
+        # Return if the step is currently open
+        return not step_data.problem_closed
 
     def _submission_draft_handler(self, data):
         try:
@@ -146,6 +183,9 @@ class MfeMixin:
         if suffix == handler_suffixes.SUBMISSION_DRAFT:
             return self._submission_draft_handler(data)
         elif suffix == handler_suffixes.SUBMISSION_SUBMIT:
+            # Return an error if the submission step is not open
+            if not self.is_step_open("submission"):
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP)
             return self._submission_create_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
@@ -302,8 +342,14 @@ class MfeMixin:
         assessment_data = serializer.to_legacy_format(self)
         requested_step = serializer.data['step']
         try:
+            # Block assessing a closed step
+            if not self.is_step_open(requested_step):
+                raise OraApiException(400, error_codes.INACCESSIBLE_STEP, f"Inaccessible step: {requested_step}")
+
+            # Block assessing a cancelled submission
             if self.workflow_data.is_cancelled:
                 raise InvalidStateToAssess()
+
             if requested_step == 'peer':
                 peer_assess(
                     assessment_data['options_selected'],
@@ -320,7 +366,7 @@ class MfeMixin:
                     assessment_data['feedback'],
                     self.config_data,
                     self.workflow_data,
-                    self.self_data
+                    self.self_assessment_data
                 )
             elif requested_step == 'studentTraining':
                 corrections = training_assess(
