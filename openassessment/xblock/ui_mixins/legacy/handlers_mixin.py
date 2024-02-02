@@ -2,6 +2,8 @@
 
 import logging
 
+from openedx_events.learning.data import ORASubmissionData
+from openedx_events.learning.signals import ORA_SUBMISSION_CREATED
 from xblock.core import XBlock
 from submissions import api as submissions_api
 from openassessment.assessment.errors.peer import (
@@ -61,6 +63,26 @@ class LegacyHandlersMixin:
     Exposes actions (@XBlock.json_handlers) used in our legacy ORA UI
     """
 
+    @staticmethod
+    def send_ora_submission_created_event(submission: dict) -> None:
+        """
+        Send an event when a submission is created
+
+        Args:
+            submission (dict): The submission data
+        """
+        from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+
+        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(
+            submission
+        )
+        ORA_SUBMISSION_CREATED.send_event(
+            submission=ORASubmissionData(
+                id=submission.get("uuid"),
+                file_downloads=file_downloads,
+            )
+        )
+
     # Submissions
 
     @XBlock.json_handler
@@ -79,6 +101,7 @@ class LegacyHandlersMixin:
                 self.submission_data,
                 self.workflow_data
             )
+            self.send_ora_submission_created_event(submission)
             return (
                 True,
                 submission.get("student_item"),
