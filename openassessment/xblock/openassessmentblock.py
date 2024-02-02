@@ -315,11 +315,11 @@ class OpenAssessmentBlock(
         return PeerAssessmentAPI(self, continue_grading)
 
     @property
-    def self_data(self):
+    def self_assessment_data(self):
         return SelfAssessmentAPI(self)
 
     @property
-    def staff_data(self):
+    def staff_assessment_data(self):
         return StaffAssessmentAPI(self)
 
     @property

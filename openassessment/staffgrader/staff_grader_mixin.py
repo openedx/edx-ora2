@@ -459,7 +459,7 @@ class StaffGraderMixin:
                 data['overall_feedback'],
                 data.get('assess_type', 'regrade'),
                 self.config_data,
-                self.staff_data,
+                self.staff_assessment_data,
             )
             if self.is_team_assignment():
                 do_team_staff_assessment(*args, team_submission_uuid=submission_uuid)
