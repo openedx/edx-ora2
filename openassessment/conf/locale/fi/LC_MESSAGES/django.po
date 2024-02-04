@@ -1,0 +1,2510 @@
+# #-#-#-#-#  django.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
+"PO-Revision-Date: 2014-06-11 13:03+0000\n"
+"Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
+"Language-Team: Finnish (http://app.transifex.com/open-edx/edx-platform/language/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: assessment/api/student_training.py:179
+msgid "Could not parse serialized rubric"
+msgstr "Sarjastettua rubriikkia ei voitu jäsentää"
+
+#: assessment/api/student_training.py:191
+msgid ""
+"If your assignment includes a learner training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
+msgstr "Jos tehtäväsi sisältää oppijan koulutusvaiheen, rubriikissa on oltava vähintään yksi kriteeri ja siinä on oltava vähintään yksi vaihtoehto."
+
+#: assessment/api/student_training.py:203
+#, python-brace-format
+msgid "Example {example_number} has a validation error: {error}"
+msgstr "Esimerkissä {example_number} on vahvistusvirhe: {error}"
+
+#: assessment/api/student_training.py:217
+#, python-brace-format
+msgid ""
+"Example {example_number} has an invalid option for \"{criterion_name}\": "
+"\"{option_name}\""
+msgstr "Esimerkissä {example_number} on virheellinen vaihtoehto kohteelle &quot;{criterion_name}&quot;: &quot;{option_name}&quot;"
+
+#: assessment/api/student_training.py:227
+#, python-brace-format
+msgid "Example {example_number} has an extra option for \"{criterion_name}\""
+msgstr "Esimerkissä {example_number} on ylimääräinen vaihtoehto &quot;{criterion_name}&quot;"
+
+#: assessment/api/student_training.py:240
+#, python-brace-format
+msgid "Example {example_number} is missing an option for \"{criterion_name}\""
+msgstr "Esimerkistä {example_number} puuttuu vaihtoehto &quot;{criterion_name}&quot;"
+
+#: data.py:534
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr "Kriteeri {numero}: {label}"
+
+#: data.py:536
+#, python-brace-format
+msgid "Points {number}"
+msgstr "Pisteet {number}"
+
+#: data.py:537
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr "Mediaanipisteet {number}"
+
+#: data.py:538
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr "Palaute {number}"
+
+#: data.py:867
+msgid "Item ID"
+msgstr "Tuotetunnus"
+
+#: data.py:868
+msgid "Submission ID"
+msgstr "Lähetyksen tunnus"
+
+#: data.py:880
+msgid "Anonymized Student ID"
+msgstr "Anonymisoitu opiskelijatunnus"
+
+#: data.py:911
+msgid "Assessment ID"
+msgstr "Arviointitunnus"
+
+#: data.py:912
+msgid "Assessment Scored Date"
+msgstr "Arvioinnin pisteytyspäivämäärä"
+
+#: data.py:913
+msgid "Assessment Scored Time"
+msgstr "Arvioinnin pisteytysaika"
+
+#: data.py:914
+msgid "Assessment Type"
+msgstr "Arvioinnin tyyppi"
+
+#: data.py:915
+msgid "Anonymous Scorer Id"
+msgstr "Anonyymi maalintekijän tunnus"
+
+#: data.py:917
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
+msgid "Overall Feedback"
+msgstr "Yleinen palaute"
+
+#: data.py:918
+msgid "Assessment Score Earned"
+msgstr "Arviointipisteet ansaittu"
+
+#: data.py:919
+msgid "Assessment Scored At"
+msgstr "Arviointi pisteytetty klo"
+
+#: data.py:920
+msgid "Date/Time Final Score Given"
+msgstr "Päivämäärä/aika Lopullinen pistemäärä annettu"
+
+#: data.py:921
+msgid "Final Score Earned"
+msgstr "Lopullinen pistemäärä ansaittu"
+
+#: data.py:922
+msgid "Final Score Possible"
+msgstr "Lopullinen pistemäärä mahdollinen"
+
+#: data.py:923
+msgid "Feedback Statements Selected"
+msgstr "Palautelausunnot valittu"
+
+#: data.py:924
+msgid "Feedback on Assessment"
+msgstr "Palaute arvioinnista"
+
+#: data.py:926
+msgid "Response Files"
+msgstr "Vastaustiedostot"
+
+#: data.py:1317
+msgid "No description provided."
+msgstr "Ei kuvausta."
+
+#: templates/legacy/edit/oa_edit.html:28
+msgid "Save"
+msgstr "Tallentaa"
+
+#: templates/legacy/edit/oa_edit.html:32
+msgid "Cancel"
+msgstr "Peruuttaa"
+
+#: templates/legacy/edit/oa_edit_assessment_steps.html:6
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr "Avointen vastausten arvioinnit mahdollistavat yksittäisten tai useiden vaiheiden määrittämisen rubriikkipohjaisessa avoimen vastauksen arviointijaksossa. Alla olevat vaiheet voidaan ottaa käyttöön, poistaa käytöstä ja tilata joustavasti pedagogisiin tarpeisiin."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:5
+msgid "Display Name "
+msgstr "Näyttönimi"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:8
+msgid "The display name for this component."
+msgstr "Tämän komponentin näyttönimi."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:12
+msgid "Text Response"
+msgstr "Tekstivastaus"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:20
+msgid ""
+"Specify whether learners must include a text based response to this "
+"problem's prompt."
+msgstr "Määritä, onko oppilaiden sisällytettävä tekstipohjainen vastaus tähän ongelman kehotteeseen."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:25
+msgid "Response Editor"
+msgstr "Vastauseditori"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:33
+msgid ""
+"Select which editor learners will use to include a text based response to "
+"this problem's prompt."
+msgstr "Valitse, mitä editorin oppijat käyttävät sisällyttääkseen tekstipohjaisen vastauksen tämän ongelman kehotteeseen."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:38
+msgid "File Uploads Response"
+msgstr "Tiedoston latauksen vastaus"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:46
+msgid ""
+"Specify whether learners are able to upload files as a part of their "
+"response."
+msgstr "Määritä, voivatko oppijat ladata tiedostoja osana vastaustaan."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:50
+msgid "Allow Multiple Files"
+msgstr "Salli useita tiedostoja"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:52
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:93
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:131
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_peer_assessment.html:45
+msgid "False"
+msgstr "Väärä"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:53
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:94
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:132
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_peer_assessment.html:46
+msgid "True"
+msgstr "Totta"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:56
+msgid ""
+"Specify whether learners can upload more than one file. This has no effect "
+"if File Uploads Response is set to None. This is automatically set to True "
+"for Team Assignments. "
+msgstr "Määritä, voivatko oppijat ladata useamman kuin yhden tiedoston. Tällä ei ole vaikutusta, jos Tiedoston latausvastaus -asetuksena on Ei mitään. Tämä asetetaan automaattisesti arvoon True Team Assignmentsille."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:58
+msgid "File Upload Types"
+msgstr "Tiedostojen lataustyypit"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:60
+msgid "PDF or Image Files"
+msgstr "PDF tai kuvatiedostot"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:61
+msgid "Image Files"
+msgstr "Kuvatiedostot"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:62
+msgid "Custom File Types"
+msgstr "Mukautetut tiedostotyypit"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:66
+msgid ""
+"Specify whether learners can submit files along with their text responses."
+msgstr "Määritä, voivatko oppijat lähettää tiedostoja tekstivastaustensa kanssa."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:70
+msgid "File Types"
+msgstr "Tiedostotyypit"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:79
+msgid ""
+"Enter the file extensions, separated by commas, that you want learners to be"
+" able to upload. For example: pdf,doc,docx."
+msgstr "Anna pilkuilla erotettuina tiedostopäätteet, jotka haluat oppilaiden voivan ladata. Esimerkiksi: pdf,doc, docx."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:84
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr "Jos haluat lisätä tiedostotunnisteita, valitse Mukautetut tiedostotyypit ja anna täydellinen luettelo hyväksyttävistä tiedostotunnisteista."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:91
+msgid "Allow LaTeX Responses"
+msgstr "Salli LaTeX-vastaukset"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:97
+msgid "Specify whether learners can write LaTeX formatted strings"
+msgstr "Määritä, voivatko oppijat kirjoittaa LaTeX-muotoisia merkkijonoja"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:102
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:8
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
+msgid "Top Responses"
+msgstr "Parhaat vastaukset"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:104
+msgid " (Disabled)"
+msgstr "(Liikuntarajoitteinen)"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:117
+msgid ""
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr "Määritä eniten pisteitä saaneiden vastausten määrä, jotka näytetään, kun oppija on lähettänyt vastauksen. Kelvolliset luvut ovat 0–99. Jos luku on 0, Top Responses -osio ei näy oppijoille."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:122
+msgid "When Teams Enabled is set to true, Top Responses will be disabled."
+msgstr "Kun Teams Enabled -asetuksena on tosi, Top Responses poistetaan käytöstä."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:129
+msgid "Teams Enabled"
+msgstr "Teams käytössä"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:136
+msgid "Specify whether team submissions are allowed for this response."
+msgstr "Määritä, sallitaanko ryhmälähetykset tälle vastaukselle."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:141
+msgid "Select Team-Set"
+msgstr "Valitse Team-Set"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:155
+msgid "Show Rubric During Response"
+msgstr "Näytä otsikko vastauksen aikana"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:162
+msgid ""
+"Specify whether learners can see the rubric while they are working on their "
+"response."
+msgstr "Määritä, näkevätkö oppijat rubriikin, kun he työstävät vastaustaan."
+
+#: templates/legacy/edit/oa_edit_criterion.html:6
+#: templates/legacy/staff_area/oa_student_info.html:122
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
+msgid "Criterion"
+msgstr "Kriteeri"
+
+#: templates/legacy/edit/oa_edit_criterion.html:7
+msgid "You cannot delete a criterion after the assignment has been released."
+msgstr "Et voi poistaa ehtoa sen jälkeen, kun tehtävä on vapautettu."
+
+#: templates/legacy/edit/oa_edit_criterion.html:9
+#: templates/legacy/edit/oa_edit_option.html:7
+#: templates/legacy/edit/oa_edit_prompt.html:10
+#: templates/legacy/edit/oa_training_example.html:10
+msgid "Remove"
+msgstr "Poista"
+
+#: templates/legacy/edit/oa_edit_criterion.html:17
+msgid "Criterion Name"
+msgstr "Kriteerin nimi"
+
+#: templates/legacy/edit/oa_edit_criterion.html:29
+msgid "Criterion Prompt"
+msgstr "Kriteerin kehote"
+
+#: templates/legacy/edit/oa_edit_criterion.html:44
+msgid "Add Option"
+msgstr "Lisää vaihtoehto"
+
+#: templates/legacy/edit/oa_edit_criterion.html:52
+msgid "Feedback for This Criterion"
+msgstr "Palaute tälle kriteerille"
+
+#: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
+msgid "None"
+msgstr "Ei mitään"
+
+#: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
+msgid "Optional"
+msgstr "Valinnainen"
+
+#: templates/legacy/edit/oa_edit_criterion.html:56
+#: templates/legacy/oa_rubric.html:13
+#: templates/legacy/student_training/student_training.html:93
+#: xblock/studio_mixin.py:55
+msgid "Required"
+msgstr "Edellytetään"
+
+#: templates/legacy/edit/oa_edit_criterion.html:61
+msgid ""
+"Select one of the options above. This describes whether or not the reviewer "
+"will have to provide criterion feedback."
+msgstr "Valitse jokin yllä olevista vaihtoehdoista. Tämä kuvaa, onko arvioijan annettava kriteeripalautetta."
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:3
+msgid "Open Response Assessment"
+msgstr "Avoin vastausarviointi"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:8
+#: templates/legacy/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "Kehote"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:15
+msgid "Rubric"
+msgstr "Rubriikki"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:22
+msgid "Schedule"
+msgstr "Ajoittaa"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:31
+msgid "Assessment steps"
+msgstr "Arvioinnin vaiheet"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:38
+msgid "Settings"
+msgstr "asetukset"
+
+#: templates/legacy/edit/oa_edit_option.html:5
+msgid "Option"
+msgstr "Vaihtoehto"
+
+#: templates/legacy/edit/oa_edit_option.html:16
+msgid "Option Name"
+msgstr "Vaihtoehdon nimi"
+
+#: templates/legacy/edit/oa_edit_option.html:29
+msgid "Option Points"
+msgstr "Vaihtoehtopisteet"
+
+#: templates/legacy/edit/oa_edit_option.html:42
+msgid "Option Explanation"
+msgstr "Vaihtoehto Selitys"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:10
+msgid "Step: Peer Assessment"
+msgstr "Vaihe: Vertaisarviointi"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:15
+msgid ""
+"Peer Assessment allows students to provide feedback to other students and "
+"also receive feedback from others in their final grade. Often, though not "
+"always, this step is preceded by Self Assessment or Learner Training steps."
+msgstr "Vertaisarvioinnin avulla opiskelijat voivat antaa palautetta muille opiskelijoille ja saada palautetta muilta viimeisellä arvosanallaan. Usein, vaikkakaan ei aina, tätä vaihetta edeltää itsearviointi tai oppijan koulutusvaiheet."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:18
+msgid ""
+"Configuration: For this step to be configured you must specify the number of"
+" peer reviews a student will be assessed with, and the number of peer a "
+"student must grade. Additional options can be specified."
+msgstr "Kokoonpano: Jotta tämä vaihe voidaan määrittää, sinun on määritettävä vertaisarviointien määrä, jolla opiskelija arvioidaan, ja vertaisarviointien määrä, jonka opiskelijan on arvosteltava. Lisävaihtoehtoja voidaan määrittää."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:23
+msgid "View Options & Configuration"
+msgstr "Näytä asetukset ja asetukset"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:29
+msgid "Must Grade"
+msgstr "Pakollinen arvosana"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:32
+msgid ""
+"Specify the number of peer assessments that each learner must complete. "
+"Valid numbers are 1 to 99."
+msgstr "Määritä vertaisarviointien määrä, jotka kunkin oppijan on suoritettava. Kelvolliset numerot ovat 1-99."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:36
+msgid "Graded By"
+msgstr "Arvosteltu"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:39
+msgid ""
+"Specify the number of learners that each response must be assessed by. Valid"
+" numbers are 1 to 99."
+msgstr "Määritä opiskelijoiden määrä, jonka mukaan jokainen vastaus on arvioitava. Kelvolliset numerot ovat 1-99."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:43
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr "Ota käyttöön joustava vertaisarvosanan keskiarvo"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:49
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr "Kun tämä on käytössä, oppilaat, jotka ovat saaneet vähintään 30%% vaaditusta \\"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:53
+msgid ""
+"This feature is being enabled by the course-level setting. It can be found "
+"under the Open Response Assessment Settings card on the Pages & Resources "
+"studio page."
+msgstr "Tämä ominaisuus otetaan käyttöön kurssitason asetuksella. Se löytyy Open Response Assessment Settings -kortista Pages &amp; Resources -studio -sivulta."
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
+msgid "Peer Assessment Deadlines"
+msgstr "Vertaisarvioinnin määräajat"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
+msgid "Start Date"
+msgstr "Aloituspäivämäärä"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
+msgid "Start Time"
+msgstr "Aloitusaika"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing peer responses."
+msgstr "Päivämäärä ja kellonaika, jolloin oppijat voivat alkaa arvioida vertaisvastauksia."
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:31
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:119
+msgid "Due Date"
+msgstr "Eräpäivä"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:40
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:40
+msgid "Due Time"
+msgstr "Määräaika"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:48
+msgid "The date and time when all peer assessments must be complete."
+msgstr "Päivämäärä ja kellonaika, jolloin kaikkien vertaisarviointien on oltava valmiit."
+
+#: templates/legacy/edit/oa_edit_prompt.html:8
+msgid "You cannot delete a prompt after the assignment has been released."
+msgstr "Et voi poistaa kehotetta, kun tehtävä on vapautettu."
+
+#: templates/legacy/edit/oa_edit_prompts.html:10
+msgid ""
+"Prompts. Replace the sample text with your own text. For more information, "
+"see the ORA documentation."
+msgstr "Kehotteet. Korvaa malliteksti omalla tekstilläsi. Lisätietoja on ORA-dokumentaatiossa."
+
+#: templates/legacy/edit/oa_edit_prompts.html:22
+msgid "Add Prompt"
+msgstr "Lisää kehote"
+
+#: templates/legacy/edit/oa_edit_rubric.html:14
+msgid ""
+"Rubrics are made up of criteria, which usually contain one or more options. "
+"Each option has a point value. This template contains two sample criteria "
+"and their options. Replace the sample text with your own text. For more "
+"information, see the ORA documentation."
+msgstr "Rubriikit koostuvat kriteereistä, jotka sisältävät yleensä yhden tai useamman vaihtoehdon. Jokaisella vaihtoehdolla on pistearvo. Tämä malli sisältää kaksi esimerkkiehtoa ja niiden vaihtoehdot. Korvaa malliteksti omalla tekstilläsi. Lisätietoja on ORA-dokumentaatiossa."
+
+#: templates/legacy/edit/oa_edit_rubric.html:29
+msgid "Add Criterion"
+msgstr "Lisää kriteeri"
+
+#: templates/legacy/edit/oa_edit_rubric.html:35
+msgid "Feedback for This Response"
+msgstr "Palaute tähän vastaukseen"
+
+#: templates/legacy/edit/oa_edit_rubric.html:40
+msgid "Feedback Instructions"
+msgstr "Palautteen ohjeet"
+
+#: templates/legacy/edit/oa_edit_rubric.html:44
+msgid ""
+"Encourage learners to provide feedback on the response they have graded. You"
+" can replace the sample text with your own."
+msgstr "Kannusta oppilaita antamaan palautetta arvioimistaan vastauksista. Voit korvata mallitekstin omallasi."
+
+#: templates/legacy/edit/oa_edit_rubric.html:49
+msgid "Default Feedback Text"
+msgstr "Oletuspalauteteksti"
+
+#: templates/legacy/edit/oa_edit_rubric.html:53
+msgid ""
+"Enter feedback text that learners will see before they enter their own "
+"feedback. Use this text to show learners a good example peer assessment."
+msgstr "Kirjoita palauteteksti, jonka oppijat näkevät ennen oman palautteen antamista. Käytä tätä tekstiä näyttääksesi oppijoille hyvä esimerkki vertaisarvioinnista."
+
+#: templates/legacy/edit/oa_edit_schedule.html:5
+msgid "Deadlines Configuration"
+msgstr "Määräaikojen määritys"
+
+#: templates/legacy/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr "Valitse määräajan määritysvaihtoehto"
+
+#: templates/legacy/edit/oa_edit_schedule.html:13
+msgid " NEW"
+msgstr "UUSI"
+
+#: templates/legacy/edit/oa_edit_schedule.html:19
+msgid "Configure deadlines manually"
+msgstr "Määritä määräajat manuaalisesti"
+
+#: templates/legacy/edit/oa_edit_schedule.html:23
+msgid "Match deadlines to the subsection due date"
+msgstr "Yhdistä määräajat alaosion eräpäivään"
+
+#: templates/legacy/edit/oa_edit_schedule.html:27
+msgid "Match deadlines to the course end date"
+msgstr "Sovita määräajat kurssin päättymispäivään"
+
+#: templates/legacy/edit/oa_edit_schedule.html:30
+msgid "Learn more about open response date settings"
+msgstr "Lue lisää avoimen vastauspäivämäärän asetuksista"
+
+#: templates/legacy/edit/oa_edit_schedule.html:40
+msgid "Response Start Date"
+msgstr "Vastauksen alkamispäivä"
+
+#: templates/legacy/edit/oa_edit_schedule.html:53
+msgid "Response Start Time"
+msgstr "Vastauksen alkamisaika"
+
+#: templates/legacy/edit/oa_edit_schedule.html:62
+msgid "The date and time when learners can begin submitting responses."
+msgstr "Päivämäärä ja kellonaika, jolloin oppijat voivat alkaa lähettää vastauksia."
+
+#: templates/legacy/edit/oa_edit_schedule.html:70
+msgid "Response Due Date"
+msgstr "Vastauksen eräpäivä"
+
+#: templates/legacy/edit/oa_edit_schedule.html:83
+msgid "Response Due Time"
+msgstr "Vastauksen määräaika"
+
+#: templates/legacy/edit/oa_edit_schedule.html:92
+msgid "The date and time when learners can no longer submit responses."
+msgstr "Päivämäärä ja kellonaika, jolloin oppilaat eivät voi enää lähettää vastauksia."
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:8
+msgid "Step: Self Assessment"
+msgstr "Vaihe: Itsearviointi"
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:12
+msgid ""
+"Self Assessment asks learners to grade their own submissions against the "
+"rubric."
+msgstr "Itsearviointi pyytää oppilaita arvostelemaan omaa palautetta rubriikkia vastaan."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:5
+msgid "Self Assessment Deadlines"
+msgstr "Itsearvioinnin määräajat"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing their responses."
+msgstr "Päivämäärä ja kellonaika, jolloin oppijat voivat alkaa arvioida vastauksiaan."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:48
+msgid "The date and time when all self assessments must be complete."
+msgstr "Päivämäärä ja kellonaika, jolloin kaikkien itsearviointien on oltava suoritettuja."
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:8
+msgid "Step: Staff Assessment"
+msgstr "Vaihe: Henkilöstön arviointi"
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:12
+msgid ""
+"Staff Assessment gates sets the final grade for students if enabled with "
+"other steps, though it can also be used as a standalone step."
+msgstr "Staff Assessment Gates asettaa opiskelijoille lopullisen arvosanan, jos se on otettu käyttöön muiden vaiheiden kanssa, mutta sitä voidaan käyttää myös itsenäisenä vaiheena."
+
+#: templates/legacy/edit/oa_edit_student_training.html:9
+msgid "Step: Learner Training"
+msgstr "Vaihe: Oppijan koulutus"
+
+#: templates/legacy/edit/oa_edit_student_training.html:14
+msgid ""
+"Learner Training is used to help students practice grading a simulated peer "
+"submission in order to train them on the rubric and ensure learner's "
+"understand the rubric for either Self or Peer Assessment steps."
+msgstr "Oppijakoulutusta käytetään auttamaan opiskelijoita harjoittelemaan simuloidun vertaisarvioinnin arvioimista, jotta he voivat kouluttaa heitä rubriikkiin ja varmistaa, että oppija ymmärtää rubriikin joko itse- tai vertaisarvioinnin vaiheissa."
+
+#: templates/legacy/edit/oa_edit_student_training.html:17
+msgid ""
+"Configuration: For this step to be fully configured you must provide one or "
+"more graded sample responses. Learners must then match this instructor score"
+" to advance and are provided feedback when their score doesn't match the "
+"sample response."
+msgstr "Kokoonpano: Jotta tämä vaihe olisi täysin määritetty, sinun on annettava yksi tai useampi arvosteltu esimerkkivastaus. Opiskelijoiden on sitten vastattava tätä ohjaajan pistemäärää päästäkseen eteenpäin, ja heille annetaan palautetta, jos heidän pistemääränsä ei vastaa näytevastausta."
+
+#: templates/legacy/edit/oa_edit_student_training.html:22
+msgid "View / Add Sample Responses"
+msgstr "Näytä/Lisää esimerkkivastauksia"
+
+#: templates/legacy/edit/oa_edit_student_training.html:32
+msgid "Add Sample Response"
+msgstr "Lisää esimerkkivastaus"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:4
+msgid "Clone Rubric"
+msgstr "Klooni rubriiki"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:7
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only affect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr "Jos haluat kloonata rubriikin olemassa olevasta julkaistusta tai julkaisemattomasta luonnoksesta, voit etsiä estotunnuksen perusteella. Huomaa, että kloonaus on yksisuuntaista, mikä tarkoittaa, että kloonauksen jälkeen tehdyt muutokset vaikuttavat vain muokattavaan rubrikkaan, eivätkä ne muuta mitään rubriikkia, josta se kloonattiin."
+
+#: templates/legacy/edit/oa_rubric_reuse.html:9
+msgid "Block ID For this ORA:"
+msgstr "Tämän ORA:n eston tunnus:"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:19
+msgid "Block ID"
+msgstr "Estä ID"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:21
+msgid "No other Open Response Assessments found in course"
+msgstr "Kurssilta ei löytynyt muita avoimen vastauksen arviointeja"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:31
+msgid "Clone"
+msgstr "Klooni"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:37
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr "Rubriikki kloonattu onnistuneesti lohkotunnuksesta:"
+
+#: templates/legacy/edit/oa_training_example.html:7
+msgid "Scored Response"
+msgstr "Pisteinen vastaus"
+
+#: templates/legacy/edit/oa_training_example.html:16
+msgid "Response Score"
+msgstr "Vastauspisteet"
+
+#: templates/legacy/edit/oa_training_example.html:27
+msgid "Response"
+msgstr "Vastaus"
+
+#: templates/legacy/edit/oa_training_example_criterion.html:10
+msgid "Not Selected"
+msgstr "Ei valittu"
+
+#: templates/legacy/edit/oa_training_example_criterion.html:15
+#: templates/legacy/oa_rubric.html:43
+#: templates/legacy/student_training/student_training.html:128
+msgid "points"
+msgstr "pisteitä"
+
+#: templates/legacy/grade/oa_assessment_feedback.html:8
+#, python-format
+msgid ""
+"\n"
+"                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
+"              "
+msgstr "%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s"
+
+#: templates/legacy/grade/oa_assessment_title.html:7
+#, python-format
+msgid ""
+"\n"
+"                      %(assessment_title)s - %(points)s point\n"
+"                  "
+msgid_plural ""
+"\n"
+"                      %(assessment_title)s - %(points)s points\n"
+"                  "
+msgstr[0] "%(assessment_title)s - %(points)s piste"
+msgstr[1] "%(assessment_title)s - %(points)s pistettä"
+
+#: templates/legacy/grade/oa_assessment_title.html:24
+#, python-format
+msgid "More information about %(name)s"
+msgstr "Lisätietoja tuotteesta %(name)s"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:14
+#: templates/legacy/grade/oa_grade_complete.html:15
+#: templates/legacy/grade/oa_grade_complete.html:26
+#: templates/legacy/grade/oa_grade_incomplete.html:14
+#: templates/legacy/grade/oa_grade_not_started.html:14
+#: templates/legacy/grade/oa_grade_waiting.html:14
+msgid "Your Grade"
+msgstr "Sinun arvosanasi"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:19
+#, python-format
+msgid ""
+"\n"
+"                                        %(points_earned)s out of %(points_possible)s\n"
+"                                    "
+msgstr "%(points_earned)s / %(points_possible)s"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:38
+msgid "Your submission has been cancelled."
+msgstr "Lähetyksesi on peruutettu."
+
+#: templates/legacy/grade/oa_grade_complete.html:19
+#, python-format
+msgid ""
+"\n"
+"                                            %(points_earned)s out of %(points_possible)s\n"
+"                                        "
+msgstr "%(points_earned)s / %(points_possible)s"
+
+#: templates/legacy/grade/oa_grade_complete.html:38
+#: templates/legacy/response/oa_response.html:29
+msgid "Your Response"
+msgstr "Vastauksesi"
+
+#: templates/legacy/grade/oa_grade_complete.html:41
+msgid "Your Upload"
+msgstr "Latauksesi"
+
+#: templates/legacy/grade/oa_grade_complete.html:46
+msgid "Assessments of Your Response"
+msgstr "Arvioita vastauksestasi"
+
+#: templates/legacy/grade/oa_grade_complete.html:50
+#: templates/legacy/grade/oa_grade_complete.html:132
+#: templates/legacy/grade/oa_grade_incomplete.html:28
+#: templates/legacy/grade/oa_grade_waiting.html:28
+#: templates/legacy/message/oa_message_cancelled.html:4
+#: templates/legacy/message/oa_message_closed.html:4
+#: templates/legacy/message/oa_message_complete.html:4
+#: templates/legacy/message/oa_message_incomplete.html:4
+#: templates/legacy/peer/oa_peer_closed.html:33
+#: templates/legacy/peer/oa_peer_complete.html:30
+#: templates/legacy/peer/oa_peer_turbo_mode.html:40
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:34
+#: templates/legacy/peer/oa_peer_waiting.html:34
+#: templates/legacy/response/oa_response_cancelled.html:31
+#: templates/legacy/response/oa_response_closed.html:29
+#: templates/legacy/response/oa_response_submitted.html:30
+#: templates/legacy/response/oa_response_team_already_submitted.html:25
+#: templates/legacy/self/oa_self_closed.html:30
+#: templates/legacy/student_training/student_training_closed.html:27
+msgid "Status"
+msgstr "Tila"
+
+#: templates/legacy/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "Kokonaisarvosana"
+
+#: templates/legacy/grade/oa_grade_complete.html:70
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "Pisteet"
+
+#: templates/legacy/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "Lisäkommentteja vastauksestasi"
+
+#: templates/legacy/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr "Anna palautetta vertaisarvioinneista"
+
+#: templates/legacy/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "Palautteen lähettäminen"
+
+#: templates/legacy/grade/oa_grade_complete.html:134
+msgid ""
+"Your feedback has been submitted. Course staff will be able to see this "
+"feedback when they review course records."
+msgstr "Palautteesi on lähetetty. Kurssin henkilökunta näkee tämän palautteen, kun he tarkastelevat kurssitietueita."
+
+#: templates/legacy/grade/oa_grade_complete.html:140
+msgid ""
+"Course staff will be able to see any feedback that you provide here when "
+"they review course records."
+msgstr "Kurssin henkilökunta näkee kaikki täällä antamasi palautteet, kun he tarkastelevat kurssitietueita."
+
+#: templates/legacy/grade/oa_grade_complete.html:146
+msgid ""
+"Select the statements below that best reflect your experience with peer "
+"assessments."
+msgstr "Valitse alta väittämät, jotka kuvastavat parhaiten kokemuksiasi vertaisarvioinneista."
+
+#: templates/legacy/grade/oa_grade_complete.html:155
+msgid "These assessments were useful."
+msgstr "Näistä arvioista oli hyötyä."
+
+#: templates/legacy/grade/oa_grade_complete.html:164
+msgid "These assessments were not useful."
+msgstr "Näistä arvioista ei ollut hyötyä."
+
+#: templates/legacy/grade/oa_grade_complete.html:173
+msgid "I disagree with one or more of the peer assessments of my response."
+msgstr "Olen eri mieltä yhden tai useamman vastaukseni vertaisarvioinnin kanssa."
+
+#: templates/legacy/grade/oa_grade_complete.html:182
+msgid "Some comments I received were inappropriate."
+msgstr "Jotkut saamani kommentit olivat sopimattomia."
+
+#: templates/legacy/grade/oa_grade_complete.html:187
+msgid ""
+"Provide feedback on the grade or comments that you received from your peers."
+msgstr "Anna palautetta arvosanasta tai kommenteista, jotka olet saanut kollegoiltasi."
+
+#: templates/legacy/grade/oa_grade_complete.html:190
+msgid "I feel the feedback I received was..."
+msgstr "Minusta saamani palaute oli..."
+
+#: templates/legacy/grade/oa_grade_complete.html:200
+msgid "We could not submit your feedback"
+msgstr "Emme voineet lähettää palautettasi"
+
+#: templates/legacy/grade/oa_grade_complete.html:206
+msgid "Submit feedback on peer assessments"
+msgstr "Lähetä palautetta vertaisarvioinneista"
+
+#: templates/legacy/grade/oa_grade_incomplete.html:16
+msgid "Not Completed"
+msgstr "Ei valmis"
+
+#: templates/legacy/grade/oa_grade_incomplete.html:33
+msgid "You have not completed all the steps of this problem."
+msgstr "Et ole suorittanut kaikkia tämän ongelman vaiheita."
+
+#: templates/legacy/grade/oa_grade_not_started.html:16
+msgid "Not Started"
+msgstr "Ei alkanut"
+
+#: templates/legacy/grade/oa_grade_not_started.html:27
+msgid "You have not started this problem yet."
+msgstr "Et ole vielä aloittanut tätä ongelmaa."
+
+#: templates/legacy/grade/oa_grade_waiting.html:16
+msgid "Waiting for Assessments"
+msgstr "Arvioita odotellessa"
+
+#: templates/legacy/grade/oa_grade_waiting.html:33
+msgid ""
+"You have completed your steps in the assignment, but some assessments still "
+"need to be done on your response. When the assessments of your response are "
+"complete, you will see feedback from everyone who assessed your response, "
+"and you will receive your final grade."
+msgstr "Olet suorittanut tehtävän vaiheet, mutta vastauksesi on vielä arvioitava. Kun vastauksesi arvioinnit ovat valmiit, näet palautetta kaikilta vastauksesi arvioineilta ja saat lopullisen arvosanasi."
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:15
+#: templates/legacy/staff_area/oa_staff_area.html:16
+#: templates/legacy/staff_area/oa_staff_area.html:18
+#: templates/legacy/staff_area/oa_staff_area.html:153
+msgid "Grade Available Responses"
+msgstr "Arvosana Saatavilla olevat vastaukset"
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr "Arvosana Saatavilla olevat vastaukset ei ole saatavilla. Tätä kohdetta ei ole määritetty henkilöstöarviointia varten."
+
+#: templates/legacy/instructor_dashboard/oa_listing.html:6
+msgid "Please wait"
+msgstr "Odota"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
+msgid "Waiting Step Details"
+msgstr "Odotusvaiheen tiedot"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:24
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr "Odottavan vaiheen tiedot -näkymä ei ole käytettävissä. Tätä kohdetta ei ole määritetty vertaisarviointeja varten."
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:20
+#, python-format
+msgid "%(num_points)s points"
+msgstr "%(num_points)s pistettä"
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:24
+#: templates/legacy/peer/oa_peer_assessment.html:84
+#: templates/legacy/peer/oa_peer_turbo_mode.html:53
+msgid "Your peer's response to the prompt above"
+msgstr "Kaverisi vastaus yllä olevaan kehotteeseen"
+
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:19
+msgid ""
+"After you complete all the steps of this assignment, you can see the top-"
+"scoring responses from your peers."
+msgstr "Kun olet suorittanut kaikki tämän tehtävän vaiheet, näet parhaat pisteet saaneet vastaukset kollegoiltasi."
+
+#: templates/legacy/message/oa_message_cancelled.html:8
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr "Joukkueesi lähetys on peruutettu. Ryhmäsi saa arvosanan nolla, ellei kurssin henkilökunta nollaa arviotasi, jotta tiimi voi lähettää vastauksen uudelleen."
+
+#: templates/legacy/message/oa_message_cancelled.html:10
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr "Lähetyksesi on peruutettu. Saat arvosanan nolla, ellei kurssin henkilökunta nollaa arviotasi, jotta voit lähettää vastauksen uudelleen."
+
+#: templates/legacy/message/oa_message_closed.html:8
+msgid ""
+"This task is not yet available. Check back to complete the assignment once "
+"this section has opened."
+msgstr "Tämä tehtävä ei ole vielä käytettävissä. Palaa takaisin suorittaaksesi tehtävän, kun tämä osio on avattu."
+
+#: templates/legacy/message/oa_message_closed.html:10
+msgid ""
+"This assignment has closed. One or more deadlines for this assignment have "
+"passed. You will receive an incomplete grade for this assignment."
+msgstr "Tämä tehtävä on päättynyt. Yksi tai useampi tämän tehtävän määräaika on umpeutunut. Saat tästä tehtävästä puutteellisen arvosanan."
+
+#: templates/legacy/message/oa_message_complete.html:8
+msgid ""
+"You have completed this assignment. Your final grade will be available when "
+"the assessments of your response are complete."
+msgstr "Olet suorittanut tämän tehtävän. Lopullinen arvosanasi on saatavilla, kun vastauksesi arviointi on valmis."
+
+#: templates/legacy/message/oa_message_complete.html:10
+msgid ""
+"You have completed this assignment. Review your grade and your assessment "
+"details."
+msgstr "Olet suorittanut tämän tehtävän. Tarkista arvosanasi ja arviointitietosi."
+
+#: templates/legacy/message/oa_message_incomplete.html:9
+msgid ""
+"This assignment is in progress. Learner training will close soon. Complete "
+"the learner training step to move on."
+msgstr "Tämä tehtävä on kesken. Opiskelijakoulutus päättyy pian. Suorita oppijan koulutusvaihe jatkaaksesi."
+
+#: templates/legacy/message/oa_message_incomplete.html:11
+msgid ""
+"This assignment is in progress. Complete the learner training step to move "
+"on."
+msgstr "Tämä tehtävä on kesken. Suorita oppijan koulutusvaihe jatkaaksesi."
+
+#: templates/legacy/message/oa_message_incomplete.html:15
+#: templates/legacy/message/oa_message_incomplete.html:33
+msgid ""
+"This assignment is in progress. Check back later when the assessment period "
+"has started."
+msgstr "Tämä tehtävä on kesken. Palaa myöhemmin, kun arviointijakso on alkanut."
+
+#: templates/legacy/message/oa_message_incomplete.html:20
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "%(start_strong)sTämä tehtävä on kesken. Itsearviointivaihe päättyy pian.%(end_strong)s Sinun on vielä suoritettava vaihe %(start_link)sitsearviointi%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:24
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "Tämä tehtävä on kesken. Sinun on vielä suoritettava vaihe %(start_link)sitsearviointi%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:38
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Tämä tehtävä on käynnissä.%(start_strong)sVertaisarviointivaihe päättyy pian.%(end_strong)s Kaikki lähetetyt vertaisvastaukset on arvioitu. Tarkista myöhemmin, ovatko muut oppilaat lähettäneet vastauksia. Sinun on vielä suoritettava vaihe %(start_link)speer assessment%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:42
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Tämä tehtävä on kesken. Kaikki lähetetyt vertaisvastaukset on arvioitu. Tarkista myöhemmin, ovatko muut oppilaat lähettäneet vastauksia. Sinun on vielä suoritettava vaihe %(start_link)speer assessment%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:46
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Tämä tehtävä on kesken. %(start_strong)sVertaisarviointivaihe päättyy pian.%(end_strong)s Sinun on vielä suoritettava vaihe %(start_link)svertaisarviointi%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:50
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Tämä tehtävä on kesken. Sinun on vielä suoritettava vaihe %(start_link)speer assessment%(end_link)s."
+
+#: templates/legacy/message/oa_message_no_team.html:4
+msgid "Team membership is required to view this assignment"
+msgstr "Tämän tehtävän katsominen edellyttää tiimijäsenyyttä"
+
+#: templates/legacy/message/oa_message_no_team.html:7
+#, python-format
+msgid ""
+"\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
+msgstr "Tämä on tiimitehtävä ryhmälle &quot;%(teamset_name)s&quot;. Et ole tällä hetkellä tiimissä joukkuesarjassa &quot;%(teamset_name)s&quot;. Sinun on kuuluttava tiimiin ryhmässä &quot;%(teamset_name)s&quot;, jotta voit käyttää tätä ryhmätehtävää."
+
+#: templates/legacy/message/oa_message_open.html:7
+#, python-format
+msgid ""
+"\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "Tehtävien lähettäminen päättyy pian. Saat arvosanan vastaamalla ensin kehotteeseen ja suorittamalla sitten %(start_tag)sYour Response%(end_tag)s-kentän alla olevat vaiheet."
+
+#: templates/legacy/message/oa_message_open.html:11
+#, python-format
+msgid ""
+"\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "Tässä tehtävässä on useita vaiheita. Ensimmäisessä vaiheessa annat vastauksen kehotteeseen. Muut vaiheet näkyvät %(start_tag)sYour Response%(end_tag)s-kentän alapuolella."
+
+#: templates/legacy/message/oa_message_unavailable.html:4
+msgid "Instructions Unavailable"
+msgstr "Ohjeita ei saatavilla"
+
+#: templates/legacy/message/oa_message_unavailable.html:6
+msgid "The instructions for this step could not be loaded."
+msgstr "Tämän vaiheen ohjeita ei voitu ladata."
+
+#: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the prompt. The other steps appear below the Your Response "
+"field."
+msgstr "Tässä tehtävässä on useita vaiheita. Ensimmäisessä vaiheessa annat vastauksen kehotteeseen. Muut vaiheet näkyvät Sinun vastauksesi -kentän alla."
+
+#: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
+#: templates/openassessmentblock/base.html:100
+msgid "Loading"
+msgstr "Ladataan"
+
+#: templates/legacy/oa_latex_preview.html:6
+msgid "Preview in LaTeX"
+msgstr "Esikatselu LaTeXissä"
+
+#: templates/legacy/oa_latex_preview.html:9
+msgid "Click to preview your submission in LaTeX."
+msgstr "Napsauta esikatsellaksesi lähetystäsi LaTeXissä."
+
+#: templates/legacy/oa_latex_preview.html:14
+msgid "Preview Response"
+msgstr "Esikatsele vastaus"
+
+#: templates/legacy/oa_rubric.html:53
+msgid "Comments"
+msgstr "Kommentit"
+
+#: templates/legacy/oa_submission_answer.html:8
+msgid "The question for this section"
+msgstr "Kysymys tälle jaksolle"
+
+#: templates/legacy/oa_team_uploaded_files.html:9
+msgid "Files that were uploaded by your teammates:"
+msgstr "Ryhmätovereidesi lataamat tiedostot:"
+
+#: templates/legacy/oa_team_uploaded_files.html:28
+#: templates/legacy/oa_uploaded_file.html:34
+msgid "View the files associated with this submission:"
+msgstr "Näytä tähän lähetykseen liittyvät tiedostot:"
+
+#: templates/legacy/oa_team_uploaded_files.html:32
+msgid "Uploaded by"
+msgstr "Lähettäjä"
+
+#: templates/legacy/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr "Lataamasi tiedostot:"
+
+#: templates/legacy/oa_uploaded_file.html:48
+msgid ""
+"Caution: These files were uploaded by another course learner and have not "
+"been verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you access the files, you do so at your own risk.)"
+msgstr "Varoitus: Toinen kurssin oppilas on ladannut nämä tiedostot, eikä sivuston ylläpitäjä ole vahvistanut, tarkistanut, hyväksynyt, tarkistanut tai hyväksynyt niitä. Jos käytät tiedostoja, teet sen omalla vastuullasi.)"
+
+#: templates/legacy/peer/oa_peer_assessment.html:36
+msgid "Assess Peers"
+msgstr "Arvioi vertaisia"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
+#. 5 days and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:44
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
+#. and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:51
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/peer/oa_peer_assessment.html:61
+#, python-format
+msgid ""
+"\n"
+"                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"                "
+msgstr "Käynnissä (%(review_number)s/%(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_assessment.html:75
+#: templates/legacy/peer/oa_peer_turbo_mode.html:45
+msgid "Read and assess the following response from one of your peers."
+msgstr "Lue ja arvioi seuraava vastaus toiseltasi."
+
+#: templates/legacy/peer/oa_peer_assessment.html:87
+#: templates/legacy/peer/oa_peer_turbo_mode.html:56
+#: templates/legacy/self/oa_self_assessment.html:70
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:45
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:38
+#: templates/legacy/staff_area/oa_student_info.html:63
+msgid "Associated Files"
+msgstr "Liittyvät tiedostot"
+
+#: templates/legacy/peer/oa_peer_assessment.html:101
+#: templates/legacy/peer/oa_peer_turbo_mode.html:70
+#: templates/legacy/self/oa_self_assessment.html:81
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:57
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:50
+msgid "We could not submit your assessment"
+msgstr "Emme voineet lähettää arviotasi"
+
+#: templates/legacy/peer/oa_peer_cancelled.html:19
+#: templates/legacy/response/oa_response_cancelled.html:21
+#: templates/legacy/self/oa_self_cancelled.html:21
+#: templates/legacy/student_training/student_training_cancelled.html:18
+msgid "Cancelled"
+msgstr "Peruutettu"
+
+#: templates/legacy/peer/oa_peer_closed.html:20
+#, python-format
+msgid ""
+"\n"
+"            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr "Epätäydellinen (%(num_graded)s/%(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_closed.html:35
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete peer assessments or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "Tämän vaiheen eräpäivä on ohitettu. Tämä vaihe on nyt suljettu. Et voi enää suorittaa vertaisarviointeja tai jatkaa tätä tehtävää, ja saat arvosanan Keskeneräinen."
+
+#: templates/legacy/peer/oa_peer_complete.html:13
+msgid "Completed"
+msgstr "Valmis"
+
+#: templates/legacy/peer/oa_peer_complete.html:31
+#: templates/legacy/peer/oa_peer_turbo_mode.html:41
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:36
+msgid ""
+"You have successfully completed all of the required peer assessments for "
+"this assignment. You may assess additional peer responses if you want to. "
+"Completing additional assessments will not affect your final grade."
+msgstr "Olet suorittanut onnistuneesti kaikki tämän tehtävän vaadittavat vertaisarvioinnit. Voit halutessasi arvioida muita vertaisvastauksia. Lisäarvostelujen suorittaminen ei vaikuta loppuarvosanaasi."
+
+#: templates/legacy/peer/oa_peer_complete.html:36
+msgid "We could not retrieve additional submissions for assessment"
+msgstr "Emme voineet noutaa lisälähetyksiä arvioitavaksi"
+
+#: templates/legacy/peer/oa_peer_complete.html:43
+msgid "Continue Assessing Peers"
+msgstr "Jatka vertaisten arvioimista"
+
+#: templates/legacy/peer/oa_peer_turbo_mode.html:26
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"        Complete (%(num_graded)s)\n"
+"      "
+msgstr "Valmis (%(num_graded)s)"
+
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses."
+msgstr "Kaikki lähetetyt vertaisvastaukset on arvioitu. Tarkista myöhemmin, ovatko muut oppilaat lähettäneet vastauksia."
+
+#: templates/legacy/peer/oa_peer_unavailable.html:16
+#: templates/legacy/response/oa_response_unavailable.html:17
+#: templates/legacy/self/oa_self_unavailable.html:17
+#: templates/legacy/student_training/student_training_unavailable.html:16
+msgid "Not Available"
+msgstr "Ei saatavilla"
+
+#: templates/legacy/peer/oa_peer_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"          In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"        "
+msgstr "Käynnissä (%(review_number)s/%(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_waiting.html:37
+msgid ""
+"All available peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses. You will receive your grade after "
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
+msgstr "Kaikki saatavilla olevat vertaisvastaukset on arvioitu. Tarkista myöhemmin, ovatko muut oppilaat lähettäneet vastauksia. Saat arvosanan, kun olet suorittanut kaikki tämän ongelman vaiheet ja kollegasi ovat arvioineet vastauksesi."
+
+#: templates/legacy/response/oa_response.html:27
+msgid "Your Team's Response"
+msgstr "Ryhmäsi vastaus"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/response/oa_response.html:39
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/response/oa_response.html:46
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/response/oa_response.html:54
+#: templates/legacy/self/oa_self_assessment.html:56
+msgid "In Progress"
+msgstr "Käynnissä"
+
+#: templates/legacy/response/oa_response.html:66
+msgid "Enter your team's response to the prompt."
+msgstr "Kirjoita tiimisi vastaus kehotteeseen."
+
+#: templates/legacy/response/oa_response.html:68
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
+"                      "
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään tiimisi vastausta milloin tahansa ennen eräpäivää"
+
+#: templates/legacy/response/oa_response.html:81
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time.\n"
+"                      "
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään tiimisi vastausta milloin tahansa."
+
+#: templates/legacy/response/oa_response.html:86
+msgid ""
+"After you submit a response on behalf of your team, it cannot be edited."
+msgstr "Kun olet lähettänyt vastauksen tiimisi puolesta, sitä ei voi muokata."
+
+#: templates/legacy/response/oa_response.html:89
+msgid "Enter your response to the prompt."
+msgstr "Kirjoita vastauksesi kehotteeseen."
+
+#: templates/legacy/response/oa_response.html:92
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään vastauksesi milloin tahansa ennen alakohdan eräpäivää"
+
+#: templates/legacy/response/oa_response.html:94
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään vastauksesi milloin tahansa ennen kurssin päättymistä"
+
+#: templates/legacy/response/oa_response.html:96
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään vastauksesi milloin tahansa ennen eräpäivää"
+
+#: templates/legacy/response/oa_response.html:108
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time."
+msgstr "Työsi tallentuu automaattisesti ja voit palata täydentämään vastauksesi milloin tahansa."
+
+#: templates/legacy/response/oa_response.html:110
+msgid "After you submit your response, you cannot edit it"
+msgstr "Kun olet lähettänyt vastauksesi, et voi muokata sitä"
+
+#: templates/legacy/response/oa_response.html:120
+msgid "What will this assignment be graded on?"
+msgstr "Millä perusteella tämä tehtävä arvostellaan?"
+
+#: templates/legacy/response/oa_response.html:134
+msgid "The prompt for this section"
+msgstr "Tämän osion kehote"
+
+#: templates/legacy/response/oa_response.html:148
+msgid "You are on team "
+msgstr "Olet tiimissä"
+
+#: templates/legacy/response/oa_response.html:150
+msgid "Team Members: "
+msgstr "Ryhmän jäsenet:"
+
+#: templates/legacy/response/oa_response.html:155
+#, python-format
+msgid ""
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              have/has already submitted a response to this assignment with another team,\n"
+"                                              and will not be a part of your team's submission or assignment grade.\n"
+"                                          "
+msgstr "%(team_members_with_external_submissions)s ovat/on jo lähettäneet vastauksen tähän tehtävään toisen tiimin kanssa, eikä se ole osa tiimisi lähetyksen tai tehtävän arvosanaa."
+
+#: templates/legacy/response/oa_response.html:171
+msgid "Team Response "
+msgstr "Ryhmän vastaus"
+
+#: templates/legacy/response/oa_response.html:173
+msgid "Your Response "
+msgstr "Vastauksesi"
+
+#: templates/legacy/response/oa_response.html:177
+#: templates/legacy/response/oa_response.html:247
+msgid "(Required)"
+msgstr "(Edellytetään)"
+
+#: templates/legacy/response/oa_response.html:179
+#: templates/legacy/response/oa_response.html:249
+msgid "(Optional)"
+msgstr "(Valinnainen)"
+
+#: templates/legacy/response/oa_response.html:183
+msgid ""
+"\n"
+"                                              Teams should designate one team member to submit a response on behalf of the\n"
+"                                              entire team.  All team members can use this space to work on draft responses,\n"
+"                                              but you will not be able to see your teammates' drafts made in this space, so\n"
+"                                              please coordinate with them to decide on the final response the designated team\n"
+"                                              member should submit.\n"
+"                                          "
+msgstr "Tiimien tulee nimetä yksi tiimin jäsen lähettämään vastaus koko tiimin puolesta. Kaikki tiimin jäsenet voivat käyttää tätä tilaa työstääkseen vastausluonnoksia, mutta et voi nähdä ryhmätovereiden tässä tilassa tehtyjä luonnoksia, joten sovittele heidän kanssaan päättääksesi lopullisesta vastauksesta, jonka nimetyn tiimin jäsenen tulee lähettää."
+
+#: templates/legacy/response/oa_response.html:197
+msgid "Enter your response to the prompt above."
+msgstr "Kirjoita vastauksesi yllä olevaan kehotteeseen."
+
+#: templates/legacy/response/oa_response.html:211
+#, python-format
+msgid ""
+"\n"
+"                                      You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                      when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                      response and will receive the same grade for this assignment as your former teammates.\n"
+"                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                      receive a grade for their submission.\n"
+"                                  "
+msgstr "Olet tällä hetkellä tiimissä %(team_name)s. Koska kuuluit tiimiin %(previous_team_name)s, kun he lähettivät vastauksen tähän tehtävään, näet Team %(previous_team_name)s vastauksen ja saat tästä tehtävästä saman arvosanan kuin entiset joukkuetoverisi. Et ole osa Team %(team_name)s:n tätä tehtävää koskevaa palautetta etkä saa arvosanaa lähetyksestään."
+
+#: templates/legacy/response/oa_response.html:224
+msgid "We could not save your progress"
+msgstr "Emme voineet tallentaa edistymistäsi"
+
+#: templates/legacy/response/oa_response.html:232
+msgid "Status of Your Response"
+msgstr "Vastauksesi tila"
+
+#: templates/legacy/response/oa_response.html:245
+msgid "File Uploads "
+msgstr "Tiedostojen lataukset"
+
+#: templates/legacy/response/oa_response.html:253
+msgid ""
+"\n"
+"                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                  descriptions to your files to help your teammates identify them.\n"
+"                              "
+msgstr "Lähetä tiedostoja ja tarkista alla sinun ja joukkuetovereidesi lähettämät tiedostot. Muista lisätä kuvauksia tiedostoihisi, jotta tiimitoverisi tunnistavat ne."
+
+#: templates/legacy/response/oa_response.html:261
+msgid "We could not upload files"
+msgstr "Emme voineet ladata tiedostoja"
+
+#: templates/legacy/response/oa_response.html:267
+msgid "We could not delete files"
+msgstr "Emme voineet poistaa tiedostoja"
+
+#: templates/legacy/response/oa_response.html:274
+msgid "Select one or more files to upload for this submission."
+msgstr "Valitse yksi tai useampi tiedosto lähetettäväksi tätä lähetystä varten."
+
+#: templates/legacy/response/oa_response.html:276
+msgid "Select a file to upload for this submission."
+msgstr "Valitse tätä lähetystä varten ladattava tiedosto."
+
+#: templates/legacy/response/oa_response.html:280
+msgid "Supported file types: "
+msgstr "Tuetut tiedostotyypit:"
+
+#: templates/legacy/response/oa_response.html:285
+msgid "Upload files"
+msgstr "Lataa tiedostoja"
+
+#: templates/legacy/response/oa_response.html:287
+msgid "Upload file"
+msgstr "Lataa tiedosto"
+
+#: templates/legacy/response/oa_response.html:304
+msgid "This is a team submission."
+msgstr "Tämä on ryhmälähetys."
+
+#: templates/legacy/response/oa_response.html:306
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr "Yhden tiimin jäsenen tulee lähettää vastaus ryhmän jaetuilla tiedostoilla ja tekstivastaus koko tiimin puolesta."
+
+#: templates/legacy/response/oa_response.html:308
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr "Yhden tiimin jäsenen tulee lähettää vastaus, joka sisältää ryhmän jaetut tiedostot koko tiimin puolesta."
+
+#: templates/legacy/response/oa_response.html:310
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr "Yhden tiimin jäsenen tulee lähettää tekstivastaus koko tiimin puolesta."
+
+#: templates/legacy/response/oa_response.html:312
+msgid "One team member should submit on behalf of the entire team."
+msgstr "Yhden tiimin jäsenen tulee lähettää koko joukkueen puolesta."
+
+#: templates/legacy/response/oa_response.html:314
+msgid ""
+"\n"
+"                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
+"                  "
+msgstr "Lue lisää tiimitehtävistä täältä: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">linkki</a> )"
+
+#: templates/legacy/response/oa_response.html:322
+msgid "We could not submit your response"
+msgstr "Emme voineet lähettää vastaustasi"
+
+#: templates/legacy/response/oa_response.html:332
+msgid "Submit your response and move to the next step"
+msgstr "Lähetä vastauksesi ja siirry seuraavaan vaiheeseen"
+
+#: templates/legacy/response/oa_response_cancelled.html:34
+msgid "Your submission was cancelled. "
+msgstr "Lähetyksesi peruttiin."
+
+#: templates/legacy/response/oa_response_cancelled.html:37
+#, python-format
+msgid ""
+"\n"
+"                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
+msgstr "%(removed_by_username)s on peruuttanut lähetyksesi %(removed_datetime)s"
+
+#: templates/legacy/response/oa_response_cancelled.html:41
+#, python-format
+msgid ""
+"\n"
+"                               Your submission was cancelled on %(removed_datetime)s\n"
+"                            "
+msgstr "Lähetyksesi peruttiin %(removed_datetime)s"
+
+#: templates/legacy/response/oa_response_cancelled.html:48
+#, python-format
+msgid ""
+"\n"
+"                            Comments: %(comments)s\n"
+"                        "
+msgstr "Kommentit: %(comments)s"
+
+#: templates/legacy/response/oa_response_closed.html:19
+#: templates/legacy/self/oa_self_closed.html:20
+#: templates/legacy/student_training/student_training_closed.html:17
+msgid "Incomplete"
+msgstr "Epätäydellinen"
+
+#: templates/legacy/response/oa_response_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer submit a response or continue with this problem, and you will receive"
+" a grade of Incomplete. If you saved but did not submit a response, the "
+"response appears in the course records."
+msgstr "Tämän vaiheen eräpäivä on ohitettu. Tämä vaihe on nyt suljettu. Et voi enää lähettää vastausta tai jatkaa tämän ongelman käsittelyä, ja saat arvosanan Puutteellinen. Jos tallensit, mutta et lähettänyt vastausta, vastaus näkyy kurssin tiedoissa."
+
+#: templates/legacy/response/oa_response_graded.html:20
+#: templates/legacy/response/oa_response_submitted.html:20
+#: templates/legacy/self/oa_self_complete.html:18
+#: templates/legacy/student_training/student_training_complete.html:17
+msgid "Complete"
+msgstr "Saattaa loppuun"
+
+#: templates/legacy/response/oa_response_graded.html:30
+#: templates/legacy/response/oa_response_submitted.html:51
+#: templates/legacy/self/oa_self_assessment.html:67
+msgid "Your response"
+msgstr "Vastauksesi"
+
+#: templates/legacy/response/oa_response_graded.html:33
+#: templates/legacy/response/oa_response_submitted.html:54
+msgid "Your Uploaded Files"
+msgstr "Ladatut tiedostot"
+
+#: templates/legacy/response/oa_response_submitted.html:32
+msgid ""
+"Your response has been submitted. You will receive your grade after all "
+"steps are complete and your response is fully assessed."
+msgstr "Vastauksesi on lähetetty. Saat arvosanan, kun kaikki vaiheet on suoritettu ja vastauksesi on täysin arvioitu."
+
+#: templates/legacy/response/oa_response_submitted.html:34
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr "Sinun on vielä suoritettava vaiheet %(peer_start_tag)speer assessment%(end_tag)s ja %(self_start_tag)sself assessment%(end_tag)s."
+
+#: templates/legacy/response/oa_response_submitted.html:38
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr "Sinun on vielä suoritettava vaihe %(start_tag)speer assessment%(end_tag)s."
+
+#: templates/legacy/response/oa_response_submitted.html:42
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr "Sinun on vielä suoritettava vaihe %(start_tag)sitsearviointi%(end_tag)s."
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr "Virhe"
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr "Liityit Team %(team_name)s -ryhmään sen jälkeen, kun he lähettivät vastauksen tähän tehtävään, etkä saa heidän vastauksestaan arvosanaa. Et myöskään ole aiemmin lähettänyt vastausta tähän tehtävään toisen tiimin kanssa. Ota yhteyttä kurssin henkilökuntaan keskustellaksesi vaihtoehdoistasi tähän tehtävään."
+
+#: templates/legacy/self/oa_self_assessment.html:33
+msgid "Assess Your Response"
+msgstr "Arvioi vastauksesi"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/self/oa_self_assessment.html:41
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/self/oa_self_assessment.html:48
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/self/oa_self_assessment.html:88
+msgid "Submit your assessment"
+msgstr "Lähetä arviosi"
+
+#: templates/legacy/self/oa_self_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete a self assessment or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "Tämän vaiheen eräpäivä on ohitettu. Tämä vaihe on nyt suljettu. Et voi enää suorittaa itsearviointia tai jatkaa tätä tehtävää, ja saat arvosanan Keskeneräinen."
+
+#: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
+msgid "Staff Grade"
+msgstr "Henkilökunnan luokka"
+
+#: templates/legacy/staff_area/oa_staff_area.html:8
+#: templates/legacy/staff_area/oa_staff_area.html:35
+msgid "Manage Individual Learners"
+msgstr "Hallitse yksittäisiä oppijoita"
+
+#: templates/legacy/staff_area/oa_staff_area.html:10
+msgid "Manage Team Responses"
+msgstr "Hallitse tiimin vastauksia"
+
+#: templates/legacy/staff_area/oa_staff_area.html:13
+#: templates/legacy/staff_area/oa_staff_area.html:71
+msgid "View Assignment Statistics"
+msgstr "Näytä Tehtävätilastot"
+
+#: templates/legacy/staff_area/oa_staff_area.html:22
+msgid "Demo the new Grading Experience"
+msgstr "Esittele uutta arviointikokemusta"
+
+#: templates/legacy/staff_area/oa_staff_area.html:26
+msgid "View ORA in Studio"
+msgstr "Näytä ORA Studiossa"
+
+#: templates/legacy/staff_area/oa_staff_area.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:69
+#: templates/legacy/staff_area/oa_staff_area.html:151
+msgid "Close"
+msgstr "kiinni"
+
+#: templates/legacy/staff_area/oa_staff_area.html:37
+msgid "Manage Teams"
+msgstr "Hallitse tiimejä"
+
+#: templates/legacy/staff_area/oa_staff_area.html:50
+msgid "Enter an individual learner's username or email"
+msgstr "Anna yksittäisen oppijan käyttäjätunnus tai sähköpostiosoite"
+
+#: templates/legacy/staff_area/oa_staff_area.html:52
+msgid "Enter a team member's username or edX email"
+msgstr "Anna tiimin jäsenen käyttäjätunnus tai edX-sähköpostiosoite"
+
+#: templates/legacy/staff_area/oa_staff_area.html:56
+msgid "Submit"
+msgstr "Lähetä"
+
+#: templates/legacy/staff_area/oa_staff_area.html:78
+msgid "Response total"
+msgstr "Vastaus yhteensä"
+
+#: templates/legacy/staff_area/oa_staff_area.html:84
+msgid "Location"
+msgstr "Sijainti"
+
+#: templates/legacy/staff_area/oa_staff_area.html:90
+msgid "Learner Progress"
+msgstr "Oppijan edistyminen"
+
+#: templates/legacy/staff_area/oa_staff_area.html:94
+#: templates/legacy/staff_area/oa_staff_area.html:117
+msgid "Problem Step"
+msgstr "Ongelma vaihe"
+
+#: templates/legacy/staff_area/oa_staff_area.html:95
+msgid "Active Learners in Step"
+msgstr "Aktiiviset oppijat askeleella"
+
+#: templates/legacy/staff_area/oa_staff_area.html:113
+msgid "Dates"
+msgstr "Päivämäärät"
+
+#: templates/legacy/staff_area/oa_staff_area.html:118
+msgid "Release Date"
+msgstr "Julkaisupäivä"
+
+#: templates/legacy/staff_area/oa_staff_area.html:131
+#: templates/legacy/staff_area/oa_staff_area.html:137
+msgid "N/A"
+msgstr "Ei käytössä"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners.html:7
+msgid "Staff Assessment"
+msgstr "Henkilöstön arviointi"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr "Anna tälle ryhmälle arvosana tehtävän rubriikin avulla."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
+msgid "Give this learner a grade using the problem's rubric."
+msgstr "Anna tälle oppijalle arvosana tehtävän rubriikin avulla."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr "Vastaus: %(team_name)s ja %(team_usernames)s"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:30
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:20
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(student_username)s\n"
+"                                    "
+msgstr "Vastaus: %(student_username)s"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:34
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:24
+msgid "Learner Response"
+msgstr "Oppijan vastaus"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr "Joukkueiden vastaus yllä olevaan kehotteeseen"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:41
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:32
+#: templates/legacy/staff_area/oa_student_info.html:57
+msgid "The learner's response to the prompt above"
+msgstr "Oppijan vastaus yllä olevaan kehotteeseen"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:57
+msgid "Submit assessment"
+msgstr "Lähetä arvio"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
+msgid "Submit assessment and continue grading"
+msgstr "Lähetä arvio ja jatka arvostelua"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_count.html:6
+#, python-format
+msgid ""
+"\n"
+"                %(ungraded)s Available and %(in_progress)s Checked Out\n"
+"            "
+msgstr "%(ungraded)s saatavana ja %(in_progress)s uloskirjautunut"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:7
+msgid "Override this learner's current grade using the problem's rubric."
+msgstr "Ohita tämän oppijan nykyinen arvosana käyttämällä ongelman rubriikkia."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:9
+msgid "Override this team's current grade using the problem's rubric."
+msgstr "Ohita tämän tiimin nykyinen arvosana käyttämällä ongelman rubriikkia."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:27
+msgid "Team Response"
+msgstr "Ryhmän vastaus"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:34
+#: templates/legacy/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr "Ryhmän vastaus yllä olevaan kehotteeseen"
+
+#: templates/legacy/staff_area/oa_student_info.html:11
+#, python-format
+msgid ""
+"\n"
+"                    Viewing learner: %(learner)s\n"
+"                "
+msgstr "Katsotaan oppijaa: %(learner)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:15
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr "Katsojaryhmä: %(team)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:28
+msgid "Learner's Response"
+msgstr "Oppijan vastaus"
+
+#: templates/legacy/staff_area/oa_student_info.html:30
+msgid "Team's Response"
+msgstr "Joukkueen vastaus"
+
+#: templates/legacy/staff_area/oa_student_info.html:39
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr "%(removed_by_username)s poisti oppilaiden lähettämän viestin %(removed_datetime)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:43
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed on %(removed_datetime)s\n"
+"                        "
+msgstr "Oppijan lähetys poistettu %(removed_datetime)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:50
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
+msgstr "Kommentit: %(comments)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:71
+msgid "Peer Assessments for This Learner"
+msgstr "Vertaisarvioinnit tälle oppijalle"
+
+#: templates/legacy/staff_area/oa_student_info.html:76
+msgid "Peer Assessments Completed by This Learner"
+msgstr "Tämän oppijan suorittamat vertaisarvioinnit"
+
+#: templates/legacy/staff_area/oa_student_info.html:81
+msgid "Learner's Self Assessment"
+msgstr "Oppijan itsearviointi"
+
+#: templates/legacy/staff_area/oa_student_info.html:87
+msgid "Staff Assessment for This Learner"
+msgstr "Henkilöstön arviointi tälle oppijalle"
+
+#: templates/legacy/staff_area/oa_student_info.html:89
+msgid "Staff Assessment for this Team"
+msgstr "Tämän joukkueen henkilöstöarvio"
+
+#: templates/legacy/staff_area/oa_student_info.html:100
+msgid "Learner's Final Grade"
+msgstr "Oppijan viimeinen arvosana"
+
+#: templates/legacy/staff_area/oa_student_info.html:102
+msgid "Team's Final Grade"
+msgstr "Joukkueen viimeinen arvosana"
+
+#: templates/legacy/staff_area/oa_student_info.html:112
+#, python-format
+msgid ""
+"\n"
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr "Lopullinen arvosana: %(points_earned)s / %(points_possible)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:119
+msgid "Final Grade Details"
+msgstr "Viimeisen arvosanan tiedot"
+
+#: templates/legacy/staff_area/oa_student_info.html:139
+#, python-format
+msgid ""
+"\n"
+"                                        %(assessment_label)s - %(points)s point\n"
+"                                    "
+msgid_plural ""
+"\n"
+"                                        %(assessment_label)s - %(points)s points\n"
+"                                    "
+msgstr[0] "%(assessment_label)s - %(points)s piste"
+msgstr[1] "%(assessment_label)s - %(points)s pistettä"
+
+#: templates/legacy/staff_area/oa_student_info.html:154
+msgid "Feedback Recorded"
+msgstr "Palaute tallennettu"
+
+#: templates/legacy/staff_area/oa_student_info.html:165
+msgid "The submission is waiting for assessments."
+msgstr "Esitys odottaa arvioita."
+
+#: templates/legacy/staff_area/oa_student_info.html:170
+msgid ""
+"The learner's submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "Oppijan palaute on poistettu vertaisarvioinnista. Oppija saa arvosanan nolla, ellet poista oppijan tilaa ongelmasta, jotta hän voi lähettää vastauksen uudelleen."
+
+#: templates/legacy/staff_area/oa_student_info.html:172
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
+msgstr "Joukkueen palaute on poistettu arvostuksesta. Ryhmä saa arvosanan nolla, ellet poista tiimin jäsenen tilaa ongelmasta, jotta tiimi voi lähettää vastauksen uudelleen."
+
+#: templates/legacy/staff_area/oa_student_info.html:177
+msgid "The problem has not been started."
+msgstr "Ongelmaa ei ole aloitettu."
+
+#: templates/legacy/staff_area/oa_student_info.html:181
+msgid "The problem has not been completed."
+msgstr "Ongelmaa ei ole ratkaistu."
+
+#: templates/legacy/staff_area/oa_student_info.html:193
+msgid "Submit Assessment Grade Override"
+msgstr "Lähetä arvioinnin arvosanan ohitus"
+
+#: templates/legacy/staff_area/oa_student_info.html:195
+msgid "Submit Team Grade Override"
+msgstr "Lähetä tiimin arvosanan ohitus"
+
+#: templates/legacy/staff_area/oa_student_info.html:204
+msgid "Unable to perform grade override"
+msgstr "Arvosanan ohitusta ei voi suorittaa"
+
+#: templates/legacy/staff_area/oa_student_info.html:207
+msgid ""
+"Grades are frozen. Grades are automatically frozen 30 days after the course "
+"end date."
+msgstr "Arvosanat on jäädytetty. Arvosanat jäädytetään automaattisesti 30 päivää kurssin päättymispäivän jälkeen."
+
+#: templates/legacy/staff_area/oa_student_info.html:212
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to delete the learner’s state for this problem to "
+"allow them to resubmit."
+msgstr "Tämä palautus on peruutettu, eikä se voi saada arvosanaa. Katso dokumentaatiosta kuinka poistaa oppijan tila tämän ongelman vuoksi, jotta hän voi lähettää uudelleen."
+
+#: templates/legacy/staff_area/oa_student_info.html:230
+msgid "Remove Submission From Peer Grading"
+msgstr "Poista lähetys vertaisarvioinnista"
+
+#: templates/legacy/staff_area/oa_student_info.html:232
+msgid "Remove Team Submission from Grading"
+msgstr "Poista ryhmälähetys arvioinnista"
+
+#: templates/legacy/staff_area/oa_student_info.html:242
+msgid "Caution: This Action Cannot Be Undone"
+msgstr "Varoitus: Tätä toimintoa ei voi kumota"
+
+#: templates/legacy/staff_area/oa_student_info.html:244
+msgid ""
+"Removing a learner's submission cannot be undone and should be done with "
+"caution."
+msgstr "Oppijan palautuksen poistamista ei voi peruuttaa, ja se tulee tehdä varoen."
+
+#: templates/legacy/staff_area/oa_student_info.html:246
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr "Tiimin lähetyksen poistamista ei voi kumota, ja se tulee tehdä varoen."
+
+#: templates/legacy/staff_area/oa_student_info.html:252
+msgid "Comments:"
+msgstr "Kommentit:"
+
+#: templates/legacy/staff_area/oa_student_info.html:261
+msgid "Remove submission"
+msgstr "Poista lähetys"
+
+#: templates/legacy/staff_area/oa_student_info.html:276
+msgid "A response was not found for this learner."
+msgstr "Tälle oppijalle ei löytynyt vastausta."
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:16
+#, python-format
+msgid ""
+"\n"
+"                            Assessment %(assessment_num)s:\n"
+"                        "
+msgstr "Arvio %(assessment_num)s:"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:22
+msgid "Assessment Details"
+msgstr "Arvioinnin tiedot"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
+msgid "Selected Option"
+msgstr "Valittu vaihtoehto"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
+msgid "Feedback"
+msgstr "Palaute"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
+msgid "Points Possible"
+msgstr "Mahdolliset pisteet"
+
+#: templates/legacy/student_training/student_training.html:18
+msgid "Learn to Assess Responses"
+msgstr "Opi arvioimaan vastauksia"
+
+#: templates/legacy/student_training/student_training.html:27
+#, python-format
+msgid ""
+"\n"
+"                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
+"                  "
+msgstr "Käynnissä (%(current_progress_num)s / %(training_available_num)s)"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/student_training/student_training.html:38
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/student_training/student_training.html:45
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/student_training/student_training.html:58
+#: templates/legacy/student_training/student_training.html:66
+msgid "Learning to Assess Responses"
+msgstr "Opi arvioimaan vastauksia"
+
+#: templates/legacy/student_training/student_training.html:61
+msgid ""
+"Before you begin to assess your peers' responses, you'll learn how to "
+"complete peer assessments by reviewing responses that instructors have "
+"already assessed. If you select the same options for the response that the "
+"instructor selected, you'll move to the next step. If you don't select the "
+"same options, you'll review the response and try again."
+msgstr "Ennen kuin alat arvioida kollegoidesi vastauksia, opit suorittamaan vertaisarvioinnit tarkastelemalla opettajien jo arvioimia vastauksia. Jos valitset vastaukselle samat vaihtoehdot, jotka opettaja valitsi, siirryt seuraavaan vaiheeseen. Jos et valitse samoja vaihtoehtoja, tarkista vastaus ja yritä uudelleen."
+
+#: templates/legacy/student_training/student_training.html:69
+msgid ""
+"Your assessment differs from the instructor's assessment of this response. "
+"Review the response and consider why the instructor may have assessed it "
+"differently. Then, try the assessment again."
+msgstr "Arviosi poikkeaa opettajan arviosta tästä vastauksesta. Tarkista vastaus ja mieti, miksi ohjaaja on voinut arvioida sen eri tavalla. Yritä sitten arviointia uudelleen."
+
+#: templates/legacy/student_training/student_training.html:76
+msgid "The response to the prompt above:"
+msgstr "Vastaus yllä olevaan kehotteeseen:"
+
+#: templates/legacy/student_training/student_training.html:98
+msgid "Selected Options Agree"
+msgstr "Valitut vaihtoehdot Hyväksy"
+
+#: templates/legacy/student_training/student_training.html:101
+msgid "The option you selected is the option that the instructor selected."
+msgstr "Valitsemasi vaihtoehto on opettajan valitsema vaihtoehto."
+
+#: templates/legacy/student_training/student_training.html:105
+msgid "Selected Options Differ"
+msgstr "Valitut vaihtoehdot eroavat"
+
+#: templates/legacy/student_training/student_training.html:108
+msgid ""
+"The option you selected is not the option that the instructor selected."
+msgstr "Valitsemasi vaihtoehto ei ole se, jonka opettaja valitsi."
+
+#: templates/legacy/student_training/student_training.html:144
+msgid "We could not check your assessment"
+msgstr "Emme voineet tarkistaa arviotasi"
+
+#: templates/legacy/student_training/student_training.html:151
+msgid "Compare your selections with the instructor's selections"
+msgstr "Vertaa valintojasi ohjaajan valintoihin"
+
+#: templates/legacy/student_training/student_training_closed.html:29
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer continue with this assignment, and you will receive a grade of "
+"Incomplete."
+msgstr "Tämän vaiheen eräpäivä on ohitettu. Tämä vaihe on nyt suljettu. Et voi enää jatkaa tätä tehtävää, ja saat arvosanan Keskeneräinen."
+
+#: templates/legacy/student_training/student_training_error.html:18
+msgid "Error Loading Learner Training Examples"
+msgstr "Virhe ladattaessa oppilaiden koulutusesimerkkejä"
+
+#: templates/legacy/student_training/student_training_error.html:21
+msgid "The Learner Training Step of this assignment could not be loaded."
+msgstr "Tämän tehtävän oppilaiden koulutusvaihetta ei voitu ladata."
+
+#: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
+msgid "An unexpected error occurred."
+msgstr "Odottamaton virhe."
+
+#: xblock/grade_mixin.py:179
+msgid "Peer Assessment"
+msgstr "Vertaisarviointi"
+
+#: xblock/grade_mixin.py:181
+msgid "Self Assessment"
+msgstr "Itsearviointi"
+
+#: xblock/grade_mixin.py:221
+msgid "Assessment feedback could not be saved."
+msgstr "Arviointipalautetta ei voitu tallentaa."
+
+#: xblock/grade_mixin.py:232
+msgid "Feedback saved."
+msgstr "Palaute tallennettu."
+
+#: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
+msgid "Staff Comments"
+msgstr "Henkilökunnan kommentit"
+
+#: xblock/grade_mixin.py:372
+msgid "Peer Median Grade"
+msgstr "Vertaiskeskiarvosana"
+
+#: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
+#, python-brace-format
+msgid "Peer {peer_index}"
+msgstr "Peer {peer_index}"
+
+#: xblock/grade_mixin.py:378
+msgid "Peer Comments"
+msgstr "Vertaiskommentit"
+
+#: xblock/grade_mixin.py:388
+msgid "Self Assessment Grade"
+msgstr "Itsearvioinnin arvosana"
+
+#: xblock/grade_mixin.py:388
+msgid "Your Self Assessment"
+msgstr "Sinun itsearviosi"
+
+#: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
+msgid "Your Comments"
+msgstr "Kommenttisi"
+
+#: xblock/grade_mixin.py:485
+msgid "Waiting for peer reviews"
+msgstr "Vertaisarviointeja odotellessa"
+
+#: xblock/grade_mixin.py:524
+msgid "Peer"
+msgstr "Tähyillä"
+
+#: xblock/grade_mixin.py:655
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr "Tämän ongelman arvosana määräytyy henkilöstön arvosanan mukaan."
+
+#: xblock/grade_mixin.py:657
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr "Tämän tehtävän arvosana määräytyy vertaisarviointien mediaanipisteiden mukaan."
+
+#: xblock/grade_mixin.py:660
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr "Tämän tehtävän arvosana määräytyy itsearviointisi perusteella."
+
+#: xblock/grade_mixin.py:666
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr "Olet suorittanut tämän ongelman onnistuneesti ja saanut {earned_points}/{total_points}."
+
+#: xblock/grade_mixin.py:674
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr "Et ole vielä saanut kaikkia tarvittavia vertaisarviointeja lopullisen arvosanasi määrittämiseksi."
+
+#: xblock/openassesment_template_mixin.py:66
+msgid "Peer Assessment Only"
+msgstr "Vain vertaisarviointi"
+
+#: xblock/openassesment_template_mixin.py:67
+msgid "Self Assessment Only"
+msgstr "Vain itsearviointi"
+
+#: xblock/openassesment_template_mixin.py:68
+msgid "Staff Assessment Only"
+msgstr "Vain henkilöstön arviointi"
+
+#: xblock/openassesment_template_mixin.py:69
+msgid "Self Assessment to Peer Assessment"
+msgstr "Itsearvioinnista vertaisarviointiin"
+
+#: xblock/openassesment_template_mixin.py:70
+msgid "Self Assessment to Staff Assessment"
+msgstr "Itsearvioinnista henkilöstöarvioon"
+
+#: xblock/rubric_reuse_mixin.py:62
+msgid "You must specify a block id from which to copy a rubric."
+msgstr "Sinun on määritettävä lohkotunnus, josta rubriiki kopioidaan."
+
+#: xblock/rubric_reuse_mixin.py:66
+msgid "Invalid block id."
+msgstr "Virheellinen lohkotunnus."
+
+#: xblock/rubric_reuse_mixin.py:72
+#, python-brace-format
+msgid ""
+"No Open Response Assessment found in {course_id} with block id {block_id}"
+msgstr "Avoimen vastauksen arviointia ei löytynyt kurssista {course_id} lohkotunnuksella {block_id}"
+
+#: xblock/staff_area_mixin.py:42
+msgid "You do not have permission to schedule training"
+msgstr "Sinulla ei ole lupaa ajoittaa koulutusta"
+
+#: xblock/staff_area_mixin.py:43
+msgid "You do not have permission to reschedule tasks."
+msgstr "Sinulla ei ole lupaa ajoittaa tehtäviä uudelleen."
+
+#: xblock/staff_area_mixin.py:69
+msgid "You do not have permission to access the ORA staff area"
+msgstr "Sinulla ei ole lupaa käyttää ORA:n henkilöstöaluetta"
+
+#: xblock/staff_area_mixin.py:70
+msgid "You do not have permission to access ORA learner information."
+msgstr "Sinulla ei ole oikeutta käyttää ORA-oppilaiden tietoja."
+
+#: xblock/staff_area_mixin.py:71
+msgid "You do not have permission to access ORA staff grading."
+msgstr "Sinulla ei ole oikeutta käyttää ORA-henkilöstön luokittelua."
+
+#: xblock/staff_area_mixin.py:242
+msgid "Pending"
+msgstr "Odottaa"
+
+#: xblock/staff_area_mixin.py:243
+msgid "Complete/Overwritten"
+msgstr "Täydellinen/Korvaattu"
+
+#: xblock/staff_area_mixin.py:246
+msgid "Not applicable"
+msgstr "Ei sovellettavissa"
+
+#: xblock/staff_area_mixin.py:247
+msgid "Not submitted"
+msgstr "Ei lähetetty"
+
+#: xblock/staff_area_mixin.py:248
+msgid "Submitted"
+msgstr "Lähetetty"
+
+#: xblock/staff_area_mixin.py:342
+msgid "Error getting learner information."
+msgstr "Virhe haettaessa oppijan tietoja."
+
+#: xblock/staff_area_mixin.py:385
+msgid "Error loading the checked out learner response."
+msgstr "Virhe ladattaessa uloskirjatun oppijan vastausta."
+
+#: xblock/staff_area_mixin.py:386
+msgid "No other learner responses are available for grading at this time."
+msgstr "Muita oppilaiden vastauksia ei ole tällä hetkellä saatavilla arvosteltavaksi."
+
+#: xblock/staff_area_mixin.py:388
+msgid "Error getting staff grade information."
+msgstr "Virhe haettaessa henkilöstön arvosanatietoja."
+
+#: xblock/staff_area_mixin.py:409
+msgid "Error getting staff grade ungraded and checked out counts."
+msgstr "Virhe henkilöstön arvosanan poistamisessa ja uloskirjautumisen laskennassa."
+
+#: xblock/staff_area_mixin.py:703
+msgid "Please enter valid reason to remove the submission."
+msgstr "Anna kelvollinen syy lähetyksen poistamiseen."
+
+#: xblock/staff_area_mixin.py:714
+msgid "Submission not found"
+msgstr "Lähetystä ei löydy"
+
+#: xblock/staff_area_mixin.py:725
+msgid "Submission for team assignment has no associated team submission"
+msgstr "Ryhmätehtävän lähetykselle ei liity ryhmälähetystä"
+
+#: xblock/staff_area_mixin.py:754
+msgid ""
+"The learner submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "Oppijan palaute on poistettu vertaisarvioinnista. Oppija saa arvosanan nolla, ellet poista oppijan tilaa ongelmasta, jotta hän voi lähettää vastauksen uudelleen."
+
+#: xblock/staff_area_mixin.py:789
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete a team member’s state for the problem to "
+"allow the team to resubmit a response."
+msgstr "Joukkueen palaute on poistettu arvostuksesta. Ryhmä saa arvosanan nolla, ellet poista tiimin jäsenen tilaa ongelmasta, jotta tiimi voi lähettää vastauksen uudelleen."
+
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
+msgid "Error updating XBlock configuration"
+msgstr "Virhe päivitettäessä XBlock-asetuksia"
+
+#: xblock/studio_mixin.py:260
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr "Virhe: Tekstivastausta ja tiedoston latausvastausta ei voi kumpikaan poistaa käytöstä"
+
+#: xblock/studio_mixin.py:264
+msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr "Virhe: Kun tekstivastaus on poistettu käytöstä, tiedoston latausvastaus on vaadittava"
+
+#: xblock/studio_mixin.py:267
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr "Virhe: Kun tiedostonlatausvastaus on poistettu käytöstä, tekstivastaus on vaadittava"
+
+#: xblock/studio_mixin.py:291
+#, python-brace-format
+msgid "Validation error: {error}"
+msgstr "Vahvistusvirhe: {error}"
+
+#: xblock/studio_mixin.py:323
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr "OpenAssessment XBlock päivitetty onnistuneesti"
+
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "Sinun on annettava arvioinnissa valitut vaihtoehdot."
+
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "Arvioinnissa tulee antaa kokonaispalaute."
+
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "Sinun tulee antaa palautetta arvioinnin kriteereistä."
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "&quot;{date}&quot; on virheellinen päivämäärämuoto. Varmista, että päivämäärä on muotoiltu VVVV-KK-PPTHH:MM:SS."
+
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "&#39;{date}&#39; on oltava päivämäärämerkkijono tai päivämääräaika"
+
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "Tämän vaiheen aloituspäivämäärä &quot;{start}&quot; ei voi olla aikaisempi kuin edellisen vaiheen aloituspäivämäärä &quot;{prev}&quot;."
+
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "Tämän vaiheen eräpäivä {due} ei voi olla myöhäisempi kuin seuraavan vaiheen eräpäivä {prev}."
+
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "Aloituspäivä &#39;{start}&#39; ei voi olla myöhäisempi kuin eräpäivä &#39;{due}&#39;"
+
+#: xblock/utils/validation.py:118
+msgid "This problem must include at least one assessment."
+msgstr "Tähän ongelmaan on sisällyttävä vähintään yksi arviointi."
+
+#: xblock/utils/validation.py:122
+msgid "The assessment order you selected is invalid."
+msgstr "Valitsemasi arviointijärjestys on virheellinen."
+
+#: xblock/utils/validation.py:132
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr "Vertaisarvioinnissa &quot;Must Grade&quot; -arvon on oltava positiivinen kokonaisluku."
+
+#: xblock/utils/validation.py:135
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr "Vertaisarvioinnissa &quot;Arvioitu&quot;-arvon on oltava positiivinen kokonaisluku."
+
+#: xblock/utils/validation.py:139
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr "Vertaisarvioinnissa &quot;Pakollinen arvosana&quot; -arvon on oltava suurempi tai yhtä suuri kuin &quot;Arvioitu&quot; -arvo."
+
+#: xblock/utils/validation.py:148
+msgid "You must provide at least one example response for learner training."
+msgstr "Sinun on annettava vähintään yksi esimerkkivastaus oppilaiden koulutuksesta."
+
+#: xblock/utils/validation.py:151
+msgid "Each example response for learner training must be unique."
+msgstr "Jokaisen oppijakoulutuksen esimerkkivastauksen on oltava ainutlaatuinen."
+
+#: xblock/utils/validation.py:158
+msgid "The \"required\" value must be true if staff assessment is the only step."
+msgstr "&quot;Vaaditun&quot; arvon on oltava tosi, jos henkilöstön arviointi on ainoa vaihe."
+
+#: xblock/utils/validation.py:162
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr "Arvioiden määrää ei voi muuttaa ongelman julkaisun jälkeen."
+
+#: xblock/utils/validation.py:167
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr "Arviointityyppiä ei voi muuttaa ongelman julkaisun jälkeen."
+
+#: xblock/utils/validation.py:190
+msgid "This rubric definition is not valid."
+msgstr "Tämä rubriikin määritelmä ei kelpaa."
+
+#: xblock/utils/validation.py:196
+#, python-brace-format
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr "Asetuksilla &#39;{criterion}&#39; on päällekkäiset nimet: {duplicates}"
+
+#: xblock/utils/validation.py:204
+msgid "Criteria with no options must require written feedback."
+msgstr "Kriteerit, joissa ei ole vaihtoehtoja, edellyttävät kirjallista palautetta."
+
+#: xblock/utils/validation.py:213
+msgid "Prompts cannot be created or deleted after a problem is released."
+msgstr "Kehotteita ei voi luoda tai poistaa ongelman poistamisen jälkeen."
+
+#: xblock/utils/validation.py:217
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr "Kriteerien määrää ei voi muuttaa ongelman julkaisun jälkeen."
+
+#: xblock/utils/validation.py:230
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr "Ehtojen nimiä ei voi muuttaa ongelman julkaisun jälkeen"
+
+#: xblock/utils/validation.py:235
+msgid "The number of options cannot be changed after a problem is released."
+msgstr "Vaihtoehtojen määrää ei voi muuttaa ongelman poistamisen jälkeen."
+
+#: xblock/utils/validation.py:240
+msgid "Point values cannot be changed after a problem is released."
+msgstr "Pistearvoja ei voi muuttaa ongelman poistamisen jälkeen."
+
+#: xblock/utils/validation.py:291
+msgid "Learner training must have at least one training example."
+msgstr "Opiskelijakoulutuksessa on oltava vähintään yksi koulutusesimerkki."
+
+#: xblock/utils/validation.py:356
+msgid "Leaderboard number is invalid."
+msgstr "Tulostaulukon numero on virheellinen."
+
+#: xblock/utils/validation.py:379
+msgid "The submission format is invalid."
+msgstr "Lähetysmuoto on virheellinen."

@@ -1,0 +1,2510 @@
+# #-#-#-#-#  django.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
+"PO-Revision-Date: 2014-06-11 13:03+0000\n"
+"Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
+"Language-Team: Filipino (Philippines) (http://app.transifex.com/open-edx/edx-platform/language/fil_PH/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fil_PH\n"
+"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4 || n % 10 != 6 || n % 10 != 9);\n"
+
+#: assessment/api/student_training.py:179
+msgid "Could not parse serialized rubric"
+msgstr "Hindi ma-parse ang serialized na rubric"
+
+#: assessment/api/student_training.py:191
+msgid ""
+"If your assignment includes a learner training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
+msgstr "Kung ang iyong takdang-aralin ay may kasamang hakbang sa pagsasanay ng mag-aaral, ang rubric ay dapat na may kahit isang pamantayan, at ang pamantayang iyon ay dapat may kahit isang opsyon."
+
+#: assessment/api/student_training.py:203
+#, python-brace-format
+msgid "Example {example_number} has a validation error: {error}"
+msgstr "Ang halimbawang {example_number} ay may error sa pagpapatunay: {error}"
+
+#: assessment/api/student_training.py:217
+#, python-brace-format
+msgid ""
+"Example {example_number} has an invalid option for \"{criterion_name}\": "
+"\"{option_name}\""
+msgstr "Ang halimbawang {example_number} ay may di-wastong opsyon para sa &quot;{criterion_name}&quot;: &quot;{option_name}&quot;"
+
+#: assessment/api/student_training.py:227
+#, python-brace-format
+msgid "Example {example_number} has an extra option for \"{criterion_name}\""
+msgstr "Ang halimbawang {example_number} ay may karagdagang opsyon para sa &quot;{criterion_name}&quot;"
+
+#: assessment/api/student_training.py:240
+#, python-brace-format
+msgid "Example {example_number} is missing an option for \"{criterion_name}\""
+msgstr "Halimbawa {example_number} ay walang opsyon para sa &quot;{criterion_name}&quot;"
+
+#: data.py:534
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr "Criterion {number}: {label}"
+
+#: data.py:536
+#, python-brace-format
+msgid "Points {number}"
+msgstr "Mga puntos {number}"
+
+#: data.py:537
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr "Median Score {number}"
+
+#: data.py:538
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr "Feedback {number}"
+
+#: data.py:867
+msgid "Item ID"
+msgstr "ID ng item"
+
+#: data.py:868
+msgid "Submission ID"
+msgstr "ID ng pagsusumite"
+
+#: data.py:880
+msgid "Anonymized Student ID"
+msgstr "Anonymized Student ID"
+
+#: data.py:911
+msgid "Assessment ID"
+msgstr "ID ng Pagtatasa"
+
+#: data.py:912
+msgid "Assessment Scored Date"
+msgstr "Petsa ng Pag-iskor ng Pagtatasa"
+
+#: data.py:913
+msgid "Assessment Scored Time"
+msgstr "Oras ng Pagtatasa"
+
+#: data.py:914
+msgid "Assessment Type"
+msgstr "Uri ng Pagtatasa"
+
+#: data.py:915
+msgid "Anonymous Scorer Id"
+msgstr "Anonymous Scorer Id"
+
+#: data.py:917
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
+msgid "Overall Feedback"
+msgstr "Pangkalahatang Feedback"
+
+#: data.py:918
+msgid "Assessment Score Earned"
+msgstr "Nakuhang Marka ng Pagtatasa"
+
+#: data.py:919
+msgid "Assessment Scored At"
+msgstr "Pagtatasa na Namarkahan Sa"
+
+#: data.py:920
+msgid "Date/Time Final Score Given"
+msgstr "Petsa/Oras Ibinigay ang Panghuling Iskor"
+
+#: data.py:921
+msgid "Final Score Earned"
+msgstr "Nakuha ang Panghuling Iskor"
+
+#: data.py:922
+msgid "Final Score Possible"
+msgstr "Posibleng Pangwakas na Iskor"
+
+#: data.py:923
+msgid "Feedback Statements Selected"
+msgstr "Pinili ang Mga Pahayag ng Feedback"
+
+#: data.py:924
+msgid "Feedback on Assessment"
+msgstr "Feedback sa Pagtatasa"
+
+#: data.py:926
+msgid "Response Files"
+msgstr "Mga File ng Tugon"
+
+#: data.py:1317
+msgid "No description provided."
+msgstr "Walang ibinigay na paglalarawan."
+
+#: templates/legacy/edit/oa_edit.html:28
+msgid "Save"
+msgstr "I-save"
+
+#: templates/legacy/edit/oa_edit.html:32
+msgid "Cancel"
+msgstr "Kanselahin"
+
+#: templates/legacy/edit/oa_edit_assessment_steps.html:6
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr "Binibigyang-daan ka ng Open Response Assessment na i-configure ang isa o maramihang hakbang sa isang rubric na nakabatay sa open response assessment sequence. Ang mga hakbang na available sa ibaba ay maaaring i-enable, i-disable, at i-order para sa isang flexible na hanay ng mga pangangailangan sa pedagogical."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:5
+msgid "Display Name "
+msgstr "Display Name"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:8
+msgid "The display name for this component."
+msgstr "Ang display name para sa bahaging ito."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:12
+msgid "Text Response"
+msgstr "Tugon sa Teksto"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:20
+msgid ""
+"Specify whether learners must include a text based response to this "
+"problem's prompt."
+msgstr "Tukuyin kung ang mga mag-aaral ay dapat magsama ng text based na tugon sa prompt ng problemang ito."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:25
+msgid "Response Editor"
+msgstr "Editor ng Tugon"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:33
+msgid ""
+"Select which editor learners will use to include a text based response to "
+"this problem's prompt."
+msgstr "Piliin kung aling mga nag-aaral ng editor ang gagamitin upang magsama ng text based na tugon sa prompt ng problemang ito."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:38
+msgid "File Uploads Response"
+msgstr "Tugon sa Pag-upload ng File"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:46
+msgid ""
+"Specify whether learners are able to upload files as a part of their "
+"response."
+msgstr "Tukuyin kung ang mga mag-aaral ay makakapag-upload ng mga file bilang bahagi ng kanilang tugon."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:50
+msgid "Allow Multiple Files"
+msgstr "Payagan ang Maramihang Mga File"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:52
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:93
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:131
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_peer_assessment.html:45
+msgid "False"
+msgstr "Mali"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:53
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:94
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:132
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_peer_assessment.html:46
+msgid "True"
+msgstr "totoo"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:56
+msgid ""
+"Specify whether learners can upload more than one file. This has no effect "
+"if File Uploads Response is set to None. This is automatically set to True "
+"for Team Assignments. "
+msgstr "Tukuyin kung ang mga mag-aaral ay makakapag-upload ng higit sa isang file. Wala itong epekto kung ang Tugon sa Mga Pag-upload ng File ay nakatakda sa Wala. Awtomatiko itong nakatakda sa True para sa Mga Assignment ng Team."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:58
+msgid "File Upload Types"
+msgstr "Mga Uri ng Pag-upload ng File"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:60
+msgid "PDF or Image Files"
+msgstr "PDF o Image Files"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:61
+msgid "Image Files"
+msgstr "Mga File ng Larawan"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:62
+msgid "Custom File Types"
+msgstr "Mga Custom na Uri ng File"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:66
+msgid ""
+"Specify whether learners can submit files along with their text responses."
+msgstr "Tukuyin kung ang mga mag-aaral ay maaaring magsumite ng mga file kasama ang kanilang mga tugon sa teksto."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:70
+msgid "File Types"
+msgstr "Mga uri ng files"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:79
+msgid ""
+"Enter the file extensions, separated by commas, that you want learners to be"
+" able to upload. For example: pdf,doc,docx."
+msgstr "Ilagay ang mga extension ng file, na pinaghihiwalay ng mga kuwit, na gusto mong ma-upload ng mga mag-aaral. Halimbawa: pdf, doc, docx."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:84
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr "Upang magdagdag ng higit pang mga extension ng file, piliin ang Mga Custom na Uri ng File at ilagay ang buong listahan ng mga katanggap-tanggap na extension ng file na isasama."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:91
+msgid "Allow LaTeX Responses"
+msgstr "Payagan ang Mga Tugon sa LaTeX"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:97
+msgid "Specify whether learners can write LaTeX formatted strings"
+msgstr "Tukuyin kung ang mga nag-aaral ay maaaring magsulat ng mga string na may format na LaTeX"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:102
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:8
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
+msgid "Top Responses"
+msgstr "Mga Nangungunang Tugon"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:104
+msgid " (Disabled)"
+msgstr "(Hindi pinagana)"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:117
+msgid ""
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr "Tukuyin ang bilang ng mga sagot sa nangungunang pagmamarka na ipapakita pagkatapos magsumite ng tugon ang mag-aaral. Ang mga wastong numero ay 0 hanggang 99. Kung ang numero ay 0, ang seksyong Mga Nangungunang Tugon ay hindi lalabas sa mga mag-aaral."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:122
+msgid "When Teams Enabled is set to true, Top Responses will be disabled."
+msgstr "Kapag nakatakda sa true ang Teams Enabled, idi-disable ang Mga Nangungunang Tugon."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:129
+msgid "Teams Enabled"
+msgstr "Pinagana ang Mga Koponan"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:136
+msgid "Specify whether team submissions are allowed for this response."
+msgstr "Tukuyin kung pinapayagan ang mga pagsusumite ng koponan para sa tugon na ito."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:141
+msgid "Select Team-Set"
+msgstr "Piliin ang Team-Set"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:155
+msgid "Show Rubric During Response"
+msgstr "Ipakita ang Rubric Habang Sumasagot"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:162
+msgid ""
+"Specify whether learners can see the rubric while they are working on their "
+"response."
+msgstr "Tukuyin kung makikita ng mga mag-aaral ang rubric habang ginagawa nila ang kanilang tugon."
+
+#: templates/legacy/edit/oa_edit_criterion.html:6
+#: templates/legacy/staff_area/oa_student_info.html:122
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
+msgid "Criterion"
+msgstr "Criterion"
+
+#: templates/legacy/edit/oa_edit_criterion.html:7
+msgid "You cannot delete a criterion after the assignment has been released."
+msgstr "Hindi ka makakapagtanggal ng criterion pagkatapos mailabas ang assignment."
+
+#: templates/legacy/edit/oa_edit_criterion.html:9
+#: templates/legacy/edit/oa_edit_option.html:7
+#: templates/legacy/edit/oa_edit_prompt.html:10
+#: templates/legacy/edit/oa_training_example.html:10
+msgid "Remove"
+msgstr "Alisin"
+
+#: templates/legacy/edit/oa_edit_criterion.html:17
+msgid "Criterion Name"
+msgstr "Pangalan ng Pamantayan"
+
+#: templates/legacy/edit/oa_edit_criterion.html:29
+msgid "Criterion Prompt"
+msgstr "Criterion Prompt"
+
+#: templates/legacy/edit/oa_edit_criterion.html:44
+msgid "Add Option"
+msgstr "Magdagdag ng Opsyon"
+
+#: templates/legacy/edit/oa_edit_criterion.html:52
+msgid "Feedback for This Criterion"
+msgstr "Feedback para sa Criterion na Ito"
+
+#: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
+msgid "None"
+msgstr "wala"
+
+#: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
+msgid "Optional"
+msgstr "Opsyonal"
+
+#: templates/legacy/edit/oa_edit_criterion.html:56
+#: templates/legacy/oa_rubric.html:13
+#: templates/legacy/student_training/student_training.html:93
+#: xblock/studio_mixin.py:55
+msgid "Required"
+msgstr "Kailangan"
+
+#: templates/legacy/edit/oa_edit_criterion.html:61
+msgid ""
+"Select one of the options above. This describes whether or not the reviewer "
+"will have to provide criterion feedback."
+msgstr "Pumili ng isa sa mga opsyon sa itaas. Inilalarawan nito kung kailangan o hindi ng tagasuri na magbigay ng feedback sa pamantayan."
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:3
+msgid "Open Response Assessment"
+msgstr "Buksan ang Pagtatasa ng Tugon"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:8
+#: templates/legacy/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "Prompt"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:15
+msgid "Rubric"
+msgstr "Rubric"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:22
+msgid "Schedule"
+msgstr "Iskedyul"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:31
+msgid "Assessment steps"
+msgstr "Mga hakbang sa pagtatasa"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html:38
+msgid "Settings"
+msgstr "Mga setting"
+
+#: templates/legacy/edit/oa_edit_option.html:5
+msgid "Option"
+msgstr "Pagpipilian"
+
+#: templates/legacy/edit/oa_edit_option.html:16
+msgid "Option Name"
+msgstr "Pangalan ng Pagpipilian"
+
+#: templates/legacy/edit/oa_edit_option.html:29
+msgid "Option Points"
+msgstr "Mga Puntos sa Pagpipilian"
+
+#: templates/legacy/edit/oa_edit_option.html:42
+msgid "Option Explanation"
+msgstr "Paliwanag ng Opsyon"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:10
+msgid "Step: Peer Assessment"
+msgstr "Hakbang: Peer Assessment"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:15
+msgid ""
+"Peer Assessment allows students to provide feedback to other students and "
+"also receive feedback from others in their final grade. Often, though not "
+"always, this step is preceded by Self Assessment or Learner Training steps."
+msgstr "Ang Peer Assessment ay nagbibigay-daan sa mga mag-aaral na magbigay ng feedback sa ibang mga mag-aaral at makatanggap din ng feedback mula sa iba sa kanilang huling grado. Kadalasan, bagaman hindi palaging, ang hakbang na ito ay nauuna sa Self Assessment o Learner Training na mga hakbang."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:18
+msgid ""
+"Configuration: For this step to be configured you must specify the number of"
+" peer reviews a student will be assessed with, and the number of peer a "
+"student must grade. Additional options can be specified."
+msgstr "Configuration: Para ma-configure ang hakbang na ito, dapat mong tukuyin ang bilang ng mga peer review na susuriin ng isang mag-aaral, at ang bilang ng peer na dapat bigyan ng marka ng isang mag-aaral. Maaaring tukuyin ang mga karagdagang opsyon."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:23
+msgid "View Options & Configuration"
+msgstr "Tingnan ang Mga Opsyon at Configuration"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:29
+msgid "Must Grade"
+msgstr "Dapat Grade"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:32
+msgid ""
+"Specify the number of peer assessments that each learner must complete. "
+"Valid numbers are 1 to 99."
+msgstr "Tukuyin ang bilang ng mga peer assessment na dapat kumpletuhin ng bawat mag-aaral. Ang mga wastong numero ay 1 hanggang 99."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:36
+msgid "Graded By"
+msgstr "Namarkahan Ni"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:39
+msgid ""
+"Specify the number of learners that each response must be assessed by. Valid"
+" numbers are 1 to 99."
+msgstr "Tukuyin ang bilang ng mga mag-aaral na dapat tasahin ng bawat tugon. Ang mga wastong numero ay 1 hanggang 99."
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:43
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr "I-enable ang Flexible Peer Grade Averaging"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:49
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr "Kapag pinagana, ang mga mag-aaral na nakatanggap ng hindi bababa sa 30%% ng kinakailangang \\"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:53
+msgid ""
+"This feature is being enabled by the course-level setting. It can be found "
+"under the Open Response Assessment Settings card on the Pages & Resources "
+"studio page."
+msgstr "Ang tampok na ito ay pinagana ng setting ng antas ng kurso. Ito ay matatagpuan sa ilalim ng Open Response Assessment Settings card sa page ng Pages &amp; Resources studio."
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
+msgid "Peer Assessment Deadlines"
+msgstr "Mga Deadline ng Pagtatasa ng Peer"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
+msgid "Start Date"
+msgstr "Petsa ng Pagsisimula"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
+msgid "Start Time"
+msgstr "Oras ng simula"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing peer responses."
+msgstr "Ang petsa at oras kung kailan maaaring simulan ng mga mag-aaral ang pagtatasa ng mga tugon ng mga kasamahan."
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:31
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:119
+msgid "Due Date"
+msgstr "Takdang petsa"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:40
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:40
+msgid "Due Time"
+msgstr "Takdang Panahon"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:48
+msgid "The date and time when all peer assessments must be complete."
+msgstr "Ang petsa at oras kung kailan dapat kumpleto ang lahat ng peer assessment."
+
+#: templates/legacy/edit/oa_edit_prompt.html:8
+msgid "You cannot delete a prompt after the assignment has been released."
+msgstr "Hindi ka makakapagtanggal ng prompt pagkatapos mailabas ang takdang-aralin."
+
+#: templates/legacy/edit/oa_edit_prompts.html:10
+msgid ""
+"Prompts. Replace the sample text with your own text. For more information, "
+"see the ORA documentation."
+msgstr "Mga senyales. Palitan ang sample na teksto ng iyong sariling teksto. Para sa karagdagang impormasyon, tingnan ang dokumentasyon ng ORA."
+
+#: templates/legacy/edit/oa_edit_prompts.html:22
+msgid "Add Prompt"
+msgstr "Magdagdag ng Prompt"
+
+#: templates/legacy/edit/oa_edit_rubric.html:14
+msgid ""
+"Rubrics are made up of criteria, which usually contain one or more options. "
+"Each option has a point value. This template contains two sample criteria "
+"and their options. Replace the sample text with your own text. For more "
+"information, see the ORA documentation."
+msgstr "Ang mga rubric ay binubuo ng mga pamantayan, na karaniwang naglalaman ng isa o higit pang mga opsyon. Ang bawat opsyon ay may halaga ng punto. Ang template na ito ay naglalaman ng dalawang sample na pamantayan at ang kanilang mga pagpipilian. Palitan ang sample na teksto ng iyong sariling teksto. Para sa karagdagang impormasyon, tingnan ang dokumentasyon ng ORA."
+
+#: templates/legacy/edit/oa_edit_rubric.html:29
+msgid "Add Criterion"
+msgstr "Magdagdag ng Criterion"
+
+#: templates/legacy/edit/oa_edit_rubric.html:35
+msgid "Feedback for This Response"
+msgstr "Feedback para sa Tugon na Ito"
+
+#: templates/legacy/edit/oa_edit_rubric.html:40
+msgid "Feedback Instructions"
+msgstr "Mga Tagubilin sa Feedback"
+
+#: templates/legacy/edit/oa_edit_rubric.html:44
+msgid ""
+"Encourage learners to provide feedback on the response they have graded. You"
+" can replace the sample text with your own."
+msgstr "Hikayatin ang mga mag-aaral na magbigay ng feedback sa sagot na kanilang namarkahan. Maaari mong palitan ang sample na teksto ng iyong sarili."
+
+#: templates/legacy/edit/oa_edit_rubric.html:49
+msgid "Default Feedback Text"
+msgstr "Default na Teksto ng Feedback"
+
+#: templates/legacy/edit/oa_edit_rubric.html:53
+msgid ""
+"Enter feedback text that learners will see before they enter their own "
+"feedback. Use this text to show learners a good example peer assessment."
+msgstr "Maglagay ng text ng feedback na makikita ng mga mag-aaral bago nila ilagay ang sarili nilang feedback. Gamitin ang tekstong ito upang ipakita sa mga mag-aaral ang isang magandang halimbawa ng pagtatasa ng kasamahan."
+
+#: templates/legacy/edit/oa_edit_schedule.html:5
+msgid "Deadlines Configuration"
+msgstr "Configuration ng mga Deadline"
+
+#: templates/legacy/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr "Pumili ng opsyon sa pagsasaayos ng deadline"
+
+#: templates/legacy/edit/oa_edit_schedule.html:13
+msgid " NEW"
+msgstr "BAGO"
+
+#: templates/legacy/edit/oa_edit_schedule.html:19
+msgid "Configure deadlines manually"
+msgstr "Manu-manong i-configure ang mga deadline"
+
+#: templates/legacy/edit/oa_edit_schedule.html:23
+msgid "Match deadlines to the subsection due date"
+msgstr "Itugma ang mga deadline sa takdang petsa ng subsection"
+
+#: templates/legacy/edit/oa_edit_schedule.html:27
+msgid "Match deadlines to the course end date"
+msgstr "Itugma ang mga deadline sa petsa ng pagtatapos ng kurso"
+
+#: templates/legacy/edit/oa_edit_schedule.html:30
+msgid "Learn more about open response date settings"
+msgstr "Matuto pa tungkol sa mga setting ng petsa ng bukas na tugon"
+
+#: templates/legacy/edit/oa_edit_schedule.html:40
+msgid "Response Start Date"
+msgstr "Petsa ng Pagsisimula ng Tugon"
+
+#: templates/legacy/edit/oa_edit_schedule.html:53
+msgid "Response Start Time"
+msgstr "Oras ng Pagsisimula ng Tugon"
+
+#: templates/legacy/edit/oa_edit_schedule.html:62
+msgid "The date and time when learners can begin submitting responses."
+msgstr "Ang petsa at oras kung kailan maaaring magsimulang magsumite ng mga tugon ang mga mag-aaral."
+
+#: templates/legacy/edit/oa_edit_schedule.html:70
+msgid "Response Due Date"
+msgstr "Petsa ng Pagtugon"
+
+#: templates/legacy/edit/oa_edit_schedule.html:83
+msgid "Response Due Time"
+msgstr "Takdang Oras ng Tugon"
+
+#: templates/legacy/edit/oa_edit_schedule.html:92
+msgid "The date and time when learners can no longer submit responses."
+msgstr "Ang petsa at oras kung kailan hindi na makakapagsumite ng mga tugon ang mga mag-aaral."
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:8
+msgid "Step: Self Assessment"
+msgstr "Hakbang: Pagsusuri sa Sarili"
+
+#: templates/legacy/edit/oa_edit_self_assessment.html:12
+msgid ""
+"Self Assessment asks learners to grade their own submissions against the "
+"rubric."
+msgstr "Ang Self Assessment ay humihiling sa mga mag-aaral na markahan ang kanilang sariling mga isinumite laban sa rubric."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:5
+msgid "Self Assessment Deadlines"
+msgstr "Mga Deadline ng Self Assessment"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing their responses."
+msgstr "Ang petsa at oras kung kailan maaaring simulan ng mga mag-aaral ang pagtatasa ng kanilang mga tugon."
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html:48
+msgid "The date and time when all self assessments must be complete."
+msgstr "Ang petsa at oras kung kailan dapat kumpleto ang lahat ng self assessment."
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:8
+msgid "Step: Staff Assessment"
+msgstr "Hakbang: Pagsusuri ng Staff"
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html:12
+msgid ""
+"Staff Assessment gates sets the final grade for students if enabled with "
+"other steps, though it can also be used as a standalone step."
+msgstr "Ang mga gate ng Staff Assessment ay nagtatakda ng panghuling grado para sa mga mag-aaral kung pinagana sa iba pang mga hakbang, bagama&#39;t maaari rin itong gamitin bilang isang standalone na hakbang."
+
+#: templates/legacy/edit/oa_edit_student_training.html:9
+msgid "Step: Learner Training"
+msgstr "Hakbang: Learner Training"
+
+#: templates/legacy/edit/oa_edit_student_training.html:14
+msgid ""
+"Learner Training is used to help students practice grading a simulated peer "
+"submission in order to train them on the rubric and ensure learner's "
+"understand the rubric for either Self or Peer Assessment steps."
+msgstr "Ginagamit ang Learner Training upang tulungan ang mga mag-aaral na magsanay ng pagmamarka ng isang simulate na pagsusumite ng peer upang sanayin sila sa rubric at matiyak na nauunawaan ng mag-aaral ang rubric para sa alinman sa mga hakbang sa Self o Peer Assessment."
+
+#: templates/legacy/edit/oa_edit_student_training.html:17
+msgid ""
+"Configuration: For this step to be fully configured you must provide one or "
+"more graded sample responses. Learners must then match this instructor score"
+" to advance and are provided feedback when their score doesn't match the "
+"sample response."
+msgstr "Configuration: Upang ganap na ma-configure ang hakbang na ito, dapat kang magbigay ng isa o higit pang namarkahang sample na mga tugon. Dapat pagkatapos ay itugma ng mga mag-aaral ang marka ng tagapagturo na ito upang umabante at bibigyan sila ng feedback kapag hindi tumugma ang kanilang marka sa sample na tugon."
+
+#: templates/legacy/edit/oa_edit_student_training.html:22
+msgid "View / Add Sample Responses"
+msgstr "Tingnan / Magdagdag ng Mga Sample na Tugon"
+
+#: templates/legacy/edit/oa_edit_student_training.html:32
+msgid "Add Sample Response"
+msgstr "Magdagdag ng Sample na Tugon"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:4
+msgid "Clone Rubric"
+msgstr "I-clone ang Rubric"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:7
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only affect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr "Upang i-clone ang isang rubric mula sa isang umiiral na na-publish o hindi nai-publish na draft, maaari kang maghanap ayon sa Block ID. Tandaan na ang pag-clone ay one-way, ibig sabihin, ang mga pagbabagong ginawa pagkatapos ng pag-clone ay makakaapekto lamang sa rubric na binago, at hindi nito babaguhin ang anumang rubric kung saan ito na-clone."
+
+#: templates/legacy/edit/oa_rubric_reuse.html:9
+msgid "Block ID For this ORA:"
+msgstr "Block ID Para sa ORA na ito:"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:19
+msgid "Block ID"
+msgstr "Block ID"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:21
+msgid "No other Open Response Assessments found in course"
+msgstr "Walang nakitang ibang Open Response Assessment sa kurso"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:31
+msgid "Clone"
+msgstr "I-clone"
+
+#: templates/legacy/edit/oa_rubric_reuse.html:37
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr "Matagumpay na Na-clone ang Rubric mula sa Block ID:"
+
+#: templates/legacy/edit/oa_training_example.html:7
+msgid "Scored Response"
+msgstr "Naka-iskor na Tugon"
+
+#: templates/legacy/edit/oa_training_example.html:16
+msgid "Response Score"
+msgstr "Iskor ng Tugon"
+
+#: templates/legacy/edit/oa_training_example.html:27
+msgid "Response"
+msgstr "Tugon"
+
+#: templates/legacy/edit/oa_training_example_criterion.html:10
+msgid "Not Selected"
+msgstr "Hindi Napili"
+
+#: templates/legacy/edit/oa_training_example_criterion.html:15
+#: templates/legacy/oa_rubric.html:43
+#: templates/legacy/student_training/student_training.html:128
+msgid "points"
+msgstr "puntos"
+
+#: templates/legacy/grade/oa_assessment_feedback.html:8
+#, python-format
+msgid ""
+"\n"
+"                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
+"              "
+msgstr "%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s"
+
+#: templates/legacy/grade/oa_assessment_title.html:7
+#, python-format
+msgid ""
+"\n"
+"                      %(assessment_title)s - %(points)s point\n"
+"                  "
+msgid_plural ""
+"\n"
+"                      %(assessment_title)s - %(points)s points\n"
+"                  "
+msgstr[0] "%(assessment_title)s - %(points)s point"
+msgstr[1] "%(assessment_title)s - %(points)s puntos"
+
+#: templates/legacy/grade/oa_assessment_title.html:24
+#, python-format
+msgid "More information about %(name)s"
+msgstr "Higit pang impormasyon tungkol sa %(name)s"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:14
+#: templates/legacy/grade/oa_grade_complete.html:15
+#: templates/legacy/grade/oa_grade_complete.html:26
+#: templates/legacy/grade/oa_grade_incomplete.html:14
+#: templates/legacy/grade/oa_grade_not_started.html:14
+#: templates/legacy/grade/oa_grade_waiting.html:14
+msgid "Your Grade"
+msgstr "Grade mo"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:19
+#, python-format
+msgid ""
+"\n"
+"                                        %(points_earned)s out of %(points_possible)s\n"
+"                                    "
+msgstr "%(points_earned)s sa %(points_possible)s"
+
+#: templates/legacy/grade/oa_grade_cancelled.html:38
+msgid "Your submission has been cancelled."
+msgstr "Nakansela ang iyong pagsusumite."
+
+#: templates/legacy/grade/oa_grade_complete.html:19
+#, python-format
+msgid ""
+"\n"
+"                                            %(points_earned)s out of %(points_possible)s\n"
+"                                        "
+msgstr "%(points_earned)s sa %(points_possible)s"
+
+#: templates/legacy/grade/oa_grade_complete.html:38
+#: templates/legacy/response/oa_response.html:29
+msgid "Your Response"
+msgstr "Iyong Tugon"
+
+#: templates/legacy/grade/oa_grade_complete.html:41
+msgid "Your Upload"
+msgstr "Iyong Upload"
+
+#: templates/legacy/grade/oa_grade_complete.html:46
+msgid "Assessments of Your Response"
+msgstr "Mga Pagsusuri sa Iyong Tugon"
+
+#: templates/legacy/grade/oa_grade_complete.html:50
+#: templates/legacy/grade/oa_grade_complete.html:132
+#: templates/legacy/grade/oa_grade_incomplete.html:28
+#: templates/legacy/grade/oa_grade_waiting.html:28
+#: templates/legacy/message/oa_message_cancelled.html:4
+#: templates/legacy/message/oa_message_closed.html:4
+#: templates/legacy/message/oa_message_complete.html:4
+#: templates/legacy/message/oa_message_incomplete.html:4
+#: templates/legacy/peer/oa_peer_closed.html:33
+#: templates/legacy/peer/oa_peer_complete.html:30
+#: templates/legacy/peer/oa_peer_turbo_mode.html:40
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:34
+#: templates/legacy/peer/oa_peer_waiting.html:34
+#: templates/legacy/response/oa_response_cancelled.html:31
+#: templates/legacy/response/oa_response_closed.html:29
+#: templates/legacy/response/oa_response_submitted.html:30
+#: templates/legacy/response/oa_response_team_already_submitted.html:25
+#: templates/legacy/self/oa_self_closed.html:30
+#: templates/legacy/student_training/student_training_closed.html:27
+msgid "Status"
+msgstr "Katayuan"
+
+#: templates/legacy/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "Pangkalahatang Marka"
+
+#: templates/legacy/grade/oa_grade_complete.html:70
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "Mga puntos"
+
+#: templates/legacy/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "Mga karagdagang komento sa iyong tugon"
+
+#: templates/legacy/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr "Magbigay ng feedback sa mga peer assessment"
+
+#: templates/legacy/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "Pagsusumite ng Feedback"
+
+#: templates/legacy/grade/oa_grade_complete.html:134
+msgid ""
+"Your feedback has been submitted. Course staff will be able to see this "
+"feedback when they review course records."
+msgstr "Naisumite na ang iyong feedback. Makikita ng staff ng kurso ang feedback na ito kapag nirepaso nila ang mga talaan ng kurso."
+
+#: templates/legacy/grade/oa_grade_complete.html:140
+msgid ""
+"Course staff will be able to see any feedback that you provide here when "
+"they review course records."
+msgstr "Makikita ng staff ng kurso ang anumang feedback na ibibigay mo rito kapag nirepaso nila ang mga rekord ng kurso."
+
+#: templates/legacy/grade/oa_grade_complete.html:146
+msgid ""
+"Select the statements below that best reflect your experience with peer "
+"assessments."
+msgstr "Piliin ang mga pahayag sa ibaba na pinakamahusay na nagpapakita ng iyong karanasan sa mga pagtatasa ng peer."
+
+#: templates/legacy/grade/oa_grade_complete.html:155
+msgid "These assessments were useful."
+msgstr "Ang mga pagtatasa na ito ay naging kapaki-pakinabang."
+
+#: templates/legacy/grade/oa_grade_complete.html:164
+msgid "These assessments were not useful."
+msgstr "Ang mga pagtatasa na ito ay hindi naging kapaki-pakinabang."
+
+#: templates/legacy/grade/oa_grade_complete.html:173
+msgid "I disagree with one or more of the peer assessments of my response."
+msgstr "Hindi ako sumasang-ayon sa isa o higit pa sa mga peer assessment ng aking tugon."
+
+#: templates/legacy/grade/oa_grade_complete.html:182
+msgid "Some comments I received were inappropriate."
+msgstr "Ang ilang komentong natanggap ko ay hindi naaangkop."
+
+#: templates/legacy/grade/oa_grade_complete.html:187
+msgid ""
+"Provide feedback on the grade or comments that you received from your peers."
+msgstr "Magbigay ng feedback sa grado o komento na natanggap mo mula sa iyong mga kapantay."
+
+#: templates/legacy/grade/oa_grade_complete.html:190
+msgid "I feel the feedback I received was..."
+msgstr "Pakiramdam ko ang feedback na natanggap ko ay..."
+
+#: templates/legacy/grade/oa_grade_complete.html:200
+msgid "We could not submit your feedback"
+msgstr "Hindi namin maisumite ang iyong feedback"
+
+#: templates/legacy/grade/oa_grade_complete.html:206
+msgid "Submit feedback on peer assessments"
+msgstr "Magsumite ng feedback sa mga peer assessment"
+
+#: templates/legacy/grade/oa_grade_incomplete.html:16
+msgid "Not Completed"
+msgstr "Hindi Nakumpleto"
+
+#: templates/legacy/grade/oa_grade_incomplete.html:33
+msgid "You have not completed all the steps of this problem."
+msgstr "Hindi mo pa nakumpleto ang lahat ng mga hakbang ng problemang ito."
+
+#: templates/legacy/grade/oa_grade_not_started.html:16
+msgid "Not Started"
+msgstr "Hindi Nagsimula"
+
+#: templates/legacy/grade/oa_grade_not_started.html:27
+msgid "You have not started this problem yet."
+msgstr "Hindi mo pa nasisimulan ang problemang ito."
+
+#: templates/legacy/grade/oa_grade_waiting.html:16
+msgid "Waiting for Assessments"
+msgstr "Naghihintay para sa Mga Pagsusuri"
+
+#: templates/legacy/grade/oa_grade_waiting.html:33
+msgid ""
+"You have completed your steps in the assignment, but some assessments still "
+"need to be done on your response. When the assessments of your response are "
+"complete, you will see feedback from everyone who assessed your response, "
+"and you will receive your final grade."
+msgstr "Nakumpleto mo na ang iyong mga hakbang sa takdang-aralin, ngunit kailangan pa ring gawin ang ilang pagtatasa sa iyong tugon. Kapag kumpleto na ang mga pagtatasa ng iyong tugon, makakakita ka ng feedback mula sa lahat ng nag-assess ng iyong tugon, at matatanggap mo ang iyong huling marka."
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:15
+#: templates/legacy/staff_area/oa_staff_area.html:16
+#: templates/legacy/staff_area/oa_staff_area.html:18
+#: templates/legacy/staff_area/oa_staff_area.html:153
+msgid "Grade Available Responses"
+msgstr "Markahan ang Magagamit na Mga Tugon"
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html:26
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr "Markahang Magagamit na Mga Tugon ay hindi magagamit. Ang item na ito ay hindi naka-configure para sa Staff Assessment."
+
+#: templates/legacy/instructor_dashboard/oa_listing.html:6
+msgid "Please wait"
+msgstr "Mangyaring maghintay"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
+msgid "Waiting Step Details"
+msgstr "Mga Detalye ng Naghihintay na Hakbang"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:24
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr "Hindi available ang view ng mga detalye ng Waiting Step. Hindi naka-configure ang item na ito para sa mga peer assessment."
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:20
+#, python-format
+msgid "%(num_points)s points"
+msgstr "%(num_points)s puntos"
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html:24
+#: templates/legacy/peer/oa_peer_assessment.html:84
+#: templates/legacy/peer/oa_peer_turbo_mode.html:53
+msgid "Your peer's response to the prompt above"
+msgstr "Ang tugon ng iyong kapantay sa prompt sa itaas"
+
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html:19
+msgid ""
+"After you complete all the steps of this assignment, you can see the top-"
+"scoring responses from your peers."
+msgstr "Pagkatapos mong kumpletuhin ang lahat ng hakbang ng takdang-aralin na ito, makikita mo ang mga sagot na may pinakamataas na marka mula sa iyong mga kapantay."
+
+#: templates/legacy/message/oa_message_cancelled.html:8
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr "Nakansela ang pagsusumite ng iyong koponan. Makakatanggap ang iyong koponan ng gradong zero maliban kung ire-reset ng staff ng kurso ang iyong pagtatasa upang payagan ang koponan na muling magsumite ng tugon."
+
+#: templates/legacy/message/oa_message_cancelled.html:10
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr "Nakansela ang iyong pagsusumite. Makakatanggap ka ng gradong zero maliban kung ire-reset ng staff ng kurso ang iyong pagtatasa upang payagan kang muling magsumite ng tugon."
+
+#: templates/legacy/message/oa_message_closed.html:8
+msgid ""
+"This task is not yet available. Check back to complete the assignment once "
+"this section has opened."
+msgstr "Ang gawaing ito ay hindi pa magagamit. Bumalik upang kumpletuhin ang takdang-aralin kapag nabuksan na ang seksyong ito."
+
+#: templates/legacy/message/oa_message_closed.html:10
+msgid ""
+"This assignment has closed. One or more deadlines for this assignment have "
+"passed. You will receive an incomplete grade for this assignment."
+msgstr "Ang takdang-aralin na ito ay sarado na. Lumipas na ang isa o higit pang mga deadline para sa takdang-aralin na ito. Makakatanggap ka ng hindi kumpletong marka para sa takdang-aralin na ito."
+
+#: templates/legacy/message/oa_message_complete.html:8
+msgid ""
+"You have completed this assignment. Your final grade will be available when "
+"the assessments of your response are complete."
+msgstr "Nakumpleto mo na ang takdang-aralin na ito. Magiging available ang iyong huling grado kapag kumpleto na ang mga pagtatasa ng iyong tugon."
+
+#: templates/legacy/message/oa_message_complete.html:10
+msgid ""
+"You have completed this assignment. Review your grade and your assessment "
+"details."
+msgstr "Nakumpleto mo na ang takdang-aralin na ito. Suriin ang iyong grado at ang iyong mga detalye ng pagtatasa."
+
+#: templates/legacy/message/oa_message_incomplete.html:9
+msgid ""
+"This assignment is in progress. Learner training will close soon. Complete "
+"the learner training step to move on."
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Malapit nang magsara ang pagsasanay ng mga mag-aaral. Kumpletuhin ang hakbang sa pagsasanay ng mag-aaral upang magpatuloy."
+
+#: templates/legacy/message/oa_message_incomplete.html:11
+msgid ""
+"This assignment is in progress. Complete the learner training step to move "
+"on."
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Kumpletuhin ang hakbang sa pagsasanay ng mag-aaral upang magpatuloy."
+
+#: templates/legacy/message/oa_message_incomplete.html:15
+#: templates/legacy/message/oa_message_incomplete.html:33
+msgid ""
+"This assignment is in progress. Check back later when the assessment period "
+"has started."
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Bumalik sa ibang pagkakataon kapag nagsimula na ang panahon ng pagtatasa."
+
+#: templates/legacy/message/oa_message_incomplete.html:20
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "%(start_strong)sAng takdang-aralin na ito ay isinasagawa. Malapit nang magsara ang hakbang sa pagtatasa sa sarili.%(end_strong)s Kailangan mo pa ring kumpletuhin ang hakbang na %(start_link)sself assessment%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:24
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Kailangan mo pa ring kumpletuhin ang %(start_link)sself assessment%(end_link)s step."
+
+#: templates/legacy/message/oa_message_incomplete.html:38
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Ang takdang-aralin na ito ay isinasagawa.%(start_strong)sAng hakbang sa pagtatasa ng peer ay malapit nang magsara.%(end_strong)s Lahat ng isinumiteng tugon ng peer ay nasuri. Bumalik sa ibang pagkakataon upang makita kung mas maraming mag-aaral ang nagsumite ng mga tugon. Kailangan mo pa ring kumpletuhin ang %(start_link)speer assessment%(end_link)s na hakbang."
+
+#: templates/legacy/message/oa_message_incomplete.html:42
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Nasuri ang lahat ng isinumiteng tugon ng peer. Bumalik sa ibang pagkakataon upang makita kung mas maraming mag-aaral ang nagsumite ng mga tugon. Kailangan mo pa ring kumpletuhin ang %(start_link)speer assessment%(end_link)s na hakbang."
+
+#: templates/legacy/message/oa_message_incomplete.html:46
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. %(start_strong)sMalapit nang magsara ang hakbang ng peer assessment.%(end_strong)s Kailangan mo pa ring kumpletuhin ang hakbang na %(start_link)speer assessment%(end_link)s."
+
+#: templates/legacy/message/oa_message_incomplete.html:50
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr "Kasalukuyang isinasagawa ang takdang-aralin na ito. Kailangan mo pa ring kumpletuhin ang %(start_link)speer assessment%(end_link)s na hakbang."
+
+#: templates/legacy/message/oa_message_no_team.html:4
+msgid "Team membership is required to view this assignment"
+msgstr "Kinakailangan ang pagiging miyembro ng koponan upang tingnan ang takdang-aralin na ito"
+
+#: templates/legacy/message/oa_message_no_team.html:7
+#, python-format
+msgid ""
+"\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
+msgstr "Isa itong pagtatalaga ng pangkat para sa set ng pangkat na &quot;%(teamset_name)s&quot;. Kasalukuyan kang wala sa isang team sa team-set na &quot;%(teamset_name)s&quot;. Dapat ay nasa isang team ka sa set ng team na &quot;%(teamset_name)s&quot; para ma-access ang assignment ng team na ito."
+
+#: templates/legacy/message/oa_message_open.html:7
+#, python-format
+msgid ""
+"\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "Malapit nang magsara ang mga pagsusumite ng takdang-aralin. Upang makatanggap ng grado, magbigay muna ng tugon sa prompt, pagkatapos ay kumpletuhin ang mga hakbang sa ibaba ng field na %(start_tag)sYour Response%(end_tag)s."
+
+#: templates/legacy/message/oa_message_open.html:11
+#, python-format
+msgid ""
+"\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr "Ang takdang-aralin na ito ay may ilang hakbang. Sa unang hakbang, magbibigay ka ng tugon sa prompt. Ang iba pang mga hakbang ay lilitaw sa ibaba ng %(start_tag)sYour Response%(end_tag)s field."
+
+#: templates/legacy/message/oa_message_unavailable.html:4
+msgid "Instructions Unavailable"
+msgstr "Hindi available ang mga tagubilin"
+
+#: templates/legacy/message/oa_message_unavailable.html:6
+msgid "The instructions for this step could not be loaded."
+msgstr "Hindi ma-load ang mga tagubilin para sa hakbang na ito."
+
+#: templates/legacy/oa_base.html:16 templates/openassessmentblock/base.html:22
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the prompt. The other steps appear below the Your Response "
+"field."
+msgstr "Ang takdang-aralin na ito ay may ilang hakbang. Sa unang hakbang, magbibigay ka ng tugon sa prompt. Lumilitaw ang iba pang mga hakbang sa ibaba ng field na Iyong Tugon."
+
+#: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
+#: templates/openassessmentblock/base.html:100
+msgid "Loading"
+msgstr "Naglo-load"
+
+#: templates/legacy/oa_latex_preview.html:6
+msgid "Preview in LaTeX"
+msgstr "Preview sa LaTeX"
+
+#: templates/legacy/oa_latex_preview.html:9
+msgid "Click to preview your submission in LaTeX."
+msgstr "I-click upang i-preview ang iyong pagsusumite sa LaTeX."
+
+#: templates/legacy/oa_latex_preview.html:14
+msgid "Preview Response"
+msgstr "I-preview ang Tugon"
+
+#: templates/legacy/oa_rubric.html:53
+msgid "Comments"
+msgstr "Mga komento"
+
+#: templates/legacy/oa_submission_answer.html:8
+msgid "The question for this section"
+msgstr "Ang tanong para sa seksyong ito"
+
+#: templates/legacy/oa_team_uploaded_files.html:9
+msgid "Files that were uploaded by your teammates:"
+msgstr "Mga file na na-upload ng iyong mga kasamahan sa koponan:"
+
+#: templates/legacy/oa_team_uploaded_files.html:28
+#: templates/legacy/oa_uploaded_file.html:34
+msgid "View the files associated with this submission:"
+msgstr "Tingnan ang mga file na nauugnay sa pagsusumiteng ito:"
+
+#: templates/legacy/oa_team_uploaded_files.html:32
+msgid "Uploaded by"
+msgstr "Na-upload ni"
+
+#: templates/legacy/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr "Mga file na na-upload mo:"
+
+#: templates/legacy/oa_uploaded_file.html:48
+msgid ""
+"Caution: These files were uploaded by another course learner and have not "
+"been verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you access the files, you do so at your own risk.)"
+msgstr "Babala: Ang mga file na ito ay na-upload ng isa pang nag-aaral ng kurso at hindi pa na-verify, na-screen, naaprubahan, nasuri, o inendorso ng administrator ng site. Kung ina-access mo ang mga file, gagawin mo ito sa iyong sariling peligro.)"
+
+#: templates/legacy/peer/oa_peer_assessment.html:36
+msgid "Assess Peers"
+msgstr "Tayahin ang mga Kapantay"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
+#. 5 days and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:44
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
+#. and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html:51
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/peer/oa_peer_assessment.html:61
+#, python-format
+msgid ""
+"\n"
+"                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"                "
+msgstr "Kasalukuyang Isinasagawa (%(review_number)s ng %(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_assessment.html:75
+#: templates/legacy/peer/oa_peer_turbo_mode.html:45
+msgid "Read and assess the following response from one of your peers."
+msgstr "Basahin at suriin ang sumusunod na tugon mula sa isa sa iyong mga kapantay."
+
+#: templates/legacy/peer/oa_peer_assessment.html:87
+#: templates/legacy/peer/oa_peer_turbo_mode.html:56
+#: templates/legacy/self/oa_self_assessment.html:70
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:45
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:38
+#: templates/legacy/staff_area/oa_student_info.html:63
+msgid "Associated Files"
+msgstr "Mga Kaugnay na File"
+
+#: templates/legacy/peer/oa_peer_assessment.html:101
+#: templates/legacy/peer/oa_peer_turbo_mode.html:70
+#: templates/legacy/self/oa_self_assessment.html:81
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:57
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:50
+msgid "We could not submit your assessment"
+msgstr "Hindi namin maisumite ang iyong pagtatasa"
+
+#: templates/legacy/peer/oa_peer_cancelled.html:19
+#: templates/legacy/response/oa_response_cancelled.html:21
+#: templates/legacy/self/oa_self_cancelled.html:21
+#: templates/legacy/student_training/student_training_cancelled.html:18
+msgid "Cancelled"
+msgstr "Kinansela"
+
+#: templates/legacy/peer/oa_peer_closed.html:20
+#, python-format
+msgid ""
+"\n"
+"            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr "Hindi kumpleto (%(num_graded)s ng %(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_closed.html:35
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete peer assessments or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "Lumipas na ang takdang petsa para sa hakbang na ito. Ang hakbang na ito ay sarado na ngayon. Hindi mo na makumpleto ang mga pagtatasa ng peer o magpatuloy sa takdang-aralin na ito, at makakatanggap ka ng grado na Hindi kumpleto."
+
+#: templates/legacy/peer/oa_peer_complete.html:13
+msgid "Completed"
+msgstr "Nakumpleto"
+
+#: templates/legacy/peer/oa_peer_complete.html:31
+#: templates/legacy/peer/oa_peer_turbo_mode.html:41
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:36
+msgid ""
+"You have successfully completed all of the required peer assessments for "
+"this assignment. You may assess additional peer responses if you want to. "
+"Completing additional assessments will not affect your final grade."
+msgstr "Matagumpay mong nakumpleto ang lahat ng kinakailangang pagtatasa ng peer para sa takdang-aralin na ito. Maaari mong tasahin ang mga karagdagang tugon ng peer kung gusto mo. Ang pagkumpleto ng mga karagdagang pagtatasa ay hindi makakaapekto sa iyong panghuling grado."
+
+#: templates/legacy/peer/oa_peer_complete.html:36
+msgid "We could not retrieve additional submissions for assessment"
+msgstr "Hindi namin makuha ang mga karagdagang pagsusumite para sa pagtatasa"
+
+#: templates/legacy/peer/oa_peer_complete.html:43
+msgid "Continue Assessing Peers"
+msgstr "Ipagpatuloy ang Pagsusuri ng mga Kapantay"
+
+#: templates/legacy/peer/oa_peer_turbo_mode.html:26
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"        Complete (%(num_graded)s)\n"
+"      "
+msgstr "Kumpleto na (%(num_graded)s)"
+
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses."
+msgstr "Nasuri ang lahat ng isinumiteng tugon ng peer. Bumalik sa ibang pagkakataon upang makita kung mas maraming mag-aaral ang nagsumite ng mga tugon."
+
+#: templates/legacy/peer/oa_peer_unavailable.html:16
+#: templates/legacy/response/oa_response_unavailable.html:17
+#: templates/legacy/self/oa_self_unavailable.html:17
+#: templates/legacy/student_training/student_training_unavailable.html:16
+msgid "Not Available"
+msgstr "Hindi magagamit"
+
+#: templates/legacy/peer/oa_peer_waiting.html:20
+#, python-format
+msgid ""
+"\n"
+"          In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"        "
+msgstr "Kasalukuyang Isinasagawa (%(review_number)s ng %(num_must_grade)s)"
+
+#: templates/legacy/peer/oa_peer_waiting.html:37
+msgid ""
+"All available peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses. You will receive your grade after "
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
+msgstr "Nasuri ang lahat ng magagamit na tugon ng peer. Bumalik sa ibang pagkakataon upang makita kung mas maraming mag-aaral ang nagsumite ng mga tugon. Matatanggap mo ang iyong marka pagkatapos mong makumpleto ang lahat ng mga hakbang para sa problemang ito at masuri ng iyong mga kasamahan ang iyong tugon."
+
+#: templates/legacy/response/oa_response.html:27
+msgid "Your Team's Response"
+msgstr "Ang Tugon ng Iyong Koponan"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/response/oa_response.html:39
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/response/oa_response.html:46
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/response/oa_response.html:54
+#: templates/legacy/self/oa_self_assessment.html:56
+msgid "In Progress"
+msgstr "Isinasagawa"
+
+#: templates/legacy/response/oa_response.html:66
+msgid "Enter your team's response to the prompt."
+msgstr "Ilagay ang tugon ng iyong koponan sa prompt."
+
+#: templates/legacy/response/oa_response.html:68
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
+"                      "
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang tugon ng iyong koponan anumang oras bago ang takdang petsa"
+
+#: templates/legacy/response/oa_response.html:81
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time.\n"
+"                      "
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang tugon ng iyong koponan anumang oras."
+
+#: templates/legacy/response/oa_response.html:86
+msgid ""
+"After you submit a response on behalf of your team, it cannot be edited."
+msgstr "Pagkatapos mong magsumite ng tugon sa ngalan ng iyong koponan, hindi ito maaaring i-edit."
+
+#: templates/legacy/response/oa_response.html:89
+msgid "Enter your response to the prompt."
+msgstr "Ilagay ang iyong tugon sa prompt."
+
+#: templates/legacy/response/oa_response.html:92
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang iyong tugon anumang oras bago ang takdang petsa ng subsection"
+
+#: templates/legacy/response/oa_response.html:94
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang iyong tugon anumang oras bago matapos ang kurso"
+
+#: templates/legacy/response/oa_response.html:96
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang iyong tugon anumang oras bago ang takdang petsa"
+
+#: templates/legacy/response/oa_response.html:108
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time."
+msgstr "Awtomatikong magse-save ang iyong trabaho at maaari kang bumalik upang kumpletuhin ang iyong tugon anumang oras."
+
+#: templates/legacy/response/oa_response.html:110
+msgid "After you submit your response, you cannot edit it"
+msgstr "Pagkatapos mong isumite ang iyong tugon, hindi mo ito mai-edit"
+
+#: templates/legacy/response/oa_response.html:120
+msgid "What will this assignment be graded on?"
+msgstr "Ano ang magiging marka ng takdang-aralin na ito?"
+
+#: templates/legacy/response/oa_response.html:134
+msgid "The prompt for this section"
+msgstr "Ang prompt para sa seksyong ito"
+
+#: templates/legacy/response/oa_response.html:148
+msgid "You are on team "
+msgstr "Ikaw ay nasa koponan"
+
+#: templates/legacy/response/oa_response.html:150
+msgid "Team Members: "
+msgstr "Mga Miyembro ng Koponan:"
+
+#: templates/legacy/response/oa_response.html:155
+#, python-format
+msgid ""
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              have/has already submitted a response to this assignment with another team,\n"
+"                                              and will not be a part of your team's submission or assignment grade.\n"
+"                                          "
+msgstr "%(team_members_with_external_submissions)s ay nakapagsumite na/nagsumite na ng tugon sa takdang-aralin na ito kasama ng isa pang koponan, at hindi magiging bahagi ng pagsusumite o marka ng pagtatalaga ng iyong koponan."
+
+#: templates/legacy/response/oa_response.html:171
+msgid "Team Response "
+msgstr "Tugon ng Koponan"
+
+#: templates/legacy/response/oa_response.html:173
+msgid "Your Response "
+msgstr "Iyong Tugon"
+
+#: templates/legacy/response/oa_response.html:177
+#: templates/legacy/response/oa_response.html:247
+msgid "(Required)"
+msgstr "(Kailangan)"
+
+#: templates/legacy/response/oa_response.html:179
+#: templates/legacy/response/oa_response.html:249
+msgid "(Optional)"
+msgstr "(Opsyonal)"
+
+#: templates/legacy/response/oa_response.html:183
+msgid ""
+"\n"
+"                                              Teams should designate one team member to submit a response on behalf of the\n"
+"                                              entire team.  All team members can use this space to work on draft responses,\n"
+"                                              but you will not be able to see your teammates' drafts made in this space, so\n"
+"                                              please coordinate with them to decide on the final response the designated team\n"
+"                                              member should submit.\n"
+"                                          "
+msgstr "Ang mga koponan ay dapat magtalaga ng isang miyembro ng koponan upang magsumite ng tugon sa ngalan ng buong koponan. Magagamit ng lahat ng miyembro ng team ang puwang na ito para gumawa ng mga draft na tugon, ngunit hindi mo makikita ang mga draft ng iyong mga kasamahan sa koponan na ginawa sa espasyong ito, kaya mangyaring makipag-ugnayan sa kanila upang magpasya sa huling tugon na dapat isumite ng itinalagang miyembro ng koponan."
+
+#: templates/legacy/response/oa_response.html:197
+msgid "Enter your response to the prompt above."
+msgstr "Ilagay ang iyong tugon sa prompt sa itaas."
+
+#: templates/legacy/response/oa_response.html:211
+#, python-format
+msgid ""
+"\n"
+"                                      You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                      when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                      response and will receive the same grade for this assignment as your former teammates.\n"
+"                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                      receive a grade for their submission.\n"
+"                                  "
+msgstr "Kasalukuyan kang nasa Team %(team_name)s. Dahil ikaw ay nasa Team %(previous_team_name)s noong nagsumite sila ng tugon sa takdang-aralin na ito, nakikita mo ang tugon ng Team %(previous_team_name)s at makakatanggap ka ng parehong marka para sa takdang-aralin na ito gaya ng iyong mga dating kasamahan sa koponan. Hindi ka magiging bahagi ng pagsusumite ng Team %(team_name)s para sa takdang-aralin na ito at hindi ka makakatanggap ng marka para sa kanilang pagsusumite."
+
+#: templates/legacy/response/oa_response.html:224
+msgid "We could not save your progress"
+msgstr "Hindi namin mai-save ang iyong pag-unlad"
+
+#: templates/legacy/response/oa_response.html:232
+msgid "Status of Your Response"
+msgstr "Katayuan ng Iyong Tugon"
+
+#: templates/legacy/response/oa_response.html:245
+msgid "File Uploads "
+msgstr "Mga Pag-upload ng File"
+
+#: templates/legacy/response/oa_response.html:253
+msgid ""
+"\n"
+"                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                  descriptions to your files to help your teammates identify them.\n"
+"                              "
+msgstr "Mag-upload ng mga file at suriin ang mga file na na-upload mo at ng iyong mga kasamahan sa koponan sa ibaba. Tiyaking magdagdag ng mga paglalarawan sa iyong mga file upang matulungan ang iyong mga kasamahan sa koponan na matukoy ang mga ito."
+
+#: templates/legacy/response/oa_response.html:261
+msgid "We could not upload files"
+msgstr "Hindi kami makapag-upload ng mga file"
+
+#: templates/legacy/response/oa_response.html:267
+msgid "We could not delete files"
+msgstr "Hindi namin matanggal ang mga file"
+
+#: templates/legacy/response/oa_response.html:274
+msgid "Select one or more files to upload for this submission."
+msgstr "Pumili ng isa o higit pang mga file na ia-upload para sa pagsusumiteng ito."
+
+#: templates/legacy/response/oa_response.html:276
+msgid "Select a file to upload for this submission."
+msgstr "Pumili ng file na ia-upload para sa pagsusumiteng ito."
+
+#: templates/legacy/response/oa_response.html:280
+msgid "Supported file types: "
+msgstr "Mga sinusuportahang uri ng file:"
+
+#: templates/legacy/response/oa_response.html:285
+msgid "Upload files"
+msgstr "Mag-upload ng mga file"
+
+#: templates/legacy/response/oa_response.html:287
+msgid "Upload file"
+msgstr "Mag-upload ng file"
+
+#: templates/legacy/response/oa_response.html:304
+msgid "This is a team submission."
+msgstr "Ito ay isang pagsusumite ng koponan."
+
+#: templates/legacy/response/oa_response.html:306
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr "Ang isang miyembro ng koponan ay dapat magsumite ng tugon kasama ang mga nakabahaging file ng koponan at isang text na tugon sa ngalan ng buong koponan."
+
+#: templates/legacy/response/oa_response.html:308
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr "Ang isang miyembro ng koponan ay dapat magsumite ng tugon kasama ang mga nakabahaging file ng koponan sa ngalan ng buong koponan."
+
+#: templates/legacy/response/oa_response.html:310
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr "Ang isang miyembro ng koponan ay dapat magsumite ng isang text na tugon sa ngalan ng buong koponan."
+
+#: templates/legacy/response/oa_response.html:312
+msgid "One team member should submit on behalf of the entire team."
+msgstr "Ang isang miyembro ng koponan ay dapat magsumite sa ngalan ng buong koponan."
+
+#: templates/legacy/response/oa_response.html:314
+msgid ""
+"\n"
+"                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
+"                  "
+msgstr "Matuto nang higit pa tungkol sa mga pagtatalaga ng pangkat dito: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a> )"
+
+#: templates/legacy/response/oa_response.html:322
+msgid "We could not submit your response"
+msgstr "Hindi namin maisumite ang iyong tugon"
+
+#: templates/legacy/response/oa_response.html:332
+msgid "Submit your response and move to the next step"
+msgstr "Isumite ang iyong tugon at lumipat sa susunod na hakbang"
+
+#: templates/legacy/response/oa_response_cancelled.html:34
+msgid "Your submission was cancelled. "
+msgstr "Nakansela ang iyong pagsusumite."
+
+#: templates/legacy/response/oa_response_cancelled.html:37
+#, python-format
+msgid ""
+"\n"
+"                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
+msgstr "Ang iyong pagsusumite ay kinansela ni %(removed_by_username)s sa %(removed_datetime)s"
+
+#: templates/legacy/response/oa_response_cancelled.html:41
+#, python-format
+msgid ""
+"\n"
+"                               Your submission was cancelled on %(removed_datetime)s\n"
+"                            "
+msgstr "Nakansela ang iyong pagsusumite noong %(removed_datetime)s"
+
+#: templates/legacy/response/oa_response_cancelled.html:48
+#, python-format
+msgid ""
+"\n"
+"                            Comments: %(comments)s\n"
+"                        "
+msgstr "Mga Puna: %(comments)s"
+
+#: templates/legacy/response/oa_response_closed.html:19
+#: templates/legacy/self/oa_self_closed.html:20
+#: templates/legacy/student_training/student_training_closed.html:17
+msgid "Incomplete"
+msgstr "Hindi kumpleto"
+
+#: templates/legacy/response/oa_response_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer submit a response or continue with this problem, and you will receive"
+" a grade of Incomplete. If you saved but did not submit a response, the "
+"response appears in the course records."
+msgstr "Lumipas na ang takdang petsa para sa hakbang na ito. Ang hakbang na ito ay sarado na ngayon. Hindi ka na makakapagsumite ng tugon o makapagpatuloy sa problemang ito, at makakatanggap ka ng grado na Hindi Kumpleto. Kung nag-save ka ngunit hindi nagsumite ng tugon, lalabas ang tugon sa mga talaan ng kurso."
+
+#: templates/legacy/response/oa_response_graded.html:20
+#: templates/legacy/response/oa_response_submitted.html:20
+#: templates/legacy/self/oa_self_complete.html:18
+#: templates/legacy/student_training/student_training_complete.html:17
+msgid "Complete"
+msgstr "Kumpleto"
+
+#: templates/legacy/response/oa_response_graded.html:30
+#: templates/legacy/response/oa_response_submitted.html:51
+#: templates/legacy/self/oa_self_assessment.html:67
+msgid "Your response"
+msgstr "Ang iyong tugon"
+
+#: templates/legacy/response/oa_response_graded.html:33
+#: templates/legacy/response/oa_response_submitted.html:54
+msgid "Your Uploaded Files"
+msgstr "Iyong Mga Na-upload na File"
+
+#: templates/legacy/response/oa_response_submitted.html:32
+msgid ""
+"Your response has been submitted. You will receive your grade after all "
+"steps are complete and your response is fully assessed."
+msgstr "Naisumite na ang iyong tugon. Matatanggap mo ang iyong marka pagkatapos makumpleto ang lahat ng hakbang at ganap na nasuri ang iyong tugon."
+
+#: templates/legacy/response/oa_response_submitted.html:34
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr "Kailangan mo pa ring kumpletuhin ang %(peer_start_tag)speer assessment%(end_tag)s at %(self_start_tag)sself assessment%(end_tag)s na mga hakbang."
+
+#: templates/legacy/response/oa_response_submitted.html:38
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr "Kailangan mo pa ring kumpletuhin ang %(start_tag)speer assessment%(end_tag)s na hakbang."
+
+#: templates/legacy/response/oa_response_submitted.html:42
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr "Kailangan mo pa ring kumpletuhin ang %(start_tag)sself assessment%(end_tag)s na hakbang."
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr "Error"
+
+#: templates/legacy/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr "Sumali ka sa Team %(team_name)s pagkatapos nilang magsumite ng tugon para sa takdang-aralin na ito at hindi ka makakatanggap ng marka para sa kanilang tugon. Hindi ka rin nagsumite dati ng tugon sa takdang-aralin na ito sa ibang team. Mangyaring makipag-ugnayan sa staff ng kurso upang talakayin ang iyong mga opsyon para sa takdang-aralin na ito."
+
+#: templates/legacy/self/oa_self_assessment.html:33
+msgid "Assess Your Response"
+msgstr "Tayahin ang Iyong Tugon"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/self/oa_self_assessment.html:41
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/self/oa_self_assessment.html:48
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr "<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/self/oa_self_assessment.html:88
+msgid "Submit your assessment"
+msgstr "Isumite ang iyong pagtatasa"
+
+#: templates/legacy/self/oa_self_closed.html:32
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete a self assessment or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr "Lumipas na ang takdang petsa para sa hakbang na ito. Ang hakbang na ito ay sarado na ngayon. Hindi ka na makakapagkumpleto ng self assessment o makapagpatuloy sa takdang-aralin na ito, at makakatanggap ka ng grado na Hindi kumpleto."
+
+#: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
+msgid "Staff Grade"
+msgstr "Marka ng Staff"
+
+#: templates/legacy/staff_area/oa_staff_area.html:8
+#: templates/legacy/staff_area/oa_staff_area.html:35
+msgid "Manage Individual Learners"
+msgstr "Pamahalaan ang mga Indibidwal na Nag-aaral"
+
+#: templates/legacy/staff_area/oa_staff_area.html:10
+msgid "Manage Team Responses"
+msgstr "Pamahalaan ang Mga Tugon ng Koponan"
+
+#: templates/legacy/staff_area/oa_staff_area.html:13
+#: templates/legacy/staff_area/oa_staff_area.html:71
+msgid "View Assignment Statistics"
+msgstr "Tingnan ang Istatistika ng Takdang-aralin"
+
+#: templates/legacy/staff_area/oa_staff_area.html:22
+msgid "Demo the new Grading Experience"
+msgstr "Ipakita ang bagong Karanasan sa Pagmamarka"
+
+#: templates/legacy/staff_area/oa_staff_area.html:26
+msgid "View ORA in Studio"
+msgstr "Tingnan ang ORA sa Studio"
+
+#: templates/legacy/staff_area/oa_staff_area.html:31
+#: templates/legacy/staff_area/oa_staff_area.html:69
+#: templates/legacy/staff_area/oa_staff_area.html:151
+msgid "Close"
+msgstr "Isara"
+
+#: templates/legacy/staff_area/oa_staff_area.html:37
+msgid "Manage Teams"
+msgstr "Pamahalaan ang Mga Koponan"
+
+#: templates/legacy/staff_area/oa_staff_area.html:50
+msgid "Enter an individual learner's username or email"
+msgstr "Maglagay ng username o email ng indibidwal na mag-aaral"
+
+#: templates/legacy/staff_area/oa_staff_area.html:52
+msgid "Enter a team member's username or edX email"
+msgstr "Maglagay ng username o edX email ng miyembro ng team"
+
+#: templates/legacy/staff_area/oa_staff_area.html:56
+msgid "Submit"
+msgstr "Ipasa"
+
+#: templates/legacy/staff_area/oa_staff_area.html:78
+msgid "Response total"
+msgstr "Kabuuan ng tugon"
+
+#: templates/legacy/staff_area/oa_staff_area.html:84
+msgid "Location"
+msgstr "Lokasyon"
+
+#: templates/legacy/staff_area/oa_staff_area.html:90
+msgid "Learner Progress"
+msgstr "Pag-unlad ng Mag-aaral"
+
+#: templates/legacy/staff_area/oa_staff_area.html:94
+#: templates/legacy/staff_area/oa_staff_area.html:117
+msgid "Problem Step"
+msgstr "Hakbang ng Problema"
+
+#: templates/legacy/staff_area/oa_staff_area.html:95
+msgid "Active Learners in Step"
+msgstr "Mga Aktibong Nag-aaral sa Hakbang"
+
+#: templates/legacy/staff_area/oa_staff_area.html:113
+msgid "Dates"
+msgstr "Petsa"
+
+#: templates/legacy/staff_area/oa_staff_area.html:118
+msgid "Release Date"
+msgstr "Petsa ng Paglabas"
+
+#: templates/legacy/staff_area/oa_staff_area.html:131
+#: templates/legacy/staff_area/oa_staff_area.html:137
+msgid "N/A"
+msgstr "N/A"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners.html:7
+msgid "Staff Assessment"
+msgstr "Pagtatasa ng Tauhan"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr "Bigyan ng marka ang pangkat na ito gamit ang rubric ng problema."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:16
+msgid "Give this learner a grade using the problem's rubric."
+msgstr "Bigyan ng marka ang mag-aaral na ito gamit ang rubric ng problema."
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr "Tugon para sa: %(team_name)s kasama ang %(team_usernames)s"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:30
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:20
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(student_username)s\n"
+"                                    "
+msgstr "Tugon para sa: %(student_username)s"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:34
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:24
+msgid "Learner Response"
+msgstr "Tugon ng Mag-aaral"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr "Ang tugon ng mga koponan sa prompt sa itaas"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:41
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:32
+#: templates/legacy/staff_area/oa_student_info.html:57
+msgid "The learner's response to the prompt above"
+msgstr "Ang tugon ng mag-aaral sa prompt sa itaas"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:57
+msgid "Submit assessment"
+msgstr "Isumite ang pagtatasa"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
+msgid "Submit assessment and continue grading"
+msgstr "Isumite ang pagtatasa at ipagpatuloy ang pagmamarka"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_count.html:6
+#, python-format
+msgid ""
+"\n"
+"                %(ungraded)s Available and %(in_progress)s Checked Out\n"
+"            "
+msgstr "%(ungraded)s Available at %(in_progress)s Nag-check Out"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:7
+msgid "Override this learner's current grade using the problem's rubric."
+msgstr "I-override ang kasalukuyang marka ng mag-aaral na ito gamit ang rubric ng problema."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:9
+msgid "Override this team's current grade using the problem's rubric."
+msgstr "I-override ang kasalukuyang marka ng team na ito gamit ang rubric ng problema."
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:27
+msgid "Team Response"
+msgstr "Tugon ng Koponan"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html:34
+#: templates/legacy/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr "Ang tugon ng koponan sa prompt sa itaas"
+
+#: templates/legacy/staff_area/oa_student_info.html:11
+#, python-format
+msgid ""
+"\n"
+"                    Viewing learner: %(learner)s\n"
+"                "
+msgstr "Tinitingnan ang nag-aaral: %(learner)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:15
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr "Koponan sa panonood: %(team)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:28
+msgid "Learner's Response"
+msgstr "Tugon ng Mag-aaral"
+
+#: templates/legacy/staff_area/oa_student_info.html:30
+msgid "Team's Response"
+msgstr "Tugon ng Koponan"
+
+#: templates/legacy/staff_area/oa_student_info.html:39
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr "Inalis ni %(removed_by_username)s ang pagsusumite ng mag-aaral sa %(removed_datetime)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:43
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed on %(removed_datetime)s\n"
+"                        "
+msgstr "Inalis ang pagsusumite ng mag-aaral sa %(removed_datetime)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:50
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
+msgstr "Mga Puna: %(comments)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:71
+msgid "Peer Assessments for This Learner"
+msgstr "Mga Peer Assessment para sa Mag-aaral na Ito"
+
+#: templates/legacy/staff_area/oa_student_info.html:76
+msgid "Peer Assessments Completed by This Learner"
+msgstr "Mga Peer Assessment na Nakumpleto ng Mag-aaral na Ito"
+
+#: templates/legacy/staff_area/oa_student_info.html:81
+msgid "Learner's Self Assessment"
+msgstr "Self Assessment ng Learner"
+
+#: templates/legacy/staff_area/oa_student_info.html:87
+msgid "Staff Assessment for This Learner"
+msgstr "Staff Assessment para sa Mag-aaral na Ito"
+
+#: templates/legacy/staff_area/oa_student_info.html:89
+msgid "Staff Assessment for this Team"
+msgstr "Staff Assessment para sa Team na ito"
+
+#: templates/legacy/staff_area/oa_student_info.html:100
+msgid "Learner's Final Grade"
+msgstr "Pangwakas na Marka ng Mag-aaral"
+
+#: templates/legacy/staff_area/oa_student_info.html:102
+msgid "Team's Final Grade"
+msgstr "Panghuling Marka ng Koponan"
+
+#: templates/legacy/staff_area/oa_student_info.html:112
+#, python-format
+msgid ""
+"\n"
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr "Panghuling grado: %(points_earned)s sa %(points_possible)s"
+
+#: templates/legacy/staff_area/oa_student_info.html:119
+msgid "Final Grade Details"
+msgstr "Mga Detalye ng Panghuling Marka"
+
+#: templates/legacy/staff_area/oa_student_info.html:139
+#, python-format
+msgid ""
+"\n"
+"                                        %(assessment_label)s - %(points)s point\n"
+"                                    "
+msgid_plural ""
+"\n"
+"                                        %(assessment_label)s - %(points)s points\n"
+"                                    "
+msgstr[0] "%(assessment_label)s - %(points)s point"
+msgstr[1] "%(assessment_label)s - %(points)s puntos"
+
+#: templates/legacy/staff_area/oa_student_info.html:154
+msgid "Feedback Recorded"
+msgstr "Naitala ang Feedback"
+
+#: templates/legacy/staff_area/oa_student_info.html:165
+msgid "The submission is waiting for assessments."
+msgstr "Ang pagsusumite ay naghihintay para sa mga pagtatasa."
+
+#: templates/legacy/staff_area/oa_student_info.html:170
+msgid ""
+"The learner's submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "Ang isinumite ng mag-aaral ay inalis sa pagtatasa ng kasamahan. Ang mag-aaral ay makakatanggap ng gradong zero maliban kung tatanggalin mo ang estado ng mag-aaral para sa problema upang payagan silang magsumiteng muli ng tugon."
+
+#: templates/legacy/staff_area/oa_student_info.html:172
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
+msgstr "Ang pagsusumite ng koponan ay inalis sa pagmamarka. Ang koponan ay tumatanggap ng isang grado na zero maliban kung tatanggalin mo ang estado ng isang miyembro ng koponan para sa problema upang payagan ang koponan na muling magsumite ng tugon."
+
+#: templates/legacy/staff_area/oa_student_info.html:177
+msgid "The problem has not been started."
+msgstr "Hindi pa nasisimulan ang problema."
+
+#: templates/legacy/staff_area/oa_student_info.html:181
+msgid "The problem has not been completed."
+msgstr "Hindi pa tapos ang problema."
+
+#: templates/legacy/staff_area/oa_student_info.html:193
+msgid "Submit Assessment Grade Override"
+msgstr "Isumite ang Assessment Grade Override"
+
+#: templates/legacy/staff_area/oa_student_info.html:195
+msgid "Submit Team Grade Override"
+msgstr "Isumite ang Team Grade Override"
+
+#: templates/legacy/staff_area/oa_student_info.html:204
+msgid "Unable to perform grade override"
+msgstr "Hindi magawa ang pag-override ng grado"
+
+#: templates/legacy/staff_area/oa_student_info.html:207
+msgid ""
+"Grades are frozen. Grades are automatically frozen 30 days after the course "
+"end date."
+msgstr "Ang mga grado ay nagyelo. Awtomatikong nag-freeze ang mga grado 30 araw pagkatapos ng petsa ng pagtatapos ng kurso."
+
+#: templates/legacy/staff_area/oa_student_info.html:212
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to delete the learner’s state for this problem to "
+"allow them to resubmit."
+msgstr "Ang pagsusumiteng ito ay kinansela at hindi makatanggap ng grado. Sumangguni sa dokumentasyon para sa kung paano tanggalin ang estado ng mag-aaral para sa problemang ito upang payagan silang muling isumite."
+
+#: templates/legacy/staff_area/oa_student_info.html:230
+msgid "Remove Submission From Peer Grading"
+msgstr "Alisin ang Pagsusumite Mula sa Peer Grading"
+
+#: templates/legacy/staff_area/oa_student_info.html:232
+msgid "Remove Team Submission from Grading"
+msgstr "Alisin ang Pagsusumite ng Koponan sa Pagmamarka"
+
+#: templates/legacy/staff_area/oa_student_info.html:242
+msgid "Caution: This Action Cannot Be Undone"
+msgstr "Babala: Ang Pagkilos na Ito ay Hindi Maibabalik"
+
+#: templates/legacy/staff_area/oa_student_info.html:244
+msgid ""
+"Removing a learner's submission cannot be undone and should be done with "
+"caution."
+msgstr "Ang pag-alis ng isinumite ng isang mag-aaral ay hindi maaaring bawiin at dapat gawin nang may pag-iingat."
+
+#: templates/legacy/staff_area/oa_student_info.html:246
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr "Ang pag-alis sa isinumite ng isang koponan ay hindi maaaring bawiin at dapat gawin nang may pag-iingat."
+
+#: templates/legacy/staff_area/oa_student_info.html:252
+msgid "Comments:"
+msgstr "Mga komento:"
+
+#: templates/legacy/staff_area/oa_student_info.html:261
+msgid "Remove submission"
+msgstr "Alisin ang pagsusumite"
+
+#: templates/legacy/staff_area/oa_student_info.html:276
+msgid "A response was not found for this learner."
+msgstr "Walang nakitang tugon para sa mag-aaral na ito."
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:16
+#, python-format
+msgid ""
+"\n"
+"                            Assessment %(assessment_num)s:\n"
+"                        "
+msgstr "Pagtatasa %(assessment_num)s:"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:22
+msgid "Assessment Details"
+msgstr "Mga Detalye ng Pagtatasa"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
+msgid "Selected Option"
+msgstr "Napiling Opsyon"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
+msgid "Feedback"
+msgstr "Feedback"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
+msgid "Points Possible"
+msgstr "Posibleng mga puntos"
+
+#: templates/legacy/student_training/student_training.html:18
+msgid "Learn to Assess Responses"
+msgstr "Matutong Magsuri ng Mga Tugon"
+
+#: templates/legacy/student_training/student_training.html:27
+#, python-format
+msgid ""
+"\n"
+"                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
+"                  "
+msgstr "Kasalukuyang Isinasagawa (%(current_progress_num)s ng %(training_available_num)s)"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/student_training/student_training.html:38
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/student_training/student_training.html:45
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr "<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
+
+#: templates/legacy/student_training/student_training.html:58
+#: templates/legacy/student_training/student_training.html:66
+msgid "Learning to Assess Responses"
+msgstr "Pag-aaral sa Pagtatasa ng Mga Tugon"
+
+#: templates/legacy/student_training/student_training.html:61
+msgid ""
+"Before you begin to assess your peers' responses, you'll learn how to "
+"complete peer assessments by reviewing responses that instructors have "
+"already assessed. If you select the same options for the response that the "
+"instructor selected, you'll move to the next step. If you don't select the "
+"same options, you'll review the response and try again."
+msgstr "Bago mo simulan ang pagtatasa ng mga tugon ng iyong mga kapantay, matututunan mo kung paano kumpletuhin ang mga pagtatasa ng mga kasamahan sa pamamagitan ng pagsusuri sa mga tugon na nasuri na ng mga instruktor. Kung pipiliin mo ang parehong mga opsyon para sa tugon na pinili ng instruktor, lilipat ka sa susunod na hakbang. Kung hindi mo pipiliin ang parehong mga opsyon, susuriin mo ang tugon at susubukan muli."
+
+#: templates/legacy/student_training/student_training.html:69
+msgid ""
+"Your assessment differs from the instructor's assessment of this response. "
+"Review the response and consider why the instructor may have assessed it "
+"differently. Then, try the assessment again."
+msgstr "Ang iyong pagtatasa ay naiiba sa pagtatasa ng instruktor sa tugon na ito. Suriin ang tugon at isaalang-alang kung bakit maaaring naiiba ang pagtatasa nito ng instruktor. Pagkatapos, subukang muli ang pagtatasa."
+
+#: templates/legacy/student_training/student_training.html:76
+msgid "The response to the prompt above:"
+msgstr "Ang tugon sa prompt sa itaas:"
+
+#: templates/legacy/student_training/student_training.html:98
+msgid "Selected Options Agree"
+msgstr "Sumasang-ayon ang Mga Piniling Opsyon"
+
+#: templates/legacy/student_training/student_training.html:101
+msgid "The option you selected is the option that the instructor selected."
+msgstr "Ang opsyon na iyong pinili ay ang opsyon na pinili ng instruktor."
+
+#: templates/legacy/student_training/student_training.html:105
+msgid "Selected Options Differ"
+msgstr "Naiiba ang Mga Piniling Opsyon"
+
+#: templates/legacy/student_training/student_training.html:108
+msgid ""
+"The option you selected is not the option that the instructor selected."
+msgstr "Ang opsyon na iyong pinili ay hindi ang opsyon na pinili ng instruktor."
+
+#: templates/legacy/student_training/student_training.html:144
+msgid "We could not check your assessment"
+msgstr "Hindi namin masuri ang iyong pagtatasa"
+
+#: templates/legacy/student_training/student_training.html:151
+msgid "Compare your selections with the instructor's selections"
+msgstr "Ihambing ang iyong mga pinili sa mga pinili ng instruktor"
+
+#: templates/legacy/student_training/student_training_closed.html:29
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer continue with this assignment, and you will receive a grade of "
+"Incomplete."
+msgstr "Lumipas na ang takdang petsa para sa hakbang na ito. Ang hakbang na ito ay sarado na ngayon. Hindi ka na maaaring magpatuloy sa takdang-aralin na ito, at makakatanggap ka ng gradong Hindi Kumpleto."
+
+#: templates/legacy/student_training/student_training_error.html:18
+msgid "Error Loading Learner Training Examples"
+msgstr "Error sa Paglo-load ng Mga Halimbawa ng Learner Training"
+
+#: templates/legacy/student_training/student_training_error.html:21
+msgid "The Learner Training Step of this assignment could not be loaded."
+msgstr "Ang Learner Training Step ng takdang-aralin na ito ay hindi ma-load."
+
+#: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
+msgid "An unexpected error occurred."
+msgstr "May naganap na hindi inaasahang error."
+
+#: xblock/grade_mixin.py:179
+msgid "Peer Assessment"
+msgstr "Pagtatasa ng Kapantay"
+
+#: xblock/grade_mixin.py:181
+msgid "Self Assessment"
+msgstr "Pagsusuri sa Sarili"
+
+#: xblock/grade_mixin.py:221
+msgid "Assessment feedback could not be saved."
+msgstr "Hindi ma-save ang feedback sa pagtatasa."
+
+#: xblock/grade_mixin.py:232
+msgid "Feedback saved."
+msgstr "Na-save ang feedback."
+
+#: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
+msgid "Staff Comments"
+msgstr "Mga Komento ng Staff"
+
+#: xblock/grade_mixin.py:372
+msgid "Peer Median Grade"
+msgstr "Peer Median Grade"
+
+#: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
+#, python-brace-format
+msgid "Peer {peer_index}"
+msgstr "Peer {peer_index}"
+
+#: xblock/grade_mixin.py:378
+msgid "Peer Comments"
+msgstr "Mga Komento ng Peer"
+
+#: xblock/grade_mixin.py:388
+msgid "Self Assessment Grade"
+msgstr "Marka ng Self Assessment"
+
+#: xblock/grade_mixin.py:388
+msgid "Your Self Assessment"
+msgstr "Iyong Self Assessment"
+
+#: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
+msgid "Your Comments"
+msgstr "Iyong komento"
+
+#: xblock/grade_mixin.py:485
+msgid "Waiting for peer reviews"
+msgstr "Naghihintay para sa mga peer review"
+
+#: xblock/grade_mixin.py:524
+msgid "Peer"
+msgstr "Peer"
+
+#: xblock/grade_mixin.py:655
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr "Ang grado para sa problemang ito ay tinutukoy ng iyong Marka ng Staff."
+
+#: xblock/grade_mixin.py:657
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr "Ang marka para sa problemang ito ay tinutukoy ng median na marka ng iyong mga Peer Assessment."
+
+#: xblock/grade_mixin.py:660
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr "Ang grado para sa problemang ito ay tinutukoy ng iyong Self Assessment."
+
+#: xblock/grade_mixin.py:666
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr "Matagumpay mong nakumpleto ang problemang ito at nakatanggap ng {earned_points}/{total_points}."
+
+#: xblock/grade_mixin.py:674
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr "Hindi mo pa natatanggap ang lahat ng kinakailangang peer review para matukoy ang iyong panghuling grado."
+
+#: xblock/openassesment_template_mixin.py:66
+msgid "Peer Assessment Only"
+msgstr "Peer Assessment Lamang"
+
+#: xblock/openassesment_template_mixin.py:67
+msgid "Self Assessment Only"
+msgstr "Self Assessment Lamang"
+
+#: xblock/openassesment_template_mixin.py:68
+msgid "Staff Assessment Only"
+msgstr "Staff Assessment Lamang"
+
+#: xblock/openassesment_template_mixin.py:69
+msgid "Self Assessment to Peer Assessment"
+msgstr "Self Assessment to Peer Assessment"
+
+#: xblock/openassesment_template_mixin.py:70
+msgid "Self Assessment to Staff Assessment"
+msgstr "Self Assessment sa Staff Assessment"
+
+#: xblock/rubric_reuse_mixin.py:62
+msgid "You must specify a block id from which to copy a rubric."
+msgstr "Dapat kang tumukoy ng block id kung saan kokopyahin ang isang rubric."
+
+#: xblock/rubric_reuse_mixin.py:66
+msgid "Invalid block id."
+msgstr "Di-wastong block id."
+
+#: xblock/rubric_reuse_mixin.py:72
+#, python-brace-format
+msgid ""
+"No Open Response Assessment found in {course_id} with block id {block_id}"
+msgstr "Walang nakitang Open Response Assessment sa {course_id} na may block id {block_id}"
+
+#: xblock/staff_area_mixin.py:42
+msgid "You do not have permission to schedule training"
+msgstr "Wala kang pahintulot na mag-iskedyul ng pagsasanay"
+
+#: xblock/staff_area_mixin.py:43
+msgid "You do not have permission to reschedule tasks."
+msgstr "Wala kang pahintulot na mag-reschedule ng mga gawain."
+
+#: xblock/staff_area_mixin.py:69
+msgid "You do not have permission to access the ORA staff area"
+msgstr "Wala kang pahintulot na ma-access ang staff area ng ORA"
+
+#: xblock/staff_area_mixin.py:70
+msgid "You do not have permission to access ORA learner information."
+msgstr "Wala kang pahintulot na i-access ang impormasyon ng ORA learner."
+
+#: xblock/staff_area_mixin.py:71
+msgid "You do not have permission to access ORA staff grading."
+msgstr "Wala kang pahintulot na ma-access ang pagmamarka ng kawani ng ORA."
+
+#: xblock/staff_area_mixin.py:242
+msgid "Pending"
+msgstr "Nakabinbin"
+
+#: xblock/staff_area_mixin.py:243
+msgid "Complete/Overwritten"
+msgstr "Kumpleto/Ooverwritten"
+
+#: xblock/staff_area_mixin.py:246
+msgid "Not applicable"
+msgstr "Hindi maaari"
+
+#: xblock/staff_area_mixin.py:247
+msgid "Not submitted"
+msgstr "Hindi isinumite"
+
+#: xblock/staff_area_mixin.py:248
+msgid "Submitted"
+msgstr "Naisumite"
+
+#: xblock/staff_area_mixin.py:342
+msgid "Error getting learner information."
+msgstr "Error sa pagkuha ng impormasyon ng mag-aaral."
+
+#: xblock/staff_area_mixin.py:385
+msgid "Error loading the checked out learner response."
+msgstr "Error sa paglo-load ng na-check out na tugon ng mag-aaral."
+
+#: xblock/staff_area_mixin.py:386
+msgid "No other learner responses are available for grading at this time."
+msgstr "Walang ibang mga sagot ng mag-aaral na magagamit para sa pagmamarka sa ngayon."
+
+#: xblock/staff_area_mixin.py:388
+msgid "Error getting staff grade information."
+msgstr "Error sa pagkuha ng impormasyon ng marka ng kawani."
+
+#: xblock/staff_area_mixin.py:409
+msgid "Error getting staff grade ungraded and checked out counts."
+msgstr "Nagkaroon ng error sa pagkuha ng marka ng kawani na hindi namarkahan at mga bilang ng pag-check out."
+
+#: xblock/staff_area_mixin.py:703
+msgid "Please enter valid reason to remove the submission."
+msgstr "Mangyaring maglagay ng wastong dahilan upang alisin ang pagsusumite."
+
+#: xblock/staff_area_mixin.py:714
+msgid "Submission not found"
+msgstr "Hindi nakita ang pagsusumite"
+
+#: xblock/staff_area_mixin.py:725
+msgid "Submission for team assignment has no associated team submission"
+msgstr "Ang pagsusumite para sa pagtatalaga ng pangkat ay walang nauugnay na pagsusumite ng pangkat"
+
+#: xblock/staff_area_mixin.py:754
+msgid ""
+"The learner submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr "Ang isinumite ng mag-aaral ay inalis mula sa peer assessment. Ang mag-aaral ay makakatanggap ng gradong zero maliban kung tatanggalin mo ang estado ng mag-aaral para sa problema upang payagan silang magsumiteng muli ng tugon."
+
+#: xblock/staff_area_mixin.py:789
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete a team member’s state for the problem to "
+"allow the team to resubmit a response."
+msgstr "Ang pagsusumite ng koponan ay inalis sa pagmamarka. Ang koponan ay tumatanggap ng isang grado na zero maliban kung tatanggalin mo ang estado ng isang miyembro ng koponan para sa problema upang payagan ang koponan na muling magsumite ng tugon."
+
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
+msgid "Error updating XBlock configuration"
+msgstr "Error sa pag-update ng XBlock configuration"
+
+#: xblock/studio_mixin.py:260
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr "Error: Ang Tugon sa Teksto at Tugon sa Pag-upload ng File ay hindi maaaring parehong hindi paganahin"
+
+#: xblock/studio_mixin.py:264
+msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr "Error: Kapag ang Text Response ay hindi pinagana, ang File Upload Response ay dapat na Kinakailangan"
+
+#: xblock/studio_mixin.py:267
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr "Error: Kapag ang Tugon sa Pag-upload ng File ay hindi pinagana, Dapat na Kinakailangan ang Tugon sa Teksto"
+
+#: xblock/studio_mixin.py:291
+#, python-brace-format
+msgid "Validation error: {error}"
+msgstr "Error sa pagpapatunay: {error}"
+
+#: xblock/studio_mixin.py:323
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr "Matagumpay na na-update ang OpenAssessment XBlock"
+
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "Dapat kang magbigay ng mga pagpipiliang napili sa pagtatasa."
+
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "Dapat kang magbigay ng pangkalahatang feedback sa pagtatasa."
+
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "Dapat kang magbigay ng feedback para sa pamantayan sa pagtatasa."
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "Ang &#39;{date}&#39; ay isang di-wastong format ng petsa. Tiyaking naka-format ang petsa bilang YYYY-MM-DDTHH:MM:SS."
+
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "Ang &#39;{date}&#39; ay dapat na isang string ng petsa o oras ng petsa"
+
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "Ang petsa ng pagsisimula ng hakbang na &#39;{start}&#39; ay hindi maaaring mas maaga kaysa sa petsa ng pagsisimula ng nakaraang hakbang na &#39;{prev}&#39;."
+
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "Ang takdang petsa ng hakbang na &#39;{due}&#39; ay hindi maaaring mas huli kaysa sa takdang petsa ng susunod na hakbang na &#39;{prev}&#39;."
+
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "Ang petsa ng pagsisimula na &#39;{start}&#39; ay hindi maaaring lumampas sa takdang petsa na &#39;{due}&#39;"
+
+#: xblock/utils/validation.py:118
+msgid "This problem must include at least one assessment."
+msgstr "Ang problemang ito ay dapat magsama ng hindi bababa sa isang pagtatasa."
+
+#: xblock/utils/validation.py:122
+msgid "The assessment order you selected is invalid."
+msgstr "Ang pagkakasunud-sunod ng pagtatasa na iyong pinili ay hindi wasto."
+
+#: xblock/utils/validation.py:132
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr "Sa peer assessment, ang value na &quot;Dapat Grado&quot; ay dapat na positive integer."
+
+#: xblock/utils/validation.py:135
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr "Sa peer assessment, ang value na &quot;Graded By&quot; ay dapat na positive integer."
+
+#: xblock/utils/validation.py:139
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr "Sa peer assessment, ang &quot;Dapat na Markahan&quot; na halaga ay dapat na mas malaki kaysa sa o katumbas ng &quot;Graded By&quot; na halaga."
+
+#: xblock/utils/validation.py:148
+msgid "You must provide at least one example response for learner training."
+msgstr "Dapat kang magbigay ng hindi bababa sa isang halimbawang tugon para sa pagsasanay ng mag-aaral."
+
+#: xblock/utils/validation.py:151
+msgid "Each example response for learner training must be unique."
+msgstr "Ang bawat halimbawang tugon para sa pagsasanay ng mag-aaral ay dapat na natatangi."
+
+#: xblock/utils/validation.py:158
+msgid "The \"required\" value must be true if staff assessment is the only step."
+msgstr "Ang &quot;kinakailangan&quot; na halaga ay dapat na totoo kung ang pagtatasa ng kawani ay ang tanging hakbang."
+
+#: xblock/utils/validation.py:162
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr "Hindi na mababago ang bilang ng mga pagtatasa pagkatapos mailabas ang problema."
+
+#: xblock/utils/validation.py:167
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr "Ang uri ng pagtatasa ay hindi mababago pagkatapos na mailabas ang problema."
+
+#: xblock/utils/validation.py:190
+msgid "This rubric definition is not valid."
+msgstr "Ang kahulugan ng rubric na ito ay hindi wasto."
+
+#: xblock/utils/validation.py:196
+#, python-brace-format
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr "Ang mga opsyon sa &#39;{criterion}&#39; ay may (mga) duplicate na pangalan: {duplicates}"
+
+#: xblock/utils/validation.py:204
+msgid "Criteria with no options must require written feedback."
+msgstr "Ang mga pamantayang walang mga pagpipilian ay dapat mangailangan ng nakasulat na feedback."
+
+#: xblock/utils/validation.py:213
+msgid "Prompts cannot be created or deleted after a problem is released."
+msgstr "Ang mga prompt ay hindi maaaring gawin o tanggalin pagkatapos ng isang problema ay ilabas."
+
+#: xblock/utils/validation.py:217
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr "Hindi mababago ang bilang ng mga pamantayan pagkatapos mailabas ang isang problema."
+
+#: xblock/utils/validation.py:230
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr "Hindi mababago ang mga pangalan ng pamantayan pagkatapos mailabas ang isang problema"
+
+#: xblock/utils/validation.py:235
+msgid "The number of options cannot be changed after a problem is released."
+msgstr "Ang bilang ng mga opsyon ay hindi mababago pagkatapos na mailabas ang isang problema."
+
+#: xblock/utils/validation.py:240
+msgid "Point values cannot be changed after a problem is released."
+msgstr "Ang mga halaga ng punto ay hindi mababago pagkatapos na mailabas ang isang problema."
+
+#: xblock/utils/validation.py:291
+msgid "Learner training must have at least one training example."
+msgstr "Ang pagsasanay sa mag-aaral ay dapat magkaroon ng kahit isang halimbawa ng pagsasanay."
+
+#: xblock/utils/validation.py:356
+msgid "Leaderboard number is invalid."
+msgstr "Di-wasto ang numero ng leaderboard."
+
+#: xblock/utils/validation.py:379
+msgid "The submission format is invalid."
+msgstr "Di-wasto ang format ng pagsusumite."

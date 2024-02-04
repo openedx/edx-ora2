@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ivo Branco <ivo.branco@fccn.pt>, 2021,2023\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -1462,7 +1462,7 @@ msgstr "Não foi possível guardar o seu progresso"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Estado da sua Resposta"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "

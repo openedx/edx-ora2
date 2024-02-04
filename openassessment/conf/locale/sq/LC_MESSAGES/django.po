@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Faton Nuha <faton11@live.com>, 2014-2016\n"
 "Language-Team: Albanian (http://app.transifex.com/open-edx/edx-platform/language/sq/)\n"
@@ -32,14 +32,14 @@ msgstr ""
 #: assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "Shembull {example_number} ka probleme me validim: {error}"
 
 #: assessment/api/student_training.py:217
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "Shembull {example_number}ka një opsion jo valid për \"{criterion_name}\": \"{option_name}\""
 
 #: assessment/api/student_training.py:227
 #, python-brace-format
@@ -162,7 +162,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr ""
+msgstr "Emri që ju shfaqet"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
@@ -216,7 +216,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr ""
+msgstr "E vërtetë"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:56
 msgid ""
@@ -274,7 +274,7 @@ msgstr ""
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:8
 #: templates/legacy/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
-msgstr ""
+msgstr "Top përgjigjjet"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
@@ -317,7 +317,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_student_info.html:122
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "Kriter"
 
 #: templates/legacy/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
@@ -328,7 +328,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_prompt.html:10
 #: templates/legacy/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr ""
+msgstr "Fshije"
 
 #: templates/legacy/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
@@ -348,7 +348,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
 msgid "None"
-msgstr ""
+msgstr "Asgjë"
 
 #: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
 msgid "Optional"
@@ -378,7 +378,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
-msgstr ""
+msgstr "Rubrikë"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
@@ -390,15 +390,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
-msgstr ""
+msgstr "Konfigurimet"
 
 #: templates/legacy/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr ""
+msgstr "Opsion"
 
 #: templates/legacy/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr ""
+msgstr "Emri i opsionit"
 
 #: templates/legacy/edit/oa_edit_option.html:29
 msgid "Option Points"
@@ -479,7 +479,7 @@ msgstr "Data e fillimit"
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr ""
+msgstr "Koha e fillimit"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
@@ -524,7 +524,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr ""
+msgstr "Shto kriter"
 
 #: templates/legacy/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
@@ -707,7 +707,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr ""
+msgstr "E pa selektuar"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:15
 #: templates/legacy/oa_rubric.html:43
@@ -803,7 +803,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Statusi"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -887,7 +887,7 @@ msgstr "Ju nuk keni kompletuar të gjitha hapat e këtij problemi."
 
 #: templates/legacy/grade/oa_grade_not_started.html:16
 msgid "Not Started"
-msgstr ""
+msgstr "Nuk ka filluar"
 
 #: templates/legacy/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
@@ -1134,7 +1134,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "Ngarkuar nga"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1216,7 +1216,7 @@ msgid ""
 "\n"
 "            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\nE pa kompletuar (%(num_graded)s nga %(num_must_grade)s)"
 
 #: templates/legacy/peer/oa_peer_closed.html:35
 msgid ""
@@ -1253,7 +1253,7 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr ""
+msgstr "\nKompletuar (%(num_graded)s)"
 
 #: templates/legacy/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
@@ -1447,7 +1447,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Statusi i përgjigjjes suaj"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1487,7 +1487,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Ngarko dokument"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1576,7 +1576,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_complete.html:18
 #: templates/legacy/student_training/student_training_complete.html:17
 msgid "Complete"
-msgstr ""
+msgstr "Kompletuar"
 
 #: templates/legacy/response/oa_response_graded.html:30
 #: templates/legacy/response/oa_response_submitted.html:51
@@ -1621,7 +1621,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "Problem"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1701,7 +1701,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:69
 #: templates/legacy/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr ""
+msgstr "Mbylle"
 
 #: templates/legacy/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
@@ -1725,7 +1725,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:84
 msgid "Location"
-msgstr ""
+msgstr "Lokacioni"
 
 #: templates/legacy/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
@@ -2037,7 +2037,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "Opcioni i zgjedhur"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
@@ -2121,7 +2121,7 @@ msgstr ""
 #: templates/legacy/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr ""
+msgstr "Opsioni që ju e zgjedhët nuk është opsioni që instruktori e ka zgjedhur."
 
 #: templates/legacy/student_training/student_training.html:144
 msgid "We could not check your assessment"
@@ -2270,7 +2270,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
-msgstr ""
+msgstr "Ju nuk keni leje të riparaqitni detyrat."
 
 #: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
@@ -2286,7 +2286,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "E pezulluar"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2302,7 +2302,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Paraqitur"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
@@ -2371,7 +2371,7 @@ msgstr ""
 #: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr ""
+msgstr "Problem validimi: {error}"
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"

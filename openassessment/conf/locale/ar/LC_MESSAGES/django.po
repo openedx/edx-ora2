@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Omar Al-Ithawi <i@omardo.com>, 2023\n"
 "Language-Team: Arabic (http://app.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -383,7 +383,7 @@ msgstr "مطلوب "
 msgid ""
 "Select one of the options above. This describes whether or not the reviewer "
 "will have to provide criterion feedback."
-msgstr ""
+msgstr "حدد أحد الخيارات أعلاه. يصف هذا ما إذا كان المراجع سيضطر إلى تقديم ملاحظات معيارية أم لا."
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
@@ -456,7 +456,7 @@ msgstr "يجب التقييم"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
-msgstr ""
+msgstr "حدد عدد تقييمات الأقران التي يجب على كل متعلم إكمالها. الأرقام الصحيحة هي من 1 إلى 99."
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -466,7 +466,7 @@ msgstr "مقيَّم من قبل"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
-msgstr ""
+msgstr "حدد عدد المتعلمين الذين يجب تقييم كل إجابة على أساسهم. الأرقام الصحيحة هي من 1 إلى 99."
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -483,7 +483,7 @@ msgid ""
 "This feature is being enabled by the course-level setting. It can be found "
 "under the Open Response Assessment Settings card on the Pages & Resources "
 "studio page."
-msgstr ""
+msgstr "يتم تمكين هذه الميزة من خلال إعداد مستوى الدورة التدريبية. يمكن العثور عليه ضمن بطاقة إعدادات تقييم الاستجابة المفتوحة في صفحة استوديو الصفحات والموارد."
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -570,31 +570,31 @@ msgstr "أدخِل نص الآراء والملاحظات الذي سيراه ا
 
 #: templates/legacy/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
-msgstr ""
+msgstr "تكوين المواعيد النهائية"
 
 #: templates/legacy/edit/oa_edit_schedule.html:9
 msgid "Select a deadline configuration option"
-msgstr ""
+msgstr "حدد خيار تكوين الموعد النهائي"
 
 #: templates/legacy/edit/oa_edit_schedule.html:13
 msgid " NEW"
-msgstr ""
+msgstr "جديد"
 
 #: templates/legacy/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
-msgstr ""
+msgstr "قم بتكوين المواعيد النهائية يدويًا"
 
 #: templates/legacy/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
-msgstr ""
+msgstr "مطابقة المواعيد النهائية مع تاريخ استحقاق القسم الفرعي"
 
 #: templates/legacy/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
-msgstr ""
+msgstr "مطابقة المواعيد النهائية مع تاريخ انتهاء الدورة"
 
 #: templates/legacy/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
-msgstr ""
+msgstr "تعرف على المزيد حول إعدادات تاريخ الاستجابة المفتوحة"
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
@@ -681,7 +681,7 @@ msgstr "أضف ردًّا نموذجيًّا "
 
 #: templates/legacy/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
-msgstr ""
+msgstr "استنساخ قواعد"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:7
 msgid ""
@@ -689,27 +689,27 @@ msgid ""
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
 "after cloning will only affect the rubric being modified, and will not "
 "modify any rubric it was cloned from."
-msgstr ""
+msgstr "لنسخ قاعدة من مسودة موجودة منشورة أو غير منشورة ، يمكنك البحث بواسطة معرّف الحظر. لاحظ أن الاستنساخ أحادي الاتجاه ، مما يعني أن التغييرات التي يتم إجراؤها بعد الاستنساخ ستؤثر فقط على قاعدة التقييم التي يتم تعديلها ، ولن تقوم بتعديل أي قاعدة تم الاستنساخ منها."
 
 #: templates/legacy/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"
-msgstr ""
+msgstr "معرف الكتلة لهذا ORA:"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:19
 msgid "Block ID"
-msgstr ""
+msgstr "معرف الكتلة"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:21
 msgid "No other Open Response Assessments found in course"
-msgstr ""
+msgstr "لم يتم العثور على تقييمات الاستجابة المفتوحة الأخرى في الدورة التدريبية"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:31
 msgid "Clone"
-msgstr ""
+msgstr "استنساخ"
 
 #: templates/legacy/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
-msgstr ""
+msgstr "تم استنساخ قواعد التقييم بنجاح من معرّف الكتلة:"
 
 #: templates/legacy/edit/oa_training_example.html:7
 msgid "Scored Response"
@@ -946,13 +946,13 @@ msgstr "يرجى الانتظار"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
-msgstr ""
+msgstr "تفاصيل خطوة الإنتظار"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:24
 msgid ""
 "Waiting Step details view is unavailable. This item is not configured for "
 "peer assessments."
-msgstr ""
+msgstr "عرض تفاصيل خطوة الانتظار غير متاح. لم يتم تكوين هذا العنصر لتقييم الأقران."
 
 #: templates/legacy/leaderboard/oa_leaderboard_show.html:20
 #, python-format
@@ -1346,19 +1346,19 @@ msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
 "                      "
-msgstr ""
+msgstr "\n                        سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال استجابة فريقك في أي وقت قبل تاريخ الاستحقاق\n                      "
 
 #: templates/legacy/response/oa_response.html:81
 msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time.\n"
 "                      "
-msgstr ""
+msgstr "\n                        سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال استجابة فريقك في أي وقت.\n \n                      "
 
 #: templates/legacy/response/oa_response.html:86
 msgid ""
 "After you submit a response on behalf of your team, it cannot be edited."
-msgstr ""
+msgstr "بعد إرسال رد بالنيابة عن فريقك ، لا يمكن تحريره."
 
 #: templates/legacy/response/oa_response.html:89
 msgid "Enter your response to the prompt."
@@ -1368,25 +1368,25 @@ msgstr "يُرجى إدخال ردّك على السؤال."
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the subsection due date "
-msgstr ""
+msgstr "سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال إجابتك في أي وقت قبل تاريخ استحقاق القسم الفرعي"
 
 #: templates/legacy/response/oa_response.html:94
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the course ends "
-msgstr ""
+msgstr "سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال إجابتك في أي وقت قبل انتهاء الدورة"
 
 #: templates/legacy/response/oa_response.html:96
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the due date "
-msgstr ""
+msgstr "سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال إجابتك في أي وقت قبل الموعد المحدد"
 
 #: templates/legacy/response/oa_response.html:108
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
-msgstr ""
+msgstr "سيتم حفظ عملك تلقائيًا ويمكنك العودة لإكمال ردك في أي وقت."
 
 #: templates/legacy/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
@@ -1394,7 +1394,7 @@ msgstr "يُرجى ملاحظ أنّه لا يمكنك تعديل ردّك بع�
 
 #: templates/legacy/response/oa_response.html:120
 msgid "What will this assignment be graded on?"
-msgstr ""
+msgstr "على ماذا سيتم تقدير هذا الواجب؟"
 
 #: templates/legacy/response/oa_response.html:134
 msgid "The prompt for this section"
@@ -1461,7 +1461,7 @@ msgid ""
 "                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
 "                                      receive a grade for their submission.\n"
 "                                  "
-msgstr ""
+msgstr "\n                                      أنت الآن عضو في فريق %(team_name)s. نظرًا لأنك كنت في فريق %(previous_team_name)s عندما أرسلوا ردًا على هذه المهمة ، فإنك تشاهد استجابة فريق %(previous_team_name)s وستتلقى نفس الدرجة لهذه المهمة مثل زملائك السابقين في الفريق. لن تكون جزءًا من إرسال فريق %(team_name)s لهذا الواجب ولن تتلقى تقديرًا لإرساله.\n                                  "
 
 #: templates/legacy/response/oa_response.html:224
 msgid "We could not save your progress"
@@ -1469,7 +1469,7 @@ msgstr "عذرًا، لم نستطع حفظ التقدّم الذي أحرزته
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "حالة ردّك."
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1713,11 +1713,11 @@ msgstr "عرض إحصائيات الواجب"
 
 #: templates/legacy/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "قم بتجربة تجربة التقدير الجديدة"
 
 #: templates/legacy/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
-msgstr ""
+msgstr "عرض ORA في الاستوديو"
 
 #: templates/legacy/staff_area/oa_staff_area.html:31
 #: templates/legacy/staff_area/oa_staff_area.html:69
@@ -2278,17 +2278,17 @@ msgstr "تقييم ذاتي لتقييم الطاقم"
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
-msgstr ""
+msgstr "يجب تحديد معرف كتلة لنسخ قاعدة منه."
 
 #: xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
-msgstr ""
+msgstr "معرف كتلة غير صالح."
 
 #: xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
-msgstr ""
+msgstr "لم يتم العثور على تقييم استجابة مفتوحة في {course_id} بمعرف الكتلة {block_id}"
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2312,23 +2312,23 @@ msgstr "عذرًا، ليست لديك صلاحية الوصول إلى صفحة
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "قيد الانتظار"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
-msgstr ""
+msgstr "كاملة / مكتوبة"
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "غير قابل للتطبيق"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
-msgstr ""
+msgstr "لم تقدم"
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "تم الإرسال "
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
@@ -2382,17 +2382,17 @@ msgstr "نأسف لحدوث خطأ في تحديث إعدادات إكس بلو�
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr ""
+msgstr "خطأ: لا يمكن تعطيل كل من الاستجابة النصية واستجابة تحميل الملف"
 
 #: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
-msgstr ""
+msgstr "خطأ: عند تعطيل الاستجابة النصية ، يجب أن تكون استجابة تحميل الملف مطلوبة"
 
 #: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
-msgstr ""
+msgstr "خطأ: عند تعطيل استجابة تحميل الملف ، يجب أن تكون الاستجابة النصية مطلوبة"
 
 #: xblock/studio_mixin.py:291
 #, python-brace-format

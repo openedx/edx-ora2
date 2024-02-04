@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Bogdan Mateescu, 2018\n"
 "Language-Team: Romanian (http://app.transifex.com/open-edx/edx-platform/language/ro/)\n"
@@ -372,7 +372,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
-msgstr ""
+msgstr "Evaluări cu răspuns deschis"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:8
 #: templates/legacy/edit/oa_edit_prompt.html:7
@@ -1451,7 +1451,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Statusul răspunsului tău"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1491,7 +1491,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "Încarcă un fișier"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1746,7 +1746,7 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
-msgstr ""
+msgstr "Date"
 
 #: templates/legacy/staff_area/oa_staff_area.html:118
 msgid "Release Date"
@@ -1759,7 +1759,7 @@ msgstr "N/A"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr ""
+msgstr "Evaluare de către instructor"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
 msgid "Give this team a grade using the problem's rubric."
@@ -2157,11 +2157,11 @@ msgstr ""
 
 #: xblock/grade_mixin.py:179
 msgid "Peer Assessment"
-msgstr ""
+msgstr "Evaluare de către alți cursanți"
 
 #: xblock/grade_mixin.py:181
 msgid "Self Assessment"
-msgstr ""
+msgstr "Auto-evaluare"
 
 #: xblock/grade_mixin.py:221
 msgid "Assessment feedback could not be saved."
@@ -2291,7 +2291,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "In așteptare"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2307,7 +2307,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Trimisă la"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

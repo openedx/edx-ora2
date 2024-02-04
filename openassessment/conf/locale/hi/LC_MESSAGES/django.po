@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Manish Manish <manish@manprax.com>, 2020\n"
 "Language-Team: Hindi (http://app.transifex.com/open-edx/edx-platform/language/hi/)\n"
@@ -148,11 +148,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit.html:28
 msgid "Save"
-msgstr ""
+msgstr "सेव करें"
 
 #: templates/legacy/edit/oa_edit.html:32
 msgid "Cancel"
-msgstr ""
+msgstr "रद्द करें"
 
 #: templates/legacy/edit/oa_edit_assessment_steps.html:6
 msgid ""
@@ -164,11 +164,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr ""
+msgstr "दर्शित नाम"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "इस घटक का प्रदर्शन नाम।"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
@@ -210,7 +210,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
-msgstr ""
+msgstr "असत्‍य"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:53
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
@@ -218,7 +218,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr ""
+msgstr "सत्‍य"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:56
 msgid ""
@@ -319,7 +319,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_student_info.html:122
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "मापदंड"
 
 #: templates/legacy/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
@@ -330,11 +330,11 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_prompt.html:10
 #: templates/legacy/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr ""
+msgstr "हटाएं"
 
 #: templates/legacy/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr ""
+msgstr "मापदंड का नाम"
 
 #: templates/legacy/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
@@ -342,26 +342,26 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr ""
+msgstr "विकल्‍प जोडें"
 
 #: templates/legacy/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr ""
+msgstr "इस मापदंड पर प्रतिक्रिया"
 
 #: templates/legacy/edit/oa_edit_criterion.html:54 xblock/studio_mixin.py:57
 msgid "None"
-msgstr ""
+msgstr "कोई नहीं\nकुछ भी नहीं"
 
 #: templates/legacy/edit/oa_edit_criterion.html:55 xblock/studio_mixin.py:56
 msgid "Optional"
-msgstr ""
+msgstr "वैकल्पिक"
 
 #: templates/legacy/edit/oa_edit_criterion.html:56
 #: templates/legacy/oa_rubric.html:13
 #: templates/legacy/student_training/student_training.html:93
 #: xblock/studio_mixin.py:55
 msgid "Required"
-msgstr ""
+msgstr "आवश्यक"
 
 #: templates/legacy/edit/oa_edit_criterion.html:61
 msgid ""
@@ -371,20 +371,20 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
-msgstr ""
+msgstr "खुली प्रतिक्रिया का मूल्‍यांकन"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:8
 #: templates/legacy/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr ""
+msgstr "प्रॉम्पट"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
-msgstr ""
+msgstr "रूबरिक"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "अनुसूची"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -392,23 +392,23 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
-msgstr ""
+msgstr "सेटिंग्स"
 
 #: templates/legacy/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr ""
+msgstr "विकल्‍प"
 
 #: templates/legacy/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr ""
+msgstr "विकल्‍प का नाम"
 
 #: templates/legacy/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr ""
+msgstr "विकल्‍प के बिंदु"
 
 #: templates/legacy/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr ""
+msgstr "विकल्‍प का स्‍पष्‍टीकरण"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
@@ -434,7 +434,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
-msgstr ""
+msgstr "श्रेणी आवश्‍यक"
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:32
 msgid ""
@@ -444,7 +444,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
-msgstr ""
+msgstr "द्वारा श्रेणीकृत "
 
 #: templates/legacy/edit/oa_edit_peer_assessment.html:39
 msgid ""
@@ -476,12 +476,12 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:10
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
-msgstr ""
+msgstr "आरंभिक तिथि"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:19
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr ""
+msgstr "आरंभिक समय"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
@@ -491,12 +491,12 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:31
 #: templates/legacy/staff_area/oa_staff_area.html:119
 msgid "Due Date"
-msgstr ""
+msgstr "अंतिम तिथि"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:40
 #: templates/legacy/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
-msgstr ""
+msgstr "अंतिम समय"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
@@ -526,15 +526,15 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr ""
+msgstr "मापदंड जोडें"
 
 #: templates/legacy/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
-msgstr ""
+msgstr "इस प्रतिक्रिया पर प्रतिक्रिया"
 
 #: templates/legacy/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
-msgstr ""
+msgstr "प्रतिक्रिया की जानकारी"
 
 #: templates/legacy/edit/oa_edit_rubric.html:44
 msgid ""
@@ -544,7 +544,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
-msgstr ""
+msgstr "डिफॉल्‍ट प्रतिक्रिया का विषय"
 
 #: templates/legacy/edit/oa_edit_rubric.html:53
 msgid ""
@@ -582,11 +582,11 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
-msgstr ""
+msgstr "आरंभिक तिथि पर प्रतिक्रिया"
 
 #: templates/legacy/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
-msgstr ""
+msgstr "आरंभिक समय पर प्रतिक्रिया"
 
 #: templates/legacy/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
@@ -598,7 +598,7 @@ msgstr "प्रतिक्रिया की अंतिम तिथि "
 
 #: templates/legacy/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
-msgstr ""
+msgstr "प्रतिक्रिया का अंतिम समय"
 
 #: templates/legacy/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
@@ -606,7 +606,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
-msgstr ""
+msgstr "चरण: स्‍व-मूल्‍यांकन"
 
 #: templates/legacy/edit/oa_edit_self_assessment.html:12
 msgid ""
@@ -697,25 +697,25 @@ msgstr ""
 
 #: templates/legacy/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr ""
+msgstr "अर्जित प्रतिक्रिया"
 
 #: templates/legacy/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr ""
+msgstr "प्रतिक्रिया अर्जित"
 
 #: templates/legacy/edit/oa_training_example.html:27
 msgid "Response"
-msgstr ""
+msgstr "जवाब"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr ""
+msgstr "अचयनित"
 
 #: templates/legacy/edit/oa_training_example_criterion.html:15
 #: templates/legacy/oa_rubric.html:43
 #: templates/legacy/student_training/student_training.html:128
 msgid "points"
-msgstr ""
+msgstr "बिंदुओं"
 
 #: templates/legacy/grade/oa_assessment_feedback.html:8
 #, python-format
@@ -741,7 +741,7 @@ msgstr[1] ""
 #: templates/legacy/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr ""
+msgstr "%(name)s के बारे में और अधिक जानकारी"
 
 #: templates/legacy/grade/oa_grade_cancelled.html:14
 #: templates/legacy/grade/oa_grade_complete.html:15
@@ -750,7 +750,7 @@ msgstr ""
 #: templates/legacy/grade/oa_grade_not_started.html:14
 #: templates/legacy/grade/oa_grade_waiting.html:14
 msgid "Your Grade"
-msgstr ""
+msgstr "आपकी श्रेणी"
 
 #: templates/legacy/grade/oa_grade_cancelled.html:19
 #, python-format
@@ -775,7 +775,7 @@ msgstr ""
 #: templates/legacy/grade/oa_grade_complete.html:38
 #: templates/legacy/response/oa_response.html:29
 msgid "Your Response"
-msgstr ""
+msgstr "आपकी प्रतिक्रिया"
 
 #: templates/legacy/grade/oa_grade_complete.html:41
 msgid "Your Upload"
@@ -783,7 +783,7 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
-msgstr ""
+msgstr "आपकी प्रतिक्रियाओं का आंकलन"
 
 #: templates/legacy/grade/oa_grade_complete.html:50
 #: templates/legacy/grade/oa_grade_complete.html:132
@@ -805,20 +805,20 @@ msgstr ""
 #: templates/legacy/self/oa_self_closed.html:30
 #: templates/legacy/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "स्थिति"
 
 #: templates/legacy/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
-msgstr ""
+msgstr "समग्र श्रेणी"
 
 #: templates/legacy/grade/oa_grade_complete.html:70
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:28
 msgid "Points"
-msgstr ""
+msgstr "बिंदुओं"
 
 #: templates/legacy/grade/oa_grade_complete.html:96
 msgid "Additional comments on your response"
-msgstr ""
+msgstr "आपकी प्रतिक्रिया पर अतिरिक्त टिप्पणी"
 
 #: templates/legacy/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
@@ -826,7 +826,7 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
-msgstr ""
+msgstr "प्रतिक्रिया जमा करना"
 
 #: templates/legacy/grade/oa_grade_complete.html:134
 msgid ""
@@ -848,11 +848,11 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
-msgstr ""
+msgstr "यह मूल्‍यांकन उपयोगी है"
 
 #: templates/legacy/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
-msgstr ""
+msgstr "यह मूल्‍यांकन उपयोगी नहीं है"
 
 #: templates/legacy/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
@@ -881,23 +881,23 @@ msgstr ""
 
 #: templates/legacy/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
-msgstr ""
+msgstr "अपूर्ण "
 
 #: templates/legacy/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
-msgstr ""
+msgstr "आपके द्वारा प्रश्‍न के सभी चरणाें को पूर्ण नहीं किया गया"
 
 #: templates/legacy/grade/oa_grade_not_started.html:16
 msgid "Not Started"
-msgstr ""
+msgstr "आरंभ नहीं किया गया "
 
 #: templates/legacy/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
-msgstr ""
+msgstr "आपके द्वारा इस प्रश्‍न को अभी तक आरंभ नहीं किया गया"
 
 #: templates/legacy/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
-msgstr ""
+msgstr "मूल्‍यांकन के लिये प्रतीक्षा"
 
 #: templates/legacy/grade/oa_grade_waiting.html:33
 msgid ""
@@ -922,7 +922,7 @@ msgstr ""
 
 #: templates/legacy/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "कृपया प्रतीक्षा करें"
 
 #: templates/legacy/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -1103,7 +1103,7 @@ msgstr ""
 #: templates/legacy/oa_base.html:37 templates/openassessmentblock/base.html:56
 #: templates/openassessmentblock/base.html:100
 msgid "Loading"
-msgstr ""
+msgstr "लोड हो रहा है"
 
 #: templates/legacy/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
@@ -1119,7 +1119,7 @@ msgstr ""
 
 #: templates/legacy/oa_rubric.html:53
 msgid "Comments"
-msgstr ""
+msgstr "टिप्पणियां"
 
 #: templates/legacy/oa_submission_answer.html:8
 msgid "The question for this section"
@@ -1136,7 +1136,7 @@ msgstr ""
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "के द्वारा अपलोड किया गया"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1210,7 +1210,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_cancelled.html:21
 #: templates/legacy/student_training/student_training_cancelled.html:18
 msgid "Cancelled"
-msgstr ""
+msgstr "रद्द"
 
 #: templates/legacy/peer/oa_peer_closed.html:20
 #, python-format
@@ -1229,7 +1229,7 @@ msgstr ""
 
 #: templates/legacy/peer/oa_peer_complete.html:13
 msgid "Completed"
-msgstr ""
+msgstr "पूरा कर लिया है"
 
 #: templates/legacy/peer/oa_peer_complete.html:31
 #: templates/legacy/peer/oa_peer_turbo_mode.html:41
@@ -1268,7 +1268,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_unavailable.html:17
 #: templates/legacy/student_training/student_training_unavailable.html:16
 msgid "Not Available"
-msgstr ""
+msgstr "उपलब्‍ध नहीं "
 
 #: templates/legacy/peer/oa_peer_waiting.html:20
 #, python-format
@@ -1315,7 +1315,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:54
 #: templates/legacy/self/oa_self_assessment.html:56
 msgid "In Progress"
-msgstr ""
+msgstr "प्रगति पर है"
 
 #: templates/legacy/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
@@ -1414,7 +1414,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(वैकल्पिक)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1445,11 +1445,11 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:224
 msgid "We could not save your progress"
-msgstr ""
+msgstr "हम आपकी प्रगति को जमा नहीं कर सके"
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "आपके उत्तर की स्थिति"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1489,7 +1489,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "फ़ाइल अपलोड करें"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1525,11 +1525,11 @@ msgstr ""
 
 #: templates/legacy/response/oa_response.html:322
 msgid "We could not submit your response"
-msgstr ""
+msgstr "हम आपकी प्रतिक्रिया को जमा नहीं कर सके"
 
 #: templates/legacy/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
-msgstr ""
+msgstr "अपनी प्रतिक्रियाओं को जमा कर अगले चरण में जावें "
 
 #: templates/legacy/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
@@ -1563,7 +1563,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_closed.html:20
 #: templates/legacy/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr ""
+msgstr "अधूरा"
 
 #: templates/legacy/response/oa_response_closed.html:32
 msgid ""
@@ -1578,7 +1578,7 @@ msgstr ""
 #: templates/legacy/self/oa_self_complete.html:18
 #: templates/legacy/student_training/student_training_complete.html:17
 msgid "Complete"
-msgstr ""
+msgstr "पूरा हुआ"
 
 #: templates/legacy/response/oa_response_graded.html:30
 #: templates/legacy/response/oa_response_submitted.html:51
@@ -1623,7 +1623,7 @@ msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "त्रुटि"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1638,7 +1638,7 @@ msgstr ""
 
 #: templates/legacy/self/oa_self_assessment.html:33
 msgid "Assess Your Response"
-msgstr ""
+msgstr "आपकी प्रतिक्रियाओं का आंकलन"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1703,7 +1703,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:69
 #: templates/legacy/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr ""
+msgstr "बंद करें"
 
 #: templates/legacy/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
@@ -1719,15 +1719,15 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:56
 msgid "Submit"
-msgstr ""
+msgstr "जमा करें"
 
 #: templates/legacy/staff_area/oa_staff_area.html:78
 msgid "Response total"
-msgstr ""
+msgstr "प्रतिक्रिया हेतु टूल्‍स"
 
 #: templates/legacy/staff_area/oa_staff_area.html:84
 msgid "Location"
-msgstr ""
+msgstr "स्‍थान"
 
 #: templates/legacy/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
@@ -1736,7 +1736,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_area.html:94
 #: templates/legacy/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
-msgstr ""
+msgstr "प्रश्‍न के चरण"
 
 #: templates/legacy/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
@@ -1744,20 +1744,20 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_staff_area.html:113
 msgid "Dates"
-msgstr ""
+msgstr "तिथियाॅ"
 
 #: templates/legacy/staff_area/oa_staff_area.html:118
 msgid "Release Date"
-msgstr ""
+msgstr "अवतरण की तिथि "
 
 #: templates/legacy/staff_area/oa_staff_area.html:131
 #: templates/legacy/staff_area/oa_staff_area.html:137
 msgid "N/A"
-msgstr ""
+msgstr "निरंक"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr ""
+msgstr "स्टाफ अससेस्समेंट "
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:14
 msgid "Give this team a grade using the problem's rubric."
@@ -1802,7 +1802,7 @@ msgstr ""
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/legacy/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
-msgstr ""
+msgstr "मूल्यांकन जमा करें"
 
 #: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
@@ -2039,11 +2039,11 @@ msgstr ""
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "चयनित विकल्‍प"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
-msgstr ""
+msgstr "प्रतिक्रिया"
 
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
@@ -2110,7 +2110,7 @@ msgstr ""
 
 #: templates/legacy/student_training/student_training.html:98
 msgid "Selected Options Agree"
-msgstr ""
+msgstr "चयनित विकल्‍प सहमत है"
 
 #: templates/legacy/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
@@ -2118,7 +2118,7 @@ msgstr ""
 
 #: templates/legacy/student_training/student_training.html:105
 msgid "Selected Options Differ"
-msgstr ""
+msgstr "चयनित विकल्‍प पृथक है"
 
 #: templates/legacy/student_training/student_training.html:108
 msgid ""
@@ -2191,7 +2191,7 @@ msgstr ""
 
 #: xblock/grade_mixin.py:388
 msgid "Your Self Assessment"
-msgstr ""
+msgstr "आपका स्‍व-मूल्‍यांकन"
 
 #: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
 msgid "Your Comments"
@@ -2203,7 +2203,7 @@ msgstr ""
 
 #: xblock/grade_mixin.py:524
 msgid "Peer"
-msgstr ""
+msgstr "सहपाठी"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
@@ -2234,7 +2234,7 @@ msgstr ""
 
 #: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
-msgstr ""
+msgstr "केवल सहकर्मी मूल्यांकन"
 
 #: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
@@ -2288,7 +2288,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "प्रलंबित"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2304,7 +2304,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "प्रस्तुत कर दिया गया"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."

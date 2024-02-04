@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"POT-Creation-Date: 2024-01-21 18:37+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Lasha Kokilashvili, 2018\n"
 "Language-Team: Georgian (http://app.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -76,7 +76,7 @@ msgstr ""
 
 #: data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "ერთეულის იდენტიფიკატორი"
 
 #: data.py:868
 msgid "Submission ID"
@@ -385,7 +385,7 @@ msgstr "შეფასება"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr ""
+msgstr "განრიგი"
 
 #: templates/legacy/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
@@ -1137,7 +1137,7 @@ msgstr "ამ პასუხთან დაკავშირებული 
 
 #: templates/legacy/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr ""
+msgstr "ატვირთულია:"
 
 #: templates/legacy/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -1415,7 +1415,7 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:179
 #: templates/legacy/response/oa_response.html:249
 msgid "(Optional)"
-msgstr ""
+msgstr "(არასავალდებულო)"
 
 #: templates/legacy/response/oa_response.html:183
 msgid ""
@@ -1450,7 +1450,7 @@ msgstr "თქვენი პასუხის შენახვა ვერ
 
 #: templates/legacy/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "თქვენი პასუხის სტატუსი"
 
 #: templates/legacy/response/oa_response.html:245
 msgid "File Uploads "
@@ -1490,7 +1490,7 @@ msgstr "ფაილების ატვირთვა"
 
 #: templates/legacy/response/oa_response.html:287
 msgid "Upload file"
-msgstr ""
+msgstr "ფაილის ატვირთვა"
 
 #: templates/legacy/response/oa_response.html:304
 msgid "This is a team submission."
@@ -1624,7 +1624,7 @@ msgstr "\n                        კვლავ საჭიროა და�
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr ""
+msgstr "შეცდომა"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -2289,7 +2289,7 @@ msgstr "თქვენ არ გაქვთ წვდომის უფლ�
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "მომლოდინე"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
@@ -2297,7 +2297,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "არ მიესადაგება"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
@@ -2305,7 +2305,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "გამოგზავნილი"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
