@@ -4,6 +4,7 @@ Views related to submissions
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
+from openedx_filters.learning.filters import ORASubmissionViewRenderStarted
 from xblock.exceptions import NoSuchServiceError
 
 from openassessment.xblock.utils.data_conversion import (
@@ -36,6 +37,14 @@ def render_submission(config, submission_info):
     """
     context = get_submission_context(config, submission_info)
     path = get_submission_path(submission_info)
+
+    if path == "legacy/response/oa_response.html":
+        try:
+            # .. filter_implemented_name: ORASubmissionViewRenderStarted
+            # .. filter_type: org.openedx.learning.ora.submission_view.render.started.v1
+            context, path = ORASubmissionViewRenderStarted.run_filter(context, path)
+        except ORASubmissionViewRenderStarted.RenderInvalidTemplate as exc:
+            context, path = exc.context, exc.template_name
 
     return config.render_assessment(path, context_dict=context)
 
