@@ -4,6 +4,7 @@ Views related to submissions
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
+from openedx_filters.learning.filters import ORASubmissionViewRenderStarted
 from xblock.exceptions import NoSuchServiceError
 
 from openassessment.xblock.utils.data_conversion import (
@@ -60,6 +61,17 @@ def get_submission_path(submission_info):
         "submitted": "oa_response_submitted",
     }
     full_paths = {k: f"{template_dir}/{path}.html" for (k, path) in submission_template_paths.items()}
+
+    template_name = full_paths["default"]
+    try:
+        # .. filter_implemented_name: ORASubmissionViewRenderStarted
+        # .. filter_type: org.openedx.learning.ora.submission_view.render.started.v1
+        template_name = ORASubmissionViewRenderStarted.run_filter(template_name)
+    except ORASubmissionViewRenderStarted.RenderInvalidTemplate as exc:
+        template_name = exc.template
+        full_paths["default"] = template_name
+    else:
+        full_paths["default"] = template_name
 
     # Response is unavailable (not yet open or past due date)
     if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
