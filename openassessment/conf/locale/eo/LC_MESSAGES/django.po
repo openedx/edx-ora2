@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 07:58-0500\n"
+"POT-Creation-Date: 2024-02-08 13:43+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -3214,6 +3214,12 @@ msgstr ""
 msgid "This rubric definition is not valid."
 msgstr ""
 "Thïs rüßrïç défïnïtïön ïs nöt välïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: xblock/utils/validation.py
+msgid "You must provide at least one prompt."
+msgstr ""
+"Ýöü müst prövïdé ät léäst öné prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
 #: xblock/utils/validation.py

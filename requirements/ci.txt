@@ -8,7 +8,7 @@ cachetools==5.3.2
     # via
     #   -r requirements/tox.txt
     #   tox
-certifi==2023.11.17
+certifi==2024.2.2
     # via requests
 chardet==5.2.0
     # via
@@ -24,7 +24,7 @@ coverage==6.5.0
     # via coveralls
 coveralls==3.3.1
     # via -r requirements/ci.in
-distlib==0.3.7
+distlib==0.3.8
     # via
     #   -r requirements/tox.txt
     #   virtualenv
@@ -44,12 +44,12 @@ packaging==23.2
     #   -r requirements/tox.txt
     #   pyproject-api
     #   tox
-platformdirs==4.0.0
+platformdirs==4.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
     #   virtualenv
-pluggy==1.3.0
+pluggy==1.4.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -64,11 +64,11 @@ tomli==2.0.1
     #   -r requirements/tox.txt
     #   pyproject-api
     #   tox
-tox==4.11.3
+tox==4.12.1
     # via -r requirements/tox.txt
-urllib3==2.1.0
+urllib3==2.2.0
     # via requests
-virtualenv==20.24.7
+virtualenv==20.25.0
     # via
     #   -r requirements/tox.txt
     #   tox
