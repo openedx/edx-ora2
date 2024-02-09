@@ -24,7 +24,7 @@ otherwise noted.
 
 Please see ``LICENSE.txt`` for details.
 
-Test readme.
+Test test.
 
 How to Contribute
 =================
