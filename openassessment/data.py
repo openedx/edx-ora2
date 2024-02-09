@@ -37,7 +37,7 @@ def _usernames_enabled():
     Checks if toggle for deanonymized usernames in report enabled.
     """
 
-    return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
+    return settings.FEATURES.get('ENABLE_ORA_ON_DATA_EXPORT', False)
 
 
 def _use_read_replica(queryset):
