@@ -70,6 +70,15 @@ from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
+# .. toggle_name: FEATURES['ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW']
+# .. toggle_implementation: SettingDictToggle
+# .. toggle_default: False
+# .. toggle_description: Enable selectable learner in the waiting step list ORA2.
+#   When enabled, it shows a checkbox to select a learner, and when a learner is chosen,
+#   it shows a review button to see the details of a submission.
+# .. toggle_use_cases: open_edx
+# .. toggle_creation_date: 2024-02-09
+# .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2025
 ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW = SettingDictToggle(
     "FEATURES", "ENABLE_SELECTABLE_LEARNER_WAITING_REVIEW", default=False, module_name=__name__
 )
