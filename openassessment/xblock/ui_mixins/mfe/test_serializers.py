@@ -1,9 +1,10 @@
 """
 Tests for data layer of ORA XBlock
 """
-
+from datetime import datetime
 from unittest.mock import MagicMock
 import ddt
+import pytz
 
 
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import (
@@ -36,8 +37,9 @@ class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
         submission_config = SubmissionConfigSerializer(xblock).data
 
         # Then I get the expected values
-        expected_start = xblock.submission_start
-        expected_due = xblock.submission_due
+        expected_start = pytz.utc.localize(datetime.fromisoformat(xblock.submission_start)).isoformat()
+        expected_due = pytz.utc.localize(datetime.fromisoformat(xblock.submission_due)).isoformat()
+
         self.assertEqual(submission_config["startDatetime"], expected_start)
         self.assertEqual(submission_config["endDatetime"], expected_due)
 
@@ -291,8 +293,8 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
     @scenario("data/dates_scenario.xml")
     def test_peer_dates(self, xblock):
         # Given a basic setup
-        expected_start = "2015-01-02T00:00:00"
-        expected_due = "2015-04-01T00:00:00"
+        expected_start = "2015-01-02T00:00:00+00:00"
+        expected_due = "2015-04-01T00:00:00+00:00"
 
         # When I ask for peer step config
         peer_config = AssessmentStepsSerializer(xblock).data["settings"][
