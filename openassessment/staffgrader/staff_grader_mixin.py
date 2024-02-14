@@ -2,7 +2,7 @@
 API endpoints for enhanced staff grader
 """
 from functools import wraps
-from http import HTTPStatus
+from typing import List
 import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
@@ -203,36 +203,34 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def list_assessments(self, data, suffix=''):  # pylint: disable=unused-argument
+    def list_given_assessments(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
         """
-        List the assessments grades based on the type (received or given) for a specific submission.
+        List the assessments grades given for a specific submission.
 
         Args:
             data (dict): Contains the necessary information to fetch the assessments.
-                - 'item_id': The ID of the xblock/item.
-                - 'submission_uuid': The UUID of the submission.
-                - 'assessment_type': A string, either "received" or any other
-                    value to determine the type of assessments to retrieve.
+                - item_id (str): The ID of the xblock/item.
+                - submission_uuid (str): The UUID of the submission.
 
         Returns:
-            list[dict]: A list of dictionaries, each representing an assessment's data.
-
-        Note:
-            - If 'assessment_type' is "received", the function fetches assessments received
-            for the given 'submission_uuid'.
-            - For any other value of 'assessment_type', the function fetches assessments
-            given by the owner of the 'submission_uuid' for other submissions in the same item.
+            List[dict]: Representing a list of assessments' data.
         """
-        item_id = data['item_id']
-        submission_uuid = data['submission_uuid']
-        assessment_type = data['assessment_type']
+        return generate_given_assessment_data(data["item_id"], data["submission_uuid"])
 
-        if assessment_type == "received":
-            return generate_received_assessment_data(submission_uuid)
-        elif assessment_type == "given":
-            return generate_given_assessment_data(item_id, submission_uuid)
-        else:
-            raise JsonHandlerError(HTTPStatus.BAD_REQUEST, "Invalid assessment_type value")
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    def list_received_assessments(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
+        """
+        List the assessments grades received for a specific submission.
+
+        Args:
+            data (dict): Contains the necessary information to fetch the assessments.
+                - submission_uuid (str): The UUID of the submission.
+
+        Returns:
+            List[dict]: Representing a list of assessments' data.
+        """
+        return generate_received_assessment_data(data["submission_uuid"])
 
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """

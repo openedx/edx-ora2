@@ -11,6 +11,7 @@ import logging
 import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
+from typing import List, Tuple
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -1591,15 +1592,15 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         return self.file_uploads
 
 
-def score_type_to_string(score_type):
+def score_type_to_string(score_type: str) -> str:
     """
     Converts the given score type into its string representation.
 
     Args:
-        score_type <str>: System representation of the score type.
+        score_type (str): System representation of the score type.
 
     Returns:
-        <str>: string representation of score_type as needed in Staff Grader Template.
+        (str) Representation of score_type as needed in Staff Grader Template.
     """
     SCORE_TYPE_MAP = {
         PEER_TYPE: "Peer",
@@ -1609,15 +1610,15 @@ def score_type_to_string(score_type):
     return SCORE_TYPE_MAP.get(score_type, "Unknown")
 
 
-def parts_summary(assessment_obj):
+def parts_summary(assessment_obj: Assessment) -> List[dict]:
     """
     Retrieves a summary of the parts from a given assessment object.
 
     Args:
-        assessment_obj: assessment object.
+        assessment_obj (Asessment): assessment object.
 
     Returns:
-        list[dict]: A list containing assessment parts summary data dictionaries.
+        List[dict]: A list containing assessment parts summary data dictionaries.
     """
     return [
         {
@@ -1629,13 +1630,13 @@ def parts_summary(assessment_obj):
     ]
 
 
-def get_scorer_data(anonymous_scorer_id, user_data_mapping):
+def get_scorer_data(anonymous_scorer_id: str, user_data_mapping: dict) -> Tuple[str, str, str]:
     """
     Retrieves the scorer's data (full name, username, and email) based on their anonymous ID.
 
     Args:
-        anonymous_scorer_id <str>: Scorer's anonymous_user_id.
-        user_data_mapping: User data by anonymous_user_id
+        anonymous_scorer_id (str): Scorer's anonymous_user_id.
+        user_data_mapping (dict): User data by anonymous_user_id
             dict {
             <anonymous_user_id> : {
                 'email': (str) <user.email>
@@ -1645,7 +1646,8 @@ def get_scorer_data(anonymous_scorer_id, user_data_mapping):
             }
 
     Returns:
-        fullname, username, email <str>: user data values.
+        Tuple[str, str, str]:
+            fullname, username, email: user data values.
     """
     scorer_data = user_data_mapping.get(anonymous_scorer_id, {})
     return (
@@ -1655,23 +1657,23 @@ def get_scorer_data(anonymous_scorer_id, user_data_mapping):
     )
 
 
-def generate_assessment_data(assessment_list, user_data_mapping):
+def generate_assessment_data(assessment_list: List[Assessment], user_data_mapping: dict) -> List[dict]:
     """
     Creates the list of Assessment's data dictionaries.
 
     Args:
-        assessment_list: assessment objects queryset.
-        user_data_mapping: User data by anonymous_user_id
+        assessment_list (List[Assessment]): assessment objects queryset.
+        user_data_mapping (dict): User data by anonymous_user_id
             dict {
-            <anonymous_user_id> : {
-                'email': (str) <user.email>
-                'username': (str) <user.username>
-                'fullname': (str) <user.profile.name>
+                <anonymous_user_id> : {
+                    'email': (str) <user.email>
+                    'username': (str) <user.username>
+                    'fullname': (str) <user.profile.name>
                 }
             }
 
     Returns:
-        list[dict]: A list containing assessment data dictionaries.
+        List[dict]: A list containing assessment data dictionaries.
     """
     assessment_data_list = []
     for assessment in assessment_list:
@@ -1691,15 +1693,15 @@ def generate_assessment_data(assessment_list, user_data_mapping):
     return assessment_data_list
 
 
-def generate_received_assessment_data(submission_uuid):
+def generate_received_assessment_data(submission_uuid: str) -> List[dict]:
     """
     Generates a list of received assessments data based on the submission UUID.
 
     Args:
-        submission_uuid (str, optional): The UUID of the submission. Defaults to None.
+        submission_uuid (str): The UUID of the submission.
 
     Returns:
-        list[dict]: A list containing assessment data dictionaries.
+        List[dict]: A list containing assessment data dictionaries.
     """
     submission = sub_api.get_submission_and_student(submission_uuid)
 
@@ -1717,7 +1719,7 @@ def generate_received_assessment_data(submission_uuid):
     return generate_assessment_data(assessments, user_data_mapping)
 
 
-def generate_given_assessment_data(item_id, submission_uuid):
+def generate_given_assessment_data(item_id: str, submission_uuid: str) -> List[dict]:
     """
     Generates a list of given assessments data based on the submission UUID as scorer.
 
@@ -1726,7 +1728,7 @@ def generate_given_assessment_data(item_id, submission_uuid):
         submission_uuid (str): The UUID of the submission.
 
     Returns:
-        list[dict]: A list containing assessment data dictionaries.
+        List[dict]: A list containing assessment data dictionaries.
     """
     scorer_submission = sub_api.get_submission_and_student(submission_uuid)
 
