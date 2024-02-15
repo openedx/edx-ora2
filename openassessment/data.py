@@ -1622,9 +1622,9 @@ def parts_summary(assessment_obj: Assessment) -> List[dict]:
     """
     return [
         {
-            'criterion_name': part.criterion.name,
-            'score_earned': part.points_earned,
-            'score_type': part.option.name if part.option else "None",
+            "criterion_name": part.criterion.name,
+            "score_earned": part.points_earned,
+            "score_type": part.option.name if part.option else "None",
         }
         for part in assessment_obj.parts.all()
     ]
@@ -1639,9 +1639,9 @@ def get_scorer_data(anonymous_scorer_id: str, user_data_mapping: dict) -> Tuple[
         user_data_mapping (dict): User data by anonymous_user_id
             dict {
             <anonymous_user_id> : {
-                'email': (str) <user.email>
-                'username': (str) <user.username>
-                'fullname': (str) <user.profile.name>
+                "email": (str) <user.email>
+                "username": (str) <user.username>
+                "fullname": (str) <user.profile.name>
                 }
             }
 
@@ -1651,9 +1651,9 @@ def get_scorer_data(anonymous_scorer_id: str, user_data_mapping: dict) -> Tuple[
     """
     scorer_data = user_data_mapping.get(anonymous_scorer_id, {})
     return (
-        scorer_data.get('fullname', ""),
-        scorer_data.get('username', ""),
-        scorer_data.get('email', "")
+        scorer_data.get("fullname", ""),
+        scorer_data.get("username", ""),
+        scorer_data.get("email", "")
     )
 
 
@@ -1666,9 +1666,9 @@ def generate_assessment_data(assessment_list: List[Assessment], user_data_mappin
         user_data_mapping (dict): User data by anonymous_user_id
             dict {
                 <anonymous_user_id> : {
-                    'email': (str) <user.email>
-                    'username': (str) <user.username>
-                    'fullname': (str) <user.profile.name>
+                    "email": (str) <user.email>
+                    "username": (str) <user.username>
+                    "fullname": (str) <user.profile.name>
                 }
             }
 
@@ -1688,14 +1688,14 @@ def generate_assessment_data(assessment_list: List[Assessment], user_data_mappin
             "assesment_date": str(assessment.scored_at),
             "assesment_scores": parts_summary(assessment),
             "problem_step": score_type_to_string(assessment.score_type),
-            "feedback": assessment.feedback or ''
+            "feedback": assessment.feedback or ""
         })
     return assessment_data_list
 
 
-def generate_received_assessment_data(submission_uuid: str) -> List[dict]:
+def generate_assessment_received_data(submission_uuid: str) -> List[dict]:
     """
-    Generates a list of received assessments data based on the submission UUID.
+    Generates a list of assessments received data based on the submission UUID.
 
     Args:
         submission_uuid (str): The UUID of the submission.
@@ -1709,19 +1709,19 @@ def generate_received_assessment_data(submission_uuid: str) -> List[dict]:
         return []
 
     assessments = _use_read_replica(
-        Assessment.objects.prefetch_related('parts').
-        prefetch_related('rubric').
+        Assessment.objects.prefetch_related("parts").
+        prefetch_related("rubric").
         filter(
-            submission_uuid=submission['uuid']
+            submission_uuid=submission["uuid"]
         )
     )
     user_data_mapping = map_anonymized_ids_to_user_data([assessment.scorer_id for assessment in assessments])
     return generate_assessment_data(assessments, user_data_mapping)
 
 
-def generate_given_assessment_data(item_id: str, submission_uuid: str) -> List[dict]:
+def generate_assessment_given_data(item_id: str, submission_uuid: str) -> List[dict]:
     """
-    Generates a list of given assessments data based on the submission UUID as scorer.
+    Generates a list of assessments given data based on the submission UUID as scorer.
 
     Args:
         item_id (str): The ID of the item.
@@ -1735,17 +1735,17 @@ def generate_given_assessment_data(item_id: str, submission_uuid: str) -> List[d
     if not scorer_submission:
         return []
 
-    scorer_id = scorer_submission['student_item']['student_id']
+    scorer_id = scorer_submission["student_item"]["student_id"]
 
-    submissions = Submission.objects.filter(student_item__item_id=item_id).values('uuid')
-    submission_uuids = [sub['uuid'] for sub in submissions]
+    submissions = Submission.objects.filter(student_item__item_id=item_id).values("uuid")
+    submission_uuids = [sub["uuid"] for sub in submissions]
 
     if not submission_uuids or not submissions:
         return []
 
     assessments_made_by_student = _use_read_replica(
-        Assessment.objects.prefetch_related('parts')
-        .prefetch_related('rubric')
+        Assessment.objects.prefetch_related("parts")
+        .prefetch_related("rubric")
         .filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
     )
 

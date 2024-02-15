@@ -23,7 +23,7 @@ from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
     TextOnlySubmissionAnswer, FileMissingException, map_anonymized_ids_to_usernames, map_anonymized_ids_to_user_data,
-    generate_given_assessment_data, generate_received_assessment_data, generate_assessment_data, get_scorer_data,
+    generate_assessment_given_data, generate_assessment_received_data, generate_assessment_data, get_scorer_data,
     parts_summary,
 )
 from openassessment.test_utils import TransactionCacheResetTest
@@ -1992,7 +1992,7 @@ class ListAssessmentsTest(TestCase):
         mock_map_anonymized_ids_to_user_data.return_value = {"student1": "user1"}
         mock_generate_assessment_data.return_value = ["data1"]
 
-        result = generate_given_assessment_data("test_item_id", "test_submission_uuid")
+        result = generate_assessment_given_data("test_item_id", "test_submission_uuid")
 
         self.assertEqual(result, ["data1"])
 
@@ -2002,7 +2002,7 @@ class ListAssessmentsTest(TestCase):
     ):
         mock_get_submission_and_student.return_value = None
 
-        result = generate_given_assessment_data("test_item_id", "test_submission_uuid")
+        result = generate_assessment_given_data("test_item_id", "test_submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("test_submission_uuid")
         self.assertEqual(result, [])
@@ -2015,7 +2015,7 @@ class ListAssessmentsTest(TestCase):
         mock_get_submission_and_student.return_value = {"student_item": {"student_id": "test_student_id"}}
         mock_filter.return_value.values.return_value = []
 
-        result = generate_given_assessment_data("test_item_id", "test_uuid")
+        result = generate_assessment_given_data("test_item_id", "test_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("test_uuid")
         mock_filter.assert_called_once()
@@ -2038,7 +2038,7 @@ class ListAssessmentsTest(TestCase):
         mock_map_anonymized_ids_to_user_data.return_value = {"test_scorer_id": "test_user_data"}
         mock_generate_assessment_data.return_value = "test_assessment_data"
 
-        result = generate_received_assessment_data("submission_uuid")
+        result = generate_assessment_received_data("submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("submission_uuid")
         mock__use_read_replica.assert_called_once()
@@ -2050,7 +2050,7 @@ class ListAssessmentsTest(TestCase):
     def test_generate_received_assessment_data_no_submission(self, mock_get_submission_and_student):
         mock_get_submission_and_student.return_value = None
 
-        result = generate_received_assessment_data("submission_uuid")
+        result = generate_assessment_received_data("submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("submission_uuid")
         self.assertEqual(result, [])
