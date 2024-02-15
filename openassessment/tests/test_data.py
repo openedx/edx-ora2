@@ -23,7 +23,7 @@ from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
     TextOnlySubmissionAnswer, FileMissingException, map_anonymized_ids_to_usernames, map_anonymized_ids_to_user_data,
-    generate_assessment_given_data, generate_assessment_received_data, generate_assessment_data, get_scorer_data,
+    generate_assessment_to_data, generate_assessment_from_data, generate_assessment_data, get_scorer_data,
     parts_summary,
 )
 from openassessment.test_utils import TransactionCacheResetTest
@@ -1992,7 +1992,7 @@ class ListAssessmentsTest(TestCase):
         mock_map_anonymized_ids_to_user_data.return_value = {"student1": "user1"}
         mock_generate_assessment_data.return_value = ["data1"]
 
-        result = generate_assessment_given_data("test_item_id", "test_submission_uuid")
+        result = generate_assessment_to_data("test_item_id", "test_submission_uuid")
 
         self.assertEqual(result, ["data1"])
 
@@ -2002,7 +2002,7 @@ class ListAssessmentsTest(TestCase):
     ):
         mock_get_submission_and_student.return_value = None
 
-        result = generate_assessment_given_data("test_item_id", "test_submission_uuid")
+        result = generate_assessment_to_data("test_item_id", "test_submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("test_submission_uuid")
         self.assertEqual(result, [])
@@ -2015,7 +2015,7 @@ class ListAssessmentsTest(TestCase):
         mock_get_submission_and_student.return_value = {"student_item": {"student_id": "test_student_id"}}
         mock_filter.return_value.values.return_value = []
 
-        result = generate_assessment_given_data("test_item_id", "test_uuid")
+        result = generate_assessment_to_data("test_item_id", "test_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("test_uuid")
         mock_filter.assert_called_once()
@@ -2038,7 +2038,7 @@ class ListAssessmentsTest(TestCase):
         mock_map_anonymized_ids_to_user_data.return_value = {"test_scorer_id": "test_user_data"}
         mock_generate_assessment_data.return_value = "test_assessment_data"
 
-        result = generate_assessment_received_data("submission_uuid")
+        result = generate_assessment_from_data("submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("submission_uuid")
         mock__use_read_replica.assert_called_once()
@@ -2050,36 +2050,36 @@ class ListAssessmentsTest(TestCase):
     def test_generate_received_assessment_data_no_submission(self, mock_get_submission_and_student):
         mock_get_submission_and_student.return_value = None
 
-        result = generate_assessment_received_data("submission_uuid")
+        result = generate_assessment_from_data("submission_uuid")
 
         mock_get_submission_and_student.assert_called_once_with("submission_uuid")
         self.assertEqual(result, [])
 
-    @patch('openassessment.data.get_scorer_data')
-    @patch('openassessment.data.parts_summary')
-    @patch('openassessment.data.score_type_to_string')
+    @patch("openassessment.data.get_scorer_data")
+    @patch("openassessment.data.parts_summary")
+    @patch("openassessment.data.score_type_to_string")
     def test_generate_assessment_data(self, mock_score_type_to_string, mock_parts_summary, mock_get_scorer_data):
-        mock_get_scorer_data.return_value = ('Scorer Name', 'Scorer Username', 'Scorer Email')
-        mock_parts_summary.return_value = 'Summary'
-        mock_score_type_to_string.return_value = 'Step'
-        mock_assessment = Mock(id=1, scorer_id='scorer_id', scored_at='2022-01-01', feedback='Good job!')
+        mock_get_scorer_data.return_value = ("Scorer Name", "Scorer Username", "Scorer Email")
+        mock_parts_summary.return_value = "Summary"
+        mock_score_type_to_string.return_value = "Step"
+        mock_assessment = Mock(id=1, scorer_id="scorer_id", scored_at="2022-01-01", feedback="Good job!")
         assessment_list = [mock_assessment]
         user_data_mapping = {
-            'scorer_id': {
-                'email': 'scorer@email.com',
-                'username': 'scorer_username',
-                'fullname': 'Scorer Fullname',
+            "scorer_id": {
+                "email": "scorer@email.com",
+                "username": "scorer_username",
+                "fullname": "Scorer Fullname",
             }
         }
         expected_result = [{
             "assessment_id": "1",
-            "scorer_name": 'Scorer Name',
-            "scorer_username": 'Scorer Username',
-            "scorer_email": 'Scorer Email',
-            "assesment_date": '2022-01-01',
-            "assesment_scores": 'Summary',
-            "problem_step": 'Step',
-            "feedback": 'Good job!',
+            "scorer_name": "Scorer Name",
+            "scorer_username": "Scorer Username",
+            "scorer_email": "Scorer Email",
+            "assessment_date": "2022-01-01",
+            "assessment_scores": "Summary",
+            "problem_step": "Step",
+            "feedback": "Good job!",
         }]
 
         result = generate_assessment_data(assessment_list, user_data_mapping)

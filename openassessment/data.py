@@ -100,19 +100,34 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
     return anonymous_id_to_username_mapping
 
 
-def map_anonymized_ids_to_user_data(anonymized_ids):
+def map_anonymized_ids_to_user_data(anonymized_ids: List[str]) -> dict:
     """
+    Map anonymized user IDs to user data.
+
+    Retrieves user data such as email, username, and fullname associated
+    with the provided anonymized user IDs.
+
     Args:
-        anonymized_ids - list of anonymized user ids.
+        anonymized_ids (List[str]): list of anonymized user ids.
+
     Returns:
-        dict {
-           <anonymous_user_id> : {
-               'email': (str) <user.email>
-               'username': (str) <user.username>
-               'fullname': (str) <user.profile.name>
+        dict: A dictionary mapping anonymized user IDs to user data.
+            Each key is an anonymized user ID, and its corresponding
+            value is a dictionary containing:
+
+            - email (str): The email address of the user.
+            - username (str): The username of the user.
+            - fullname (str): The full name of the user.
+
+    Example:
+        {
+           "<anonymous_user_id>" : {
+               "email": "john@doe.com"
+               "username": "johndoe"
+               "fullname": "John Doe"
             }
         }
-        """
+    """
     User = get_user_model()
 
     users = _use_read_replica(
@@ -1637,13 +1652,6 @@ def get_scorer_data(anonymous_scorer_id: str, user_data_mapping: dict) -> Tuple[
     Args:
         anonymous_scorer_id (str): Scorer's anonymous_user_id.
         user_data_mapping (dict): User data by anonymous_user_id
-            dict {
-            <anonymous_user_id> : {
-                "email": (str) <user.email>
-                "username": (str) <user.username>
-                "fullname": (str) <user.profile.name>
-                }
-            }
 
     Returns:
         Tuple[str, str, str]:
@@ -1664,13 +1672,6 @@ def generate_assessment_data(assessment_list: List[Assessment], user_data_mappin
     Args:
         assessment_list (List[Assessment]): assessment objects queryset.
         user_data_mapping (dict): User data by anonymous_user_id
-            dict {
-                <anonymous_user_id> : {
-                    "email": (str) <user.email>
-                    "username": (str) <user.username>
-                    "fullname": (str) <user.profile.name>
-                }
-            }
 
     Returns:
         List[dict]: A list containing assessment data dictionaries.
@@ -1685,17 +1686,18 @@ def generate_assessment_data(assessment_list: List[Assessment], user_data_mappin
             "scorer_name": scorer_name,
             "scorer_username": scorer_username,
             "scorer_email": scorer_email,
-            "assesment_date": str(assessment.scored_at),
-            "assesment_scores": parts_summary(assessment),
+            "assessment_date": str(assessment.scored_at),
+            "assessment_scores": parts_summary(assessment),
             "problem_step": score_type_to_string(assessment.score_type),
             "feedback": assessment.feedback or ""
         })
     return assessment_data_list
 
 
-def generate_assessment_received_data(submission_uuid: str) -> List[dict]:
+def generate_assessment_from_data(submission_uuid: str) -> List[dict]:
     """
-    Generates a list of assessments received data based on the submission UUID.
+    Generates a list of assessments received by a user based
+    on the submission UUID in an ORA assignment.
 
     Args:
         submission_uuid (str): The UUID of the submission.
@@ -1719,12 +1721,13 @@ def generate_assessment_received_data(submission_uuid: str) -> List[dict]:
     return generate_assessment_data(assessments, user_data_mapping)
 
 
-def generate_assessment_given_data(item_id: str, submission_uuid: str) -> List[dict]:
+def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict]:
     """
-    Generates a list of assessments given data based on the submission UUID as scorer.
+    Generates a list of assessments given by a user based
+    on the item ID and submission UUID in an ORA assignment.
 
     Args:
-        item_id (str): The ID of the item.
+        item_id (str): The ID of the item (block id)
         submission_uuid (str): The UUID of the submission.
 
     Returns:
@@ -1738,10 +1741,11 @@ def generate_assessment_given_data(item_id: str, submission_uuid: str) -> List[d
     scorer_id = scorer_submission["student_item"]["student_id"]
 
     submissions = Submission.objects.filter(student_item__item_id=item_id).values("uuid")
-    submission_uuids = [sub["uuid"] for sub in submissions]
 
-    if not submission_uuids or not submissions:
+    if not submissions:
         return []
+
+    submission_uuids = [sub["uuid"] for sub in submissions]
 
     assessments_made_by_student = _use_read_replica(
         Assessment.objects.prefetch_related("parts")

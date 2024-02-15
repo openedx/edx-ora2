@@ -20,8 +20,8 @@ from openassessment.data import (
     OraSubmissionAnswerFactory,
     VersionNotFoundException,
     map_anonymized_ids_to_user_data,
-    generate_assessment_received_data,
-    generate_assessment_given_data
+    generate_assessment_from_data,
+    generate_assessment_to_data
 )
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
@@ -203,9 +203,10 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def list_assessments_given(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
+    def list_assessments_to(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
         """
-        List the assessments grades given for a specific submission.
+        List the assessments given by an user (according to
+        the submission_uuid) in an ORA assignment.
 
         Args:
             data (dict): Contains the necessary information to fetch the assessments.
@@ -215,13 +216,14 @@ class StaffGraderMixin:
         Returns:
             List[dict]: Representing a list of assessments' data.
         """
-        return generate_assessment_given_data(data["item_id"], data["submission_uuid"])
+        return generate_assessment_to_data(data["item_id"], data["submission_uuid"])
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def list_assessments_received(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
+    def list_assessments_from(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
         """
-        List the assessments grades received for a specific submission.
+        List the assessments received by an user (according to
+        the submission_uuid) in an ORA assignment.
 
         Args:
             data (dict): Contains the necessary information to fetch the assessments.
@@ -230,7 +232,7 @@ class StaffGraderMixin:
         Returns:
             List[dict]: Representing a list of assessments' data.
         """
-        return generate_assessment_received_data(data["submission_uuid"])
+        return generate_assessment_from_data(data["submission_uuid"])
 
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """

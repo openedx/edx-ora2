@@ -236,49 +236,64 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response_body)
 
-    @patch("openassessment.staffgrader.staff_grader_mixin.generate_assessment_received_data")
+    @patch("openassessment.staffgrader.staff_grader_mixin.generate_assessment_from_data")
     @scenario("data/basic_scenario.xml", user_id="staff")
-    def test_list_assessments_received(self, xblock, assessment_received_data_mock: Mock):
+    def test_list_assessments_from(self, xblock, assessment_from_data_mock: Mock):
         """ List assessments returns received assessments """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-        assessments = {"assessments": [{"id_assessment": "1"}, {"id_assessment": "2"}]}
+        assessments = {
+            "assessments": [
+                {"id_assessment": "1"},
+                {"id_assessment": "2"}
+            ]
+        }
         submission_uuid = "test_submission_uuid"
-        assessment_received_data_mock.return_value = assessments
-        request_data = {"submission_uuid": submission_uuid}
+        assessment_from_data_mock.return_value = assessments
+        request_data = {
+            "submission_uuid": submission_uuid
+        }
 
         response = self.request(
             xblock,
-            "list_assessments_received",
+            "list_assessments_from",
             json.dumps(request_data),
             response_format="response",
         )
         response_body = json.loads(response.body.decode('utf-8'))
 
-        assessment_received_data_mock.assert_called_once_with(submission_uuid)
+        assessment_from_data_mock.assert_called_once_with(submission_uuid)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertIsInstance(response_body, dict)
         self.assertEqual(response_body, assessments)
 
-    @patch("openassessment.staffgrader.staff_grader_mixin.generate_assessment_given_data")
+    @patch("openassessment.staffgrader.staff_grader_mixin.generate_assessment_to_data")
     @scenario("data/basic_scenario.xml", user_id="staff")
-    def test_list_assessments_given(self, xblock, assessment_given_data_mock: Mock):
+    def test_list_assessments_to(self, xblock, assessment_to_data_mock: Mock):
         """ List assessments returns given assessments """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-        assessments = {"assessments": [{"id_assessment": "1"}, {"id_assessment": "2"}]}
+        assessments = {
+            "assessments": [
+                {"id_assessment": "1"},
+                {"id_assessment": "2"}
+            ]
+        }
         submission_uuid = "test_submission_uuid"
         item_id = "test_item_id"
-        assessment_given_data_mock.return_value = assessments
-        request_data = {"item_id": item_id, "submission_uuid": submission_uuid}
+        assessment_to_data_mock.return_value = assessments
+        request_data = {
+            "item_id": item_id,
+            "submission_uuid": submission_uuid
+        }
 
         response = self.request(
             xblock,
-            "list_assessments_given",
+            "list_assessments_to",
             json.dumps(request_data),
             response_format="response",
         )
         response_body = json.loads(response.body.decode('utf-8'))
 
-        assessment_given_data_mock.assert_called_once_with(item_id, submission_uuid)
+        assessment_to_data_mock.assert_called_once_with(item_id, submission_uuid)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertIsInstance(response_body, dict)
         self.assertEqual(response_body, assessments)
