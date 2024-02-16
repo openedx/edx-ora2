@@ -11,11 +11,11 @@ import logging
 import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
-from typing import List, Tuple
+from typing import List, Set
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import CharField, F, OuterRef, Subquery
+from django.db.models import CharField, F, OuterRef, Subquery, QuerySet
 from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
 import requests
@@ -23,6 +23,7 @@ import requests
 from submissions.models import Submission
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.assessment.score_type_constants import score_type_to_string
 from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
 from openassessment.runtime_imports.functions import get_course_blocks, modulestore
@@ -30,7 +31,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
-from openassessment.assessment.score_type_constants import PEER_TYPE, SELF_TYPE, STAFF_TYPE
+
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +101,7 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
     return anonymous_id_to_username_mapping
 
 
-def map_anonymized_ids_to_user_data(anonymized_ids: List[str]) -> dict:
+def map_anonymized_ids_to_user_data(anonymized_ids: Set[str]) -> dict:
     """
     Map anonymized user IDs to user data.
 
@@ -108,7 +109,7 @@ def map_anonymized_ids_to_user_data(anonymized_ids: List[str]) -> dict:
     with the provided anonymized user IDs.
 
     Args:
-        anonymized_ids (List[str]): list of anonymized user ids.
+        anonymized_ids (Set[str]): Set of anonymized user ids.
 
     Returns:
         dict: A dictionary mapping anonymized user IDs to user data.
@@ -1607,30 +1608,12 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         return self.file_uploads
 
 
-def score_type_to_string(score_type: str) -> str:
-    """
-    Converts the given score type into its string representation.
-
-    Args:
-        score_type (str): System representation of the score type.
-
-    Returns:
-        (str) Representation of score_type as needed in Staff Grader Template.
-    """
-    SCORE_TYPE_MAP = {
-        PEER_TYPE: "Peer",
-        SELF_TYPE: "Self",
-        STAFF_TYPE: "Staff",
-    }
-    return SCORE_TYPE_MAP.get(score_type, "Unknown")
-
-
-def parts_summary(assessment_obj: Assessment) -> List[dict]:
+def parts_summary(assessment: Assessment) -> List[dict]:
     """
     Retrieves a summary of the parts from a given assessment object.
 
     Args:
-        assessment_obj (Asessment): assessment object.
+        assessment (Asessment): Assessment object.
 
     Returns:
         List[dict]: A list containing assessment parts summary data dictionaries.
@@ -1639,53 +1622,37 @@ def parts_summary(assessment_obj: Assessment) -> List[dict]:
         {
             "criterion_name": part.criterion.name,
             "score_earned": part.points_earned,
-            "score_type": part.option.name if part.option else "None",
+            "score_type": part.option.name if part.option else _("None"),
         }
-        for part in assessment_obj.parts.all()
+        for part in assessment.parts.all()
     ]
 
 
-def get_scorer_data(anonymous_scorer_id: str, user_data_mapping: dict) -> Tuple[str, str, str]:
-    """
-    Retrieves the scorer's data (full name, username, and email) based on their anonymous ID.
-
-    Args:
-        anonymous_scorer_id (str): Scorer's anonymous_user_id.
-        user_data_mapping (dict): User data by anonymous_user_id
-
-    Returns:
-        Tuple[str, str, str]:
-            fullname, username, email: user data values.
-    """
-    scorer_data = user_data_mapping.get(anonymous_scorer_id, {})
-    return (
-        scorer_data.get("fullname", ""),
-        scorer_data.get("username", ""),
-        scorer_data.get("email", "")
-    )
-
-
-def generate_assessment_data(assessment_list: List[Assessment], user_data_mapping: dict) -> List[dict]:
+def generate_assessment_data(assessments: QuerySet[Assessment]) -> List[dict]:
     """
     Creates the list of Assessment's data dictionaries.
 
     Args:
-        assessment_list (List[Assessment]): assessment objects queryset.
-        user_data_mapping (dict): User data by anonymous_user_id
+        assessments (QuerySet[Assessment]): assessment objects queryset.
 
     Returns:
         List[dict]: A list containing assessment data dictionaries.
     """
-    assessment_data_list = []
-    for assessment in assessment_list:
+    # Fetch the user data we need in a single query
+    user_data_mapping = map_anonymized_ids_to_user_data(
+        {assessment.scorer_id for assessment in assessments}
+    )
 
-        scorer_name, scorer_username, scorer_email = get_scorer_data(assessment.scorer_id, user_data_mapping)
+    assessment_data_list = []
+    for assessment in assessments:
+
+        scorer = user_data_mapping.get(assessment.scorer_id, {})
 
         assessment_data_list.append({
-            "assessment_id": str(assessment.id),
-            "scorer_name": scorer_name,
-            "scorer_username": scorer_username,
-            "scorer_email": scorer_email,
+            "assessment_id": str(assessment.pk),
+            "scorer_name": scorer.get("fullname") or "",
+            "scorer_username": scorer.get("username") or "",
+            "scorer_email": scorer.get("email") or "",
             "assessment_date": str(assessment.scored_at),
             "assessment_scores": parts_summary(assessment),
             "problem_step": score_type_to_string(assessment.score_type),
@@ -1705,20 +1672,10 @@ def generate_assessment_from_data(submission_uuid: str) -> List[dict]:
     Returns:
         List[dict]: A list containing assessment data dictionaries.
     """
-    submission = sub_api.get_submission_and_student(submission_uuid)
-
-    if not submission:
-        return []
-
     assessments = _use_read_replica(
-        Assessment.objects.prefetch_related("parts").
-        prefetch_related("rubric").
-        filter(
-            submission_uuid=submission["uuid"]
-        )
+        Assessment.objects.filter(submission_uuid=submission_uuid)
     )
-    user_data_mapping = map_anonymized_ids_to_user_data([assessment.scorer_id for assessment in assessments])
-    return generate_assessment_data(assessments, user_data_mapping)
+    return generate_assessment_data(assessments)
 
 
 def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict]:
@@ -1734,13 +1691,14 @@ def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict
         List[dict]: A list containing assessment data dictionaries.
     """
     scorer_submission = sub_api.get_submission_and_student(submission_uuid)
-
     if not scorer_submission:
         return []
 
     scorer_id = scorer_submission["student_item"]["student_id"]
 
-    submissions = Submission.objects.filter(student_item__item_id=item_id).values("uuid")
+    submissions = _use_read_replica(
+        Submission.objects.filter(student_item__item_id=item_id).values("uuid")
+    )
 
     if not submissions:
         return []
@@ -1748,12 +1706,7 @@ def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict
     submission_uuids = [sub["uuid"] for sub in submissions]
 
     assessments_made_by_student = _use_read_replica(
-        Assessment.objects.prefetch_related("parts")
-        .prefetch_related("rubric")
-        .filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
+        Assessment.objects.filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
     )
 
-    user_data_mapping = map_anonymized_ids_to_user_data(
-        [assessment.scorer_id for assessment in assessments_made_by_student]
-    )
-    return generate_assessment_data(assessments_made_by_student, user_data_mapping)
+    return generate_assessment_data(assessments_made_by_student)

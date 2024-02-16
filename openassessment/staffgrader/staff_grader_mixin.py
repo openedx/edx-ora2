@@ -247,6 +247,7 @@ class StaffGraderMixin:
         course_id = self.get_student_item_dict()['course_id']
 
         context = {}
+        all_anonymous_ids = set(workflow_scorer_ids)
 
         # Fetch user identifier mappings
         if is_team_assignment:
@@ -267,10 +268,7 @@ class StaffGraderMixin:
                 submission_uuids,
             )
             context['submission_uuid_to_student_id'] = submission_uuid_to_student_id
-
-        all_anonymous_ids = set(workflow_scorer_ids)
-        if not is_team_assignment:
-            all_anonymous_ids |= set(context['submission_uuid_to_student_id'].values())
+            all_anonymous_ids |= set([submission_uuid_to_student_id])
 
         anonymous_id_to_user_data = map_anonymized_ids_to_user_data(all_anonymous_ids)
 
