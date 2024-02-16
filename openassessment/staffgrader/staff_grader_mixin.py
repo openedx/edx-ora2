@@ -268,7 +268,7 @@ class StaffGraderMixin:
                 submission_uuids,
             )
             context['submission_uuid_to_student_id'] = submission_uuid_to_student_id
-            all_anonymous_ids |= set([submission_uuid_to_student_id])
+            all_anonymous_ids |= set(submission_uuid_to_student_id.values())
 
         anonymous_id_to_user_data = map_anonymized_ids_to_user_data(all_anonymous_ids)
 
