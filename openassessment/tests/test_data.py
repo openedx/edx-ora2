@@ -9,6 +9,7 @@ from io import StringIO, BytesIO, TextIOWrapper
 import json
 import os.path
 import zipfile
+from typing import List
 from unittest.mock import call, Mock, patch
 
 import ddt
@@ -23,8 +24,7 @@ from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
     TextOnlySubmissionAnswer, FileMissingException, map_anonymized_ids_to_usernames, map_anonymized_ids_to_user_data,
-    generate_assessment_to_data, generate_assessment_from_data, generate_assessment_data, get_scorer_data,
-    parts_summary,
+    generate_assessment_to_data, generate_assessment_from_data, generate_assessment_data, parts_summary,
 )
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
@@ -1969,160 +1969,33 @@ class ZippedListSubmissionAnswerTest(TestCase):
             self.assertEqual(file_upload.size, submission_test_file_sizes[i])
 
 
-@ddt.ddt
 class ListAssessmentsTest(TestCase):
-    """ Unit tests for List Assessments """
+    """
+    Unit tests for functions related to `list_assessments_from` and `list_assessments_to` handlers
+    """
 
-    @patch("openassessment.data.sub_api.get_submission_and_student")
-    @patch("openassessment.data.Submission.objects.filter")
-    @patch("openassessment.data._use_read_replica")
-    @patch("openassessment.data.map_anonymized_ids_to_user_data")
-    @patch("openassessment.data.generate_assessment_data")
-    def test_generate_given_assessment_data(
-        self,
-        mock_generate_assessment_data,
-        mock_map_anonymized_ids_to_user_data,
-        mock__use_read_replica,
-        mock_filter,
-        mock_get_submission_and_student,
-    ):
-        mock_get_submission_and_student.return_value = {"student_item": {"student_id": "student1"}}
-        mock_filter.return_value.values.return_value = [{"uuid": "uuid2"}]
-        mock__use_read_replica.return_value = [Mock(scorer_id="scorer1"), Mock(scorer_id="scorer2")]
-        mock_map_anonymized_ids_to_user_data.return_value = {"student1": "user1"}
-        mock_generate_assessment_data.return_value = ["data1"]
+    patch_submission_api = patch("openassessment.data.sub_api.get_submission_and_student")
+    patch_submissions = patch("openassessment.data.Submission.objects.filter")
+    patch_assessments = patch("openassessment.data.Assessment.objects.filter")
+    patch_users = patch("openassessment.data.get_user_model")
 
-        result = generate_assessment_to_data("test_item_id", "test_submission_uuid")
+    def setUp(self) -> None:
+        self.submission_uuid = "test_submission_uuid"
+        self.item_id = "test_item_id"
+        self.student_id = "test_student_id"
 
-        self.assertEqual(result, ["data1"])
+    def mock_get_submission_and_student(self) -> dict:
+        """Mock the return value of `sub_api.get_submission_and_student`"""
+        return {"student_item": {"student_id": self.student_id}}
 
-    @patch("openassessment.data.sub_api.get_submission_and_student")
-    def test_generate_given_assessment_data_no_scorer_submission(
-        self, mock_get_submission_and_student
-    ):
-        mock_get_submission_and_student.return_value = None
+    @staticmethod
+    def mock_submissions() -> List:
+        """Mock the return value of `Submission.objects.filter`"""
+        return [{"uuid": "uuid1"}, {"uuid": "uuid2"}]
 
-        result = generate_assessment_to_data("test_item_id", "test_submission_uuid")
-
-        mock_get_submission_and_student.assert_called_once_with("test_submission_uuid")
-        self.assertEqual(result, [])
-
-    @patch("openassessment.data.sub_api.get_submission_and_student")
-    @patch("openassessment.data.Submission.objects.filter")
-    def test_generate_given_assessment_data_no_submissions(
-        self, mock_filter, mock_get_submission_and_student
-    ):
-        mock_get_submission_and_student.return_value = {"student_item": {"student_id": "test_student_id"}}
-        mock_filter.return_value.values.return_value = []
-
-        result = generate_assessment_to_data("test_item_id", "test_uuid")
-
-        mock_get_submission_and_student.assert_called_once_with("test_uuid")
-        mock_filter.assert_called_once()
-        self.assertEqual(result, [])
-
-    @patch("openassessment.data.sub_api.get_submission_and_student")
-    @patch("openassessment.data._use_read_replica")
-    @patch("openassessment.data.map_anonymized_ids_to_user_data")
-    @patch("openassessment.data.generate_assessment_data")
-    def test_generate_received_assessment_data(
-        self,
-        mock_generate_assessment_data,
-        mock_map_anonymized_ids_to_user_data,
-        mock__use_read_replica,
-        mock_get_submission_and_student
-    ):
-        mock_get_submission_and_student.return_value = {"uuid": "test_uuid"}
-        mock_assessment = Mock(scorer_id="test_scorer_id")
-        mock__use_read_replica.return_value = [mock_assessment]
-        mock_map_anonymized_ids_to_user_data.return_value = {"test_scorer_id": "test_user_data"}
-        mock_generate_assessment_data.return_value = "test_assessment_data"
-
-        result = generate_assessment_from_data("submission_uuid")
-
-        mock_get_submission_and_student.assert_called_once_with("submission_uuid")
-        mock__use_read_replica.assert_called_once()
-        mock_map_anonymized_ids_to_user_data.assert_called_once_with(["test_scorer_id"])
-        mock_generate_assessment_data.assert_called_once_with([mock_assessment], {"test_scorer_id": "test_user_data"})
-        self.assertEqual(result, "test_assessment_data")
-
-    @patch("openassessment.data.sub_api.get_submission_and_student")
-    def test_generate_received_assessment_data_no_submission(self, mock_get_submission_and_student):
-        mock_get_submission_and_student.return_value = None
-
-        result = generate_assessment_from_data("submission_uuid")
-
-        mock_get_submission_and_student.assert_called_once_with("submission_uuid")
-        self.assertEqual(result, [])
-
-    @patch("openassessment.data.get_scorer_data")
-    @patch("openassessment.data.parts_summary")
-    @patch("openassessment.data.score_type_to_string")
-    def test_generate_assessment_data(self, mock_score_type_to_string, mock_parts_summary, mock_get_scorer_data):
-        mock_get_scorer_data.return_value = ("Scorer Name", "Scorer Username", "Scorer Email")
-        mock_parts_summary.return_value = "Summary"
-        mock_score_type_to_string.return_value = "Step"
-        mock_assessment = Mock(id=1, scorer_id="scorer_id", scored_at="2022-01-01", feedback="Good job!")
-        assessment_list = [mock_assessment]
-        user_data_mapping = {
-            "scorer_id": {
-                "email": "scorer@email.com",
-                "username": "scorer_username",
-                "fullname": "Scorer Fullname",
-            }
-        }
-        expected_result = [{
-            "assessment_id": "1",
-            "scorer_name": "Scorer Name",
-            "scorer_username": "Scorer Username",
-            "scorer_email": "Scorer Email",
-            "assessment_date": "2022-01-01",
-            "assessment_scores": "Summary",
-            "problem_step": "Step",
-            "feedback": "Good job!",
-        }]
-
-        result = generate_assessment_data(assessment_list, user_data_mapping)
-
-        self.assertEqual(result, expected_result)
-        mock_get_scorer_data.assert_called_once_with('scorer_id', user_data_mapping)
-        mock_parts_summary.assert_called_once_with(mock_assessment)
-        mock_score_type_to_string.assert_called_once_with(mock_assessment.score_type)
-
-    @ddt.data(
-        ("anon_scorer_1", "John Doe", "johndoe", "johndoe@example.com"),
-        ("anon_scorer_non_existing_user", "", "", ""),
-    )
-    @ddt.unpack
-    def test_get_scorer_data(self, scored_id, fullname_mock, username_mock, email_mock):
-        user_data_mapping = {
-            "anon_scorer_1": {
-                "fullname": "John Doe",
-                "username": "johndoe",
-                "email": "johndoe@example.com"
-            },
-            "anon_scorer_2": {
-                "fullname": "Jane Doe",
-                "username": "janedoe",
-                "email": "janedoe@example.com"
-            }
-        }
-
-        fullname, username, email = get_scorer_data(scored_id, user_data_mapping)
-
-        self.assertEqual(fullname, fullname_mock)
-        self.assertEqual(username, username_mock)
-        self.assertEqual(email, email_mock)
-
-    def test_get_scorer_data_empty_mapping(self):
-        fullname, username, email = get_scorer_data("anon_scorer_1", {})
-
-        self.assertEqual(fullname, "")
-        self.assertEqual(username, "")
-        self.assertEqual(email, "")
-
-    def test_parts_summary_with_multiple_parts(self):
-        assessment_obj = Mock()
+    @staticmethod
+    def mock_parts() -> List[Mock]:
+        """Mock the return value of `parts.all`"""
         part1 = Mock()
         part1.criterion.name = "Criterion 1"
         part1.points_earned = 10
@@ -2132,10 +2005,201 @@ class ListAssessmentsTest(TestCase):
         part2.criterion.name = "Criterion 2"
         part2.points_earned = 8
         part2.option.name = "Excellent"
+        return [part1, part2]
 
-        assessment_obj.parts.all.return_value = [part1, part2]
+    def mock_assessments(self) -> List[Mock]:
+        """Mock the return value of `Assessment.objects.filter`"""
+        first_mock = Mock(
+            pk="assessment_id1",
+            scorer_id="anonymous_id1",
+            scored_at="2022-01-01",
+            score_type="PE",
+            feedback="Good job!",
+            parts=Mock(all=Mock(return_value=self.mock_parts())),
+        )
+        second_mock = Mock(
+            pk="assessment_id2",
+            scorer_id="anonymous_id2",
+            scored_at="2022-01-02",
+            score_type="SE",
+            feedback="",
+            parts=Mock(all=Mock(return_value=self.mock_parts())),
+        )
+        return [first_mock, second_mock]
 
-        expected_parts_summary = [
+    @staticmethod
+    def mock_users() -> List[dict]:
+        """Mock the return value of `get_user_model().objects.filter().select_related().annotate().values`"""
+        return [
+            {
+                "username": "username1",
+                "email": "email1",
+                "profile__name": "profile_name1",
+                "anonymous_id": "anonymous_id1"
+            },
+            {
+                "username": "username2",
+                "email": "email2",
+                "profile__name": "profile_name2",
+                "anonymous_id": "anonymous_id2"
+            },
+        ]
+
+    @patch_users
+    @patch_assessments
+    @patch_submissions
+    @patch_submission_api
+    def test_generate_assessment_to_data(
+        self,
+        mock_submissions_api: Mock,
+        mock_submissions: Mock,
+        mock_assessments: Mock,
+        mock_users: Mock,
+    ):
+        """Test that `generate_assessment_to_data` returns the expected data"""
+        mock_submissions_api.return_value = self.mock_get_submission_and_student()
+        mock_submissions.return_value.values.return_value = self.mock_submissions()
+        mock_assessments.return_value = self.mock_assessments()
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+
+        results = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submissions_api.assert_called_once_with(self.submission_uuid)
+        mock_submissions.assert_called_once()
+        mock_assessments.assert_called_once()
+        mock_users.assert_called_once()
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 2)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    @patch_submission_api
+    def test_generate_assessment_to_data_no_scorer_submission(
+        self, mock_submission_api: Mock
+    ):
+        """
+        Test that `generate_assessment_to_data` returns an empty list when
+        there is no scorer submission
+        """
+        mock_submission_api.return_value = None
+
+        result = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submission_api.assert_called_once_with(self.submission_uuid)
+        self.assertEqual(result, [])
+
+    @patch_submissions
+    @patch_submission_api
+    def test_generate_assessment_to_data_no_submissions(
+        self, mock_submission_api: Mock, mock_submissions: Mock
+    ):
+        """
+        Test that `generate_assessment_to_data` returns an empty list when
+        there are no submissions
+        """
+        mock_submission_api.return_value = self.mock_get_submission_and_student()
+        mock_submissions.return_value.values.return_value = None
+
+        result = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submission_api.assert_called_once_with(self.submission_uuid)
+        mock_submissions.assert_called_once()
+        self.assertEqual(result, [])
+
+    @patch_users
+    @patch_assessments
+    def test_generate_assessment_from_data(
+        self, mock_assessments: Mock, mock_users: Mock
+    ):
+        """Test that `generate_assessment_from_data` returns the expected data"""
+        mock_assessments.return_value = self.mock_assessments()
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+
+        results = generate_assessment_from_data(self.submission_uuid)
+
+        mock_assessments.assert_called_once()
+        mock_users.assert_called_once()
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 2)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    @patch_users
+    @patch_assessments
+    def test_generate_assessment_from_data_no_assessments(
+        self, mock_assessments: Mock, mock_users: Mock
+    ):
+        """
+        Test that `generate_assessment_from_data` returns an empty list when
+        there are no assessments
+        """
+        mock_assessments.return_value = {}
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = {}
+
+        result = generate_assessment_from_data(self.submission_uuid)
+
+        self.assertEqual(result, [])
+
+    @patch_users
+    def test_generate_assessment_data(self, mock_users: Mock):
+        """Test that `generate_assessment_data` returns the expected data"""
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+        assessments = self.mock_assessments()
+
+        results = generate_assessment_data(assessments)
+        self.assertIsInstance(results, list)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    def test_parts_summary_with_multiple_parts(self):
+        """Test that `parts_summary` returns the expected data"""
+        assessment = self.mock_assessments()[0]
+        expected_result = [
             {
                 "criterion_name": "Criterion 1",
                 "score_earned": 10,
@@ -2148,13 +2212,15 @@ class ListAssessmentsTest(TestCase):
             },
         ]
 
-        result = parts_summary(assessment_obj)
-        self.assertEqual(result, expected_parts_summary)
+        result = parts_summary(assessment)
+
+        self.assertEqual(result, expected_result)
 
     def test_parts_summary_empty(self):
-        assessment_obj = Mock()
-        assessment_obj.parts.all.return_value = []
+        """Test that `parts_summary` returns an empty list when there are no parts"""
+        assessment = Mock()
+        assessment.parts.all.return_value = []
 
-        result = parts_summary(assessment_obj)
+        result = parts_summary(assessment)
 
         self.assertEqual(result, [])
