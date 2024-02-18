@@ -91,7 +91,7 @@ tornado==6.4
     # via livereload
 typing-extensions==4.9.0
     # via pydata-sphinx-theme
-urllib3==2.2.0
+urllib3==2.2.1
     # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
