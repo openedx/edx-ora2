@@ -31,7 +31,7 @@ attrs==23.2.0
     #   jsonschema
     #   referencing
     #   sarif-om
-aws-sam-translator==1.84.0
+aws-sam-translator==1.85.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -42,7 +42,6 @@ aws-xray-sdk==2.12.1
 backports-zoneinfo[tzdata]==0.2.1
     # via
     #   -r requirements/test.txt
-    #   backports-zoneinfo
     #   celery
     #   kombu
 billiard==4.2.0
@@ -59,13 +58,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.34.34
+boto3==1.34.44
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.34.34
+botocore==1.34.44
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -87,7 +86,7 @@ cffi==1.16.0
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.85.0
+cfn-lint==0.85.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -137,9 +136,8 @@ cookiecutter==2.5.0
 coverage[toml]==7.4.1
     # via
     #   -r requirements/test.txt
-    #   coverage
     #   pytest-cov
-cryptography==42.0.2
+cryptography==42.0.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -159,7 +157,7 @@ distlib==0.3.8
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==3.2.23
+django==3.2.24
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -178,7 +176,7 @@ django-crum==0.7.9
     #   -r requirements/test.txt
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.3.1
+django-model-utils==4.4.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
@@ -222,7 +220,7 @@ exceptiongroup==1.2.0
     #   pytest
 factory-boy==3.3.0
     # via -r requirements/test.txt
-faker==22.6.0
+faker==23.2.1
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -425,11 +423,11 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pydantic==2.6.0
+pydantic==2.6.1
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
-pydantic-core==2.16.1
+pydantic-core==2.16.2
     # via
     #   -r requirements/test.txt
     #   pydantic
@@ -455,7 +453,7 @@ pyproject-api==1.6.1
     # via
     #   -r requirements/test.txt
     #   tox
-pytest==8.0.0
+pytest==8.0.1
     # via
     #   -r requirements/test-acceptance.in
     #   -r requirements/test.txt
@@ -479,7 +477,7 @@ python-jose==3.3.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==8.0.3
+python-slugify==8.0.4
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -525,7 +523,7 @@ requests==2.31.0
     #   python-swiftclient
     #   responses
     #   xblock-sdk
-responses==0.24.1
+responses==0.25.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -533,7 +531,7 @@ rich==13.7.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   -r requirements/test.txt
     #   jsonschema
@@ -586,7 +584,7 @@ sympy==1.12
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-testfixtures==7.2.2
+testfixtures==8.0.0
     # via -r requirements/test.txt
 text-unidecode==1.3
     # via
@@ -599,7 +597,7 @@ tomli==2.0.1
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.12.1
+tox==4.13.0
     # via -r requirements/test.txt
 types-python-dateutil==2.8.19.20240106
     # via
@@ -617,7 +615,7 @@ typing-extensions==4.9.0
     #   pydantic
     #   pydantic-core
     #   rich
-tzdata==2023.4
+tzdata==2024.1
     # via
     #   -r requirements/test.txt
     #   backports-zoneinfo
