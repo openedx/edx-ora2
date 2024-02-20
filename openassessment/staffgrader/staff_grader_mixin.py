@@ -2,6 +2,7 @@
 API endpoints for enhanced staff grader
 """
 from functools import wraps
+from typing import List
 import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
@@ -15,7 +16,13 @@ from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_
 from openassessment.assessment.errors.staff import StaffAssessmentError
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
+from openassessment.data import (
+    OraSubmissionAnswerFactory,
+    VersionNotFoundException,
+    map_anonymized_ids_to_user_data,
+    generate_assessment_from_data,
+    generate_assessment_to_data
+)
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -194,6 +201,39 @@ class StaffGraderMixin:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
         return result
 
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    def list_assessments_to(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
+        """
+        List the assessments given by an user (according to
+        the submission_uuid) in an ORA assignment.
+
+        Args:
+            data (dict): Contains the necessary information to fetch the assessments.
+                - item_id (str): The ID of the xblock/item.
+                - submission_uuid (str): The UUID of the submission.
+
+        Returns:
+            List[dict]: Representing a list of assessments' data.
+        """
+        return generate_assessment_to_data(data["item_id"], data["submission_uuid"])
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    def list_assessments_from(self, data: dict, suffix="") -> List[dict]:  # pylint: disable=unused-argument
+        """
+        List the assessments received by an user (according to
+        the submission_uuid) in an ORA assignment.
+
+        Args:
+            data (dict): Contains the necessary information to fetch the assessments.
+                - submission_uuid (str): The UUID of the submission.
+
+        Returns:
+            List[dict]: Representing a list of assessments' data.
+        """
+        return generate_assessment_from_data(data["submission_uuid"])
+
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """
         Fetch additional required data and models to serialize the response
@@ -206,6 +246,9 @@ class StaffGraderMixin:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
 
+        context = {}
+        all_anonymous_ids = set(workflow_scorer_ids)
+
         # Fetch user identifier mappings
         if is_team_assignment:
             # Look up the team IDs for submissions so we can later map to team names
@@ -214,39 +257,39 @@ class StaffGraderMixin:
             # Look up names for teams
             topic_id = self.selected_teamset_id
             team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
-
-            # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(set(workflow_scorer_ids))
-
-            context = {
+            context.update({
                 'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
                 'team_id_to_team_name': team_id_to_team_name,
-            }
+            })
         else:
             # When we look up usernames we want to include all connected learner student ids
             submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
                 course_id,
                 submission_uuids,
             )
+            context['submission_uuid_to_student_id'] = submission_uuid_to_student_id
+            all_anonymous_ids |= set(submission_uuid_to_student_id.values())
 
-            # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
-            # `gradedBy` and `username` fields
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(
-                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-            )
+        anonymous_id_to_user_data = map_anonymized_ids_to_user_data(all_anonymous_ids)
 
-            context = {
-                'submission_uuid_to_student_id': submission_uuid_to_student_id,
-            }
+        anonymous_id_to_username, anonymous_id_to_email, anonymous_id_to_fullname = {}, {}, {}
+        for anonymous_id, user_data in anonymous_id_to_user_data.items():
+            anonymous_id_to_username[anonymous_id] = user_data["username"]
+            anonymous_id_to_email[anonymous_id] = user_data["email"]
+            anonymous_id_to_fullname[anonymous_id] = user_data["fullname"]
 
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(staff_workflows)
 
-        context.update({
-            'anonymous_id_to_username': anonymous_id_to_username,
-            'submission_uuid_to_assessment': submission_uuid_to_assessment,
-        })
+        context.update(
+            {
+                "anonymous_id_to_username": anonymous_id_to_username,
+                "anonymous_id_to_email": anonymous_id_to_email,
+                "anonymous_id_to_fullname": anonymous_id_to_fullname,
+                "submission_uuid_to_assessment": submission_uuid_to_assessment,
+            }
+        )
 
         return context
 
