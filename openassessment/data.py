@@ -1633,7 +1633,7 @@ def generate_assessment_data(assessments: QuerySet[Assessment]) -> List[dict]:
     Creates the list of Assessment's data dictionaries.
 
     Args:
-        assessments (QuerySet[Assessment]): assessment objects queryset.
+        assessments (QuerySet[Assessment]): Assessment objects queryset.
 
     Returns:
         List[dict]: A list containing assessment data dictionaries.
@@ -1642,6 +1642,9 @@ def generate_assessment_data(assessments: QuerySet[Assessment]) -> List[dict]:
     user_data_mapping = map_anonymized_ids_to_user_data(
         {assessment.scorer_id for assessment in assessments}
     )
+
+    # Prefetch the related data needed to generate this report
+    assessments = assessments.prefetch_related("parts").prefetch_related("rubric")
 
     assessment_data_list = []
     for assessment in assessments:
