@@ -10,7 +10,7 @@ import json
 import os.path
 import zipfile
 from typing import List
-from unittest.mock import call, Mock, patch
+from unittest.mock import call, Mock, patch, MagicMock
 
 import ddt
 from freezegun import freeze_time
@@ -2059,7 +2059,10 @@ class ListAssessmentsTest(TestCase):
         """Test that `generate_assessment_to_data` returns the expected data"""
         mock_submissions_api.return_value = self.mock_get_submission_and_student()
         mock_submissions.return_value.values.return_value = self.mock_submissions()
-        mock_assessments.return_value = self.mock_assessments()
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
+        mock_assessments.return_value = assessments
         mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
             self.mock_users()
         )
@@ -2127,7 +2130,10 @@ class ListAssessmentsTest(TestCase):
         self, mock_assessments: Mock, mock_users: Mock
     ):
         """Test that `generate_assessment_from_data` returns the expected data"""
-        mock_assessments.return_value = self.mock_assessments()
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
+        mock_assessments.return_value = assessments
         mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
             self.mock_users()
         )
@@ -2163,7 +2169,10 @@ class ListAssessmentsTest(TestCase):
         Test that `generate_assessment_from_data` returns an empty list when
         there are no assessments
         """
-        mock_assessments.return_value = {}
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = {}
+        assessments.__iter__.return_value = {}
+        mock_assessments.return_value = assessments
         mock_users.return_value.objects.filter().select_related().annotate().values.return_value = {}
 
         result = generate_assessment_from_data(self.submission_uuid)
@@ -2176,7 +2185,9 @@ class ListAssessmentsTest(TestCase):
         mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
             self.mock_users()
         )
-        assessments = self.mock_assessments()
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
 
         results = generate_assessment_data(assessments)
         self.assertIsInstance(results, list)
