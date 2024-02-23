@@ -15,9 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        python-version: ['3.8']
+        python-version:
+        - '3.8'
+        - '3.12'
         node-version: [16]
-        toxenv: [quality, js, django32, django42]
+        toxenv: [quality, js, django42]
 
     steps:
     - uses: actions/checkout@v2
