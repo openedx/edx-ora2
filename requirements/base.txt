@@ -7,6 +7,10 @@
 appdirs==1.4.4
     # via fs
 asgiref==3.7.2
+    # via
+    #   django
+    #   django-simple-history
+backports-zoneinfo==0.2.1
     # via django
 bleach==6.1.0
     # via -r requirements/base.in
@@ -30,9 +34,8 @@ code-annotations==1.6.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==3.2.24
+django==4.2.10
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django-crum
     #   django-model-utils
@@ -51,10 +54,8 @@ django-model-utils==4.4.0
     # via
     #   -r requirements/base.in
     #   edx-submissions
-django-simple-history==3.1.1
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+django-simple-history==3.5.0
+    # via -r requirements/base.in
 django-waffle==4.1.0
     # via
     #   edx-django-utils
@@ -75,16 +76,12 @@ edx-submissions==3.6.0
     # via -r requirements/base.in
 edx-toggles==5.1.1
     # via -r requirements/base.in
-fs==2.0.18
-    # via
-    #   -c requirements/constraints.txt
-    #   xblock
+fs==2.4.16
+    # via xblock
 html5lib==1.1
     # via -r requirements/base.in
-idna==2.8
-    # via
-    #   -c requirements/constraints.txt
-    #   requests
+idna==3.6
+    # via requests
 jinja2==3.1.3
     # via code-annotations
 jmespath==1.0.1
@@ -98,9 +95,7 @@ jsonfield==3.1.0
 lazy==1.6
     # via -r requirements/base.in
 loremipsum==1.0.5
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    # via -r requirements/base.in
 lxml==5.1.0
     # via
     #   -r requirements/base.in
@@ -115,9 +110,8 @@ markupsafe==2.1.5
     #   xblock
 newrelic==9.7.0
     # via edx-django-utils
-path==13.1.0
+path==16.10.0
     # via
-    #   -c requirements/constraints.txt
     #   edx-i18n-tools
     #   path-py
 path-py==12.5.0
@@ -141,17 +135,13 @@ python-dateutil==2.8.2
     #   xblock
 python-slugify==8.0.4
     # via code-annotations
-python-swiftclient==3.13.1
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+python-swiftclient==4.4.0
+    # via -r requirements/base.in
 pytz==2024.1
     # via
     #   -r requirements/base.in
-    #   django
     #   djangorestframework
     #   edx-submissions
-    #   fs
     #   xblock
 pyyaml==6.0.1
     # via
@@ -170,7 +160,6 @@ six==1.16.0
     #   fs
     #   html5lib
     #   python-dateutil
-    #   python-swiftclient
 sqlparse==0.4.4
     # via django
 stevedore==5.2.0
@@ -189,9 +178,7 @@ urllib3==1.26.18
     #   botocore
     #   requests
 voluptuous==0.14.2
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    # via -r requirements/base.in
 web-fragments==2.1.0
     # via xblock
 webencodings==0.5.1
