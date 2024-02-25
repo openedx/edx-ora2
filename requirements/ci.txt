@@ -35,10 +35,8 @@ filelock==3.13.1
     #   -r requirements/tox.txt
     #   tox
     #   virtualenv
-idna==2.8
-    # via
-    #   -c requirements/constraints.txt
-    #   requests
+idna==3.6
+    # via requests
 packaging==23.2
     # via
     #   -r requirements/tox.txt
