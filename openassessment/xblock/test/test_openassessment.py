@@ -733,6 +733,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Given this ORA has rearranged our assessment steps
         self.assertTrue(xblock.mfe_views_supported)
 
+    @scenario('data/content_tags.xml')
+    def test_content_tags(self, xblock):
+        # Check if content tags are set properly
+        self.assertEqual(xblock.xml_attributes["v1-tags"], "test content tags")
+
 
 class TestDates(XBlockHandlerTestCase):
     """ Test Assessment Dates. """
