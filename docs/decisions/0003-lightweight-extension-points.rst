@@ -18,11 +18,12 @@ Decisions
 
 We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. 
 
-This approach includes implementing two extension points:
+This approach includes implementing two extension points, which definitions will live in `openedx-filters`_ and `openedx-events`_ accordingly:
 
-- For the first extension point we will use an `Open edX Filter`_ with the following definition:
+For the first extension point we will use an `Open edX Filter`_ with the following definition:
 
-.. code::
+
+..  code-block:: python
   
   class ORASubmissionViewRenderStarted(OpenEdxPublicFilter):
       """
@@ -44,7 +45,8 @@ This approach includes implementing two extension points:
 
 That will be triggered before `rendering the submission HTML section of the block for the legacy view`_:
 
-.. code::
+
+..  code-block:: python
 
     if path == "legacy/response/oa_response.html":
         try:
@@ -56,9 +58,10 @@ That will be triggered before `rendering the submission HTML section of the bloc
 
 This implementation will allow us to modify what's rendered to the student, via the view context and template, for cases when needed. For example, some third-party services need acknowledgment before receiving users' information.
 
-- The second extension point will be an Open edX Event. The event payload should contain enough information for later processing; in this case, we'll the following event definition:
+The second extension point will be an Open edX Event. The event payload should contain enough information for later processing; in this case, we'll the following event definition:
 
-.. code::
+
+..  code-block:: python
 
     attr.s(frozen=True)
     class ORASubmissionData:
@@ -90,7 +93,8 @@ This implementation will allow us to modify what's rendered to the student, via 
 
 The event will be sent `after a student submits a response to the assessment`_ so it has access to the student's submission key data:
 
-.. code::
+
+..  code-block:: python
 
     @staticmethod
     def send_ora_submission_created_event(submission: dict) -> None:
@@ -111,8 +115,7 @@ The event will be sent `after a student submits a response to the assessment`_ s
             )
         )
 
-     ...
-
+     # Sent after the submission
      self.send_ora_submission_created_event(submission)
 
 This event will allow us to act after a submission is made based on the data sent.
@@ -128,7 +131,8 @@ Extension developers commonly use those extension points in Open edX plugins to 
 
 Let's say you want to add an acknowledgment notice to your submission template so students know their information is being shared with third-party services when submitting a response. The extension developer could implement a `pipeline step`_ for the filter that changes the ``oa_response.html`` template for an ``oa_response_ack_modified.html`` template with its context:
 
-.. code::
+
+..  code-block:: python
 
     from openedx_filters import PipelineStep
     
@@ -157,7 +161,8 @@ Let's say you want to add an acknowledgment notice to your submission template s
 
 See `how to implement pipeline steps`_ for more information. Now, by listening to the `Open edX Event`_, the developer could act on the submission-created notification. Since the event payload has enough information to get the student's submissions, including files, the event receiver can obtain the submission to send it to another service for analysis:
 
-.. code::
+
+..  code-block:: python
 
     from some_plugin.tasks import ora_submission_created_processing_task
 
@@ -192,4 +197,6 @@ customization and addition to the workflow step, it was concluded that the more 
 .. _how to implement pipeline steps: https://docs.openedx.org/projects/openedx-filters/en/latest/how-tos/using-filters.html#implement-pipeline-steps
 .. _how to listen for Open edX Events: https://docs.openedx.org/projects/openedx-events/en/latest/how-tos/using-events.html#receiving-events
 .. _after a student submits a response to the assessment: https://github.com/openedx/edx-ora2/blob/master/openassessment/xblock/ui_mixins/legacy/handlers_mixin.py#L67
-.. _`platform roadmap GH ticket`: https://github.com/openedx/platform-roadmap/issues/253
+.. _platform roadmap GH ticket: https://github.com/openedx/platform-roadmap/issues/253
+.. _openedx-events: https://github.com/openedx/openedx-events
+.. _openedx-filters: https://github.com/openedx/openedx-filters
