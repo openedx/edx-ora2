@@ -18,7 +18,7 @@ Decision
 
 We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. This approach includes implementing two extension points:
 
-- The first extension point will implemented before rendering the submission HTML section of the block for the legacy view. We'll use an Open edX Filter with the following definition:
+- The first extension point will implemented before rendering the submission HTML section of the block for the legacy view. We'll use an `Open edX Filter`_ with the following definition:
 
 .. code::
   
@@ -136,11 +136,8 @@ Extension developers could interact with an essential part of the student's asse
 Rejected Alternatives
 *********************
 
-As suggested in the `platform roadmap ticket`_ for this feature, the team researched the feasibility of adding a new pluggable assessment step. However, although this was considered the best option since ORA design entertained extension via
-customization and addition to the workflow step, 
-
-References
-**********
+As suggested in the `platform roadmap GH ticket`_ for this feature, the team researched the feasibility of adding a new pluggable assessment step. Although this was considered the best option since ORA design entertained extension via
+customization and addition to the workflow step, it was concluded that the more straightforward solution was implementing a lightweight extension mechanism. 
 
 .. _Hooks Extensions Framework: https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0050-hooks-extension-framework.html
-.. _`platform roadmap ticket`: https://github.com/openedx/platform-roadmap/issues/253
+.. _`platform roadmap GH ticket`: https://github.com/openedx/platform-roadmap/issues/253
