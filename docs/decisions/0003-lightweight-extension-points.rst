@@ -18,7 +18,7 @@ Decision
 
 We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. This approach includes implementing two extension points:
 
-- The first extension point will implemented before `rendering the submission HTML section of the block for the legacy view`_. We'll use an `Open edX Filter`_ with the following definition:
+- For the first extension point we will use an `Open edX Filter`_ with the following definition:
 
 .. code::
   
@@ -40,9 +40,21 @@ We'll enable external interactions with students' responses by using the `Hooks 
           data = super().run_pipeline(context=context, template_name=template_name, )
           return data.get("context"), data.get("template_name")
 
+Triggered implemented before `rendering the submission HTML section of the block for the legacy view`_:
+
+.. code::
+
+    if path == "legacy/response/oa_response.html":
+        try:
+            # .. filter_implemented_name: ORASubmissionViewRenderStarted
+            # .. filter_type: org.openedx.learning.ora.submission_view.render.started.v1
+            context, path = ORASubmissionViewRenderStarted.run_filter(context, path)
+        except ORASubmissionViewRenderStarted.RenderInvalidTemplate as exc:
+            context, path = exc.context, exc.template_name
+
 This implementation will allow us to modify what's rendered to the student, via the view context and template, for cases when needed. For example, some third-party services need acknowledgment before receiving users' information.
 
-- The second extension point will be an Open edX Event sent `after a student submits a response to the assessment`_. The event payload should contain enough information for later processing; in this case, we'll the following event definition:
+- The second extension point will be an Open edX Event. The event payload should contain enough information for later processing; in this case, we'll the following event definition:
 
 .. code::
 
@@ -74,10 +86,38 @@ This implementation will allow us to modify what's rendered to the student, via 
         },
     )
 
+The event will be sent `after a student submits a response to the assessment`_ so it has access to the student's submission key data:
+
+.. code::
+
+    @staticmethod
+    def send_ora_submission_created_event(submission: dict) -> None:
+        """
+        Send an event when a submission is created
+        Args:
+            submission (dict): The submission data
+        """
+        from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+
+        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(
+            submission
+        )
+        ORA_SUBMISSION_CREATED.send_event(
+            submission=ORASubmissionData(
+                id=submission.get("uuid"),
+                file_downloads=file_downloads,
+            )
+        )
+
+     ...
+
+     self.send_ora_submission_created_event(submission)
+
+
 Consequences
 ************
 
-Extension developers commonly use those extension points in Open edX plugins to extend an existing application, like the LMS. So, when installing edx-ora2 in the LMS with these changes alongside a plugin configured to use them, ORA extension developers will be able to:
+Extension developers commonly use those extension points in Open edX plugins to extend the functionality of an existing application, like the LMS. So, when installing edx-ora2 in the LMS with these changes alongside a plugin configured to use them, ORA extension developers will be able to:
 
 - Modify the context passed to ``legacy/response/oa_response.html`` 
 - Change the template that is rendered to the student
