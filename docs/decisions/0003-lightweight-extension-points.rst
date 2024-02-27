@@ -13,10 +13,12 @@ Open-ended questions are commonly used in education for assessment purposes, but
 
 No standard exists for ORA to facilitate integration with tools that process students' answers for plagiarism or other useful reports for the course staff. Therefore, ORA must allow external interactions with students' responses so they can be sent for analysis.
 
-Decision
-********
+Decisions
+*********
 
-We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. This approach includes implementing two extension points:
+We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. 
+
+This approach includes implementing two extension points:
 
 - For the first extension point we will use an `Open edX Filter`_ with the following definition:
 
@@ -40,7 +42,7 @@ We'll enable external interactions with students' responses by using the `Hooks 
           data = super().run_pipeline(context=context, template_name=template_name, )
           return data.get("context"), data.get("template_name")
 
-Triggered implemented before `rendering the submission HTML section of the block for the legacy view`_:
+That will be triggered before `rendering the submission HTML section of the block for the legacy view`_:
 
 .. code::
 
@@ -113,6 +115,7 @@ The event will be sent `after a student submits a response to the assessment`_ s
 
      self.send_ora_submission_created_event(submission)
 
+This event will allow us to act after a submission is made based on the data sent.
 
 Consequences
 ************
@@ -130,15 +133,15 @@ Let's say you want to add an acknowledgment notice to your submission template s
     from openedx_filters import PipelineStep
     
     
-    class ORASubmissionViewTurnitinWarning(PipelineStep):
-        """Add warning message about Turnitin to the ORA submission view."""
+    class ORASubmissionViewAcknowledgeWarning(PipelineStep):
+        """Add warning message about sharing users' information to the ORA submission view."""
     
         def run_filter(  # pylint: disable=unused-argument, disable=arguments-differ
             self, context: dict, template_name: str
         ) -> dict:
             """
             Execute filter that loads the submission template with a warning message that
-            notifies the user that the submission will be sent to Turnitin.
+            notifies the user that the submission will be sent to a 3rd party service.
     
             Args:
                 context (dict): The context dictionary.
@@ -171,7 +174,9 @@ See `how to implement pipeline steps`_ for more information. Now, by listening t
             submission.file_downloads,
         )
 
-See `how to listen for Open edX Events`_ for more information. Extension developers could interact with an essential part of the student's assessment lifecycle with these changes. But when none of these extension points are configured for use, then ORA assessments will behave as usual.
+See `how to listen for Open edX Events`_ for more information. 
+
+Extension developers could interact with an essential part of the student's assessment lifecycle with these changes. But when none of these extension points are configured for use, then ORA assessments will behave as usual.
 
 Rejected Alternatives
 *********************
