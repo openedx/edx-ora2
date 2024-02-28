@@ -49,7 +49,7 @@ SUBMITTED_DATE = datetime(2020, 3, 2, 12, 35, tzinfo=timezone.utc)
 TEST_START_DATE = SUBMITTED_DATE + timedelta(days=2)
 POINTS_POSSIBLE = 6
 
-TestUser = namedtuple("TestUser", ['username', 'student_id', 'submission'])
+TestUser = namedtuple("TestUser", ['username', 'email', 'fullname', 'student_id', 'submission'])
 TestTeam = namedtuple("TestTeam", ['team_name', 'team_id', 'member_ids', 'team_submission'])
 MockAnnotatedStaffWorkflow = namedtuple("MockAnnotatedStaffWorkflow", EXPECTED_ANNOTATED_WORKFLOW_FIELDS)
 
@@ -89,12 +89,23 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
             test_user.student_id: test_user.username
             for test_user in cls.students + cls.course_staff
         }
+        cls.student_id_to_user_data_map = {
+            test_user.student_id: {
+                'username': test_user.username,
+                'email': test_user.email,
+                'fullname': test_user.fullname,
+            }
+            for test_user in cls.students + cls.course_staff
+        }
         # These are just values that are going to be used several times, so also calculate them and store them now
         cls.submission_uuids = {student.submission['uuid'] for student in cls.students}
 
     @classmethod
     def _create_test_user(cls, identifier, user_type, create_submission=True):
-        """ Create a TestUser, a namedtuple with a student_id, username, and potentially a submission """
+        """
+        Create a TestUser, a namedtuple with a student_id, username, email,
+        fullname and potentially a submission
+        """
         student_id = f"SWLV_{user_type}_{identifier}_student_id"
         if create_submission:
             student_item = cls._student_item(student_id)
@@ -104,6 +115,8 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
             submission = None
         return TestUser(
             username=f"SWLV_{user_type}_{identifier}_username",
+            email=f"SWLV_{user_type}_{identifier}_email",
+            fullname=f"SWLV_{user_type}_{identifier}_fullname",
             student_id=student_id,
             submission=submission,
         )
@@ -151,6 +164,19 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         with patch(
             'openassessment.staffgrader.staff_grader_mixin.map_anonymized_ids_to_usernames',
             return_value=self.student_id_to_username_map
+        ) as patched_map:
+            yield patched_map
+
+    @contextmanager
+    def _mock_map_anonymized_ids_to_user_data(self):
+        """
+        Context manager that patches map_anonymized_ids_to_user_data and
+        returns a mapping from student IDs to a dictionary containing
+        username, email, and fullname.
+        """
+        with patch(
+            'openassessment.staffgrader.staff_grader_mixin.map_anonymized_ids_to_user_data',
+            return_value=self.student_id_to_user_data_map
         ) as patched_map:
             yield patched_map
 
@@ -228,6 +254,8 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
             'gradingStatus': 'ungraded' if not date_graded else 'graded',
             'lockStatus': lock_status,
             'username': student.username if not team else None,
+            'email': student.email if not team else None,
+            'fullname': student.fullname if not team else None,
             'teamName': team.team_name if team else None,
             'score': score,
         }
@@ -292,7 +320,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
     def test_no_grades_or_locks(self, xblock):
         """ Test for the result of calling the view for an ORA with no grades or locks"""
         self.set_staff_user(xblock)
-        with self._mock_map_anonymized_ids_to_usernames():
+        with self._mock_map_anonymized_ids_to_user_data():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
         expected_response = {}
         for student in self.students:
@@ -307,7 +335,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.setup_completed_assessments(xblock, grading_config)
 
         self.set_staff_user(xblock)
-        with self._mock_map_anonymized_ids_to_usernames():
+        with self._mock_map_anonymized_ids_to_user_data():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
         expected = {}
@@ -326,7 +354,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.setup_active_locks(lock_config)
 
         self.set_staff_user(xblock)
-        with self._mock_map_anonymized_ids_to_usernames():
+        with self._mock_map_anonymized_ids_to_user_data():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
         expected = {}
@@ -423,7 +451,7 @@ class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
         mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
         # pylint: disable=unused-argument, protected-access
         xblock.runtime._services['teams'] = Mock(get_team_names=lambda a, b: self.team_names_by_team_id)
-        with self._mock_map_anonymized_ids_to_usernames():
+        with self._mock_map_anonymized_ids_to_user_data():
             response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
 
         response_body = json.loads(response.body.decode('utf-8'))
@@ -601,20 +629,20 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
     def test_get_list_workflows_serializer_context(self, xblock):
         """ Unit test for _get_list_workflows_serializer_context """
         self.set_staff_user(xblock)
-        # Set up the mock return_value for bulk_deep_fetch_assessments.
-        # submissions 0 and 3 are the only ones assessed
+
         mock_staff_workflows = [
             Mock(scorer_id=self.course_staff[1].student_id),
             Mock(assessment=None, scorer_id=None),
             Mock(assessment=None, scorer_id=None),
             Mock(scorer_id=self.course_staff[2].student_id),
         ]
+
         with self._mock_get_student_ids_by_submission_uuid() as mock_get_student_ids:
-            # with self._mock_get_team_ids_by_team_submission_uuid() as mock_get_team_ids:
-            with self._mock_map_anonymized_ids_to_usernames() as mock_map_ids:
+            with self._mock_map_anonymized_ids_to_user_data() as mock_map_data:
                 with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
-                    # pylint: disable=protected-access
-                    context = xblock._get_list_workflows_serializer_context(mock_staff_workflows)
+                    context = xblock._get_list_workflows_serializer_context(  # pylint: disable=protected-access
+                        mock_staff_workflows
+                    )
 
         mock_get_student_ids.assert_called_once_with(
             self.course_id,
@@ -627,12 +655,14 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         expected_anonymous_id_lookups.update(
             {self.course_staff[1].student_id, self.course_staff[2].student_id}
         )
-        mock_map_ids.assert_called_once_with(expected_anonymous_id_lookups)
+        mock_map_data.assert_called_once_with(expected_anonymous_id_lookups)
         mock_bulk_fetch_assessments.assert_called_once_with(mock_staff_workflows)
 
         expected_context = {
             'submission_uuid_to_student_id': mock_get_student_ids.return_value,
-            'anonymous_id_to_username': mock_map_ids.return_value,
+            'anonymous_id_to_username': {k: v["username"] for k, v in mock_map_data.return_value.items()},
+            'anonymous_id_to_email': {k: v["email"] for k, v in mock_map_data.return_value.items()},
+            'anonymous_id_to_fullname': {k: v["fullname"] for k, v in mock_map_data.return_value.items()},
             'submission_uuid_to_assessment': mock_bulk_fetch_assessments.return_value,
         }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-09 09:37-0500\n"
+"POT-Creation-Date: 2024-02-16 19:47-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -66,6 +66,22 @@ msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 "Éxämplé {example_number} ïs mïssïng än öptïön för \"{criterion_name}\" "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: assessment/score_type_constants.py xblock/grade_mixin.py
+msgid "Peer"
+msgstr "Péér Ⱡ'σяєм ι#"
+
+#: assessment/score_type_constants.py
+msgid "Self"
+msgstr "Sélf Ⱡ'σяєм ι#"
+
+#: assessment/score_type_constants.py
+msgid "Staff"
+msgstr "Stäff Ⱡ'σяєм ιρѕ#"
+
+#: assessment/score_type_constants.py
+msgid "Unknown"
+msgstr "Ûnknöwn Ⱡ'σяєм ιρѕυм #"
 
 #: data.py
 #, python-brace-format
@@ -158,6 +174,10 @@ msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 #: data.py
 msgid "No description provided."
 msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: data.py templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
+msgid "None"
+msgstr "Nöné Ⱡ'σяєм ι#"
 
 #: templates/legacy/edit/oa_edit.html
 msgid "Save"
@@ -408,10 +428,6 @@ msgstr "Àdd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσ#"
 #: templates/legacy/edit/oa_edit_criterion.html
 msgid "Feedback for This Criterion"
 msgstr "Féédßäçk för Thïs Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-
-#: templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
-msgid "None"
-msgstr "Nöné Ⱡ'σяєм ι#"
 
 #: templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
 msgid "Optional"
@@ -2843,10 +2859,6 @@ msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 #: xblock/grade_mixin.py
 msgid "Waiting for peer reviews"
 msgstr "Wäïtïng för péér révïéws Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
-
-#: xblock/grade_mixin.py
-msgid "Peer"
-msgstr "Péér Ⱡ'σяєм ι#"
 
 #: xblock/grade_mixin.py
 msgid "The grade for this problem is determined by your Staff Grade."

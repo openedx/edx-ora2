@@ -772,6 +772,11 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.show_rubric_during_response is not None:
         root.set('show_rubric_during_response', str(oa_block.show_rubric_during_response))
 
+    # Serialize and add tag data if any
+    if hasattr(oa_block, 'add_tags_to_node') and callable(oa_block.add_tags_to_node):  # pylint: disable=no-member
+        # This comes from TaggedBlockMixin
+        oa_block.add_tags_to_node(root)  # pylint: disable=no-member
+
 
 def serialize_content(oa_block):
     """
