@@ -32,8 +32,8 @@ def _read_tags_from_node(self, node):
     """
     This method is originally defined in the XmlMixin in edx-platform.
     """
-    if 'tags-v1' in node.attrib:
-        self.xml_attributes['tags-v1'] = str(node.attrib['tags-v1'])
+    assert 'tags-v1' in node.attrib
+    self.xml_attributes['tags-v1'] = str(node.attrib['tags-v1'])
 
 
 def _construct_xblock_from_class(*args, **kwargs):
@@ -1190,7 +1190,8 @@ class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
                     dt.datetime.fromisoformat(assessment.get('start')),
                     dt.datetime.fromisoformat(assessment.get('due'))
                 )
-        return None
+
+        assert False, f"Assessment {step} not found"  # pragma: no cover
 
     def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
         """
