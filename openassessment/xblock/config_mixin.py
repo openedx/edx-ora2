@@ -15,6 +15,7 @@ USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 RUBRIC_REUSE = 'rubric_reuse'
 ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
 MFE_VIEWS = 'mfe_views'
+SELECTABLE_LEARNER_WAITING_REVIEW = 'selectable_learner_waiting_review'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
@@ -22,7 +23,8 @@ FEATURE_TOGGLES_BY_FLAG_NAME = {
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
-    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER'
+    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER',
+    SELECTABLE_LEARNER_WAITING_REVIEW: 'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW'
 }
 
 
@@ -162,3 +164,19 @@ class ConfigMixin:
         # .. toggle_creation_date: 2021-08-29
         # .. toggle_tickets: https://openedx.atlassian.net/browse/AU-50
         return self.is_feature_enabled(ENHANCED_STAFF_GRADER)
+    
+    @cached_property
+    def is_selectable_learner_waiting_review_enabled(self):
+        """
+        Return a boolean indicating the selectable learner waiting review is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW']
+        # .. toggle_implementation: SettingToggle
+        # .. toggle_default: False
+        # .. toggle_description: Enable selectable learner in the waiting step list ORA2.
+        #     When enabled, it shows a checkbox to select a learner, and when a learner is chosen,
+        #     it shows a review button to see the details of a submission.
+        # .. toggle_use_cases: open_edx
+        # .. toggle_creation_date: 2024-02-09
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2025
+        return self.is_feature_enabled(SELECTABLE_LEARNER_WAITING_REVIEW)
