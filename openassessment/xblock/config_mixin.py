@@ -164,7 +164,7 @@ class ConfigMixin:
         # .. toggle_creation_date: 2021-08-29
         # .. toggle_tickets: https://openedx.atlassian.net/browse/AU-50
         return self.is_feature_enabled(ENHANCED_STAFF_GRADER)
-    
+
     @cached_property
     def is_selectable_learner_waiting_review_enabled(self):
         """

@@ -143,7 +143,7 @@ class ConfigMixinTest(TestCase):
             settings_input,
             'is_enhanced_staff_grader_enabled',
         )
-    
+
     @ddt.data(
         *list(itertools.product([True, False, None], repeat=3))
     )

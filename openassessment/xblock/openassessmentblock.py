@@ -70,7 +70,6 @@ from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-
 def load(path):
     """Handy helper for getting resources from our kit."""
     data = pkg_resources.resource_string(__name__, path)
