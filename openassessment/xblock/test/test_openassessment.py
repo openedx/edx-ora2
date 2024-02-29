@@ -8,6 +8,7 @@ import json
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
+from workbench.runtime import WorkbenchRuntime
 
 import ddt
 import pytz
@@ -22,6 +23,29 @@ from openassessment.xblock.openassesment_template_mixin import UI_MODELS
 from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
 
 from .base import XBlockHandlerTestCase, scenario
+
+
+original_construct_xblock_from_class = WorkbenchRuntime.construct_xblock_from_class
+
+
+def _read_tags_from_node(self, node):
+    """
+    This method is originally defined in the XmlMixin in edx-platform.
+    """
+    assert 'tags-v1' in node.attrib
+    self.xml_attributes['tags-v1'] = str(node.attrib['tags-v1'])
+
+
+def _construct_xblock_from_class(*args, **kwargs):
+    """
+    Mock the original construct_xblock_from_class method to add the read_tags_from_node method and xml_attributes
+    property to the xblock.
+
+    In edx-platform, these members are part of the XmlMixin.
+    """
+    xblock = original_construct_xblock_from_class(*args, **kwargs)
+    xblock.read_tags_from_node = lambda node: _read_tags_from_node(xblock, node)
+    return xblock
 
 
 def assert_is_closed(
@@ -733,6 +757,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Given this ORA has rearranged our assessment steps
         self.assertTrue(xblock.mfe_views_supported)
 
+    @patch.object(WorkbenchRuntime, 'construct_xblock_from_class', new=_construct_xblock_from_class)
+    @scenario('data/content_tags.xml')
+    def test_content_tags(self, xblock):
+        # Check if content tags are set properly
+        self.assertEqual(xblock.xml_attributes["tags-v1"], "test content tags")
+
 
 class TestDates(XBlockHandlerTestCase):
     """ Test Assessment Dates. """
@@ -1160,7 +1190,8 @@ class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
                     dt.datetime.fromisoformat(assessment.get('start')),
                     dt.datetime.fromisoformat(assessment.get('due'))
                 )
-        return None
+
+        assert False, f"Assessment {step} not found"  # pragma: no cover
 
     def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
         """
