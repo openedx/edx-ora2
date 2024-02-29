@@ -39,6 +39,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 0,
+        "resubmissions_grace_period_time": "12:34",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -101,6 +104,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 1,
+        "resubmissions_grace_period_time": "00:30",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -159,6 +165,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 2,
+        "resubmissions_grace_period_time": "00:59",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -217,6 +226,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 3,
+        "resubmissions_grace_period_time": "00:00",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -286,6 +298,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 0,
+        "resubmissions_grace_period_time": "10:40",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -344,6 +359,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 0,
+        "resubmissions_grace_period_time": "00:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -402,6 +420,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 1,
+        "resubmissions_grace_period_time": "01:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -460,6 +481,9 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period_days": 5,
+        "resubmissions_grace_period_time": "20:59",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [

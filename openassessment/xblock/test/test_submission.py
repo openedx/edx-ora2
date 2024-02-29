@@ -172,6 +172,55 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertIsNot(resp[2], None)
 
+    @patch("openassessment.xblock.openassessmentblock.import_student_module")
+    @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
+    @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
+    @scenario("data/basic_scenario.xml", user_id="Bob")
+    def test_reset_submission(
+        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock
+    ):
+        xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
+        mock_user.return_value = "test-user"
+        mock_reset.return_value = True
+        mock_student_module.return_value = "test-student-module"
+
+        resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
+
+        self.assertTrue(resp["success"])
+        self.assertEqual(resp["msg"], "Submission reset successfully.")
+
+    @patch("openassessment.xblock.openassessmentblock.import_student_module")
+    @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
+    @scenario("data/basic_scenario.xml", user_id="Bob")
+    def test_reset_submission_user_not_found_error(
+        self, xblock, mock_user: Mock, mock_student_module: Mock
+    ):
+        mock_student_module.return_value = "test-student-module"
+        mock_user.side_effect = get_user_model().DoesNotExist
+
+        resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
+        self.assertFalse(resp["success"])
+        self.assertEqual(resp["msg"], "The user does not exist.")
+
+    @patch("openassessment.xblock.openassessmentblock.import_student_module")
+    @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
+    @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
+    @scenario("data/basic_scenario.xml", user_id="Bob")
+    def test_reset_submission_submission_not_found_error(
+        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock
+    ):
+        xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
+        mock_user.side_effect = "test-user"
+        error_mock = Mock()
+        error_mock.DoesNotExist = ObjectDoesNotExist
+        mock_student_module.return_value = error_mock
+        mock_reset.side_effect = ObjectDoesNotExist
+
+        resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
+
+        self.assertFalse(resp["success"])
+        self.assertEqual(resp["msg"], "There is no submission to reset.")
+
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps({}))
@@ -725,6 +774,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_unavailable.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'enable_delete_files': False,
@@ -753,6 +803,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'enable_delete_files': False,
@@ -777,6 +828,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -815,6 +867,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -998,6 +1051,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'enable_delete_files': True,
@@ -1038,6 +1092,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1199,6 +1254,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'enable_delete_files': True,
@@ -1350,6 +1406,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1402,6 +1459,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1438,6 +1496,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_cancelled.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1502,6 +1561,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_cancelled.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1540,6 +1600,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1568,6 +1629,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_closed.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1592,6 +1654,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1627,6 +1690,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_graded.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1660,6 +1724,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response_graded.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1849,6 +1914,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
                     )
                 }, xblock.prompts),
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'date_config_type': 'manual',
@@ -1882,6 +1948,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
+                'allow_learner_resubmissions': False,
                 'allow_multiple_files': True,
                 'base_asset_url': None,
                 'enable_delete_files': True,

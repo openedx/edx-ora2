@@ -57,6 +57,24 @@
                 {% include "legacy/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls header=translated_header class_prefix="submission__team__answer" including_template="response_submitted" xblock_id=xblock_id %}
             </article>
         </div>
+        {% if allow_learner_resubmissions %}
+        <div class="step__actions">
+            <div class="message message--inline message--error message--error-server" tabindex="-1">
+                <h5 class="message__title">{% trans "We could not reset your response" %}</h5>
+                <div class="message__content"></div>
+            </div>
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button class="action action--submit reset__submission">
+                        {% trans "Reset response and submit again" %}
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="step--response__dialog-confirm dialog-confirm">
+            <p class="dialog-text"></p>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -162,4 +162,45 @@
             {% trans "Specify whether learners can see the rubric while they are working on their response." %}
         </p>
     </li>
+    <li id="openassessment_allow_learner_resubmissions_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_allow_learner_resubmissions_selector" class="setting-label">{% trans "Allow Learner Resubmissions"%}</label>
+            <select id="openassessment_allow_learner_resubmissions_selector" class="input setting-input" name="alow learner resubmissions">
+                <option value="0">{% trans "False"%}</option>
+                <option value="1" {% if allow_learner_resubmissions %} selected="true" {% endif %}>{% trans "True"%}</option>
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Specify whether learners can reset and resubmit their work within the timeframe allowed for this the step, as long as there is no peer step, and it has not yet been graded or is in the process of being graded. When set to true, it is advisable to inform learners about the specific configuration the activity has." %}
+        </p>
+        <div id="openassessment_resubmissions_grace_period_wrapper" class="{% if not allow_learner_resubmissions %}is--hidden{% endif %}">
+            <div class="wrapper-comp-setting">
+                <label for="openassessment_resubmissions_grace_period_days" class="setting-label">{% trans "Grace Period Days" %}</label>
+                <input
+                    type="number"
+                    id="openassessment_resubmissions_grace_period_days"
+                    class="input setting-input"
+                    min="0"
+                    value="{{ resubmissions_grace_period_days }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "You can specify a maximum days for resets to be allowed." %}</p>
+            <div class="wrapper-comp-setting">
+                <label for="openassessment_resubmissions_grace_period_time" class="setting-label">{% trans "Grace Period Time" %}</label>
+                <input
+                    type="text"
+                    id="openassessment_resubmissions_grace_period_time"
+                    class="input setting-input"
+                    placeholder="HH:MM"
+                    value="{{ resubmissions_grace_period_time }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "You can specify a maximum time (hours and minutes) for resets to be allowed." %}</p>
+            <p class="setting-help message-status error is--hidden"></p>
+            <br />
+            <p class="setting-help warning-banner extension-warning">
+                {% trans "If both grace period fields are set to 0 (by default), the grace period is disabled and learners will be able to reset their submissions as long as they have not been graded." %}
+            </p>
+        </div>
+    </li>
 </ul>
