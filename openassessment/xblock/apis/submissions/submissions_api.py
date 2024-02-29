@@ -240,6 +240,7 @@ class SubmissionAPI(StepDataAPI):
             "text_response_editor": self.config_data.text_response_editor,
             "show_rubric_during_response": self.config_data.show_rubric_during_response,
             "allow_latex": self.config_data.allow_latex,
+            "allow_learner_resubmissions": self.config_data.allow_learner_resubmissions,
             # File upload
             "enable_delete_files": False,
             "file_upload_response": self.config_data.file_upload_response,
