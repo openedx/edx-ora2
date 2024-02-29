@@ -284,6 +284,31 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_args_el = tree.xpath(xblock_arg_path)
         json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
 
+    @scenario('data/basic_scenario.xml')
+    @ddt.data(False, True)
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_selectable_learner_waiting_review_enabled',
+        new_callable=PropertyMock
+    )
+    def test_ora_waiting_step_details_view_include_esg_flag(
+            self, xblock, esg_flag_input, mock_esg):
+        """
+        Test waiting step details view is selectable learner waiting review enabled.
+        """
+        mock_esg.return_value = esg_flag_input
+        xblock_fragment = self.runtime.render(xblock, "waiting_step_details_view")
+        body_html = xblock_fragment.body_html()
+
+        self.assertIn("WaitingStepDetailsBlock", body_html)
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
+
+        xblock_args_el = tree.xpath(xblock_arg_path)
+        json.loads(xblock_args_el[0].text)['CONTEXT']['selectable_learners_enabled'] = esg_flag_input
+
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
         xblock.mfe_views_enabled = True
