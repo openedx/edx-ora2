@@ -18,7 +18,7 @@ from lazy import lazy
 from webob import Response
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
-from xblock.fields import Boolean, Integer, List, Scope, String
+from xblock.fields import Boolean, Dict, Integer, List, Scope, String
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -282,6 +282,9 @@ class OpenAssessmentBlock(
         scope=Scope.content,
         help="A title to display to a student (plain text)."
     )
+
+    xml_attributes = Dict(help="Map of unhandled xml attributes, used only for storage between import and export",
+                          default={}, scope=Scope.settings)
 
     white_listed_file_types = List(
         default=[],
@@ -935,6 +938,12 @@ class OpenAssessmentBlock(
         block.text_response_editor = config['text_response_editor']
         block.title = config['title']
         block.white_listed_file_types_string = config['white_listed_file_types']
+
+        # Deserialize and add tag data info to block if any
+        if hasattr(block, 'read_tags_from_node') and callable(block.read_tags_from_node):  # pylint: disable=no-member
+            # This comes from TaggedBlockMixin
+            block.read_tags_from_node(node)  # pylint: disable=no-member
+
         return block
 
     @property
