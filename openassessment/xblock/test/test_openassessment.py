@@ -331,7 +331,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
 
         xblock_args_el = tree.xpath(xblock_arg_path)
-        json.loads(xblock_args_el[0].text)['CONTEXT']['selectable_learners_enabled'] = esg_flag_input
+        assert json.loads(xblock_args_el[0].text)['CONTEXT']['selectable_learners_enabled'] == esg_flag_input
 
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
