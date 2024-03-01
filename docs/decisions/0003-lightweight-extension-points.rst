@@ -25,23 +25,18 @@ The second extension point to be implemented is an `Open edX Event`_. It will be
 Consequences
 ************
 
-Extension developers commonly use those extension points in Open edX plugins to extend the functionality of an existing application, like the LMS. So, when installing edx-ora2 in the LMS with these changes alongside a plugin configured to use them, ORA extension developers will be able to:
+Extension developers often use those extension points in Open edX plugins to enhance the functionality of an existing application. When installing edx-ora2, developers can implement more use cases out-of-the-box by configuring it with plugins that use these extension points. These use cases include modify the context passed to ``legacy/response/oa_response.html`` , changing the template that is rendered to the student, and sending students' submission data to another service.
 
-- Modify the context passed to ``legacy/response/oa_response.html`` 
-- Change the template that is rendered to the student
-- Send students' submission data to another service
+For instance, if a developer wants to add an acknowledgment notice to the submission template, they can implement a `pipeline step`_ for the filter that modifies the ``oa_response.html`` template for an ``oa_response_ack_modified.html`` template with its custom context. See `how to implement pipeline steps`_ for more information. To act on the submission-created notification, the developer can listen to the Open edX event since the event payload has enough information to get the student's submissions, including files, enabling the event receiver to obtain and send the submission to another service for analysis. See `how to listen for Open edX Events`_ for more information. 
 
-Let's say you want to add an acknowledgment notice to your submission template so students know their information is being shared with third-party services when submitting a response. The extension developer could implement a `pipeline step`_ for the filter that changes the ``oa_response.html`` template for an ``oa_response_ack_modified.html`` template with its custom context.
-
-See `how to implement pipeline steps`_ for more information. Now, the developer could act on the submission-created notification by listening to the `Open edX Event`_. Since the event payload has enough information to get the student's submissions, including files, the event receiver can obtain the submission to send it to another service for analysis. See `how to listen for Open edX Events`_ for more information. 
-
-Extension developers could interact with an essential part of the student's assessment lifecycle with these changes. But when none of these extension points are configured for use, then ORA assessments will behave as usual.
+These changes allow extension developers to interact with a crucial part of the student's assessment lifecycle. However, when none of these extension points are configured, ORA assessments will behave as usual. This first step sets a precedent for ORA developers to implement more extension points during the ORA users' lifecycle, enabling additional use cases to be built on top of them.
 
 Rejected Alternatives
 *********************
 
-As suggested in the `platform roadmap GH ticket`_ for this feature, the team researched the feasibility of adding a new pluggable assessment step. Although this was considered the best option since ORA design entertained extension via
-customization and addition to the workflow step, it was concluded that the more straightforward solution was implementing a lightweight extension mechanism. 
+Given that there is currently no other option for extending ORA without a fork, we are not rejecting any other alternative. It could be argued that we are rejecting the construction of a more extensive (or more comprehensive) framework for extension, but it's more like this is the first step towards a larger framework. If we were to propose a project to extend ORA with a mechanism for dependency injection, we would still propose it to be built on top of the hooks framework.
+
+At this ADR, we are only committing to the first few hooks because we understand very well the effort it requires. However, there is no technical limit for this proposal to grow into more hooks and eventually support a broad array of extension use cases.
 
 .. _Hooks Extensions Framework: https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0050-hooks-extension-framework.html
 .. _rendering the submission HTML section of the block for the legacy view: https://github.com/openedx/edx-ora2/blob/master/openassessment/xblock/ui_mixins/legacy/views/submission.py#L19
