@@ -16,7 +16,7 @@ As the code is open, it is always possible to modify it. Still, it might result 
 Decisions
 *********
 
-As the first step towards making the instructor's involvement in the learners' lifecycle more flexible, we will introduce two extension points in the ORA codebase. These extension points will be built on top of the `Hooks Extensions Framework`_. The definitions for these extension points will reside in `openedx-filters`_ and `openedx-events`_. These definitions will be imported into the edx-ora2 repository and triggered in two places during the learners' lifecycle, resulting in minimal modifications to the ORA implementation.
+As the first step towards making implementing new use cases during the ORA user's lifecycle more flexible, we will introduce two extension points in the ORA codebase. These extension points will be built on top of the `Hooks Extensions Framework`_. The definitions for these extension points will reside in `openedx-filters`_ and `openedx-events`_. These definitions will be imported into the edx-ora2 repository and triggered in two places during the learners' lifecycle, resulting in minimal modifications to the ORA implementation.
 
 The first extension point we will implement is an `Open edX Filter`_ that will be executed before `rendering the submission HTML section of the block for the legacy view`_, with input arguments ``context`` and ``template path``. This implementation will allow us to modify what's rendered to the student, via the view ``context`` and ``template``, for cases when needed. 
 
