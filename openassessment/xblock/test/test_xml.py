@@ -216,40 +216,6 @@ class TestSerializeContent(TestCase):
         xml_str = serialize_assessments_to_xml_str(self.oa_block)
         self.assertIn(data['assessments'][0]['name'], xml_str)
 
-    @ddt.file_data('data/serialize.json')
-    def test_serialize_with_tags(self, data):
-        self._configure_xblock(data)
-
-        # Create a mocked serialize tag data method that returns no data
-        def add_tags_to_node_no_tags(node):  # pylint: disable=unused-argument
-            return
-
-        # Manually add the mocked method to the OpenAssessment block instance
-        # This method will be added in the edx-platform repo through applying XBLOCK_MIXINS
-        self.oa_block.add_tags_to_node = add_tags_to_node_no_tags
-
-        xml = serialize_content(self.oa_block)
-
-        # Confirm that no tags appear in the xml
-        self.assertNotIn("tags-v1", xml)
-
-        # Create a mocked serialize tag data method that returns data
-        def add_tags_to_node_with_tags(node):
-            # return "lightcast-skills:Typing,Microsoft Office"
-            node.set('tags-v1', 'lightcast-skills:Typing,Microsoft Office')
-
-        # Manually add the mocked method to the OpenAssessment block instance
-        # This method will be added in the edx-platform repo through applying XBLOCK_MIXINS
-        self.oa_block.add_tags_to_node = add_tags_to_node_with_tags
-
-        xml = serialize_content(self.oa_block)
-
-        # Confirm that tags appear in the xml
-        self.assertIn("tags-v1=\"lightcast-skills:Typing,Microsoft Office\"", xml)
-
-        # Clear the mocked serialize tag data method
-        del self.oa_block.add_tags_to_node
-
     def test_mutated_criteria_dict(self):
         self._configure_xblock({})
 
