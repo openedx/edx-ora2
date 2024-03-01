@@ -20,7 +20,7 @@ As the first step towards making implementing new use cases during the ORA user'
 
 The first extension point we will implement is an `Open edX Filter`_ that will be executed before `rendering the submission HTML section of the block for the legacy view`_, with input arguments ``context`` and ``template path``. This implementation will allow us to modify what's rendered to the student, via the view ``context`` and ``template``, for cases when needed. 
 
-The second extension point to be implemented is an `Open edX Event`_. It will be sent `after a student submits a response to the assessment`_ with the student's submission key data, like the ORA submission ID and files uploaded in the submission, as the event's payload. This event will allow us to take action after a submission is made based on the data sent.
+The second extension point to be implemented is an `Open edX Event`_. It will be sent `after a student submits a response to the assessment`_ with the student's submission key data, like the ORA submission ID and files uploaded in the submission, as the event's payload. This event (that works like a notification) will allow us to take action after a submission is made based on the data sent.
 
 Consequences
 ************
