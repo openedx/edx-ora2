@@ -9,19 +9,16 @@ Status
 Context
 *******
 
-Open-ended questions are commonly used in education for assessment purposes, but their flexible nature can facilitate cheating. Therefore, instructors need a way of assessing when cheating happens when reviewing responses. One widely-used solution to this problem in the academic field is the use online plagiarism tools by instructors. These tools receive the students' responses, analyze them, and provide reports that assist instructors in scoring.
+Open Responses are commonly used in education for assessment purposes and the flexibility of ORA has made it a key feature of the Open edX platform. However, as developers, it is tough to accommodate the needs of educators and other stakeholders in the teaching process when they want to enhance the learner's experience with other tools such as plagiarism detection, AI grading, coding graders, and others.
 
-No standard exists for ORA to facilitate integration with tools that process students' answers for plagiarism or other useful reports for the course staff. Therefore, ORA must allow external interactions with students' responses so they can be sent for analysis.
+As the code is open, it is always possible to modify it. Still, it might result in a technical maintenance debt, which usually prevents educators from experimenting or installations from upgrading to newer versions once the changes to ORA become important in the teaching process.
 
 Decisions
 *********
 
-We'll enable external interactions with students' responses by using the `Hooks Extensions Framework`_. Using this approach, we'll implement extension points with minimal modifications in the edx-ora2 repository, making interventions with the students' response lifecycle possible. This is an interim solution for the problem stated above while the community develops a more sophisticated process that covers more use cases. 
-
-This approach includes implementing two extension points, which definitions will live in `openedx-filters`_ and `openedx-events`_ accordingly:
+As the first step towards making the instructor's involvement in the learners' lifecycle more flexible, we will introduce two extension points in ORA. These extension points will be built on top of the `Hooks Extensions Framework`_. The definitions for these extension points will reside in `openedx-filters`_ and `openedx-events`_. These definitions will be imported into the edx-ora2 repository and will be triggered when necessary, with minimal modifications to the ORA implementation.
 
 For the first extension point we will use an `Open edX Filter`_ with the following definition:
-
 
 ..  code-block:: python
   
