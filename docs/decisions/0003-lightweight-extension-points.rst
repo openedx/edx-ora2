@@ -16,106 +16,11 @@ As the code is open, it is always possible to modify it. Still, it might result 
 Decisions
 *********
 
-As the first step towards making the instructor's involvement in the learners' lifecycle more flexible, we will introduce two extension points in ORA. These extension points will be built on top of the `Hooks Extensions Framework`_. The definitions for these extension points will reside in `openedx-filters`_ and `openedx-events`_. These definitions will be imported into the edx-ora2 repository and will be triggered when necessary, with minimal modifications to the ORA implementation.
+As the first step towards making the instructor's involvement in the learners' lifecycle more flexible, we will introduce two extension points in the ORA codebase. These extension points will be built on top of the `Hooks Extensions Framework`_. The definitions for these extension points will reside in `openedx-filters`_ and `openedx-events`_. These definitions will be imported into the edx-ora2 repository and triggered in two places during the learners' lifecycle, resulting in minimal modifications to the ORA implementation.
 
-For the first extension point we will use an `Open edX Filter`_ with the following definition:
+The first extension point we will implement is an `Open edX Filter`_ that will be executed before `rendering the submission HTML section of the block for the legacy view`_, with input arguments ``context`` and ``template path``. This implementation will allow us to modify what's rendered to the student, via the view ``context`` and ``template``, for cases when needed. 
 
-..  code-block:: python
-  
-  class ORASubmissionViewRenderStarted(OpenEdxPublicFilter):
-      """
-      Custom class used to create ORA submission view filters and its custom methods.
-      """
-  
-      filter_type = "org.openedx.learning.ora.submission_view.render.started.v1"
-  
-      @classmethod
-      def run_filter(cls, context: dict, template_name: str):
-          """
-          Execute a filter with the signature specified.
-          Arguments:
-              context (dict): context dictionary for submission view template.
-              template_name (str): template name to be rendered by the student's dashboard.
-          """
-          data = super().run_pipeline(context=context, template_name=template_name, )
-          return data.get("context"), data.get("template_name")
-
-That will be triggered before `rendering the submission HTML section of the block for the legacy view`_:
-
-
-..  code-block:: python
-
-    if path == "legacy/response/oa_response.html":
-        try:
-            # .. filter_implemented_name: ORASubmissionViewRenderStarted
-            # .. filter_type: org.openedx.learning.ora.submission_view.render.started.v1
-            context, path = ORASubmissionViewRenderStarted.run_filter(context, path)
-        except ORASubmissionViewRenderStarted.RenderInvalidTemplate as exc:
-            context, path = exc.context, exc.template_name
-
-This implementation will allow us to modify what's rendered to the student, via the view context and template, for cases when needed. For example, some third-party services need acknowledgment before receiving users' information.
-
-The second extension point will be an Open edX Event. The event payload should contain enough information for later processing; in this case, we'll the following event definition:
-
-
-..  code-block:: python
-
-    attr.s(frozen=True)
-    class ORASubmissionData:
-        """
-        Attributes defined to represent event when a user submits an ORA assignment.
-
-        Arguments:
-            id (str): identifier of the ORA submission.
-            file_downloads (List[dict]): list of related files in the ORA submission. Each dict
-                contains the following keys:
-                    * download_url (str): URL to download the file.
-                    * description (str): Description of the file.
-                    * name (str): Name of the file.
-                    * size (int): Size of the file.
-        """
-        id = attr.ib(type=str)
-        file_downloads = attr.ib(type=List[dict], factory=list)
-
-    # .. event_type: org.openedx.learning.ora.submission.created.v1
-    # .. event_name: ORA_SUBMISSION_CREATED
-    # .. event_description: Emitted when a new ORA submission is created
-    # .. event_data: ORASubmissionData
-    ORA_SUBMISSION_CREATED = OpenEdxPublicSignal(
-        event_type="org.openedx.learning.ora.submission.created.v1",
-        data={
-            "submission": ORASubmissionData,
-        },
-    )
-
-The event will be sent `after a student submits a response to the assessment`_ so it has access to the student's submission key data:
-
-
-..  code-block:: python
-
-    @staticmethod
-    def send_ora_submission_created_event(submission: dict) -> None:
-        """
-        Send an event when a submission is created
-        Args:
-            submission (dict): The submission data
-        """
-        from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-
-        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(
-            submission
-        )
-        ORA_SUBMISSION_CREATED.send_event(
-            submission=ORASubmissionData(
-                id=submission.get("uuid"),
-                file_downloads=file_downloads,
-            )
-        )
-
-     # Sent after the submission
-     self.send_ora_submission_created_event(submission)
-
-This event will allow us to act after a submission is made based on the data sent.
+The second extension point to be implemented is an `Open edX Event`_. It will be sent `after a student submits a response to the assessment`_ with the student's submission key data, like the ORA submission ID and files uploaded in the submission, as the event's payload. This event will allow us to take action after a submission is made based on the data sent.
 
 Consequences
 ************
@@ -126,57 +31,9 @@ Extension developers commonly use those extension points in Open edX plugins to 
 - Change the template that is rendered to the student
 - Send students' submission data to another service
 
-Let's say you want to add an acknowledgment notice to your submission template so students know their information is being shared with third-party services when submitting a response. The extension developer could implement a `pipeline step`_ for the filter that changes the ``oa_response.html`` template for an ``oa_response_ack_modified.html`` template with its context:
+Let's say you want to add an acknowledgment notice to your submission template so students know their information is being shared with third-party services when submitting a response. The extension developer could implement a `pipeline step`_ for the filter that changes the ``oa_response.html`` template for an ``oa_response_ack_modified.html`` template with its custom context.
 
-
-..  code-block:: python
-
-    from openedx_filters import PipelineStep
-    
-    
-    class ORASubmissionViewAcknowledgeWarning(PipelineStep):
-        """Add warning message about sharing users' information to the ORA submission view."""
-    
-        def run_filter(  # pylint: disable=unused-argument, disable=arguments-differ
-            self, context: dict, template_name: str
-        ) -> dict:
-            """
-            Execute filter that loads the submission template with a warning message that
-            notifies the user that the submission will be sent to a 3rd party service.
-    
-            Args:
-                context (dict): The context dictionary.
-                template_name (str): ORA template name.
-    
-            Returns:
-                dict: The context dictionary and the template name.
-            """
-            return {
-                "context": context,
-                "template_name": "some_plugin/oa_response_with_acknowledgement.html",
-            }
-
-See `how to implement pipeline steps`_ for more information. Now, by listening to the `Open edX Event`_, the developer could act on the submission-created notification. Since the event payload has enough information to get the student's submissions, including files, the event receiver can obtain the submission to send it to another service for analysis:
-
-
-..  code-block:: python
-
-    from some_plugin.tasks import ora_submission_created_processing_task
-
-    @receiver(ORA_SUBMISSION_CREATED)
-    def ora_submission_created(submission, **kwargs):
-        """
-        Handle the ORA_SUBMISSION_CREATED event.
-    
-        Args:
-            submission (ORASubmissionData): The ORA submission data.
-        """
-        ora_submission_created_processing_task.delay(
-            submission.id,
-            submission.file_downloads,
-        )
-
-See `how to listen for Open edX Events`_ for more information. 
+See `how to implement pipeline steps`_ for more information. Now, the developer could act on the submission-created notification by listening to the `Open edX Event`_. Since the event payload has enough information to get the student's submissions, including files, the event receiver can obtain the submission to send it to another service for analysis. See `how to listen for Open edX Events`_ for more information. 
 
 Extension developers could interact with an essential part of the student's assessment lifecycle with these changes. But when none of these extension points are configured for use, then ORA assessments will behave as usual.
 
