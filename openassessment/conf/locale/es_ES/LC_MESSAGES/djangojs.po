@@ -589,3 +589,13 @@ msgstr "Esta tarea de respuesta abierta ya ha sido publicada. Los cambios solo a
 #: xblock/static/js/src/studio/oa_edit.js:319
 msgid "error count: "
 msgstr "recuento de errores:"
+
+#: openassessment/xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js:25
+#: openassessment/xblock/static/js/src/lms/components/WaitingStepList.jsx:38
+msgid "Action"
+msgstr "Acción"
+
+#: openassessment/xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js:25
+#: openassessment/xblock/static/js/src/lms/components/WaitingStepList.jsx:47
+msgid "Review"
+msgstr "Revisar"

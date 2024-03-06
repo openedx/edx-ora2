@@ -756,6 +756,7 @@ class OpenAssessmentBlock(
         context_dict = {
             "title": self.title,
             "peer_assessment_required": peer_assessment_required,
+            "selectable_learners_enabled": self.is_selectable_learner_waiting_review_enabled,
         }
 
         if peer_assessment_required:
