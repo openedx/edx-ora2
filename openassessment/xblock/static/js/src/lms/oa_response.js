@@ -515,9 +515,12 @@ export class ResponseView {
 
       const view = this;
       const title = gettext('Confirm Submit Response');
-      // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-      // eslint-disable-next-line max-len
-      const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
+      const msg = gettext(
+        'You\'re about to submit your response for this assignment. '
+        + 'After you submit this response, you can\'t change it or '
+        + 'submit a new response, unless the instructor has activated '
+        + 'the resubmission feature.',
+      );
       this.confirmationDialog.confirm(
         title,
         msg,
