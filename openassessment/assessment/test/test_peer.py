@@ -9,6 +9,7 @@ import pytz
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
+from freezegun import freeze_time
 from pytest import raises
 
 from submissions import api as sub_api
@@ -2165,6 +2166,67 @@ class TestPeerApi(CacheResetTest):
         # Expected error is raised
         with self.assertRaises(PeerAssessmentWorkflowError):
             peer_api.get_active_assessment_submission(alice_sub['uuid'])
+
+    def _assert_num_scored_items(self, submission, expected_scored_items):
+        peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission['uuid'])
+        self.assertEqual(
+            expected_scored_items,
+            peer_workflow.graded_by.filter(scored=True).count()
+        )
+
+    def test_flexible_peer_grading_waiting_on_submitter(self):
+        """
+        Test for behavior when rather than waiting on peers to review a learner, the submitter
+        themselves is the one who needs to complete grading
+        """
+        requirements = {'must_grade': 3, 'must_be_graded_by': 2, 'enable_flexible_grading': True}
+        t0 = datetime.datetime(2024, 3, 13, tzinfo=pytz.UTC)
+
+        # Alice, Bob, Carl, and Dave submit on t0
+        alice_sub, alice = self._create_student_and_submission('Alice', 'Alice submission', date=t0)
+        bob_sub, bob = self._create_student_and_submission('Bob', 'Bob submission', date=t0)
+        carl_sub, carl = self._create_student_and_submission('Carl', 'Carl submission', date=t0)
+        dave_sub, dave = self._create_student_and_submission('Dave', 'Dave submission', date=t0)
+
+        # Bob, Carl, and Dave all dutifully complete their required peer assessment on t1
+        with freeze_time(t0 + datetime.timedelta(days=1)):
+            for learner, submission in [(bob, bob_sub), (carl, carl_sub), (dave, dave_sub)]:
+                for _ in range(3):
+                    peer_api.get_submission_to_assess(submission['uuid'], learner['student_id'])
+                    peer_api.create_assessment(
+                        submission['uuid'],
+                        learner['student_id'],
+                        ASSESSMENT_DICT['options_selected'],
+                        ASSESSMENT_DICT['criterion_feedback'],
+                        ASSESSMENT_DICT['overall_feedback'],
+                        RUBRIC_DICT,
+                        requirements['must_be_graded_by']
+                    )
+
+            # Bob, Carl, and Dave all have scores but Alice does not because she
+            # has not completed her peer assessments
+            self.assertIsNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+            for sub in [bob_sub, carl_sub, dave_sub]:
+                self.assertIsNotNone(peer_api.get_score(sub['uuid'], requirements, COURSE_SETTINGS))
+                # The scores come from must_be_graded_by number of scores
+                self._assert_num_scored_items(sub, requirements['must_be_graded_by'])
+
+        # Alice doesn't complete her required grades until t8, which then gives her a score
+        with freeze_time(t0 + datetime.timedelta(days=8)):
+            for _ in range(3):
+                peer_api.get_submission_to_assess(alice_sub['uuid'], alice['student_id'])
+                peer_api.create_assessment(
+                    alice_sub['uuid'],
+                    alice['student_id'],
+                    ASSESSMENT_DICT['options_selected'],
+                    ASSESSMENT_DICT['criterion_feedback'],
+                    ASSESSMENT_DICT['overall_feedback'],
+                    RUBRIC_DICT,
+                    requirements['must_be_graded_by']
+                )
+            self.assertIsNotNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+        # But it's only using the first score because flexible peer grading had activated
+        self._assert_num_scored_items(alice_sub, 1)
 
 
 class PeerWorkflowTest(CacheResetTest):
