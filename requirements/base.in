@@ -28,3 +28,4 @@ path.py
 python-dateutil
 pytz
 voluptuous
+google-cloud-storage
