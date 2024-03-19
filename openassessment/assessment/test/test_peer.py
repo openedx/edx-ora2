@@ -2179,19 +2179,20 @@ class TestPeerApi(CacheResetTest):
         Test for behavior when rather than waiting on peers to review a learner, the submitter
         themselves is the one who needs to complete grading
         """
-        requirements = {'must_grade': 3, 'must_be_graded_by': 2, 'enable_flexible_grading': True}
+        requirements = {'must_grade': 5, 'must_be_graded_by': 4, 'enable_flexible_grading': True}
         t0 = datetime.datetime(2024, 3, 13, tzinfo=pytz.UTC)
 
-        # Alice, Bob, Carl, and Dave submit on t0
+        # Alice, and five others submit on t0
         alice_sub, alice = self._create_student_and_submission('Alice', 'Alice submission', date=t0)
-        bob_sub, bob = self._create_student_and_submission('Bob', 'Bob submission', date=t0)
-        carl_sub, carl = self._create_student_and_submission('Carl', 'Carl submission', date=t0)
-        dave_sub, dave = self._create_student_and_submission('Dave', 'Dave submission', date=t0)
+        other_students = [
+            self._create_student_and_submission(f'student {i}', f'student {i} submission', date=t0)
+            for i in range(5)
+        ]
 
-        # Bob, Carl, and Dave all dutifully complete their required peer assessment on t1
+        # The other students all dutifully complete their required peer assessment on t1
         with freeze_time(t0 + datetime.timedelta(days=1)):
-            for learner, submission in [(bob, bob_sub), (carl, carl_sub), (dave, dave_sub)]:
-                for _ in range(3):
+            for submission, learner in other_students:
+                for _ in range(5):
                     peer_api.get_submission_to_assess(submission['uuid'], learner['student_id'])
                     peer_api.create_assessment(
                         submission['uuid'],
@@ -2206,14 +2207,14 @@ class TestPeerApi(CacheResetTest):
             # Bob, Carl, and Dave all have scores but Alice does not because she
             # has not completed her peer assessments
             self.assertIsNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
-            for sub in [bob_sub, carl_sub, dave_sub]:
-                self.assertIsNotNone(peer_api.get_score(sub['uuid'], requirements, COURSE_SETTINGS))
+            for submission, _ in other_students:
+                self.assertIsNotNone(peer_api.get_score(submission['uuid'], requirements, COURSE_SETTINGS))
                 # The scores come from must_be_graded_by number of scores
-                self._assert_num_scored_items(sub, requirements['must_be_graded_by'])
+                self._assert_num_scored_items(submission, requirements['must_be_graded_by'])
 
         # Alice doesn't complete her required grades until t8, which then gives her a score
         with freeze_time(t0 + datetime.timedelta(days=8)):
-            for _ in range(3):
+            for _ in range(5):
                 peer_api.get_submission_to_assess(alice_sub['uuid'], alice['student_id'])
                 peer_api.create_assessment(
                     alice_sub['uuid'],
