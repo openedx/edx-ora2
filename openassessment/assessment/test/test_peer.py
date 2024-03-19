@@ -2204,7 +2204,7 @@ class TestPeerApi(CacheResetTest):
                         requirements['must_be_graded_by']
                     )
 
-            # Bob, Carl, and Dave all have scores but Alice does not because she
+            # other_students all have scores but Alice does not because she
             # has not completed her peer assessments
             self.assertIsNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
             for submission, _ in other_students:
@@ -2226,8 +2226,9 @@ class TestPeerApi(CacheResetTest):
                     requirements['must_be_graded_by']
                 )
             self.assertIsNotNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
-        # But it's only using the first score because flexible peer grading had activated
-        self._assert_num_scored_items(alice_sub, 1)
+            # Even though flexible peer grading is activated, we use all available grades
+            self.assertTrue(peer_api.flexible_peer_grading_active(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+            self._assert_num_scored_items(alice_sub, 4)
 
 
 class PeerWorkflowTest(CacheResetTest):

@@ -37,6 +37,20 @@ def flexible_peer_grading_enabled(peer_requirements, course_settings):
     return peer_requirements.get("enable_flexible_grading")
 
 
+def flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+    """
+    Is flexible peer grading on, and has enough time elapsed since submission to enable it?
+    """
+    if not flexible_peer_grading_enabled(peer_requirements, course_settings):
+        return False
+
+    submission = sub_api.get_submission(submission_uuid)
+    # find how many days elapsed since subimitted
+    days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
+    # check if flexible grading applies. if it does, then update must_grade
+    return days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS
+
+
 def required_peer_grades(submission_uuid, peer_requirements, course_settings):
     """
     Given a submission id, finds how many peer assessment required.
@@ -51,20 +65,11 @@ def required_peer_grades(submission_uuid, peer_requirements, course_settings):
         int
     """
 
-    submission = sub_api.get_submission(submission_uuid)
-
     must_grade = peer_requirements["must_be_graded_by"]
-
-    if flexible_peer_grading_enabled(peer_requirements, course_settings):
-
-        # find how many days elapsed since subimitted
-        days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
-
-        # check if flexible grading applies. if it does, then update must_grade
-        if days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS:
-            must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
-            if must_grade == 0:
-                must_grade = 1
+    if flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+        must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
+        if must_grade == 0:
+            must_grade = 1
 
     return must_grade
 
@@ -244,8 +249,18 @@ def get_score(submission_uuid, peer_requirements, course_settings):
 
     # Check if enough peers have graded this submission
     num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements, course_settings)
-    if items.count() < num_required_peer_grades:
+    num_recieved_peer_grades = items.count()
+    if num_recieved_peer_grades < num_required_peer_grades:
         return None
+
+    # If we are in a scenario where flexible grading is active, but we have more peer grades than
+    # flexible would reduces us to need, use as many grades as we can to generate the grade
+    # (up to the defined requirement on the peer step)
+    if flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+        num_required_peer_grades = min(
+            num_recieved_peer_grades,
+            peer_requirements['must_be_graded_by']
+        )
 
     # Unfortunately, we cannot use update() after taking a slice,
     # so we need to update the and save the items individually.
@@ -256,9 +271,12 @@ def get_score(submission_uuid, peer_requirements, course_settings):
     # Although this approach generates more database queries, the number is likely to
     # be relatively small (at least 1 and very likely less than 5).
     for scored_item in items[:num_required_peer_grades]:
-        if not scored_item.scored:
-            scored_item.scored = True
-            scored_item.save()
+        # If we've already gone through and marked items as scored, that should
+        # not change; if we've found a scored item we've done it already and should stop
+        if scored_item.scored:
+            break
+        scored_item.scored = True
+        scored_item.save()
     assessments = [item.assessment for item in items]
 
     return {
