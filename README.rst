@@ -34,6 +34,8 @@ Reporting Security Issues
 
 Please do not report security issues in public. Please email security@openedx.org
 
+Test readme.
+
 Mailing List and Slack
 ======================
 
