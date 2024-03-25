@@ -15,7 +15,6 @@ need to then generate a matching migration for it using:
 
 from collections import defaultdict
 from copy import deepcopy
-from django.conf import settings
 from hashlib import sha1
 import json
 import logging
@@ -490,22 +489,20 @@ class Assessment(models.Model):
         return cls.objects.create(**assessment_params)
 
     @classmethod
-    def get_score_dict(cls, scores_dict, score_type="median"):
-        """Determine the score in a dictionary of lists of scores based on the score type
-        if the feature flag is enabled, otherwise use the median score calculation.
+    def get_score_dict(cls, scores_dict, grading_strategy):
+        """Determine the score in a dictionary of lists of scores based on the
+        grading strategy calculation configuration.
 
         Args:
             scores_dict (dict): A dictionary of lists of int values. These int values
                 are reduced to a single value that represents the median.
-            score_type (str): The type of score to calculate.  Defaults to "median".
+            grading_strategy (str): The type of score to calculate.  Defaults to "median".
 
         Returns:
             (dict): A dictionary with criterion name keys and median score
                 values.
         """
-        if settings.FEATURES.get('ENABLE_ORA_PEER_CONFIGURABLE_GRADING'):
-            return getattr(cls, f"get_{score_type}_score_dict")(scores_dict)
-        return cls.get_median_score_dict(scores_dict)
+        return getattr(cls, f"get_{grading_strategy}_score_dict")(scores_dict)
 
     @classmethod
     def get_median_score_dict(cls, scores_dict):
@@ -621,6 +618,8 @@ class Assessment(models.Model):
 
         """
         total_criterion_scores = len(scores)
+        if total_criterion_scores == 0:
+            return 0
         return int(math.ceil(sum(scores) / float(total_criterion_scores)))
 
     @classmethod

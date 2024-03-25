@@ -1,7 +1,7 @@
 """Default data initializations for the XBlock, with formatting preserved."""
 # pylint: disable=line-too-long
 
-from openassessment.assessment.api.peer import GradingStrategy
+from openassessment.assessment.api.peer import PeerGradingStrategy
 
 
 DEFAULT_PROMPT = """
@@ -133,7 +133,7 @@ DEFAULT_PEER_ASSESSMENT = {
     "must_grade": 5,
     "must_be_graded_by": 3,
     "enable_flexible_grading": False,
-    "grading_strategy": GradingStrategy.MEDIAN,
+    "grading_strategy": PeerGradingStrategy.MEDIAN,
     "flexible_grading_days": 7,
     "flexible_grading_graded_by_percentage": 30
 }
