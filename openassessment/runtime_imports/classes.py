@@ -36,3 +36,12 @@ def import_waffle_flag():
     """
     from edx_toggles.toggles import WaffleFlag
     return WaffleFlag
+
+
+def import_student_module():
+    """
+    Helper method that imports StudentModule from edx-platform at runtime.
+    https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/courseware/models.py#L79
+    """
+    from lms.djangoapps.courseware.models import StudentModule
+    return StudentModule

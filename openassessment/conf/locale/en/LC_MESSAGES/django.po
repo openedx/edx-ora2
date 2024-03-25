@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 18:39-0500\n"
+"POT-Creation-Date: 2024-03-13 15:11-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -224,6 +224,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:93
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:131
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:169
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
 msgstr ""
@@ -232,6 +233,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:132
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:170
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
 msgstr ""
@@ -329,6 +331,33 @@ msgstr ""
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:167
+msgid "Allow Learner Resubmissions"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:174
+msgid ""
+"Specify whether learners can reset and resubmit their work within the "
+"timeframe allowed for this the step, as long as it has not yet been graded.  "
+"When set to true, it is advisable to inform learners about the specific "
+"configuration the activity has."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:178
+msgid "Grace Period Days"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:188
+msgid "Grace Period Time"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:197
+msgid ""
+"You can specify a maximum period for resets to be allowed. If both fields "
+"are set to 0, the grace period is disabled and learners will be able to "
+"reset their submissions as long as they have not been graded."
 msgstr ""
 
 #: templates/legacy/edit/oa_edit_criterion.html:6
@@ -1092,8 +1121,8 @@ msgstr ""
 msgid ""
 "\n"
 "            This is a team assignment for team-set \"%(teamset_name)s\".\n"
-"            You are currently not on a team in team-set \"%(teamset_name)s"
-"\".\n"
+"            You are currently not on a team in team-set "
+"\"%(teamset_name)s\".\n"
 "            You must be on a team in team-set \"%(teamset_name)s\" to access "
 "this team assignment.\n"
 "            "
@@ -1193,8 +1222,8 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" "
 "data-datetime=\"%(start_date)s\" data-string=\"available {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 
@@ -1205,8 +1234,8 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" "
 "data-datetime=\"%(due_date)s\" data-string=\"due {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 
@@ -1330,10 +1359,10 @@ msgstr ""
 #, python-format, python-brace-format
 msgid ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime"
-"\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-"
+"datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} "
+"(in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 
@@ -1342,10 +1371,10 @@ msgstr ""
 #, python-format, python-brace-format
 msgid ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime"
-"\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-"
+"datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in "
+"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 
@@ -1570,8 +1599,9 @@ msgstr ""
 #: templates/legacy/response/oa_response.html:314
 msgid ""
 "\n"
-"                  Learn more about team assignments here: (<a target=\"_blank"
-"\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-"
+"                  Learn more about team assignments here: (<a "
+"target=\"_blank\" href=\"https://support.edx.org/hc/en-us/"
+"articles/360000191067-Submit-your-"
 "response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
 msgstr ""
@@ -1680,6 +1710,14 @@ msgid ""
 "                    "
 msgstr ""
 
+#: templates/legacy/response/oa_response_submitted.html:63
+msgid "We could not reset your response"
+msgstr ""
+
+#: templates/legacy/response/oa_response_submitted.html:69
+msgid "Reset your submission to be able to send it again"
+msgstr ""
+
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
 msgstr ""
@@ -1707,10 +1745,10 @@ msgstr ""
 #, python-format, python-brace-format
 msgid ""
 "\n"
-"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime"
-"\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-"
+"datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} "
+"(in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "           "
 msgstr ""
 
@@ -1719,10 +1757,10 @@ msgstr ""
 #, python-format, python-brace-format
 msgid ""
 "\n"
-"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime"
-"\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-"
+"datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in "
+"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "           "
 msgstr ""
 
@@ -2139,8 +2177,8 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-"
 "datetime=\"%(start_date)s\" data-string=\"available {date} (in "
-"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language="
-"\"%(user_language)s\"></span>\n"
+"%(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-"
+"language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 
@@ -2324,6 +2362,18 @@ msgstr ""
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
 
+#: xblock/openassessmentblock.py:1374
+msgid "The user does not exist."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1377
+msgid "There is no submission to reset."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1379
+msgid "Submission reset successfully."
+msgstr ""
+
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
@@ -2424,30 +2474,30 @@ msgid ""
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
+#: xblock/studio_mixin.py:246 xblock/studio_mixin.py:258
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: xblock/studio_mixin.py:260
+#: xblock/studio_mixin.py:263
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr ""
-
-#: xblock/studio_mixin.py:264
-msgid ""
-"Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
 #: xblock/studio_mixin.py:267
 msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
+
+#: xblock/studio_mixin.py:270
+msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:291
+#: xblock/studio_mixin.py:294
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: xblock/studio_mixin.py:323
+#: xblock/studio_mixin.py:329
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
