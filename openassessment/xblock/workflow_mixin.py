@@ -1,11 +1,10 @@
 """
 Handle OpenAssessment XBlock requests to the Workflow API.
 """
-from django.conf import settings
 from xblock.core import XBlock
-from openassessment.assessment.api.peer import GradingStrategy
 from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 
+from openassessment.assessment.api.peer import PeerGradingStrategy
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
 
@@ -73,7 +72,7 @@ class WorkflowMixin:
                 "must_grade": peer_assessment_module["must_grade"],
                 "must_be_graded_by": peer_assessment_module["must_be_graded_by"],
                 "enable_flexible_grading": peer_assessment_module.get("enable_flexible_grading", False),
-                "grading_strategy": peer_assessment_module.get("grading_strategy", GradingStrategy.MEDIAN),
+                "grading_strategy": peer_assessment_module.get("grading_strategy", PeerGradingStrategy.MEDIAN),
             }
 
         training_module = self.get_assessment_module('student-training')

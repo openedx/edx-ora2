@@ -165,21 +165,25 @@ export class EditPeerAssessmentView {
   }
 
   /**
-     Get or set the mean grading setting to enabled/disabled
+     Get or set the mean/median grading setting to enabled/disabled
 
      Args:
-     enabled (bool, optional): If provided, set `grading_strategy` to the given value
+     strategy (bool, optional): If provided, set `grading_strategy` to the given value
 
      Returns:
-     boolean
-     * */
-     gradingStrategy(strategy) {
-      const self = $('#peer_assessment_grading_strategy', this.element);
-      if (strategy !== undefined) {
-        self.val(strategy);
-      }
-      return self.val();
+     string
+    * */
+  gradingStrategy(strategy) {
+    const self = $('#peer_assessment_grading_strategy', this.element);
+    if (strategy !== undefined) {
+      self.val(strategy);
     }
+    if (self.val() === undefined || self.val() === '') {
+      self.val('median');
+      return 'median';
+    }
+    return self.val();
+  }
 
   /**
      Get or set the start date and time of the assessment.

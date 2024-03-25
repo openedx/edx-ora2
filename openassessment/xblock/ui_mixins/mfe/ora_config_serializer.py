@@ -13,6 +13,7 @@ from rest_framework.serializers import (
     SerializerMethodField,
 )
 
+from openassessment.assessment.api.peer import PeerGradingStrategy
 from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.apis.workflow_api import WorkflowStep
 
@@ -188,7 +189,11 @@ class PeerSettingsSerializer(AssessmentStepSettingsSerializer):
         source="enable_flexible_grading", required=False
     )
 
-    gradingStrategy = CharField(source="grading_strategy")
+    gradingStrategy = CharField(
+        source="grading_strategy",
+        default=PeerGradingStrategy.MEDIAN,
+    )
+
 
 class StaffSettingsSerializer(AssessmentStepSettingsSerializer):
     STEP_NAME = 'staff-assessment'

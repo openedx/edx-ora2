@@ -84,7 +84,8 @@ describe("OpenAssessment edit assessment views", function() {
                 must_be_graded_by: 2,
                 enable_flexible_grading: false,
                 start: "2014-01-01T00:00",
-                due: "2014-03-04T00:00"
+                due: "2014-03-04T00:00",
+                grading_strategy: "median"
             });
         });
 
