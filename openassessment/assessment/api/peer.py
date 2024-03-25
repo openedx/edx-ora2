@@ -248,6 +248,8 @@ def get_score(submission_uuid, peer_requirements, course_settings):
     ).order_by('-assessment')
 
     # Check if enough peers have graded this submission
+    # This value will be the number configured on the peer step, or the reduced number if flexible
+    # peer grading is active
     num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements, course_settings)
     num_recieved_peer_grades = items.count()
     if num_recieved_peer_grades < num_required_peer_grades:
