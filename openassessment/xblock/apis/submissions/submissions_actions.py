@@ -5,6 +5,8 @@ Base stateless API actions for acting upon learner submissions
 import json
 import logging
 import os
+
+from opaque_keys.edx.keys import CourseKey
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 
 from openassessment.fileupload.exceptions import FileUploadError
@@ -22,12 +24,14 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmitInternalError,
     UnsupportedFileTypeException
 )
+from openassessment.xblock.utils.notifications import send_staff_notification
 
 from openassessment.xblock.utils.validation import validate_submission
 from openassessment.xblock.utils.data_conversion import (
     format_files_for_submission,
     prepare_submission_for_serialization,
 )
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -115,9 +119,9 @@ def submit(text_responses, block_config_data, block_submission_data, block_workf
         logger.exception(msg)
         raise
     except (
-        SubmissionError,
-        AssessmentWorkflowError,
-        NoTeamToCreateSubmissionForError,
+            SubmissionError,
+            AssessmentWorkflowError,
+            NoTeamToCreateSubmissionForError,
     ) as e:
         msg = (
             "An unknown error occurred while submitting "
@@ -130,11 +134,11 @@ def submit(text_responses, block_config_data, block_submission_data, block_workf
 
 
 def create_submission(
-    student_item_dict,
-    submission_data,
-    block_config_data,
-    block_submission_data,
-    block_workflow_data
+        student_item_dict,
+        submission_data,
+        block_config_data,
+        block_submission_data,
+        block_workflow_data
 ):
     """Creates submission for the submitted assessment response or a list for a team assessment."""
     # Import is placed here to avoid model import at project startup.
@@ -157,6 +161,18 @@ def create_submission(
 
     # Set student submission_uuid
     block_config_data._block.submission_uuid = submission["uuid"]  # pylint: disable=protected-access
+    has_staff_step = block_workflow_data.workflow_requirements.get('staff', {}).get('required', False)
+
+    if has_staff_step:
+        if block_config_data.course:
+            course_id = block_config_data.course.id
+        else:
+            course_id = CourseKey.from_string(student_item_dict.get("course_id"))
+        send_staff_notification(
+            course_id,
+            student_item_dict.get("item_id"),
+            block_config_data._block.display_name  # pylint: disable=protected-access
+        )
 
     # Emit analytics event...
     block_config_data.publish_event(
@@ -174,11 +190,11 @@ def create_submission(
 
 
 def create_team_submission(
-    student_item_dict,
-    submission_data,
-    block_config_data,
-    block_submission_data,
-    block_workflow_data
+        student_item_dict,
+        submission_data,
+        block_config_data,
+        block_submission_data,
+        block_workflow_data
 ):
     """A student submitting for a team should generate matching submissions for every member of the team."""
 

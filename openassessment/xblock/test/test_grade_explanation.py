@@ -52,8 +52,9 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario_staff_only.xml', user_id='Bernard')
+    @patch('openassessment.xblock.apis.submissions.submissions_actions.send_staff_notification')
     @data(*assessment_score_priority)
-    def test_render_explanation_grade_staff_only(self, xblock, assessment_score_priority):
+    def test_render_explanation_grade_staff_only(self, xblock, assessment_score_priority, mock_send_staff_notification):
         with patch(
             'openassessment.workflow.models.AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY',
             assessment_score_priority
@@ -63,6 +64,8 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
+
+            mock_send_staff_notification.assert_called_once()
 
     @scenario('data/grade_scenario_peer_only.xml', user_id='Bernard')
     @data(*assessment_score_priority)
