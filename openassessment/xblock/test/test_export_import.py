@@ -22,7 +22,7 @@ class TestExportImport(XBlockHandlerTestCase):
         self.runtime.export_to_xml(xblock, output_buffer)
 
         # Re-import the XBlock
-        block_id = self.runtime.parse_xml_string(output_buffer.getvalue(), self.runtime.id_generator)
+        block_id = self.runtime.parse_xml_string(output_buffer.getvalue())
         new_block = self.runtime.get_block(block_id)
 
         # Check that the values of all fields are the same
@@ -39,7 +39,7 @@ class TestExportImport(XBlockHandlerTestCase):
         self.runtime.export_to_xml(xblock, output_buffer)
 
         # Re-import the XBlock
-        block_id = self.runtime.parse_xml_string(output_buffer.getvalue(), self.runtime.id_generator)
+        block_id = self.runtime.parse_xml_string(output_buffer.getvalue())
         new_block = self.runtime.get_block(block_id)
 
         # Check that we've loaded exported team settings correctly
