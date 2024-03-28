@@ -356,7 +356,7 @@ pypng==0.20220715.0
     # via xblock-sdk
 pyproject-api==1.6.1
     # via tox
-pytest==8.1.1
+pytest==8.0.1
     # via
     #   -r requirements/test.in
     #   pytest-cov

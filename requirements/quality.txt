@@ -484,7 +484,7 @@ pyproject-api==1.6.1
     # via
     #   -r requirements/test.txt
     #   tox
-pytest==8.1.1
+pytest==8.0.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
