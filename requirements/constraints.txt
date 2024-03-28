@@ -32,5 +32,5 @@ setuptools<60.0
 # incremental upgrade plan.
 django-simple-history<=3.1.1
 
-# pytest upgrade causes failures
-pytest==8.0.1
+# xblock==1.10.0 upgrade causes test failures which need to be fixed separately
+xblock==1.10.0

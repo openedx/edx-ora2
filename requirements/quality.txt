@@ -484,7 +484,7 @@ pyproject-api==1.6.1
     # via
     #   -r requirements/test.txt
     #   tox
-pytest==8.0.1
+pytest==8.1.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -705,7 +705,7 @@ wrapt==1.11.2
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   aws-xray-sdk
-xblock==3.0.0
+xblock==1.10.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
