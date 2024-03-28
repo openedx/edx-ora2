@@ -895,7 +895,7 @@ class OpenAssessmentBlock(
         ]
 
     @classmethod
-    def parse_xml(cls, node, runtime, keys, id_generator):
+    def parse_xml(cls, node, runtime, keys):
         """Instantiate XBlock object from runtime XML definition.
 
         Inherited by XBlock core.
