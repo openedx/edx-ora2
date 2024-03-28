@@ -30,7 +30,9 @@ aws-xray-sdk==2.13.0
     # via moto
 backports-zoneinfo[tzdata]==0.2.1
     # via
+    #   -r requirements/base.txt
     #   celery
+    #   django
     #   kombu
 billiard==4.2.0
     # via celery
@@ -389,7 +391,6 @@ python-swiftclient==3.13.1
 pytz==2024.1
     # via
     #   -r requirements/base.txt
-    #   django
     #   djangorestframework
     #   edx-submissions
     #   fs
@@ -543,6 +544,7 @@ wrapt==1.11.2
     #   aws-xray-sdk
 xblock==1.10.0
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   xblock-sdk
 xblock-sdk==0.7.0

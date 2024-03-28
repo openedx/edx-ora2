@@ -47,6 +47,7 @@ backports-zoneinfo[tzdata]==0.2.1
     # via
     #   -r requirements/test.txt
     #   celery
+    #   django
     #   kombu
 billiard==4.2.0
     # via
@@ -167,7 +168,7 @@ distlib==0.3.8
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==3.2.25
+django==4.2.11
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -519,7 +520,6 @@ python-swiftclient==3.13.1
 pytz==2024.1
     # via
     #   -r requirements/test.txt
-    #   django
     #   djangorestframework
     #   edx-submissions
     #   fs
@@ -707,6 +707,7 @@ wrapt==1.11.2
     #   aws-xray-sdk
 xblock==1.10.0
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   xblock-sdk
 xblock-sdk==0.7.0
