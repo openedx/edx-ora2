@@ -9,6 +9,7 @@ from lazy import lazy
 from xblock.core import XBlock
 
 from django.utils.translation import gettext as _
+from openassessment.assessment.api.peer import get_peer_grading_strategy, PeerGradingStrategy
 
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 
@@ -301,7 +302,10 @@ class GradeMixin:
         if staff_assessment:
             median_scores = staff_api.get_assessment_scores_by_criteria(submission_uuid)
         elif "peer-assessment" in assessment_steps:
-            median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+            median_scores = peer_api.get_assessment_scores_with_grading_strategy(
+                submission_uuid,
+                self.workflow_requirements()
+            )
         elif "self-assessment" in assessment_steps:
             median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
 
@@ -369,7 +373,9 @@ class GradeMixin:
         )
         if "peer-assessment" in assessment_steps:
             peer_assessment_part = {
-                'title': _('Peer Median Grade'),
+                'title': self._get_peer_assessment_part_title(
+                    get_peer_grading_strategy(self.workflow_requirements())
+                ),
                 'criterion': criterion,
                 'option': self._peer_median_option(submission_uuid, criterion),
                 'individual_assessments': [
@@ -409,6 +415,20 @@ class GradeMixin:
 
         return assessments
 
+    def _get_peer_assessment_part_title(self, grading_strategy):
+        """
+        Returns the title for the peer assessment part.
+
+        Args:
+            grading_strategy (str): The grading strategy for the peer assessment.
+
+        Returns:
+            The title for the peer assessment part.
+        """
+        if grading_strategy == PeerGradingStrategy.MEAN:
+            return _('Peer Mean Grade')
+        return _('Peer Median Grade')
+
     def _peer_median_option(self, submission_uuid, criterion):
         """
         Returns the option for the median peer grade.
@@ -424,7 +444,10 @@ class GradeMixin:
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
-        median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+        median_scores = peer_api.get_assessment_scores_with_grading_strategy(
+            submission_uuid,
+            self.workflow_requirements()
+        )
         median_score = median_scores.get(criterion['name'], None)
         median_score = -1 if median_score is None else median_score
 
@@ -650,12 +673,10 @@ class GradeMixin:
         complete = score is not None
 
         assessment_type = self._get_assessment_type(workflow)
-
         sentences = {
             "staff": _("The grade for this problem is determined by your Staff Grade."),
-            "peer": _(
-                "The grade for this problem is determined by the median score of "
-                "your Peer Assessments."
+            "peer": self._get_peer_explanation_sentence(
+                get_peer_grading_strategy(self.workflow_requirements())
             ),
             "self": _("The grade for this problem is determined by your Self Assessment.")
         }
@@ -675,6 +696,26 @@ class GradeMixin:
                 )
 
         return f"{first_sentence} {second_sentence}".strip()
+
+    def _get_peer_explanation_sentence(self, peer_grading_strategy):
+        """
+        Return a string which explains how the peer grade is calculated for an ORA assessment.
+
+        Args:
+            peer_grading_strategy (str): The grading strategy for the peer assessment.
+        Returns:
+            str: Message explaining how the grade is determined.
+        """
+        peer_sentence = _(
+            "The grade for this problem is determined by the median score of "
+            "your Peer Assessments."
+        )
+        if peer_grading_strategy == PeerGradingStrategy.MEAN:
+            peer_sentence = _(
+                "The grade for this problem is determined by the mean score of "
+                "your Peer Assessments."
+            )
+        return peer_sentence
 
     def generate_report_data(self, user_state_iterator, limit_responses=None):
         """

@@ -8,6 +8,7 @@ the workflow for a given submission.
 
 import logging
 
+from django.conf import settings
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils import timezone
 
@@ -25,6 +26,12 @@ PEER_TYPE = "PE"
 
 FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS = 7
 FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE = 30
+
+
+class PeerGradingStrategy:
+    """Grading strategies for peer assessments."""
+    MEAN = "mean"
+    MEDIAN = "median"
 
 
 def flexible_peer_grading_enabled(peer_requirements, course_settings):
@@ -49,6 +56,17 @@ def flexible_peer_grading_active(submission_uuid, peer_requirements, course_sett
     days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
     # check if flexible grading applies. if it does, then update must_grade
     return days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS
+
+
+def get_peer_grading_strategy(workflow_requirements):
+    """
+    Get the peer grading type, either mean or median. Default is median.
+    """
+    if "peer" not in workflow_requirements:
+        return workflow_requirements.get("grading_strategy", PeerGradingStrategy.MEDIAN)
+    return workflow_requirements.get("peer", {}).get(
+        "grading_strategy", PeerGradingStrategy.MEDIAN,
+    )
 
 
 def required_peer_grades(submission_uuid, peer_requirements, course_settings):
@@ -281,10 +299,12 @@ def get_score(submission_uuid, peer_requirements, course_settings):
         scored_item.save()
     assessments = [item.assessment for item in items]
 
+    scores_dict = get_assessment_scores_with_grading_strategy(
+        submission_uuid,
+        peer_requirements,
+    )
     return {
-        "points_earned": sum(
-            get_assessment_median_scores(submission_uuid).values()
-        ),
+        "points_earned": sum(scores_dict.values()),
         "points_possible": assessments[0].points_possible,
         "contributing_assessments": [assessment.id for assessment in assessments],
         "staff_id": None,
@@ -496,6 +516,54 @@ def get_rubric_max_scores(submission_uuid):
     except DatabaseError as ex:
         error_message = (
             "Error getting rubric options max scores for submission uuid {uuid}"
+        ).format(uuid=submission_uuid)
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message) from ex
+
+
+def get_assessment_scores_with_grading_strategy(submission_uuid, workflow_requirements):
+    """Get the score for each rubric criterion calculated given grading strategy
+    obtained from the peer requirements dictionary. If no grading strategy is
+    provided in the peer requirements or the feature flag is not enabled, the
+    default median score calculation is used.
+
+    This function is based on get_assessment_median_scores, but allows the caller
+    to specify the grading strategy (mean, median) to use when calculating the score.
+
+    Args:
+        submission_uuid (str): The submission uuid is used to get the
+            assessments used to score this submission, and generate the
+            appropriate median/mean score.
+        workflow_requirements (dict): Dictionary with the key "grading_strategy"
+
+    Returns:
+        dict: A dictionary of rubric criterion names,
+        with a median/mean score of the peer assessments.
+
+    Raises:
+        PeerAssessmentInternalError: If any error occurs while retrieving
+            information to form the median/mean scores, an error is raised.
+    """
+    # If the feature flag is not enabled, use the median score calculation
+    # as the default behavior.
+    if not settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
+        return get_assessment_median_scores(submission_uuid)
+
+    current_grading_strategy = get_peer_grading_strategy(workflow_requirements)
+    try:
+        workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+        items = workflow.graded_by.filter(scored=True)
+        assessments = [item.assessment for item in items]
+        scores = Assessment.scores_by_criterion(assessments)
+        return Assessment.get_score_dict(
+            scores,
+            grading_strategy=current_grading_strategy,
+        )
+    except PeerWorkflow.DoesNotExist:
+        return {}
+    except DatabaseError as ex:
+        error_message = (
+            "Error getting assessment median scores for submission {uuid}"
         ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message) from ex

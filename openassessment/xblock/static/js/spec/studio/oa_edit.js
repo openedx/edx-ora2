@@ -112,7 +112,8 @@ describe("OpenAssessment.StudioView", function() {
                 due: "2014-01-03T00:00",
                 must_grade: 5,
                 must_be_graded_by: 3,
-                enable_flexible_grading: false
+                enable_flexible_grading: false,
+                grading_strategy: "median"
             },
             {
                 name: "self-assessment",

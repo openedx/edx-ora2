@@ -54,6 +54,18 @@
                         </p>
                     {% endif %}
                 </li>
+                {% if enable_peer_configurable_grading %}
+                    <li class="field comp-setting-entry">
+                        <div class="wrapper-comp-setting">
+                            <label for="peer_assessment_grading_strategy" class="setting-label">{% trans "Grading strategy for the peer assessment" %}</label>
+                            <select id="peer_assessment_grading_strategy" class="input setting-input">
+                                <option value="mean" {% if assessments.peer_assessment.grading_strategy == 'mean' %}selected="true"{% endif %}>{% trans "Mean" %}</option>
+                                <option value="median" {% if assessments.peer_assessment.grading_strategy == 'median' %}selected="true"{% endif %}>{% trans "Median (default)" %}</option>
+                            </select>
+                        </div>
+                        <p class="setting-help">{% trans "Select the preferred grading strategy for the peer assessment. By default, the median across all peer reviews is used to calculate the final grade. If you select the mean, the average of all peer reviews will be used." %}</p>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
