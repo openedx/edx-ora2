@@ -28,8 +28,9 @@ aws-sam-translator==1.86.0
     # via cfn-lint
 aws-xray-sdk==2.13.0
     # via moto
-backports-zoneinfo[tzdata]==0.2.1
+backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   celery
     #   django

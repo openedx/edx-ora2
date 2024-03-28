@@ -39,8 +39,9 @@ aws-xray-sdk==2.13.0
     # via
     #   -r requirements/test.txt
     #   moto
-backports-zoneinfo[tzdata]==0.2.1
+backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   celery
     #   django
