@@ -8,6 +8,10 @@ appdirs==1.4.4
     # via fs
 asgiref==3.8.1
     # via django
+backports-zoneinfo==0.2.1 ; python_version < "3.9"
+    # via
+    #   -c requirements/constraints.txt
+    #   django
 bleach==6.1.0
     # via -r requirements/base.in
 boto3==1.34.72
@@ -30,7 +34,7 @@ code-annotations==1.7.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==3.2.25
+django==4.2.11
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -148,7 +152,6 @@ python-swiftclient==3.13.1
 pytz==2024.1
     # via
     #   -r requirements/base.in
-    #   django
     #   djangorestframework
     #   edx-submissions
     #   fs

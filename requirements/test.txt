@@ -6,8 +6,6 @@
 #
 amqp==5.2.0
     # via kombu
-annotated-types==0.6.0
-    # via pydantic
 appdirs==1.4.4
     # via
     #   -r requirements/base.txt
@@ -18,19 +16,12 @@ asgiref==3.8.1
     # via
     #   -r requirements/base.txt
     #   django
-attrs==23.2.0
+backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     # via
-    #   jschema-to-python
-    #   jsonschema
-    #   referencing
-    #   sarif-om
-aws-sam-translator==1.86.0
-    # via cfn-lint
-aws-xray-sdk==2.13.0
-    # via moto
-backports-zoneinfo[tzdata]==0.2.1
-    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.txt
     #   celery
+    #   django
     #   kombu
 billiard==4.2.0
     # via celery
@@ -38,18 +29,14 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.1.0
     # via -r requirements/base.txt
-boto==2.49.0
-    # via moto
 boto3==1.34.72
     # via
     #   -r requirements/base.txt
-    #   aws-sam-translator
     #   fs-s3fs
     #   moto
 botocore==1.34.72
     # via
     #   -r requirements/base.txt
-    #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
@@ -66,8 +53,6 @@ cffi==1.16.0
     #   -r requirements/base.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.86.1
-    # via moto
 chardet==5.2.0
     # via
     #   binaryornot
@@ -105,15 +90,11 @@ coverage[toml]==7.4.4
     #   -r requirements/test.in
     #   pytest-cov
 cryptography==42.0.5
-    # via
-    #   moto
-    #   sshpubkeys
+    # via moto
 ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-decorator==5.1.1
-    # via networkx
 defusedxml==0.7.1
     # via -r requirements/base.txt
 distlib==0.3.8
@@ -152,12 +133,6 @@ django-waffle==4.1.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-docker==7.0.0
-    # via moto
-ecdsa==0.18.0
-    # via
-    #   python-jose
-    #   sshpubkeys
 edx-django-utils==5.11.0
     # via
     #   -r requirements/base.txt
@@ -200,12 +175,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-    #   moto
     #   requests
-importlib-resources==6.4.0
-    # via
-    #   jsonschema
-    #   jsonschema-specifications
 iniconfig==2.0.0
     # via pytest
 jinja2==3.1.3
@@ -219,28 +189,10 @@ jmespath==1.0.1
     #   -r requirements/base.txt
     #   boto3
     #   botocore
-jschema-to-python==1.2.3
-    # via cfn-lint
-jsondiff==1.1.2
-    # via moto
 jsonfield==3.1.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-jsonpatch==1.33
-    # via cfn-lint
-jsonpickle==3.0.3
-    # via jschema-to-python
-jsonpointer==2.4
-    # via jsonpatch
-jsonschema==4.21.1
-    # via
-    #   aws-sam-translator
-    #   cfn-lint
-jsonschema-specifications==2023.12.1
-    # via jsonschema
-junit-xml==1.9
-    # via cfn-lint
 kombu==5.3.6
     # via celery
 lazy==1.6
@@ -271,28 +223,19 @@ markupsafe==2.1.5
 mdurl==0.1.2
     # via markdown-it-py
 mock==5.1.0
-    # via
-    #   -r requirements/test.in
-    #   moto
+    # via -r requirements/test.in
 more-itertools==10.2.0
     # via -r requirements/test.in
-moto==1.3.14
+moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-mpmath==1.3.0
-    # via sympy
-networkx==2.4
-    # via
-    #   -c requirements/constraints.txt
-    #   cfn-lint
 newrelic==9.8.0
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
 packaging==24.0
     # via
-    #   docker
     #   pyproject-api
     #   pytest
     #   tox
@@ -307,11 +250,7 @@ path-py==12.5.0
 pbr==6.0.0
     # via
     #   -r requirements/base.txt
-    #   jschema-to-python
-    #   sarif-om
     #   stevedore
-pkgutil-resolve-name==1.3.10
-    # via jsonschema
 platformdirs==4.2.0
     # via
     #   tox
@@ -330,18 +269,10 @@ psutil==5.9.8
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
-pyasn1==0.6.0
-    # via
-    #   python-jose
-    #   rsa
 pycparser==2.21
     # via
     #   -r requirements/base.txt
     #   cffi
-pydantic==2.6.4
-    # via aws-sam-translator
-pydantic-core==2.16.3
-    # via pydantic
 pygments==2.17.2
     # via rich
 pymongo==3.13.0
@@ -375,8 +306,6 @@ python-dateutil==2.9.0.post0
     #   freezegun
     #   moto
     #   xblock
-python-jose==3.3.0
-    # via moto
 python-slugify==8.0.4
     # via
     #   -r requirements/base.txt
@@ -389,33 +318,22 @@ python-swiftclient==3.13.1
 pytz==2024.1
     # via
     #   -r requirements/base.txt
-    #   django
     #   djangorestframework
     #   edx-submissions
     #   fs
-    #   moto
     #   xblock
 pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
-    #   cfn-lint
     #   code-annotations
     #   cookiecutter
     #   edx-i18n-tools
-    #   moto
     #   responses
     #   xblock
-referencing==0.34.0
-    # via
-    #   jsonschema
-    #   jsonschema-specifications
-regex==2023.12.25
-    # via cfn-lint
 requests==2.31.0
     # via
     #   -r requirements/base.txt
     #   cookiecutter
-    #   docker
     #   moto
     #   python-swiftclient
     #   responses
@@ -424,18 +342,10 @@ responses==0.25.0
     # via moto
 rich==13.7.1
     # via cookiecutter
-rpds-py==0.18.0
-    # via
-    #   jsonschema
-    #   referencing
-rsa==4.9
-    # via python-jose
 s3transfer==0.10.1
     # via
     #   -r requirements/base.txt
     #   boto3
-sarif-om==1.0.4
-    # via cfn-lint
 simplejson==3.19.2
     # via
     #   -r requirements/base.txt
@@ -445,29 +355,22 @@ six==1.16.0
     # via
     #   -r requirements/base.txt
     #   bleach
-    #   ecdsa
     #   freezegun
     #   fs
     #   fs-s3fs
     #   html5lib
-    #   junit-xml
-    #   moto
     #   python-dateutil
     #   python-swiftclient
 sqlparse==0.4.4
     # via
     #   -r requirements/base.txt
     #   django
-sshpubkeys==3.3.1
-    # via moto
 stevedore==5.2.0
     # via
     #   -r requirements/base.txt
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-sympy==1.12
-    # via cfn-lint
 testfixtures==8.1.0
     # via -r requirements/test.in
 text-unidecode==1.3
@@ -487,14 +390,10 @@ types-python-dateutil==2.9.0.20240316
 typing-extensions==4.10.0
     # via
     #   -r requirements/base.txt
-    #   annotated-types
     #   asgiref
-    #   aws-sam-translator
     #   edx-opaque-keys
     #   faker
     #   kombu
-    #   pydantic
-    #   pydantic-core
     #   rich
 tzdata==2024.1
     # via
@@ -504,7 +403,6 @@ urllib3==1.26.18
     # via
     #   -r requirements/base.txt
     #   botocore
-    #   docker
     #   requests
     #   responses
 vine==5.1.0
@@ -543,14 +441,13 @@ wrapt==1.11.2
     #   aws-xray-sdk
 xblock==2.0.0
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   xblock-sdk
 xblock-sdk==0.9.0
     # via -r requirements/test.in
 xmltodict==0.13.0
     # via moto
-zipp==3.18.1
-    # via importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
