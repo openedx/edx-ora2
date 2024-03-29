@@ -105,7 +105,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-lxml==5.1.0
+lxml==4.9.4
     # via
     #   -r requirements/base.in
     #   edx-i18n-tools
@@ -203,10 +203,8 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.7
     # via xblock
-xblock==1.10.0
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+xblock==2.0.0
+    # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

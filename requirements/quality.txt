@@ -253,7 +253,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml==5.1.0
+lxml==4.9.4
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
@@ -542,12 +542,17 @@ werkzeug==3.0.1
     # via
     #   -r requirements/test.txt
     #   moto
-xblock==1.10.0
+wrapt==1.11.2
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
+    #   aws-xray-sdk
+xblock==2.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   xblock-sdk
-xblock-sdk==0.7.0
+xblock-sdk==0.9.0
     # via -r requirements/test.txt
 xmltodict==0.13.0
     # via
