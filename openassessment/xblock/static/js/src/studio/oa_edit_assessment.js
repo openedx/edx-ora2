@@ -168,7 +168,7 @@ export class EditPeerAssessmentView {
      Get or set the mean/median grading setting to enabled/disabled
 
      Args:
-     strategy (bool, optional): If provided, set `grading_strategy` to the given value
+     strategy (string, optional): If provided, set `grading_strategy` to the given value
 
      Returns:
      string
