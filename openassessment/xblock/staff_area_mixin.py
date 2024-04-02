@@ -145,10 +145,9 @@ class StaffAreaMixin:
                 context['is_enhanced_staff_grader_enabled'] = False
             else:
                 context['is_enhanced_staff_grader_enabled'] = self.is_enhanced_staff_grader_enabled
-            context['enhanced_staff_grader_url'] = '{esg_url}/{block_id}'.format(
-                esg_url=getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', ''),
-                block_id=str(self.get_xblock_id())
-            )
+
+            esg_url = getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', None)
+            context['enhanced_staff_grader_url'] = f'{esg_url}/{str(self.get_xblock_id())}' if esg_url else None
 
             context.update(
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])

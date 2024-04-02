@@ -1337,6 +1337,25 @@ class TestCourseStaff(XBlockHandlerTestCase):
             esg_url='ora_url',
             block_id=context['xblock_id']
         ))
+    
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL=None
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        new_callable=PropertyMock
+    )
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_area_esg_no_url(self, xblock, mock_esg_flag):
+        """
+        If there is a staff step, enhanced_staff_grader_url should be None
+        if ORA_GRADING_MICROFRONTEND_URL is not set
+        """
+        mock_esg_flag.return_value = True
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 0)
+        self.assertEqual(context['is_enhanced_staff_grader_enabled'], True)
+        self.assertIsNone(context['enhanced_staff_grader_url'])
 
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
