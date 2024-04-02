@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-26 14:32-0400\n"
+"POT-Creation-Date: 2024-04-02 19:29-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Jesica Greco, 2022-2023\n"
 "Language-Team: Spanish (Spain) (http://app.transifex.com/open-edx/edx-"
@@ -578,10 +578,10 @@ msgid ""
 "the median across all peer reviews is used to calculate the final grade. If "
 "you select the mean, the average of all peer reviews will be used."
 msgstr ""
-"Seleccione la estrategia de calificación preferida para la evaluación por pares. "
-"Por defecto, se utiliza la mediana de todas las evaluaciones por pares para "
-"calcular la calificación final. Si selecciona el promedio, se utilizará la "
-"promedio de todas las evaluaciones por pares."
+"Seleccione la estrategia de calificación preferida para la evaluación por "
+"pares. Por defecto, se utiliza la mediana de todas las evaluaciones por "
+"pares para calcular la calificación final. Si selecciona el promedio, se "
+"utilizará la promedio de todas las evaluaciones por pares."
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -3077,28 +3077,28 @@ msgstr ""
 "La fecha de comienzo '{start}' no puede ser posterior a la fecha límite "
 "'{due}'"
 
-#: xblock/utils/validation.py:118
+#: xblock/utils/validation.py:120
 msgid "This problem must include at least one assessment."
 msgstr "Esta tarea ha de incluir al menos una evaluación."
 
-#: xblock/utils/validation.py:122
+#: xblock/utils/validation.py:124
 msgid "The assessment order you selected is invalid."
 msgstr "El orden de evaluación que has seleccionado no es válido."
 
-#: xblock/utils/validation.py:132
+#: xblock/utils/validation.py:134
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 "En la evaluación por pares, el valor \"Debe calificarse\" tiene que ser un "
 "número entero positivo."
 
-#: xblock/utils/validation.py:135
+#: xblock/utils/validation.py:137
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 "En la evaluación por pares, el valor \"Calificado por\" debe de ser un "
 "número entero positivo."
 
-#: xblock/utils/validation.py:139
+#: xblock/utils/validation.py:141
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
@@ -3106,42 +3106,50 @@ msgstr ""
 "En la evaluación por pares, el valor \"Debe calificarse\" tiene que ser "
 "mayor o igual al valor de \"Calificado por\"."
 
-#: xblock/utils/validation.py:148
+#: xblock/utils/validation.py:150
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 "Debes proporcionar al menos un ejemplo de respuesta para el entrenamiento de "
 "estudiantes."
 
-#: xblock/utils/validation.py:151
+#: xblock/utils/validation.py:153
 msgid "Each example response for learner training must be unique."
 msgstr ""
 "Cada respuesta de ejemplo para el entrenamiento del estudiante debe ser "
 "única."
 
-#: xblock/utils/validation.py:158
+#: xblock/utils/validation.py:160
 msgid ""
 "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 "El valor \"obligatorio\" debe ser verdadero si la evaluación por el equipo "
 "docente es el único paso."
 
-#: xblock/utils/validation.py:162
+#: xblock/utils/validation.py:164
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr ""
 "El número de evaluaciones no puede ser cambiado una vez publicada la tarea."
 
-#: xblock/utils/validation.py:167
+#: xblock/utils/validation.py:169
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "El tipo de evaluación no se puede cambiar una vez publicada la tarea."
 
-#: xblock/utils/validation.py:190
+#: xblock/utils/validation.py:176
+msgid ""
+"The grading strategy for peer assessments cannot be changed after the "
+"problem has been released."
+msgstr ""
+"La estrategia de calificación para evaluaciones por pares no puede cambiarse "
+"una vez publicada la tarea."
+
+#: xblock/utils/validation.py:200
 msgid "This rubric definition is not valid."
 msgstr "Esta definición de rúbrica no es válida."
 
-#: xblock/utils/validation.py:193
+#: xblock/utils/validation.py:203
 #, fuzzy
 #| msgid "You must provide at least one example response for learner training."
 msgid "You must provide at least one prompt."
@@ -3149,48 +3157,48 @@ msgstr ""
 "Debes proporcionar al menos un ejemplo de respuesta para el entrenamiento de "
 "estudiantes."
 
-#: xblock/utils/validation.py:199
+#: xblock/utils/validation.py:209
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 "Las opciones en '{criterion}' tienen nombre(s) duplicados: {duplicates}"
 
-#: xblock/utils/validation.py:207
+#: xblock/utils/validation.py:217
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 "Los criterios que no tienen opciones deben requerir retroalimentación por "
 "escrito."
 
-#: xblock/utils/validation.py:216
+#: xblock/utils/validation.py:226
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 "Los enunciados no pueden crearse o eliminarse una vez publicada la tarea."
 
-#: xblock/utils/validation.py:220
+#: xblock/utils/validation.py:230
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "El número de criterios no se puede cambiar una vez publicada la tarea."
 
-#: xblock/utils/validation.py:233
+#: xblock/utils/validation.py:243
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 "Los nombres de los criterios no se pueden cambiar una vez publicada la tarea"
 
-#: xblock/utils/validation.py:238
+#: xblock/utils/validation.py:248
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "El número de opciones no se puede cambiar una vez publicada una tarea."
 
-#: xblock/utils/validation.py:243
+#: xblock/utils/validation.py:253
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Los puntos no se pueden cambiar una vez publicada una tarea."
 
-#: xblock/utils/validation.py:294
+#: xblock/utils/validation.py:304
 msgid "Learner training must have at least one training example."
 msgstr "El entrenamiento del estudiante debe tener al menos un ejemplo."
 
-#: xblock/utils/validation.py:359
+#: xblock/utils/validation.py:369
 msgid "Leaderboard number is invalid."
 msgstr "El número de la tabla de clasificación no es válido."
 
-#: xblock/utils/validation.py:382
+#: xblock/utils/validation.py:392
 msgid "The submission format is invalid."
 msgstr "El formato de la entrega no es válido."

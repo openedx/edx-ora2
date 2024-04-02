@@ -3128,6 +3128,14 @@ msgstr ""
 "El tipo de evaluación no se puede cambiar después de que el problema ha sido "
 "liberado."
 
+#: xblock/utils/validation.py:176
+msgid ""
+"The grading strategy for peer assessments cannot be changed after the "
+"problem has been released."
+msgstr ""
+"La estrategia de calificación para evaluaciones por pares no puede cambiarse "
+"una vez publicada la tarea."
+
 #: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "La definición de esta rúbrica no es válida"
