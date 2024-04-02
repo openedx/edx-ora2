@@ -77,6 +77,7 @@ describe("OpenAssessment edit assessment views", function() {
         it("loads a description", function() {
             view.mustGradeNum(1);
             view.mustBeGradedByNum(2);
+            view.gradingStrategy("median");
             view.startDatetime("2014-01-01", "00:00");
             view.dueDatetime("2014-03-04", "00:00");
             expect(view.description()).toEqual({
