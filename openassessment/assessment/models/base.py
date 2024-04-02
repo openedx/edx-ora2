@@ -543,7 +543,7 @@ class Assessment(models.Model):
 
         Args:
             scores_dict (dict): A dictionary of lists of int values. These int
-                values are reduced to a single value that represents the median.
+                values are reduced to a single value that represents the mean.
 
         Returns:
             (dict): A dictionary with criterion name keys and mean score
@@ -551,18 +551,18 @@ class Assessment(models.Model):
 
         Examples:
             >>> scores = {
-            >>>     "foo": [1, 2, 3, 4, 5],
-            >>>     "bar": [6, 7, 8, 9, 10]
+            >>>     "foo": [5, 6, 12, 16, 22, 53],
+            >>>     "bar": [5, 6, 12, 16, 22, 53, 102]
             >>> }
             >>> Assessment.get_mean_score_dict(scores)
-            {"foo": 3, "bar": 8}
+            {"foo": 19, "bar": 31}
 
         """
-        median_scores = {}
+        mean_scores = {}
         for criterion, criterion_scores in scores_dict.items():
             criterion_score = Assessment.get_mean_score(criterion_scores)
-            median_scores[criterion] = criterion_score
-        return median_scores
+            mean_scores[criterion] = criterion_score
+        return mean_scores
 
     @staticmethod
     def get_median_score(scores):
@@ -600,21 +600,19 @@ class Assessment(models.Model):
 
     @staticmethod
     def get_mean_score(scores):
-        """Determine the median score in a list of scores
-
-        Determine the median value in the list.
+        """Calculate the mean score from a list of scores
 
         Args:
             scores (list): A list of int values. These int values
-                are reduced to a single value that represents the median.
+                are reduced to a single value that represents the mean.
 
         Returns:
-            (int): The median score.
+            (int): The mean score.
 
         Examples:
-            >>> scores = 1, 2, 3, 4, 5]
-            >>> Assessment.get_median_score(scores)
-            3
+            >>> scores = [5, 6, 12, 16, 22, 53]
+            >>> Assessment.get_mean_score(scores)
+            19
 
         """
         total_criterion_scores = len(scores)
