@@ -1337,7 +1337,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             esg_url='ora_url',
             block_id=context['xblock_id']
         ))
-    
+
     @override_settings(
         ORA_GRADING_MICROFRONTEND_URL=None
     )
