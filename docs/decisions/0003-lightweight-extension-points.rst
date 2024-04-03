@@ -31,12 +31,12 @@ For instance, if a developer wants to add an acknowledgment notice to the submis
 
 These changes allow extension developers to interact with a crucial part of the student's assessment lifecycle. However, when none of these extension points are configured, ORA assessments will behave as usual. This first step sets a precedent for ORA developers to implement more extension points during the ORA users' lifecycle, enabling additional use cases to be built on top of them.
 
+The extension points proposed in this PR are intended to facilitate the integration with tools for students' response analysis like Turnitin. For more information on this use case, please refer to the `Platform Plugin Turnitin`_ documentation.
+
 Rejected Alternatives
 *********************
 
-Given that there is currently no other option for extending ORA without a fork, we are not rejecting any other alternative. It could be argued that we are rejecting the construction of a more extensive (or more comprehensive) framework for extension, but it's more like this is the first step towards a larger framework. If we were to propose a project to extend ORA with a mechanism for dependency injection, we would still propose it to be built on top of the hooks framework.
-
-At this ADR, we are only committing to the first few hooks because we understand very well the effort it requires. However, there is no technical limit for this proposal to grow into more hooks and eventually support a broad array of extension use cases.
+As suggested in the `platform roadmap GH ticket`_ for this feature, the team who wrote this ADR researched the feasibility of adding a new `External Tool Step`. Although this was considered the best option since ORA design entertained extension via customization and addition of workflow steps, it was rejected due to time constraints. Therefore, in this ADR, we only commit to implementing a lightweight extension mechanism because we understand the required effort. However, there is no technical limit on this proposal's growth into more support of a broad array of extension use cases.
 
 .. _Hooks Extensions Framework: https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0050-hooks-extension-framework.html
 .. _rendering the submission HTML section of the block for the legacy view: https://github.com/openedx/edx-ora2/blob/master/openassessment/xblock/ui_mixins/legacy/views/submission.py#L19
@@ -49,3 +49,4 @@ At this ADR, we are only committing to the first few hooks because we understand
 .. _platform roadmap GH ticket: https://github.com/openedx/platform-roadmap/issues/253
 .. _openedx-events: https://github.com/openedx/openedx-events
 .. _openedx-filters: https://github.com/openedx/openedx-filters
+.. _Platform Plugin Turnitin: https://github.com/eduNEXT/platform-plugin-turnitin
