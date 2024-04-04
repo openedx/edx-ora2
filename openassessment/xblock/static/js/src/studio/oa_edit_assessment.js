@@ -178,6 +178,10 @@ export class EditPeerAssessmentView {
     if (strategy !== undefined) {
       self.val(strategy);
     }
+    if (self.val() === undefined || self.val() === '') {
+      self.val('median');
+      return 'median';
+    }
     return self.val();
   }
 

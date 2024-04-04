@@ -31,7 +31,6 @@ describe('OpenAssessment.EditScheduleView', function() {
         const peerAssessmentView = new EditPeerAssessmentView(peerAssessmentElement);
         peerAssessmentView.startDatetime("2014-01-01", "00:00");
         peerAssessmentView.dueDatetime("2014-01-01", "00:00");
-        peerAssessmentView.gradingStrategy("median");
 
         const selfAssessmentElement = $("#oa_self_assessment_editor").get(0);
         const selfAssessmentView = new EditSelfAssessmentView(selfAssessmentElement);

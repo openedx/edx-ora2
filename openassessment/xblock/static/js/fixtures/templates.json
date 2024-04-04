@@ -496,8 +496,7 @@
                     "start": "2014-01-02T00:00",
                     "due": "2014-01-03T00:00",
                     "must_grade": 5,
-                    "must_be_graded_by": 3,
-                    "grading_strategy": "median"
+                    "must_be_graded_by": 3
                 },
                 "self_assessment": {
                     "start": "2014-01-04T00:00",
@@ -667,8 +666,7 @@
                     "start": "2014-01-02T00:00",
                     "due": "2020-01-01T12:34",
                     "must_grade": 5,
-                    "must_be_graded_by": 3,
-                    "grading_strategy": "median"
+                    "must_be_graded_by": 3
                 }
             },
             "editor_assessments_order": [
