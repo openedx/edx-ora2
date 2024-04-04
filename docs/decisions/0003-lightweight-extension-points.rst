@@ -4,7 +4,7 @@ Lightweight extension points
 Status
 ******
 
-**Draft** *2024-02-27*
+**Accepted** *2024-04-04*
 
 Context
 *******
