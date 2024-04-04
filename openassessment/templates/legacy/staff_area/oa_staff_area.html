@@ -12,12 +12,12 @@
         </button>
         <button class="ui-staff__button button-staff-info" aria-expanded="false" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
         {% if staff_assessment_required %}
-            {% if is_enhanced_staff_grader_enabled %}
+            {% if is_enhanced_staff_grader_enabled and enhanced_staff_grader_url %}
                 <a href="{{enhanced_staff_grader_url}}" class="ui-staff__button button-enhanced-staff-grader" aria-expanded="false">{% trans "Grade Available Responses" %} <span class="icon fa fa-external-link" aria-hidden="true"></span></a>
             {% else %}
                 <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
                 {% comment %} Remove if block in AU-617 {% endcomment %}
-                {% if not is_team_assignment %}
+                {% if not is_team_assignment and enhanced_staff_grader_url %}
                     <a href="{{enhanced_staff_grader_url}}" class="ui-staff__button button-enhanced-staff-grader button-enhanced-staff-grader-demo" aria-expanded="false">{% trans "Demo the new Grading Experience" %} <span class="icon fa fa-external-link" aria-hidden="true"></span></a>
                 {% endif %}
             {% endif %}
