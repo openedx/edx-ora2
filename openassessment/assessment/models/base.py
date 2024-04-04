@@ -618,7 +618,7 @@ class Assessment(models.Model):
         total_criterion_scores = len(scores)
         if total_criterion_scores == 0:
             return 0
-        return int(math.ceil(sum(scores) / float(total_criterion_scores)))
+        return math.ceil(sum(scores) / float(total_criterion_scores))
 
     @classmethod
     def scores_by_criterion(cls, assessments):
