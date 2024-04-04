@@ -22,6 +22,7 @@ backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     #   -r requirements/base.txt
     #   celery
     #   django
+    #   djangorestframework
     #   kombu
 billiard==4.2.0
     # via celery
@@ -29,12 +30,12 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.1.0
     # via -r requirements/base.txt
-boto3==1.34.72
+boto3==1.34.77
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.34.72
+botocore==1.34.77
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -117,7 +118,7 @@ django-crum==0.7.9
     #   -r requirements/base.txt
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.4.0
+django-model-utils==4.5.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
@@ -133,7 +134,7 @@ django-waffle==4.1.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-edx-django-utils==5.11.0
+edx-django-utils==5.12.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -141,9 +142,9 @@ edx-i18n-tools==1.3.0
     # via -r requirements/base.txt
 edx-opaque-keys==2.5.1
     # via -r requirements/base.txt
-edx-submissions==3.6.0
+edx-submissions==3.7.0
     # via -r requirements/base.txt
-edx-toggles==5.1.1
+edx-toggles==5.2.0
     # via -r requirements/base.txt
 exceptiongroup==1.2.0
     # via pytest
@@ -203,6 +204,7 @@ loremipsum==1.0.5
     #   -r requirements/base.txt
 lxml==4.9.4
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   edx-i18n-tools
     #   xblock
@@ -269,7 +271,7 @@ psutil==5.9.8
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
-pycparser==2.21
+pycparser==2.22
     # via
     #   -r requirements/base.txt
     #   cffi
@@ -318,7 +320,6 @@ python-swiftclient==3.13.1
 pytz==2024.1
     # via
     #   -r requirements/base.txt
-    #   djangorestframework
     #   edx-submissions
     #   fs
     #   xblock
@@ -418,7 +419,7 @@ voluptuous==0.14.2
     #   -r requirements/base.txt
 wcwidth==0.2.13
     # via prompt-toolkit
-web-fragments==2.1.0
+web-fragments==2.2.0
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -433,18 +434,13 @@ webob==1.8.7
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-werkzeug==3.0.1
+werkzeug==3.0.2
     # via moto
-wrapt==1.11.2
+xblock==3.1.0
     # via
-    #   -c requirements/constraints.txt
-    #   aws-xray-sdk
-xblock==2.0.0
-    # via
-    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   xblock-sdk
-xblock-sdk==0.9.0
+xblock-sdk==0.10.0
     # via -r requirements/test.in
 xmltodict==0.13.0
     # via moto
