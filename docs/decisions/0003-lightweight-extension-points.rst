@@ -31,7 +31,7 @@ For instance, if a developer wants to add an acknowledgment notice to the submis
 
 These changes allow extension developers to interact with a crucial part of the student's assessment lifecycle. However, when none of these extension points are configured, ORA assessments will behave as usual. This first step sets a precedent for ORA developers to implement more extension points during the ORA users' lifecycle, enabling additional use cases to be built on top of them.
 
-The extension points proposed in this PR are intended to facilitate the integration with tools for students' response analysis like Turnitin. For more information on this use case, please refer to the `Platform Plugin Turnitin`_ documentation.
+The extension points proposed in this PR are intended to facilitate the integration with tools for students' response analysis like Turnitin.These two extensions are designed to share information, not to give feedback to the user; other hooks and mechanisms might be implemented to do so. For more information on this use case, please refer to the `Platform Plugin Turnitin`_ documentation.
 
 Rejected Alternatives
 *********************
