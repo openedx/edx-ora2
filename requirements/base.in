@@ -9,6 +9,7 @@ edx-toggles
 djangorestframework
 Xblock
 edx-opaque-keys
+openedx-filters
 
 django
 django-simple-history
