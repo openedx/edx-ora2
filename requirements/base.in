@@ -10,6 +10,7 @@ djangorestframework
 Xblock
 edx-opaque-keys
 openedx-filters
+openedx-events
 
 django
 django-simple-history

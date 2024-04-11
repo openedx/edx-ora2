@@ -24,6 +24,10 @@ astroid==3.1.0
     # via
     #   pylint
     #   pylint-celery
+attrs==23.2.0
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     # via
     #   -c requirements/constraints.txt
@@ -177,12 +181,15 @@ edx-django-utils==5.12.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
+    #   openedx-events
 edx-i18n-tools==1.5.0
     # via -r requirements/test.txt
 edx-lint==5.3.6
     # via -r requirements/quality.in
-edx-opaque-keys==2.5.1
-    # via -r requirements/test.txt
+edx-opaque-keys[django]==2.5.1
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 edx-submissions==3.7.0
     # via -r requirements/test.txt
 edx-toggles==5.2.0
@@ -197,6 +204,10 @@ faker==24.8.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
+fastavro==1.9.4
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 filelock==3.13.4
     # via
     #   -r requirements/test.txt

@@ -8,6 +8,8 @@ appdirs==1.4.4
     # via fs
 asgiref==3.8.1
     # via django
+attrs==23.2.0
+    # via openedx-events
 backports-zoneinfo==0.2.1 ; python_version < "3.9"
     # via
     #   -c requirements/constraints.txt
@@ -49,6 +51,7 @@ django==4.2.11
     #   edx-toggles
     #   jsonfield
     #   openedx-filters
+    #   openedx-events
 django-crum==0.7.9
     # via
     #   edx-django-utils
@@ -73,14 +76,19 @@ edx-django-utils==5.12.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
+    #   openedx-events
 edx-i18n-tools==1.5.0
     # via -r requirements/base.in
-edx-opaque-keys==2.5.1
-    # via -r requirements/base.in
+edx-opaque-keys[django]==2.5.1
+    # via
+    #   -r requirements/base.in
+    #   openedx-events
 edx-submissions==3.7.0
     # via -r requirements/base.in
 edx-toggles==5.2.0
     # via -r requirements/base.in
+fastavro==1.9.4
+    # via openedx-events
 fs==2.0.18
     # via
     #   -c requirements/constraints.txt
