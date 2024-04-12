@@ -44,7 +44,7 @@ def render_submission(config, submission_info):
             # .. filter_type: org.openedx.learning.ora.submission_view.render.started.v1
             context, path = ORASubmissionViewRenderStarted.run_filter(context, path)
         except ORASubmissionViewRenderStarted.RenderInvalidTemplate as exc:
-            context, path = exc.context, exc.template_name
+            context, path = exc.context, exc.template_name  # pylint: disable=no-member
 
     return config.render_assessment(path, context_dict=context)
 
