@@ -13,6 +13,7 @@ import ddt
 from moto import mock_s3
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.test import TestCase
 from django.test.utils import override_settings
 from freezegun import freeze_time
 
@@ -1866,3 +1867,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         # Verify that we render without error
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertGreater(len(resp), 0)
+
+
+class SirNotAppearingInThisFilm(TestCase):
+    def never_run(self):
+        print("Hello")
