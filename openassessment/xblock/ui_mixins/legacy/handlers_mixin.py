@@ -71,11 +71,11 @@ class LegacyHandlersMixin:
         Args:
             submission (dict): The submission data
         """
+        # This import is here to avoid a circular import
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 
-        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(
-            submission
-        )
+        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
+        # .. event_implemented_name: ORA_SUBMISSION_CREATED
         ORA_SUBMISSION_CREATED.send_event(
             submission=ORASubmissionData(
                 id=submission.get("uuid"),
