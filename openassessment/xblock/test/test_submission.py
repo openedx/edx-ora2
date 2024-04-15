@@ -15,6 +15,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.test.utils import override_settings
 from freezegun import freeze_time
+from openedx_filters import PipelineStep
+from openedx_filters.learning.filters import ORASubmissionViewRenderStarted
 
 from xblock.exceptions import NoSuchServiceError
 from submissions import api as sub_api
@@ -29,7 +31,7 @@ from openassessment.workflow import (
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.utils.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.ui_mixins.legacy.views.submission import get_team_submission_context
+from openassessment.xblock.ui_mixins.legacy.views.submission import get_team_submission_context, render_submission
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
@@ -77,6 +79,22 @@ class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
     @staticmethod
     def setup_mock_team(xblock):
         return setup_mock_team(xblock)
+
+
+class TestRenderInvalidTemplate(PipelineStep):
+    """
+    Utility class used when getting steps for pipeline.
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that stops the course about render process.
+        """
+        raise ORASubmissionViewRenderStarted.RenderInvalidTemplate(
+            "Invalid template.",
+            context={"context": "current_context"},
+            template_name="current/path/template.html",
+        )
 
 
 @ddt.ddt
@@ -821,6 +839,68 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
                 'user_timezone': None,
             }
         )
+
+    @patch('openassessment.xblock.ui_mixins.legacy.views.submission.get_submission_path')
+    @patch.object(OpenAssessmentBlock, "render_assessment")
+    @patch.object(ORASubmissionViewRenderStarted, "run_filter")
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_render_submission_no_run_filter(
+        self,
+        xblock,
+        mock_run_filter: Mock,
+        mock_render_assessment: Mock,
+        mock_get_submission_path: Mock
+    ):
+        """
+        Test for `render_submission` when the `run_filter` method is not called.
+        """
+        mock_get_submission_path.return_value = "another/path/template.html"
+
+        render_submission(xblock.config_data, xblock.submission_data)
+
+        mock_run_filter.assert_not_called()
+        mock_render_assessment.assert_called_once()
+
+    @patch.object(OpenAssessmentBlock, "render_assessment")
+    @patch.object(ORASubmissionViewRenderStarted, "run_filter")
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_render_submission_run_filter(
+        self, xblock, mock_run_filter: Mock, mock_render_assessment: Mock
+    ):
+        """
+        Test for `render_submission` when the `run_filter` method is called.
+        """
+        expected_context = {"context": "new_context"}
+        expected_path = "new/path/template.html"
+        mock_run_filter.return_value = (expected_context, expected_path)
+
+        render_submission(xblock.config_data, xblock.submission_data)
+
+        mock_run_filter.assert_called_once()
+        mock_render_assessment.assert_called_once_with(expected_path, expected_context)
+
+    @override_settings(
+        OPEN_EDX_FILTERS_CONFIG={
+            "org.openedx.learning.ora.submission_view.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openassessment.xblock.test.test_submission.TestRenderInvalidTemplate"
+                ]
+            }
+        }
+    )
+    @patch.object(OpenAssessmentBlock, "render_assessment")
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_render_submission_run_filter_exception(self, xblock, mock_render_assessment: Mock):
+        """
+        Test for `render_submission` when the `run_filter` method raises an exception.
+        """
+        expected_context = {"context": "current_context"}
+        expected_path = "current/path/template.html"
+
+        render_submission(xblock.config_data, xblock.submission_data)
+
+        mock_render_assessment.assert_called_once_with(expected_path, expected_context)
 
     @patch('submissions.team_api.get_teammates_with_submissions_from_other_teams')
     @scenario('data/submission_open.xml', user_id="Red Five")
