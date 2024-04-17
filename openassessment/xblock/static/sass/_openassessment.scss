@@ -96,5 +96,5 @@
 // This "namespaces" the paragon classes so that they don't conflict with
 // the version being used in the LMS
 .paragon-styles {
-    @import '@edx/paragon/scss/core/core.scss';
+    @import '@openedx/paragon/scss/core/core.scss';
 }

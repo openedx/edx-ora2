@@ -37,12 +37,6 @@ coverage.xml
 test_ora2db
 test_ora2db-journal
 
-# Bok choy
-test/custom_a11y_rules.js
-test/acceptance/screenshots/*.png
-test/logs/*
-test/acceptance/xunit-*
-
 # Mr Developer
 .mr.developer.cfg
 .project
@@ -76,7 +70,6 @@ coverage
 ora2db
 storage/*
 openassessment/xblock/static/js/fixtures/*.html
-test/selenium/screenshots/*
 
 # logging
 logs/*.log*

@@ -67,7 +67,7 @@ def assert_is_closed(
 
 @ddt.ddt
 class TestOpenAssessment(XBlockHandlerTestCase):
-    """Test Open Asessessment Xblock functionality"""
+    """Test Open Assessment XBlock functionality"""
 
     TIME_ZONE_FN_PATH = 'openassessment.xblock.utils.user_data.get_user_preferences'
 
@@ -79,6 +79,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         xblock_fragment = self.runtime.render(xblock, "student_view")
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
@@ -147,6 +151,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # always include grade and submission.
         # assessments from rubric are loaded into the ui model.
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 4)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
@@ -164,6 +169,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # peer and self assessment types are not included in VALID_ASSESSMENT_TYPES_FOR_TEAMS
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
@@ -188,10 +194,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test__create_ui_models__no_leaderboard_if_teams_enabled(self, xblock):
-        # do not show leaderboard in teams ORAS, even if leaderboard_show is set.
+        # do not show leaderboard in teams ORAs, even if leaderboard_show is set.
         xblock.leaderboard_show = 10
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
@@ -277,8 +284,37 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_args_el = tree.xpath(xblock_arg_path)
         json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
 
+    @scenario('data/basic_scenario.xml')
+    @ddt.data(False, True)
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_selectable_learner_waiting_review_enabled',
+        new_callable=PropertyMock
+    )
+    def test_ora_waiting_step_details_view_include_esg_flag(
+            self, xblock, esg_flag_input, mock_esg):
+        """
+        Test waiting step details view is selectable learner waiting review enabled.
+        """
+        mock_esg.return_value = esg_flag_input
+        xblock_fragment = self.runtime.render(xblock, "waiting_step_details_view")
+        body_html = xblock_fragment.body_html()
+
+        self.assertIn("WaitingStepDetailsBlock", body_html)
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
+
+        xblock_args_el = tree.xpath(xblock_arg_path)
+        assert json.loads(xblock_args_el[0].text)['CONTEXT']['selectable_learners_enabled'] == esg_flag_input
+
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
@@ -289,6 +325,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
 
         # No submission made, so don't update the workflow
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
@@ -308,6 +348,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_student_view_workflow_error(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
 
         # Simulate an error from updating the workflow
         xblock.submission_uuid = 'test_submission'
@@ -332,6 +376,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')
+            xblock.xmodule_runtime = self._create_mock_runtime(
+                xblock.scope_ids.usage_id, False, False, "Bob"
+            )
+            xblock.mfe_views_enabled = True
             xblock_fragment = self.runtime.render(xblock, "student_view")
             self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
@@ -343,7 +391,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     def _set_up_start_date(self, start_date):
         """
-        Helper function to set up start date for xblocks
+        Helper function to set up start date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.start = start_date
@@ -363,7 +411,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     def _set_up_end_date(self, end_date):
         """
-        Helper function to set up end date for xblocks
+        Helper function to set up end date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.due = end_date
@@ -512,7 +560,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
-
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Reset all fields in the XBlock to their default values
         for field_name, field in xblock.fields.items():
             setattr(xblock, field_name, field.default)
@@ -543,6 +593,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_ignore_unknown_assessment_types(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # If the XBlock contains an unknown assessment type
         # (perhaps after a roll-back), it should ignore it.
         xblock.rubric_assessments.append({'name': 'unknown'})
@@ -556,6 +610,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff.xml', user_id='Bob')
     def test_assessment_type_with_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
 
@@ -564,6 +622,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_only.xml', user_id='Bob')
     def test_assessment_type_without_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
 
@@ -572,6 +634,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_not_required(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
 
@@ -580,6 +647,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_override(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Override the staff_assessment_exists function to always return True
         StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: True
 
@@ -658,6 +729,34 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Ensure that when an ORA w/ file uploads is loaded, it maintains its custom allowed file types
         """
         self.assertEqual(xblock.white_listed_file_types, ["pdf"])
+
+    @ddt.data(True, False)
+    @scenario('data/simple_self_staff_scenario.xml')
+    def test_mfe_views_supported__teams(self, xblock, mock_teams_assignment):
+        # Given I'm on / not on a team assignment
+        xblock.is_team_assignment = Mock(return_value=mock_teams_assignment)
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for team assignments
+        expected_supported = not mock_teams_assignment
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
+    @ddt.unpack
+    @ddt.data((0, True), (5, False))
+    @patch.object(openassessmentblock.OpenAssessmentBlock, 'leaderboard_show', new_callable=PropertyMock)
+    @scenario('data/simple_self_staff_scenario.xml')
+    def test_mfe_views_supported__leaderboard(self, xblock, mock_value, expected_supported, mock_leaderboard_show):
+        # Given I'm on / not on an ORA with a leaderboard
+        mock_leaderboard_show.return_value = mock_value
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for ORAs with leaderboards
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
+    @scenario('data/assessment_steps_reordered.xml')
+    def test_mfe_views_supported__rearranged_steps(self, xblock):
+        # Given this ORA has rearranged our assessment steps
+        self.assertTrue(xblock.mfe_views_supported)
 
 
 class TestDates(XBlockHandlerTestCase):
@@ -1086,7 +1185,7 @@ class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
                     dt.datetime.fromisoformat(assessment.get('start')),
                     dt.datetime.fromisoformat(assessment.get('due'))
                 )
-        return None
+        return None  # pragma: no cover
 
     def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
         """

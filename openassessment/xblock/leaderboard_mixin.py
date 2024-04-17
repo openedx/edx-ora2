@@ -77,7 +77,7 @@ class LeaderboardMixin:
 
         # Retrieve top scores from the submissions API
         # Since this uses the read-replica and caches the results,
-        # there will be some delay in the request latency.
+        # there will be some delay in the latency.
         scores = sub_api.get_top_submissions(
             student_item_dict['course_id'],
             student_item_dict['item_id'],
@@ -88,12 +88,11 @@ class LeaderboardMixin:
             raw_score_content_answer = score['content']
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_score_content_answer)
             score['files'] = []
-            for uploaded_file in answer.get_file_uploads(missing_blank=True):
-                file_download_url = self._get_file_download_url(uploaded_file.key)
-                if file_download_url:
+            for uploaded_file in answer.get_file_uploads(missing_blank=True, generate_urls=True):
+                if uploaded_file.url:
                     score['files'].append(
                         file_upload_api.FileDescriptor(
-                            download_url=file_download_url,
+                            download_url=uploaded_file.url,
                             description=uploaded_file.description,
                             name=uploaded_file.name,
                             size=uploaded_file.size,
@@ -118,7 +117,7 @@ class LeaderboardMixin:
                    'file_upload_type': self.file_upload_type,
                    'xblock_id': self.get_xblock_id()}
 
-        return 'openassessmentblock/leaderboard/oa_leaderboard_show.html', context
+        return 'legacy/leaderboard/oa_leaderboard_show.html', context
 
     def render_leaderboard_incomplete(self):
         """
@@ -127,7 +126,7 @@ class LeaderboardMixin:
         Returns:
             template_path (string), tuple of context (dict)
         """
-        return 'openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {'xblock_id': self.get_xblock_id()}
+        return 'legacy/leaderboard/oa_leaderboard_waiting.html', {'xblock_id': self.get_xblock_id()}
 
     def _get_file_download_url(self, file_key):
         """

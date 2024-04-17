@@ -11,22 +11,27 @@ import logging
 import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
+from typing import List, Set
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import CharField, F, OuterRef, Subquery
+from django.db.models import CharField, F, OuterRef, Subquery, QuerySet
 from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
 import requests
 
+from submissions.models import Submission
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.assessment.score_type_constants import score_type_to_string
+from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
 from openassessment.runtime_imports.functions import get_course_blocks, modulestore
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
+
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +99,52 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
     }
 
     return anonymous_id_to_username_mapping
+
+
+def map_anonymized_ids_to_user_data(anonymized_ids: Set[str]) -> dict:
+    """
+    Map anonymized user IDs to user data.
+
+    Retrieves user data such as email, username, and fullname associated
+    with the provided anonymized user IDs.
+
+    Args:
+        anonymized_ids (Set[str]): Set of anonymized user ids.
+
+    Returns:
+        dict: A dictionary mapping anonymized user IDs to user data.
+            Each key is an anonymized user ID, and its corresponding
+            value is a dictionary containing:
+
+            - email (str): The email address of the user.
+            - username (str): The username of the user.
+            - fullname (str): The full name of the user.
+
+    Example:
+        {
+           "<anonymous_user_id>" : {
+               "email": "john@doe.com"
+               "username": "johndoe"
+               "fullname": "John Doe"
+            }
+        }
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .select_related("profile")
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+    ).values("username", "email", "profile__name", "anonymous_id")
+
+    anonymous_id_to_user_info_mapping = {
+        user["anonymous_id"]: {
+            "username": user["username"],
+            "email": user["email"],
+            "fullname": user["profile__name"]
+        } for user in users
+    }
+    return anonymous_id_to_user_info_mapping
 
 
 class CsvWriter:
@@ -1315,11 +1366,12 @@ class SubmissionFileUpload:
 
     DEFAULT_DESCRIPTION = _("No description provided.")
 
-    def __init__(self, key, name=None, description=None, size=0):
+    def __init__(self, key, name=None, description=None, size=0, url=None):
         self.key = key
         self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
         self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
         self.size = size
+        self.url = url
 
     @staticmethod
     def generate_name_from_key(key):
@@ -1367,7 +1419,7 @@ class OraSubmissionAnswer:
         """
         raise NotImplementedError()
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Get the list of FileUploads for this submission
         """
@@ -1393,7 +1445,7 @@ class TextOnlySubmissionAnswer(OraSubmissionAnswer):
             self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
         return self.text_responses
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         return []
 
 
@@ -1510,7 +1562,20 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         except IndexError:
             return default
 
-    def get_file_uploads(self, missing_blank=False):
+    def _safe_get_download_url(self, key):
+        """ Helper to get a download URL """
+        try:
+            return get_download_url(key)
+        except FileUploadInternalError as exc:
+            logger.exception(
+                "FileUploadError: Download url for file key %s failed with error %s",
+                key,
+                exc,
+                exc_info=True
+            )
+            return None
+
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Parse and cache file upload responses from the raw_answer
         """
@@ -1530,8 +1595,121 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
                 name = self._index_safe_get(i, file_names, default_missing_value)
                 description = self._index_safe_get(i, file_descriptions, default_missing_value)
                 size = self._index_safe_get(i, file_sizes, 0)
-
-                file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
+                url = None if not generate_urls else self._safe_get_download_url(key)
+                file_upload = SubmissionFileUpload(
+                    key,
+                    name=name,
+                    description=description,
+                    size=size,
+                    url=url
+                )
                 files.append(file_upload)
             self.file_uploads = files
         return self.file_uploads
+
+
+def parts_summary(assessment: Assessment) -> List[dict]:
+    """
+    Retrieves a summary of the parts from a given assessment object.
+
+    Args:
+        assessment (Asessment): Assessment object.
+
+    Returns:
+        List[dict]: A list containing assessment parts summary data dictionaries.
+    """
+    return [
+        {
+            "criterion_name": part.criterion.name,
+            "score_earned": part.points_earned,
+            "score_type": part.option.name if part.option else _("None"),
+        }
+        for part in assessment.parts.all()
+    ]
+
+
+def generate_assessment_data(assessments: QuerySet[Assessment]) -> List[dict]:
+    """
+    Creates the list of Assessment's data dictionaries.
+
+    Args:
+        assessments (QuerySet[Assessment]): Assessment objects queryset.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    # Fetch the user data we need in a single query
+    user_data_mapping = map_anonymized_ids_to_user_data(
+        {assessment.scorer_id for assessment in assessments}
+    )
+
+    # Prefetch the related data needed to generate this report
+    assessments = assessments.prefetch_related("parts").prefetch_related("rubric")
+
+    assessment_data_list = []
+    for assessment in assessments:
+
+        scorer = user_data_mapping.get(assessment.scorer_id, {})
+
+        assessment_data_list.append({
+            "assessment_id": str(assessment.pk),
+            "scorer_name": scorer.get("fullname") or "",
+            "scorer_username": scorer.get("username") or "",
+            "scorer_email": scorer.get("email") or "",
+            "assessment_date": str(assessment.scored_at),
+            "assessment_scores": parts_summary(assessment),
+            "problem_step": score_type_to_string(assessment.score_type),
+            "feedback": assessment.feedback or ""
+        })
+    return assessment_data_list
+
+
+def generate_assessment_from_data(submission_uuid: str) -> List[dict]:
+    """
+    Generates a list of assessments received by a user based
+    on the submission UUID in an ORA assignment.
+
+    Args:
+        submission_uuid (str): The UUID of the submission.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    assessments = _use_read_replica(
+        Assessment.objects.filter(submission_uuid=submission_uuid)
+    )
+    return generate_assessment_data(assessments)
+
+
+def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict]:
+    """
+    Generates a list of assessments given by a user based
+    on the item ID and submission UUID in an ORA assignment.
+
+    Args:
+        item_id (str): The ID of the item (block id)
+        submission_uuid (str): The UUID of the submission.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    scorer_submission = sub_api.get_submission_and_student(submission_uuid)
+    if not scorer_submission:
+        return []
+
+    scorer_id = scorer_submission["student_item"]["student_id"]
+
+    submissions = _use_read_replica(
+        Submission.objects.filter(student_item__item_id=item_id).values("uuid")
+    )
+
+    if not submissions:
+        return []
+
+    submission_uuids = [sub["uuid"] for sub in submissions]
+
+    assessments_made_by_student = _use_read_replica(
+        Assessment.objects.filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
+    )
+
+    return generate_assessment_data(assessments_made_by_student)

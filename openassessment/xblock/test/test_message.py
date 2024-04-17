@@ -114,7 +114,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_open.html'
+        expected_path = 'legacy/message/oa_message_open.html'
 
         expected_context = {
             "approaching": False,
@@ -139,7 +139,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_open.html'
+        expected_path = 'legacy/message/oa_message_open.html'
 
         expected_context = {
             "approaching": False,
@@ -165,7 +165,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_open.html'
+        expected_path = 'legacy/message/oa_message_open.html'
 
         expected_context = {
             "approaching": True,
@@ -190,7 +190,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_open.html'
+        expected_path = 'legacy/message/oa_message_open.html'
 
         expected_context = {
             "approaching": True,
@@ -216,7 +216,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": True,
@@ -242,7 +242,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": False,
@@ -269,7 +269,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "training": True,
@@ -299,7 +299,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "training": True,
@@ -329,7 +329,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": True,
@@ -356,7 +356,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": False,
@@ -382,7 +382,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "peer": True,
@@ -410,7 +410,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "peer": True,
@@ -438,7 +438,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "peer": True,
@@ -467,7 +467,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": True,
@@ -493,7 +493,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": False,
@@ -519,7 +519,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "peer": True,
@@ -548,7 +548,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "peer": True,
@@ -577,7 +577,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": True,
@@ -603,7 +603,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "self": True,
@@ -631,7 +631,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "self": True,
@@ -659,7 +659,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
+        expected_path = 'legacy/message/oa_message_incomplete.html'
 
         expected_context = {
             "self": True,
@@ -688,7 +688,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": True,
@@ -713,7 +713,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_closed.html'
+        expected_path = 'legacy/message/oa_message_closed.html'
 
         expected_context = {
             "not_yet_open": False,
@@ -741,7 +741,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+        expected_path = 'legacy/message/oa_message_complete.html'
 
         expected_context = {
             "waiting": True,
@@ -769,7 +769,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+        expected_path = 'legacy/message/oa_message_complete.html'
 
         expected_context = {
             "waiting": True,
@@ -803,7 +803,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+        expected_path = 'legacy/message/oa_message_complete.html'
 
         expected_context = {
             "waiting": True,
@@ -829,7 +829,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+        expected_path = 'legacy/message/oa_message_complete.html'
 
         expected_context = {
             "waiting": False,
@@ -855,7 +855,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+        expected_path = 'legacy/message/oa_message_complete.html'
 
         expected_context = {
             "waiting": False,
@@ -878,7 +878,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         }
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_path = 'legacy/message/oa_message_cancelled.html'
         expected_context = {
             'is_team_assignment': False,
             'xblock_id': xblock.scope_ids.usage_id,
@@ -901,7 +901,7 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         self._enable_team_assignment(xblock)
 
-        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_path = 'legacy/message/oa_message_cancelled.html'
         expected_context = {
             'is_team_assignment': True,
             'xblock_id': xblock.scope_ids.usage_id,
@@ -927,7 +927,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         if not teamset_found:
             xblock.teamset_config = None
 
-        expected_path = 'openassessmentblock/message/oa_message_no_team.html'
+        expected_path = 'legacy/message/oa_message_no_team.html'
         expected_context = {
             'teamset_name': 'Teamset Name' if teamset_found else '<id teamset_message_id>',
             'xblock_id': xblock.scope_ids.usage_id,
@@ -954,9 +954,9 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         # Hide the message if the learner has already submitted
         if has_prior_submbission:
-            expected_path = 'openassessmentblock/message/oa_message_unavailable.html'
+            expected_path = 'legacy/message/oa_message_unavailable.html'
         else:
-            expected_path = 'openassessmentblock/message/oa_message_no_team.html'
+            expected_path = 'legacy/message/oa_message_no_team.html'
             expected_context['teamset_name'] = "Teamset Name"
 
         expected_context['xblock_id'] = xblock.scope_ids.usage_id

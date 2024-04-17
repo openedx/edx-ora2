@@ -8,6 +8,34 @@
   position: relative;
 }
 
+// default to hide and show when it is needed
+.openassessment-initial-wrapper {
+  display: none;
+
+  &.is--showing {
+    display: block;
+  }
+
+  .ora-loading {
+    background: $color-unavailable;
+    padding: $baseline-h;
+    text-align: center;
+
+    .wrapper--anim {
+      @include animation(pulse $tmg-s3 ease-in-out infinite);
+    }
+
+    .icon {
+      display: inline-block;
+      color: $copy-color;
+    }
+
+    .copy {
+      color: $copy-color;
+    }
+  }
+}
+
 .openassessment {
   @include direction();
 

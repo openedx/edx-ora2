@@ -147,3 +147,14 @@ class FileAPI:
 
     def get_allowed_file_types_or_preset(self):
         return self._block.get_allowed_file_types_or_preset
+
+    def has_any_file_in_upload_space(self):
+        # Here we check if there are existing file uploads by checking for
+        # an existing download url for any of the upload slots.
+        # Note that we can't use self.saved_files_descriptions because that
+        # is populated before files are actually uploaded
+        for potential_file_index in range(self.max_allowed_uploads):
+            file_url = self.get_download_url(potential_file_index)
+            if file_url:
+                return True
+        return False

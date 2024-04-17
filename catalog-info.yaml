@@ -1,0 +1,18 @@
+# This file records information about this repo. Its use is described in OEP-55:
+# https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0055-proc-project-maintainers.html
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 'edx-ora2'
+  description: "Open Response Assessment (ORA) XBlock for use within edx-platform"
+  links:
+    - url: "https://github.com/openedx/edx-ora2"
+      title: "Open Response Assessment (ORA) XBlock"
+      icon: "Web"
+  annotations:
+    openedx.org/arch-interest-groups: ""
+spec:
+  owner: group:2u-aurora
+  type: 'xblock'
+  lifecycle: 'production'

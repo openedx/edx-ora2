@@ -107,7 +107,7 @@ class TeamWorkflowMixin:
         Returns cancellation information for a particular team submission.
 
         :param team_submission_uuid: The team_submission identifier associated with the
-        sumbission to return information for.
+        submission to return information for.
         :return: The cancellation information, or None if the team submission has
         not been cancelled.
         """

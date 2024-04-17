@@ -23,7 +23,7 @@ class StudentTrainingWorkflow(models.Model):
     # Since submissions are immutable, we can do this without
     # jeopardizing data integrity.
     student_id = models.CharField(max_length=40, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)
 
     class Meta:

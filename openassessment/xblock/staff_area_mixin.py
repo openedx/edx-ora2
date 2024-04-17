@@ -103,7 +103,7 @@ class StaffAreaMixin:
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_area/oa_staff_area.html'
+        path = 'legacy/staff_area/oa_staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -145,10 +145,9 @@ class StaffAreaMixin:
                 context['is_enhanced_staff_grader_enabled'] = False
             else:
                 context['is_enhanced_staff_grader_enabled'] = self.is_enhanced_staff_grader_enabled
-            context['enhanced_staff_grader_url'] = '{esg_url}/{block_id}'.format(
-                esg_url=getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', ''),
-                block_id=str(self.get_xblock_id())
-            )
+
+            esg_url = getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', None)
+            context['enhanced_staff_grader_url'] = f'{esg_url}/{str(self.get_xblock_id())}' if esg_url else None
 
             context.update(
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
@@ -380,7 +379,7 @@ class StaffAreaMixin:
                         self.add_team_submission_context(
                             submission_context, individual_submission_uuid=submission['uuid'], transform_usernames=True
                         )
-                    path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
+                    path = 'legacy/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._("Error loading the checked out learner response."))
             return self.render_error(self._("No other learner responses are available for grading at this time."))
@@ -402,7 +401,7 @@ class StaffAreaMixin:
                 student_item_dict.get('course_id'), student_item_dict.get('item_id')
             )
 
-            path = 'openassessmentblock/staff_area/oa_staff_grade_learners_count.html'
+            path = 'legacy/staff_area/oa_staff_grade_learners_count.html'
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
@@ -514,7 +513,7 @@ class StaffAreaMixin:
                     # A student outside of the course will not exist and is valid
                     pass
 
-        path = 'openassessmentblock/staff_area/oa_student_info.html'
+        path = 'legacy/staff_area/oa_student_info.html'
         return path, context
 
     def add_submission_context(self, submission_uuid, context):

@@ -1,0 +1,26 @@
+{% extends "legacy/student_training/student_training.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li class="openassessment__steps__step step--student-training is--showing ui-slidable__container is--initially--collapsed {% if allow_latex %}allow--latex{%endif%}"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content" aria-describedby="oa_step_status oa_step_deadline">
+{% endblock %}
+
+{% block body %}
+    <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}" id="oa_training_{{ xblock_id }}_content">
+        <div class="wrapper--step__content">
+
+            <div class="step__message message message--incomplete">
+                <h5 class="message__title">{% trans "Error Loading Learner Training Examples" %}</h5>
+
+                <div class="message__content">
+                    <p>{% trans "The Learner Training Step of this assignment could not be loaded." %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

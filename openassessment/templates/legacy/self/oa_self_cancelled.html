@@ -1,0 +1,28 @@
+{% extends "legacy/self/oa_self_assessment.html" %}
+{% load i18n %}
+{% load tz %}
+
+
+{% block list_item %}
+<li id="openassessment__self-assessment__{{ xblock_id }}"
+    class="openassessment__steps__step step--self-assessment ui-slidable__container"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" aria-labeledby="oa_step_title_self" disabled/>
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_self" class="step__status__value">
+    <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
+    <span class="copy">
+        {% trans "Cancelled" %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

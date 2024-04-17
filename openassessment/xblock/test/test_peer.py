@@ -14,7 +14,11 @@ import ddt
 import pytz
 
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.models.base import Assessment
+from openassessment.assessment.models.peer import PeerWorkflowItem
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.apis.assessments.errors import ServerClientUUIDMismatchException
+from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.utils.data_conversion import create_submission_dict
 
 from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
@@ -22,6 +26,7 @@ from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 logger = logging.getLogger(__name__)
 
 
+@ddt.ddt
 class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
     """
     Test integration of the OpenAssessment XBlock with the peer assessment API.
@@ -66,10 +71,10 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
         reflect their done status with regards to the new requirements.
         """
         # Setup the peer grading scenario, using the default requirements
+        mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
         self._sally_and_hal_grade_each_other_helper(xblock)
 
         # Verify that Sally's workflow is not marked done, as the requirements are higher than 1.
-        mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
         workflow_info = xblock.get_workflow_info()
 
         # peer step is skipable. So we expect next status to be current status.
@@ -129,7 +134,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):
         # Submit a peer assessment without a submission
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -140,7 +147,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
 
         # Attempt to assess a peer without first leasing their submission
         # (usually occurs by rendering the peer assessment step)
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -304,6 +313,120 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
         self.assertNotIn(submission["answer"]["parts"][1]["text"], peer_response.body.decode('utf-8'))
         self.assertIn("You have successfully completed", peer_response.body.decode('utf-8'))
 
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    @ddt.data(None, "nonmatchinguuid")
+    def test_assess_expired_peer_item(self, xblock, client_uuid):
+
+        # Create two submissions, one for sally and one for Hal
+        student_item = xblock.get_student_item_dict()
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
+
+        # Sally is given Hal to assess
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assert hal_sub['uuid'] == hal_submission['uuid']
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) == hal_sub
+
+        # Modify the peer workflow item to be too old to be "active"
+        pwi = PeerWorkflowItem.objects.last()
+        assert pwi.submission_uuid == hal_submission['uuid']
+        pwi.started_at = pwi.started_at - dt.timedelta(days=1)
+        pwi.save()
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) is None
+
+        # An error should be raised when sally tried to submit an assessment
+        # because she doesn't have an active submission
+        with self.assertRaises(ServerClientUUIDMismatchException):
+            peer_assess(
+                self.ASSESSMENT['options_selected'],
+                self.ASSESSMENT['overall_feedback'],
+                self.ASSESSMENT['criterion_feedback'],
+                xblock.config_data,
+                xblock.workflow_data,
+                xblock.peer_assessment_data(),
+                assessed_submission_uuid=client_uuid
+            )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_peer_assess_mismatch(self, xblock):
+        # Create two submissions, one for sally and one for Hal
+        student_item = xblock.get_student_item_dict()
+
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
+
+        # Sally is given Hal to assess
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assert hal_sub['uuid'] == hal_submission['uuid']
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) == hal_sub
+
+        # An error should  raised when sally tried to submit an assessment
+        # that doesn't match behal's uuid
+        with self.assertRaises(ServerClientUUIDMismatchException):
+            peer_assess(
+                self.ASSESSMENT['options_selected'],
+                self.ASSESSMENT['overall_feedback'],
+                self.ASSESSMENT['criterion_feedback'],
+                xblock.config_data,
+                xblock.workflow_data,
+                xblock.peer_assessment_data(),
+                assessed_submission_uuid='some-other-uuid'
+            )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_peer_assess_no_client_id(self, xblock):
+
+        # Create two submissions, one for sally and one for Hal
+        student_item = xblock.get_student_item_dict()
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
+
+        # Sally is given Hal to assess
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assert hal_sub['uuid'] == hal_submission['uuid']
+        assert peer_api.get_active_assessment_submission(sally_submission['uuid']) == hal_sub
+
+        peer_assess(
+            self.ASSESSMENT['options_selected'],
+            self.ASSESSMENT['overall_feedback'],
+            self.ASSESSMENT['criterion_feedback'],
+            xblock.config_data,
+            xblock.workflow_data,
+            xblock.peer_assessment_data(),
+            assessed_submission_uuid=None
+        )
+
+        assessment = Assessment.objects.last()
+        assert assessment.scorer_id == 'Sally'
+        assert assessment.submission_uuid == hal_sub['uuid']
+
 
 @ddt.ddt
 class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
@@ -328,10 +451,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_closed_scenario.xml', user_id='Bob')
@@ -347,10 +471,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
+            xblock, 'legacy/peer/oa_peer_closed.html', expected_context
         )
 
     @scenario('data/peer_future_scenario.xml', user_id='Bob')
@@ -366,10 +491,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
@@ -388,10 +514,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_waiting.html',
+            xblock, 'legacy/peer/oa_peer_waiting.html',
             expected_context,
             workflow_status='peer',
             graded_enough=False,
@@ -422,10 +549,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_assessment.html',
+            xblock, 'legacy/peer/oa_peer_assessment.html',
             expected_context,
             workflow_status='peer',
         )
@@ -445,11 +573,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_cancelled.html',
+            xblock, 'legacy/peer/oa_peer_cancelled.html',
             expected_context,
             workflow_status='cancelled',
             graded_enough=True,
@@ -472,10 +601,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -502,10 +632,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -530,11 +661,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_complete.html',
+            xblock, 'legacy/peer/oa_peer_complete.html',
             expected_context,
             workflow_status=workflow_status,
             graded_enough=True,
@@ -560,10 +692,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode_waiting.html',
             expected_context,
             continue_grading=True,
             workflow_status=workflow_status,
@@ -591,10 +724,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode.html',
             expected_context,
             continue_grading=True,
             workflow_status='done',
@@ -616,10 +750,11 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': pytz.utc,
-            'user_language': 'en'
+            'user_language': 'en',
+            'show_survey': False
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html',
+            xblock, 'legacy/peer/oa_peer_unavailable.html',
             expected_context,
             continue_grading=True,
         )
@@ -786,13 +921,13 @@ class TestPeerAssessHandler(XBlockHandlerTestCase, SubmissionTestMixin):
             expect_failure=True
         )
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_request_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
         self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_internal_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError

@@ -83,7 +83,7 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
 static: ## Webpack JavaScript and SASS source files
-	npm run dev && npm run build
+	npm run build
 
 ################
 #Translations Handling
@@ -136,12 +136,6 @@ test-js-debug: render-templates ## Debug JavaScript tests using Karma
 
 test: quality test-python test-js ## Run quality checks and tests for Python and JavaScript
 
-test-acceptance: ## acceptance and a11y tests require a functioning sandbox, and do not run on travis
-	./scripts/test-acceptance.sh tests
-
-test-a11y: ## Run accessibility tests
-	./scripts/test-acceptance.sh accessibility
-
 test-sandbox: test-acceptance test-a11y ## Run acceptance and accessibility tests
 
 install-osx-requirements: ## Install OSX specific requirements using Homebrew
@@ -155,6 +149,8 @@ install-osx-requirements: ## Install OSX specific requirements using Homebrew
 install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
 	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
 	docker exec -t edx.devstack.cms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
+	docker exec -t edx.devstack.lms bash -c 'kill $$(ps aux | egrep "manage.py ?\w* runserver" | egrep -v "while|grep" | awk "{print \$$2}")'
+	docker exec -t edx.devstack.cms bash -c 'kill $$(ps aux | egrep "manage.py ?\w* runserver" | egrep -v "while|grep" | awk "{print \$$2}")'
 
 install_transifex_client: ## Install the Transifex client
 	# Instaling client will skip CHANGELOG and LICENSE files from git changes

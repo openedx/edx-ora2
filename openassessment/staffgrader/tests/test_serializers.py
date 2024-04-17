@@ -118,6 +118,16 @@ class TestSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
+    def mock_get_email(self):
+        with patch.object(SubmissionListSerializer, 'get_email', return_value='get_email'):
+            yield
+
+    @contextmanager
+    def mock_get_fullname(self):
+        with patch.object(SubmissionListSerializer, 'get_fullname', return_value='get_fullname'):
+            yield
+
+    @contextmanager
     def mock_get_teamName(self):
         with patch.object(SubmissionListSerializer, 'get_teamName', return_value='get_teamName'):
             yield
@@ -133,12 +143,25 @@ class TestSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
-    def mock_serializer_methods(self, gradedBy=False, username=False, teamName=False, score=False, verify=False):
+    def mock_serializer_methods(
+        self,
+        gradedBy=False,
+        username=False,
+        email=False,
+        fullname=False,
+        teamName=False,
+        score=False,
+        verify=False,
+    ):
         with ExitStack() as stack:
             if gradedBy:
                 stack.enter_context(self.mock_get_gradedBy())
             if username:
                 stack.enter_context(self.mock_get_username())
+            if email:
+                stack.enter_context(self.mock_get_email())
+            if fullname:
+                stack.enter_context(self.mock_get_fullname())
             if teamName:
                 stack.enter_context(self.mock_get_teamName())
             if score:
@@ -149,7 +172,9 @@ class TestSubmissionListSerializer(BaseSerializerTest):
 
     def test_serializer(self):
         mock_workflow = Mock()
-        with self.mock_serializer_methods(gradedBy=True, username=True, teamName=True, score=True, verify=True):
+        with self.mock_serializer_methods(
+            gradedBy=True, username=True, email=True, fullname=True, teamName=True, score=True, verify=True
+        ):
             result = SubmissionListSerializer(mock_workflow).data
         self.assertDictEqual(
             result,
@@ -161,6 +186,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
                 'lockStatus': str(mock_workflow.lock_status),
                 'gradedBy': 'get_gradedBy',
                 'username': 'get_username',
+                'email': 'get_email',
+                'fullname': 'get_fullname',
                 'teamName': 'get_teamName',
                 'score': 'get_score',
             }
@@ -175,7 +202,7 @@ class TestSubmissionListSerializer(BaseSerializerTest):
         else:
             mock_workflow.scorer_id = None
 
-        with self.mock_serializer_methods(username=True, score=True, verify=True):
+        with self.mock_serializer_methods(username=True, email=True, fullname=True, score=True, verify=True):
             result = SubmissionListSerializer(
                 mock_workflow,
                 context={
@@ -197,7 +224,7 @@ class TestSubmissionListSerializer(BaseSerializerTest):
         if has_assessment:
             mock_submission_uuid_to_assessment[mock_workflow.identifying_uuid] = mock_assessment
 
-        with self.mock_serializer_methods(gradedBy=True, username=True, verify=True):
+        with self.mock_serializer_methods(gradedBy=True, username=True, email=True, fullname=True, verify=True):
             with patch(
                 'openassessment.staffgrader.serializers.submission_list.SubmissionListScoreSerializer'
             ) as mock_score_serializer:
@@ -219,7 +246,7 @@ class TestSubmissionListSerializer(BaseSerializerTest):
         # mock_workflow.identifying_uuid = str(mock_workflow.identifying_uuid)
         student_id, username = 'test_student_id', 'test_username'
 
-        with self.mock_serializer_methods(gradedBy=True, score=True, verify=True):
+        with self.mock_serializer_methods(gradedBy=True, email=True, fullname=True, score=True, verify=True):
             result = SubmissionListSerializer(
                 mock_workflow,
                 context={
@@ -230,11 +257,45 @@ class TestSubmissionListSerializer(BaseSerializerTest):
 
         self.assertEqual(result['username'], username)
 
+    def test_get_email(self):
+        mock_workflow = Mock()
+        # mock_workflow.identifying_uuid = str(mock_workflow.identifying_uuid)
+        student_id, email = 'test_student_id', 'test_email'
+
+        with self.mock_serializer_methods(gradedBy=True, username=True, fullname=True, score=True, verify=True):
+            result = SubmissionListSerializer(
+                mock_workflow,
+                context={
+                    'submission_uuid_to_student_id': {mock_workflow.identifying_uuid: student_id},
+                    'anonymous_id_to_email': {student_id: email}
+                }
+            ).data
+
+        self.assertEqual(result['email'], email)
+
+    def test_get_fullname(self):
+        mock_workflow = Mock()
+        # mock_workflow.identifying_uuid = str(mock_workflow.identifying_uuid)
+        student_id, fullname = 'test_student_id', 'test_fullname'
+
+        with self.mock_serializer_methods(gradedBy=True, username=True, email=True, score=True, verify=True):
+            result = SubmissionListSerializer(
+                mock_workflow,
+                context={
+                    'submission_uuid_to_student_id': {mock_workflow.identifying_uuid: student_id},
+                    'anonymous_id_to_fullname': {student_id: fullname}
+                }
+            ).data
+
+        self.assertEqual(result['fullname'], fullname)
+
     def test_get_teamName(self):
         mock_workflow = Mock()
         student_id, username = 'test_student_id', 'test_username'
 
-        with self.mock_serializer_methods(gradedBy=True, username=True, score=True, verify=True):
+        with self.mock_serializer_methods(
+            gradedBy=True, username=True, email=True, fullname=True, score=True, verify=True
+        ):
             result = SubmissionListSerializer(
                 mock_workflow,
                 context={
@@ -265,6 +326,16 @@ class TestSubmissionListSerializer(BaseSerializerTest):
             f'student_id_{i}': f'username_{i}'
             for i in range(3)
         }
+        # Simple mapping of student_id_n to email_n
+        anonymous_id_to_email = {
+            f'student_id_{i}': f'email_{i}'
+            for i in range(3)
+        }
+        # Simple mapping of student_id_n to fullname_n
+        anonymous_id_to_fullname = {
+            f'student_id_{i}': f'fullname_{i}'
+            for i in range(3)
+        }
         # also include usernames for the scorers of the first two workflows
         anonymous_id_to_username[workflows[0].scorer_id] = 'staff_username_1'
         anonymous_id_to_username[workflows[1].scorer_id] = 'staff_username_2'
@@ -280,6 +351,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
             context={
                 'submission_uuid_to_student_id': submission_uuid_to_student_id,
                 'anonymous_id_to_username': anonymous_id_to_username,
+                'anonymous_id_to_email': anonymous_id_to_email,
+                'anonymous_id_to_fullname': anonymous_id_to_fullname,
                 'submission_uuid_to_assessment': submission_uuid_to_assessment,
             },
             many=True
@@ -299,6 +372,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
                     'pointsEarned': 10,
                     'pointsPossible': 20,
                 },
+                'email': 'email_0',
+                'fullname': 'fullname_0',
             }),
             OrderedDict({
                 'submissionUuid': str(workflows[1].submission_uuid),
@@ -313,6 +388,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
                     'pointsEarned': 7,
                     'pointsPossible': 20,
                 },
+                'email': 'email_1',
+                'fullname': 'fullname_1',
             }),
             OrderedDict({
                 'submissionUuid': str(workflows[2].submission_uuid),
@@ -324,6 +401,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
                 'username': 'username_2',
                 'teamName': None,
                 'score': {},
+                'email': 'email_2',
+                'fullname': 'fullname_2',
             })
         ]
 
@@ -347,6 +426,16 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
+    def mock_get_email(self):
+        with patch.object(TeamSubmissionListSerializer, 'get_email', return_value='get_email'):
+            yield
+
+    @contextmanager
+    def mock_get_fullname(self):
+        with patch.object(TeamSubmissionListSerializer, 'get_fullname', return_value='get_fullname'):
+            yield
+
+    @contextmanager
     def mock_get_teamName(self):
         with patch.object(TeamSubmissionListSerializer, 'get_teamName', return_value='get_teamName'):
             yield
@@ -362,12 +451,18 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
-    def mock_serializer_methods(self, gradedBy=False, username=False, teamName=False, score=False, verify=False):
+    def mock_serializer_methods(
+        self, gradedBy=False, username=False, email=False, fullname=False, teamName=False, score=False, verify=False
+    ):
         with ExitStack() as stack:
             if gradedBy:
                 stack.enter_context(self.mock_get_gradedBy())
             if username:
                 stack.enter_context(self.mock_get_username())
+            if email:
+                stack.enter_context(self.mock_get_email())
+            if fullname:
+                stack.enter_context(self.mock_get_fullname())
             if teamName:
                 stack.enter_context(self.mock_get_teamName())
             if score:
@@ -392,7 +487,9 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
     def test_serializer(self):
         """Test connections between serializer fields and underlying functions"""
         mock_workflow = Mock()
-        with self.mock_serializer_methods(gradedBy=True, username=True, teamName=True, score=True, verify=True):
+        with self.mock_serializer_methods(
+            gradedBy=True, username=True, email=True, fullname=True, teamName=True, score=True, verify=True
+        ):
             result = TeamSubmissionListSerializer(mock_workflow).data
         self.assertDictEqual(
             result,
@@ -404,6 +501,8 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                 'lockStatus': str(mock_workflow.lock_status),
                 'gradedBy': 'get_gradedBy',
                 'username': 'get_username',
+                'email': 'get_email',
+                'fullname': 'get_fullname',
                 'teamName': 'get_teamName',
                 'score': 'get_score',
             }
@@ -424,6 +523,38 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
 
         # Username should be null for team submissions
         self.assertEqual(result['username'], None)
+
+    def test_get_email(self):
+        mock_workflow = Mock()
+        student_id, email = 'test_student_id', 'test_email'
+
+        with self.mock_serializer_methods(teamName=True, gradedBy=True, score=True, verify=True):
+            result = TeamSubmissionListSerializer(
+                mock_workflow,
+                context={
+                    'submission_uuid_to_student_id': {mock_workflow.identifying_uuid: student_id},
+                    'anonymous_id_to_email': {student_id: email}
+                }
+            ).data
+
+        # Email should be null for team submissions
+        self.assertEqual(result['email'], None)
+
+    def test_get_fullname(self):
+        mock_workflow = Mock()
+        student_id, fullname = 'test_student_id', 'test_fullname'
+
+        with self.mock_serializer_methods(teamName=True, gradedBy=True, score=True, verify=True):
+            result = TeamSubmissionListSerializer(
+                mock_workflow,
+                context={
+                    'submission_uuid_to_student_id': {mock_workflow.identifying_uuid: student_id},
+                    'anonymous_id_to_fullname': {student_id: fullname}
+                }
+            ).data
+
+        # Fullname should be null for team submissions
+        self.assertEqual(result['fullname'], None)
 
     def test_get_teamName(self):
         mock_workflow = Mock()
@@ -471,6 +602,9 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
 
         # Anonymous id to username used only for scorer ids
         anonymous_id_to_username = {}
+        anonymous_id_to_email = {}
+        anonymous_id_to_fullname = {}
+
         anonymous_id_to_username[workflows[0].scorer_id] = 'staff_username_1'
         anonymous_id_to_username[workflows[1].scorer_id] = 'staff_username_2'
 
@@ -484,6 +618,8 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             workflows,
             context={
                 'anonymous_id_to_username': anonymous_id_to_username,
+                'anonymous_id_to_email': anonymous_id_to_email,
+                'anonymous_id_to_fullname': anonymous_id_to_fullname,
                 'submission_uuid_to_assessment': submission_uuid_to_assessment,
                 'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
                 'team_id_to_team_name': team_id_to_team_name,
@@ -505,6 +641,8 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                     'pointsEarned': 10,
                     'pointsPossible': 20,
                 },
+                'email': None,
+                'fullname': None,
             }),
             OrderedDict({
                 'submissionUuid': str(workflows[1].team_submission_uuid),
@@ -519,6 +657,8 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                     'pointsEarned': 7,
                     'pointsPossible': 20,
                 },
+                'email': None,
+                'fullname': None,
             }),
             OrderedDict({
                 'submissionUuid': str(workflows[2].team_submission_uuid),
@@ -530,6 +670,8 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                 'username': None,
                 'teamName': 'Team name 2',
                 'score': {},
+                'email': None,
+                'fullname': None,
             })
         ]
 

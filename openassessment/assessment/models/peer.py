@@ -111,7 +111,7 @@ class PeerWorkflow(models.Model):
     TIME_LIMIT = timedelta(hours=8)
 
     student_id = models.CharField(max_length=40, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
@@ -524,6 +524,16 @@ class PeerWorkflowItem(models.Model):
     scored = models.BooleanField(default=False)
 
     @classmethod
+    def _get_assessments(cls, submission_uuid, scored):
+        return Assessment.objects.filter(
+            pk__in=[
+                item.assessment.pk for item in PeerWorkflowItem.objects.filter(
+                    submission_uuid=submission_uuid, scored=scored, assessment__isnull=False
+                )
+            ]
+        )
+
+    @classmethod
     def get_scored_assessments(cls, submission_uuid):
         """
         Return all scored assessments for a given submission.
@@ -533,15 +543,22 @@ class PeerWorkflowItem(models.Model):
 
         Returns:
             QuerySet of Assessment objects.
+        """
+        return cls._get_assessments(submission_uuid, True)
+
+    @classmethod
+    def get_unscored_assessments(cls, submission_uuid):
+        """
+        Return all unscored assessments for a given submission.
+
+        Args:
+            submission_uuid (str): The UUID of the submission.
+
+        Returns:
+            QuerySet of Assessment objects.
 
         """
-        return Assessment.objects.filter(
-            pk__in=[
-                item.assessment.pk for item in PeerWorkflowItem.objects.filter(
-                    submission_uuid=submission_uuid, scored=True
-                )
-            ]
-        )
+        return cls._get_assessments(submission_uuid, False)
 
     @classmethod
     def get_bulk_scored_assessments(cls, submission_uuids):

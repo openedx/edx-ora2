@@ -16,6 +16,8 @@ export function renderWaitingStepDetailsView(baseView, data) {
 
   // Waiting step details API URL
   const waitingStepDataUrl = data.CONTEXT.waiting_step_data_url;
+  // Enabled learners selectabled
+  const waitingStepSelectableLearners = data.CONTEXT.selectable_learners_enabled;
 
   // Callback function to render staff area once component loads
   const loadStaffArea = () => {
@@ -36,6 +38,7 @@ export function renderWaitingStepDetailsView(baseView, data) {
     <WaitingStepDetailsContainer
       waitingStepDataUrl={waitingStepDataUrl}
       onMount={loadStaffArea}
+      selectableLearnersEnabled={waitingStepSelectableLearners}
     />,
     reactElement,
   );

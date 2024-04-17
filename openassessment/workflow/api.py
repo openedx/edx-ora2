@@ -195,7 +195,7 @@ def update_from_assessments(
     This is a little wonky from a REST, get-doesn't-change-state point of view,
     except that what's stored in the `AssessmentWorkflow` isn't the canonical
     true value -- it's just the most recently known state of it based on the
-    last known requirments. For now, we have to query for truth.
+    last known requirements. For now, we have to query for truth.
 
     Args:
         submission_uuid (str): Identifier for the submission the
