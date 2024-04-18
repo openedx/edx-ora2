@@ -2,7 +2,7 @@
 
 import logging
 
-from openedx_events.learning.data import ORASubmissionData
+from openedx_events.learning.data import ORASubmissionAnswer, ORASubmissionData
 from openedx_events.learning.signals import ORA_SUBMISSION_CREATED
 from xblock.core import XBlock
 from submissions import api as submissions_api
@@ -44,6 +44,7 @@ from openassessment.xblock.apis.submissions.errors import (
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
+from openassessment.xblock.utils.user_data import get_anonymous_user_id
 
 logger = logging.getLogger(__name__)
 
@@ -63,10 +64,9 @@ class LegacyHandlersMixin:
     Exposes actions (@XBlock.json_handlers) used in our legacy ORA UI
     """
 
-    @staticmethod
-    def send_ora_submission_created_event(submission: dict) -> None:
+    def send_ora_submission_created_event(self, submission: dict) -> None:
         """
-        Send an event when a submission is created
+        Send an event when a submission is created.
 
         Args:
             submission (dict): The submission data
@@ -75,11 +75,25 @@ class LegacyHandlersMixin:
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
+        file_urls = [file_download.get("download_url") for file_download in file_downloads]
+        answer = submission.get("answer", {})
         # .. event_implemented_name: ORA_SUBMISSION_CREATED
         ORA_SUBMISSION_CREATED.send_event(
             submission=ORASubmissionData(
-                id=submission.get("uuid"),
-                file_downloads=file_downloads,
+                uuid=submission.get("uuid"),
+                anonymous_user_id=get_anonymous_user_id(self.runtime.service(self, "user")),
+                location=str(self.location),
+                attempt_number=submission.get("attempt_number"),
+                created_at=submission.get("created_at"),
+                submitted_at=submission.get("submitted_at"),
+                answer=ORASubmissionAnswer(
+                    parts=answer.get("parts"),
+                    file_keys=answer.get("file_keys"),
+                    file_descriptions=answer.get("files_descriptions"),
+                    file_names=answer.get("files_names"),
+                    file_sizes=answer.get("files_sizes"),
+                    file_urls=file_urls,
+                ),
             )
         )
 
