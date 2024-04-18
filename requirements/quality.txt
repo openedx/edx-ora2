@@ -46,12 +46,12 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach==6.1.0
     # via -r requirements/test.txt
-boto3==1.34.83
+boto3==1.34.87
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
     #   moto
-botocore==1.34.83
+botocore==1.34.87
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -61,7 +61,7 @@ cachetools==5.3.3
     # via
     #   -r requirements/test.txt
     #   tox
-celery==5.3.6
+celery==5.4.0
     # via -r requirements/test.txt
 certifi==2024.2.2
     # via
@@ -153,6 +153,7 @@ django==4.2.11
     #   edx-submissions
     #   edx-toggles
     #   jsonfield
+    #   openedx-events
     #   openedx-filters
     #   xblock-sdk
 django-crum==0.7.9
@@ -200,7 +201,7 @@ exceptiongroup==1.2.0
     #   pytest
 factory-boy==3.3.0
     # via -r requirements/test.txt
-faker==24.8.0
+faker==24.11.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -306,7 +307,9 @@ newrelic==9.8.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-openedx-filters==1.8.0
+openedx-events==9.9.2
+    # via -r requirements/test.txt
+openedx-filters==1.8.1
     # via -r requirements/test.txt
 packaging==24.0
     # via
@@ -467,7 +470,7 @@ six==1.16.0
     #   html5lib
     #   python-dateutil
     #   python-swiftclient
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via
     #   -r requirements/test.txt
     #   django
@@ -526,7 +529,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.25.1
+virtualenv==20.25.3
     # via
     #   -r requirements/test.txt
     #   tox
