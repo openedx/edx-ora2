@@ -20,3 +20,12 @@ def get_user_preferences(user_service):
         user_preferences['user_language'] = retrieved_preferences.get('pref-lang')
 
     return user_preferences
+
+
+def get_anonymous_user_id(user_service):
+    """
+    Returns the anonymous user id for the current user.
+
+    :param user_service: XblockUserService
+    """
+    return user_service.get_current_user().opt_attrs.get('edx-platform.anonymous_user_id')

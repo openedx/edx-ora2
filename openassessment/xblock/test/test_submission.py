@@ -32,6 +32,7 @@ from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.utils.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.ui_mixins.legacy.views.submission import get_team_submission_context, render_submission
+from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
@@ -361,28 +362,30 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
 
         with patch('submissions.api.create_submission') as mocked_submit:
             with patch.object(WorkflowMixin, 'create_workflow'):
-                mocked_submit.return_value = {
-                    "uuid": '1111',
-                    "attempt_number": 1,
-                    "created_at": dt.datetime.now(),
-                    "submitted_at": dt.datetime.now(),
-                    "answer": {},
-                }
-                resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-                mocked_submit.assert_called_once()
-                student_sub_dict = mocked_submit.call_args[0][1]
-                self.assertEqual(
-                    student_sub_dict['files_descriptions'],
-                    [meta['description'] for meta in expected_file_metadata]
-                )
-                self.assertEqual(
-                    student_sub_dict['files_names'],
-                    [meta['fileName'] for meta in expected_file_metadata]
-                )
-                self.assertEqual(
-                    student_sub_dict['files_sizes'],
-                    [meta['fileSize'] for meta in expected_file_metadata]
-                )
+                with patch.object(LegacyHandlersMixin, 'send_ora_submission_created_event') as mock_send_event:
+                    mocked_submit.return_value = {
+                        "uuid": '1111',
+                        "attempt_number": 1,
+                        "created_at": dt.datetime.now(),
+                        "submitted_at": dt.datetime.now(),
+                        "answer": {},
+                    }
+                    resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
+                    mock_send_event.assert_called_once()
+                    mocked_submit.assert_called_once()
+                    student_sub_dict = mocked_submit.call_args[0][1]
+                    self.assertEqual(
+                        student_sub_dict['files_descriptions'],
+                        [meta['description'] for meta in expected_file_metadata]
+                    )
+                    self.assertEqual(
+                        student_sub_dict['files_names'],
+                        [meta['fileName'] for meta in expected_file_metadata]
+                    )
+                    self.assertEqual(
+                        student_sub_dict['files_sizes'],
+                        [meta['fileSize'] for meta in expected_file_metadata]
+                    )
 
     @mock_s3
     @override_settings(
