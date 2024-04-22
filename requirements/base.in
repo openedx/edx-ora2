@@ -26,6 +26,7 @@ jsonfield
 lazy
 loremipsum
 lxml
+openedx-events
 path.py
 python-dateutil
 pytz
