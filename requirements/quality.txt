@@ -24,6 +24,10 @@ astroid==3.1.0
     # via
     #   pylint
     #   pylint-celery
+attrs==23.2.0
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     # via
     #   -c requirements/constraints.txt
@@ -149,6 +153,7 @@ django==4.2.11
     #   edx-submissions
     #   edx-toggles
     #   jsonfield
+    #   openedx-events
     #   openedx-filters
     #   xblock-sdk
 django-crum==0.7.9
@@ -177,6 +182,7 @@ edx-django-utils==5.12.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
+    #   openedx-events
 edx-i18n-tools==1.5.0
     # via -r requirements/test.txt
 edx-lint==5.3.6
@@ -197,6 +203,10 @@ faker==24.11.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
+fastavro==1.9.4
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 filelock==3.13.4
     # via
     #   -r requirements/test.txt

@@ -10,6 +10,7 @@ djangorestframework
 Xblock
 edx-opaque-keys
 openedx-filters
+openedx-events
 
 django
 django-simple-history
@@ -25,6 +26,7 @@ jsonfield
 lazy
 loremipsum
 lxml
+openedx-events
 path.py
 python-dateutil
 pytz

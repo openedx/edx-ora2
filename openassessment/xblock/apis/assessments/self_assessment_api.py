@@ -15,7 +15,6 @@ from openassessment.xblock.utils.data_conversion import (
     create_submission_dict,
 )
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -129,6 +128,7 @@ def self_assess(
         config_data.publish_assessment_event("openassessmentblock.self_assess", assessment)
         # After we've created the self-assessment, we need to update the workflow.
         workflow_data.update_workflow_status()
+
     except (
         SelfAssessmentRequestError,
         AssessmentWorkflowRequestError,
