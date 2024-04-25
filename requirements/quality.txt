@@ -46,12 +46,12 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach==6.1.0
     # via -r requirements/test.txt
-boto3==1.34.90
+boto3==1.34.91
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
     #   moto
-botocore==1.34.90
+botocore==1.34.91
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -183,12 +183,14 @@ edx-django-utils==5.12.0
     #   -r requirements/test.txt
     #   edx-toggles
     #   openedx-events
-edx-i18n-tools==1.5.0
+edx-i18n-tools==1.6.0
     # via -r requirements/test.txt
 edx-lint==5.3.6
     # via -r requirements/quality.in
-edx-opaque-keys==2.8.0
-    # via -r requirements/test.txt
+edx-opaque-keys[django]==2.8.0
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 edx-submissions==3.7.0
     # via -r requirements/test.txt
 edx-toggles==5.2.0
@@ -265,12 +267,15 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml==5.2.1
+lxml[html-clean]==5.2.1
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
+    #   lxml-html-clean
     #   xblock
     #   xblock-sdk
+lxml-html-clean==0.1.1
+    # via -r requirements/test.txt
 mako==1.3.3
     # via
     #   -r requirements/test.txt
@@ -304,6 +309,8 @@ newrelic==9.9.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
+openedx-events==9.9.2
+    # via -r requirements/test.txt
 openedx-filters==1.8.1
     # via -r requirements/test.txt
 packaging==24.0
@@ -555,7 +562,7 @@ werkzeug==3.0.2
     # via
     #   -r requirements/test.txt
     #   moto
-xblock==4.0.0
+xblock==4.0.1
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
