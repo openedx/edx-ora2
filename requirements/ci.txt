@@ -44,12 +44,12 @@ packaging==24.0
     #   -r requirements/tox.txt
     #   pyproject-api
     #   tox
-platformdirs==4.2.0
+platformdirs==4.2.1
     # via
     #   -r requirements/tox.txt
     #   tox
     #   virtualenv
-pluggy==1.4.0
+pluggy==1.5.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -68,7 +68,7 @@ tox==4.14.2
     # via -r requirements/tox.txt
 urllib3==2.2.1
     # via requests
-virtualenv==20.25.3
+virtualenv==20.26.0
     # via
     #   -r requirements/tox.txt
     #   tox
