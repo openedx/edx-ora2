@@ -47,8 +47,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "show_rubric_during_response": False,
         "allow_latex": False,
         "allow_learner_resubmissions": True,
-        "resubmissions_grace_period_days": 0,
-        "resubmissions_grace_period_time": "00:00",
+        "resubmissions_grace_period": None,
         "leaderboard_show": 4,
         "assessments": [{"name": "self-assessment"}],
         "editor_assessments_order": [

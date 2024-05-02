@@ -46,8 +46,7 @@ export class EditSettingsView {
     this.validationErrors = this.validationErrors.bind(this);
     this.clearValidationErrors = this.clearValidationErrors.bind(this);
     this.allowLearnerResubmissions = this.allowLearnerResubmissions.bind(this);
-    this.resubmissionsGracePeriodDaysNum = this.resubmissionsGracePeriodDaysNum.bind(this);
-    this.resubmissionsGracePeriodTime = this.resubmissionsGracePeriodTime.bind(this);
+    this.resubmissionsGracePeriod = this.resubmissionsGracePeriod.bind(this);
 
     new SelectControl(
       $('#openassessment_submission_file_upload_response', this.element),
@@ -95,19 +94,14 @@ export class EditSettingsView {
       { min: 0, max: 100 },
     );
 
-    this.resubmissionsGracePeriodDaysIntField = new IntField(
-      $('#openassessment_resubmissions_grace_period_days', this.element),
-      { min: 0 },
-    );
-
-    this.resubmissionsGracePeriodTimeInputField = new InputControl(
-      $('#openassessment_resubmissions_grace_period_time', this.element),
+    this.resubmissionsGracePeriodInputField = new InputControl(
+      $('#openassessment_resubmissions_grace_period', this.element),
       ((value) => {
         const errors = [];
-        const isValidFormat = /^([01]\d|2[0-3]):([0-5]\d)$/.test(value);
+        const isValidFormat = /^$|^([0-9][0-9]):([0-1][0-9]|2[0-3]):([0-5][0-9])$/gm.test(value);
 
         if (!isValidFormat) {
-          errors.push(gettext('Time must be in the format HH:MM. The hours must be between 00 and 23, and the minutes must be between 00 and 59.'));
+          errors.push(gettext('Time must be in the format dd:hh:mm. The days must be between 00 and 99, the hours between 00 and 23, and the minutes between 00 and 59.'));
           return errors;
         }
 
@@ -465,37 +459,20 @@ export class EditSettingsView {
   }
 
   /**
-    Get or set the number of days to allow resubmissions to learners.
-
-    Args:
-        num (int, optional)
-
-    Returns:
-        int
-
-    * */
-  resubmissionsGracePeriodDaysNum(num) {
-    if (num !== undefined) {
-      this.resubmissionsGracePeriodDaysIntField.set(num);
-    }
-    return this.resubmissionsGracePeriodDaysIntField.get(num);
-  }
-
-  /**
     Get or set the time to allow resubmissions to learners.
 
     Args:
-        time (string, optional): If provided, set the time in HH:MM format
+        time (string, optional): If provided, set the time in dd:hh:mm format
 
     Returns:
-        String: time in HH:MM format
+        String: time in dd:hh:mm format
 
     * */
-  resubmissionsGracePeriodTime(time) {
+  resubmissionsGracePeriod(time) {
     if (time !== undefined) {
-      this.resubmissionsGracePeriodTimeInputField.set(time);
+      this.resubmissionsGracePeriodInputField.set(time);
     }
-    return this.resubmissionsGracePeriodTimeInputField.get(time);
+    return this.resubmissionsGracePeriodInputField.get(time);
   }
 
   /**
@@ -534,7 +511,7 @@ export class EditSettingsView {
     let isValid = true;
 
     isValid = (this.leaderboardIntField.validate() && isValid);
-    isValid = (this.resubmissionsGracePeriodTimeInputField.validate() && isValid);
+    isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
 
     if (this.fileUploadType() === 'custom') {
       isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
@@ -567,8 +544,8 @@ export class EditSettingsView {
     if (this.fileTypeWhiteListInputField.validationErrors().length > 0) {
       errors = errors.concat(this.fileTypeWhiteListInputField.validationErrors());
     }
-    if (this.resubmissionsGracePeriodTimeInputField.validationErrors().length > 0) {
-      errors = errors.concat(this.resubmissionsGracePeriodTimeInputField.validationErrors());
+    if (this.resubmissionsGracePeriodInputField.validationErrors().length > 0) {
+      errors = errors.concat(this.resubmissionsGracePeriodInputField.validationErrors());
     }
 
     return errors;
@@ -580,7 +557,7 @@ export class EditSettingsView {
   clearValidationErrors() {
     this.leaderboardIntField.clearValidationErrors();
     this.fileTypeWhiteListInputField.clearValidationErrors();
-    this.resubmissionsGracePeriodTimeInputField.clearValidationErrors();
+    this.resubmissionsGracePeriodInputField.clearValidationErrors();
   }
 }
 

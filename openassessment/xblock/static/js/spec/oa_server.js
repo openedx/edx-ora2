@@ -331,8 +331,7 @@ describe("OpenAssessment.Server", function() {
             latexEnabled: true,
             leaderboardNum: 15,
             allowLearnerResubmissions: false,
-            resubmissionsGracePeriodDaysNum: 0,
-            resubmissionsGracePeriodTime: "00:00"
+            resubmissionsGracePeriod: ""
         });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
@@ -353,8 +352,7 @@ describe("OpenAssessment.Server", function() {
                 allow_latex: true,
                 leaderboard_show: 15,
                 allow_learner_resubmissions: false,
-                resubmissions_grace_period_days: 0,
-                resubmissions_grace_period_time: "00:00"
+                resubmissions_grace_period: ""
             }),
             contentType : jsonContentType
         });

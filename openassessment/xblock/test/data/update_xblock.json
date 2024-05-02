@@ -40,8 +40,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 0,
-        "resubmissions_grace_period_time": "12:34",
+        "resubmissions_grace_period": "01:12:34",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -105,8 +104,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 1,
-        "resubmissions_grace_period_time": "00:30",
+        "resubmissions_grace_period": "00:00:30",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -166,8 +164,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 2,
-        "resubmissions_grace_period_time": "00:59",
+        "resubmissions_grace_period": "02:00:59",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -227,8 +224,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 3,
-        "resubmissions_grace_period_time": "00:00",
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -299,8 +295,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 0,
-        "resubmissions_grace_period_time": "10:40",
+        "resubmissions_grace_period": "00:10:40",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -360,8 +355,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 0,
-        "resubmissions_grace_period_time": "00:01",
+        "resubmissions_grace_period": "03:00:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -421,8 +415,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 1,
-        "resubmissions_grace_period_time": "01:01",
+        "resubmissions_grace_period": "01:01:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -482,8 +475,7 @@
         "show_rubric_during_response": false,
         "allow_latex": false,
         "allow_learner_resubmissions": true,
-        "resubmissions_grace_period_days": 5,
-        "resubmissions_grace_period_time": "20:59",
+        "resubmissions_grace_period": "00:20:59",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [

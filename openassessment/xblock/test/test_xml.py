@@ -143,8 +143,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.allow_multiple_files = data.get('allow_multiple_files')
         self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.allow_learner_resubmissions = data.get('allow_learner_resubmissions')
-        self.oa_block.resubmissions_grace_period_days = data.get('resubmissions_grace_period_days')
-        self.oa_block.resubmissions_grace_period_time = data.get('resubmissions_grace_period_time')
+        self.oa_block.resubmissions_grace_period = data.get('resubmissions_grace_period')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
         self.oa_block.group_access = json.loads(data.get('group_access', "{}"))
 
@@ -535,8 +534,7 @@ class TestParseFromXml(TestCase):
             'allow_multiple_files',
             'allow_latex',
             'allow_learner_resubmissions',
-            'resubmissions_grace_period_days',
-            'resubmissions_grace_period_time',
+            'resubmissions_grace_period',
             'leaderboard_show'
         ]
         for field_name in expected_fields:

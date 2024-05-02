@@ -751,11 +751,8 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.allow_learner_resubmissions is not None:
         root.set('allow_learner_resubmissions', str(oa_block.allow_learner_resubmissions))
 
-    if oa_block.resubmissions_grace_period_days:
-        root.set('resubmissions_grace_period_days', str(oa_block.resubmissions_grace_period_days))
-
-    if oa_block.resubmissions_grace_period_time:
-        root.set('resubmissions_grace_period_time', str(oa_block.resubmissions_grace_period_time))
+    if oa_block.resubmissions_grace_period:
+        root.set('resubmissions_grace_period', str(oa_block.resubmissions_grace_period))
 
     # Set group access setting if not empty
     if oa_block.group_access:
@@ -930,16 +927,9 @@ def parse_from_xml(root):
     if 'allow_learner_resubmissions' in root.attrib:
         allow_learner_resubmissions = _parse_boolean(str(root.attrib['allow_learner_resubmissions']))
 
-    resubmissions_grace_period_days = 0
-    if 'resubmissions_grace_period_days' in root.attrib:
-        try:
-            resubmissions_grace_period_days = int(root.attrib['resubmissions_grace_period_days'])
-        except (TypeError, ValueError) as ex:
-            raise UpdateFromXmlError('The resubmissions_grace_period_days must have an integer value.') from ex
-
-    resubmissions_grace_period_time = None
-    if 'resubmissions_grace_period_time' in root.attrib:
-        resubmissions_grace_period_time = str(root.attrib['resubmissions_grace_period_time'])
+    resubmissions_grace_period = None
+    if 'resubmissions_grace_period' in root.attrib:
+        resubmissions_grace_period = str(root.attrib['resubmissions_grace_period'])
 
     group_access = {}
     if 'group_access' in root.attrib:
@@ -1014,8 +1004,7 @@ def parse_from_xml(root):
         'selected_teamset_id': selected_teamset_id,
         'show_rubric_during_response': show_rubric_during_response,
         'allow_learner_resubmissions': allow_learner_resubmissions,
-        'resubmissions_grace_period_days': resubmissions_grace_period_days,
-        'resubmissions_grace_period_time': resubmissions_grace_period_time,
+        'resubmissions_grace_period': resubmissions_grace_period,
     }
 
 

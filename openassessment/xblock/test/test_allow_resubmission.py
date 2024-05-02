@@ -14,8 +14,7 @@ class ConfigDataMock:
 
     def __init__(self):
         self.allow_learner_resubmissions = True
-        self.resubmissions_grace_period_days = 0
-        self.resubmissions_grace_period_time = "00:00"
+        self.resubmissions_grace_period = ""
         self.assessment_steps = ["staff-assessment"]
 
     def is_closed(self, step: str):  # pylint: disable=unused-argument
@@ -76,21 +75,19 @@ class TestAllowResubmission(unittest.TestCase):
         self.assertTrue(result)
 
     @ddt.data(
-        (1, "00:00"),
-        (0, "00:30"),
-        (10, "00:59"),
-        (0, "00:00"),
+        "01:00:00",
+        "00:00:30",
+        "10:00:59",
+        "00:00:00",
     )
-    @ddt.unpack
     @patch_submission_lock
     def test_allow_resubmission_resubmissions_with_grace_period(
-        self, hours: int, time: str, submission_lock_mock: Mock
+        self, time: str, submission_lock_mock: Mock
     ):
         """
         Test case for the `allow_resubmission` function when the resubmissions grace period is set.
         """
-        self.config_data.resubmissions_grace_period_days = hours
-        self.config_data.resubmissions_grace_period_time = time
+        self.config_data.resubmissions_grace_period = time
         submission_lock_mock.return_value = None
 
         result = allow_resubmission(
@@ -106,8 +103,7 @@ class TestAllowResubmission(unittest.TestCase):
         self.submission_data["created_at"] = datetime.datetime(
             2020, 1, 1, tzinfo=datetime.timezone.utc
         )
-        self.config_data.resubmissions_grace_period_days = 1
-        self.config_data.resubmissions_grace_period_time = "00:30"
+        self.config_data.resubmissions_grace_period = "00:00:30"
 
         result = allow_resubmission(
             self.config_data, self.workflow_data, self.submission_data

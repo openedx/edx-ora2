@@ -498,8 +498,7 @@ export class Server {
       selected_teamset_id: options.selectedTeamsetId,
       show_rubric_during_response: options.showRubricDuringResponse,
       allow_learner_resubmissions: options.allowLearnerResubmissions,
-      resubmissions_grace_period_days: options.resubmissionsGracePeriodDaysNum,
-      resubmissions_grace_period_time: options.resubmissionsGracePeriodTime,
+      resubmissions_grace_period: options.resubmissionsGracePeriod,
     });
     return $.Deferred((defer) => {
       $.ajax({

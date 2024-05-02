@@ -57,8 +57,7 @@ describe("OpenAssessment.StudioView", function() {
         leaderboardNum: 12,
         showRubricDuringResponse: false,
         allowLearnerResubmissions: false,
-        resubmissionsGracePeriodDaysNum: 0,
-        resubmissionsGracePeriodTime: "00:00",
+        resubmissionsGracePeriod: null,
         criteria: [
             {
                 order_num: 0,
@@ -171,8 +170,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData.leaderboardNum).toEqual(EXPECTED_SERVER_DATA.leaderboardNum);
         expect(server.receivedData.showRubricDuringResponse).toEqual(EXPECTED_SERVER_DATA.showRubricDuringResponse)
         expect(server.receivedData.allowLearnerResubmissions).toEqual(EXPECTED_SERVER_DATA.allowLearnerResubmissions);
-        expect(server.receivedData.resubmissionsGracePeriodDaysNum).toEqual(EXPECTED_SERVER_DATA.resubmissionsGracePeriodDaysNum);
-        expect(server.receivedData.resubmissionsGracePeriodTime).toEqual(EXPECTED_SERVER_DATA.resubmissionsGracePeriodTime);
+        expect(server.receivedData.resubmissionsGracePeriod).toEqual(EXPECTED_SERVER_DATA.resubmissionsGracePeriod);
 
         // Criteria
         for (var criterion_idx = 0; criterion_idx < EXPECTED_SERVER_DATA.criteria.length; criterion_idx++) {

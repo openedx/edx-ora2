@@ -66,11 +66,10 @@ def submission_date_exceeded(config_data, submission_data: dict) -> bool:
     if is_closed and reason == "due":
         return True
 
-    days = config_data.resubmissions_grace_period_days
-    hours, minutes = list(map(int, config_data.resubmissions_grace_period_time.split(":")))
-    if not days and not hours and not minutes:
+    if not config_data.resubmissions_grace_period:
         return False
 
+    days, hours, minutes = list(map(int, config_data.resubmissions_grace_period.split(":")))
     current_datetime = datetime.now(pytz.UTC)
     grace_period = timedelta(days=days, hours=hours, minutes=minutes)
     deadline_datetime = submission_data["created_at"] + grace_period
