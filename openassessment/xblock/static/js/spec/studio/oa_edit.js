@@ -57,7 +57,7 @@ describe("OpenAssessment.StudioView", function() {
         leaderboardNum: 12,
         showRubricDuringResponse: false,
         allowLearnerResubmissions: false,
-        resubmissionsGracePeriod: null,
+        resubmissionsGracePeriod: '',
         criteria: [
             {
                 order_num: 0,

@@ -78,7 +78,7 @@ class TestAllowResubmission(unittest.TestCase):
         "01:00:00",
         "00:00:30",
         "10:00:59",
-        "00:00:00",
+        "00:10:00"
     )
     @patch_submission_lock
     def test_allow_resubmission_resubmissions_with_grace_period(
