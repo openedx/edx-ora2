@@ -2,7 +2,7 @@
 
 import datetime
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 import ddt
 
@@ -68,31 +68,20 @@ class TestAllowResubmission(unittest.TestCase):
         """
         submission_lock_mock.return_value = None
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertTrue(result)
 
-    @ddt.data(
-        "01:00:00",
-        "00:00:30",
-        "10:00:59",
-        "00:10:00"
-    )
+    @ddt.data("01:00:00", "00:00:30", "10:00:59", "00:10:00")
     @patch_submission_lock
-    def test_allow_resubmission_resubmissions_with_grace_period(
-        self, time: str, submission_lock_mock: Mock
-    ):
+    def test_allow_resubmission_resubmissions_with_grace_period(self, time: str, submission_lock_mock: Mock):
         """
         Test case for the `allow_resubmission` function when the resubmissions grace period is set.
         """
         self.config_data.resubmissions_grace_period = time
         submission_lock_mock.return_value = None
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertTrue(result)
 
@@ -100,14 +89,10 @@ class TestAllowResubmission(unittest.TestCase):
         """
         Test case for the `allow_resubmission` function when the resubmissions grace period is exceeded.
         """
-        self.submission_data["created_at"] = datetime.datetime(
-            2020, 1, 1, tzinfo=datetime.timezone.utc
-        )
+        self.submission_data["created_at"] = datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc)
         self.config_data.resubmissions_grace_period = "00:00:30"
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
@@ -117,9 +102,7 @@ class TestAllowResubmission(unittest.TestCase):
         """
         self.config_data.allow_learner_resubmissions = False
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
@@ -129,9 +112,7 @@ class TestAllowResubmission(unittest.TestCase):
         """
         self.config_data.is_closed = lambda step: (True, "due", None, None)
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
@@ -143,9 +124,7 @@ class TestAllowResubmission(unittest.TestCase):
         """
         self.workflow_data.status = status
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
@@ -157,9 +136,7 @@ class TestAllowResubmission(unittest.TestCase):
         self.config_data.assessment_steps = ["peer-assessment"]
         submission_lock_mock.return_value = None
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
@@ -170,9 +147,7 @@ class TestAllowResubmission(unittest.TestCase):
         """
         submission_lock_mock.return_value = Mock(is_active=True)
 
-        result = allow_resubmission(
-            self.config_data, self.workflow_data, self.submission_data
-        )
+        result = allow_resubmission(self.config_data, self.workflow_data, self.submission_data)
 
         self.assertFalse(result)
 
