@@ -6,7 +6,7 @@ from unittest.mock import patch, Mock
 
 import ddt
 
-from openassessment.xblock.utils.allow_resubmission import allow_resubmission
+from openassessment.xblock.utils.allow_resubmission import allow_resubmission, has_been_graded
 
 
 class ConfigDataMock:
@@ -175,3 +175,20 @@ class TestAllowResubmission(unittest.TestCase):
         )
 
         self.assertFalse(result)
+
+    @ddt.data(
+        ("waiting", False),
+        ("done", True),
+        ("cancelled", True),
+        ("another_status", False),
+    )
+    @ddt.unpack
+    def test_has_been_graded(self, status: str, expected: bool):
+        """
+        Test case for the `has_been_graded` function.
+        """
+        self.workflow_data.status = status
+
+        result = has_been_graded(self.workflow_data)
+
+        self.assertEqual(result, expected)
