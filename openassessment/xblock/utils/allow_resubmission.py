@@ -73,7 +73,7 @@ def submission_date_exceeded(config_data, submission_data: dict) -> bool:
     current_datetime = datetime.now(pytz.UTC)
     grace_period = timedelta(days=days, hours=hours, minutes=minutes)
     deadline_datetime = submission_data["created_at"] + grace_period
-    return current_datetime >= deadline_datetime
+    return current_datetime > deadline_datetime
 
 
 def has_been_graded(workflow_data) -> bool:
