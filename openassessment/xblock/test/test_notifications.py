@@ -34,7 +34,7 @@ class TestSendStaffNotification(unittest.TestCase):
         self.assertEqual(notification_data.content_context['ora_name'], ora_name)
         self.assertEqual(notification_data.notification_type, 'ora_staff_notification')
         self.assertEqual(notification_data.content_url, f"/{problem_id}")
-        self.assertEqual(notification_data.app_name, "ora")
+        self.assertEqual(notification_data.app_name, "grading")
         self.assertEqual(notification_data.audience_filters['course_roles'], ['staff', 'instructor'])
 
     @patch('openassessment.xblock.utils.notifications.logger.error')

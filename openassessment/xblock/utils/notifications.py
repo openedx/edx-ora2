@@ -25,7 +25,7 @@ def send_staff_notification(course_id, problem_id, ora_name):
             },
             notification_type='ora_staff_notification',
             content_url=f"{getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')}/{problem_id}",
-            app_name="ora",
+            app_name="grading",
             audience_filters=audience_filters,
         )
         COURSE_NOTIFICATION_REQUESTED.send_event(course_notification_data=notification_data)
