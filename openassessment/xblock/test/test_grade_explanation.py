@@ -69,18 +69,22 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             mock_send_staff_notification.assert_called_once()
 
     @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml", user_id='Bernard')
-    @data(*assessment_score_priority)
-    def test_render_grade_explanation_peer_mean_calculation(self, xblock, assessment_score_priority):
-        with patch(
-            'openassessment.workflow.models.AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY',
-            assessment_score_priority
-        ):
-            self.create_submission_and_assessments(
-                xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
-            )
-            resp = self.request(xblock, 'render_grade', json.dumps({}))
+    def test_render_grade_explanation_peer_only_mean_calculation(self, xblock):
+        self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
 
-            self.assertIn(self.second_sentences_options["peer_median_default"], resp.decode('utf-8'))
+        self.assertIn(self.second_sentences_options["peer_mean"], resp.decode('utf-8'))
+
+    @scenario("data/peer_assessment_median_grading_strategy_scenario.xml", user_id='Bernard')
+    def test_render_grade_explanation_peer_only_median_calculation(self, xblock):
+        self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
+
+        self.assertIn(self.second_sentences_options["peer_mean"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario_peer_only.xml', user_id='Bernard')
     @data(*assessment_score_priority)
