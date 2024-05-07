@@ -68,7 +68,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
 
             mock_send_staff_notification.assert_called_once()
 
-    @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml")
+    @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml", user_id='Bernard')
     @data(*assessment_score_priority)
     def test_render_grade_explanation_peer_mean_calculation(self, xblock, assessment_score_priority):
         with patch(
