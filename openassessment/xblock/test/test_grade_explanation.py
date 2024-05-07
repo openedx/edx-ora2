@@ -84,7 +84,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
         )
         resp = self.request(xblock, 'render_grade', json.dumps({}))
 
-        self.assertIn(self.second_sentences_options["peer_mean"], resp.decode('utf-8'))
+        self.assertIn(self.second_sentences_options["peer_median_default"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario_peer_only.xml', user_id='Bernard')
     @data(*assessment_score_priority)
