@@ -319,41 +319,28 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
 
     @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml")
     def test_mean_grading_strategy(self, xblock):
-        """Test for mean grading strategy"""
-        # Given a peer step with mean grading strategy
-
-        # When I ask for peer step config
+        """Given a peer step with mean grading strategy, test getting the right configuration."""
         peer_config = AssessmentStepsSerializer(xblock).data["settings"][
             self.step_config_key
         ]
-
-        # Then I get the right configuration
         self.assertEqual(peer_config["gradingStrategy"], "mean")
 
     @scenario("data/peer_assessment_median_grading_strategy_scenario.xml")
     def test_median_grading_strategy(self, xblock):
-        """Test for median grading strategy"""
-        # Given a peer step with median grading strategy
-
-        # When I ask for peer step config
+        """Given a peer step with median grading strategy, test getting the right configuration."""
         peer_config = AssessmentStepsSerializer(xblock).data["settings"][
             self.step_config_key
         ]
 
-        # Then I get the right configuration
         self.assertEqual(peer_config["gradingStrategy"], "median")
 
     @scenario("data/peer_assessment_default_grading_strategy_scenario.xml")
     def test_default_grading_strategy(self, xblock):
-        """Test for default grading strategy"""
-        # Given a peer step with default grading strategy
-
-        # When I ask for peer step config
+        """Given a peer step without a grading strategy, test getting the right default configuration."""
         peer_config = AssessmentStepsSerializer(xblock).data["settings"][
             self.step_config_key
         ]
 
-        # Then I get the right configuration
         self.assertEqual(peer_config["gradingStrategy"], "median")
 
 
