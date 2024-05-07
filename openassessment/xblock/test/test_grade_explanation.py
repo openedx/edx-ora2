@@ -28,7 +28,8 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
     second_sentences_options = {
         "self": "The grade for this problem is determined by your Self Assessment.",
         "staff": "The grade for this problem is determined by your Staff Grade.",
-        "peer": "The grade for this problem is determined by the median score of your Peer Assessments."
+        "peer_median": "The grade for this problem is determined by the median score of your Peer Assessments.",
+        "peer_mean": "The grade for this problem is determined by the mean score of your Peer Assessments.",
     }
 
     assessment_score_priority = (
@@ -67,6 +68,20 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
 
             mock_send_staff_notification.assert_called_once()
 
+    @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml")
+    @data(*assessment_score_priority)
+    def test_render_grade_explanation_peer_mean_calculation(self, xblock, assessment_score_priority):
+        with patch(
+            'openassessment.workflow.models.AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY',
+            assessment_score_priority
+        ):
+            self.create_submission_and_assessments(
+                xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
+            )
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
+
+            self.assertIn(self.second_sentences_options["peer_median"], resp.decode('utf-8'))
+
     @scenario('data/grade_scenario_peer_only.xml', user_id='Bernard')
     @data(*assessment_score_priority)
     def test_render_grade_explanation_peer_only(self, xblock, assessment_score_priority):
@@ -79,7 +94,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             )
             resp = self.request(xblock, 'render_grade', json.dumps({}))
 
-            self.assertIn(self.second_sentences_options["peer"], resp.decode('utf-8'))
+            self.assertIn(self.second_sentences_options["peer_median"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario.xml', user_id='Bernard')
     @data(*assessment_score_priority)
@@ -96,7 +111,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
             else:
-                self.assertIn(self.second_sentences_options["peer"], resp.decode('utf-8'))
+                self.assertIn(self.second_sentences_options["peer_median"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario_self_staff.xml', user_id='Bernard')
     @data(*assessment_score_priority)
@@ -204,7 +219,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
             else:
-                self.assertIn(self.second_sentences_options["peer"], resp.decode('utf-8'))
+                self.assertIn(self.second_sentences_options["peer_median"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario.xml', user_id='Bernard')
     @data(*assessment_score_priority)
@@ -221,7 +236,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
             else:
-                self.assertIn(self.second_sentences_options["peer"], resp.decode('utf-8'))
+                self.assertIn(self.second_sentences_options["peer_median"], resp.decode('utf-8'))
 
     @scenario('data/grade_scenario_self_staff.xml', user_id='Bernard')
     @data(*assessment_score_priority)
