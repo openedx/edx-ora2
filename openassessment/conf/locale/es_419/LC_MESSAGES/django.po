@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-26 14:31-0400\n"
+"POT-Creation-Date: 2024-05-07 14:52-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Zimeng Chen, 2023\n"
 "Language-Team: Spanish (Latin America) (http://app.transifex.com/open-edx/"
@@ -586,10 +586,10 @@ msgid ""
 "the median across all peer reviews is used to calculate the final grade. If "
 "you select the mean, the average of all peer reviews will be used."
 msgstr ""
-"Seleccione la estrategia de calificación preferida para la evaluación por pares. "
-"Por defecto, se utiliza la mediana de todas las evaluaciones por pares para "
-"calcular la calificación final. Si selecciona el promedio, se utilizará la "
-"promedio de todas las evaluaciones por pares."
+"Seleccione la estrategia de calificación preferida para la evaluación por "
+"pares. Por defecto, se utiliza la mediana de todas las evaluaciones por "
+"pares para calcular la calificación final. Si selecciona el promedio, se "
+"utilizará la promedio de todas las evaluaciones por pares."
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -2903,63 +2903,63 @@ msgstr ""
 "No tiene permisos para acceder a la calificación de miembros del equipo de "
 "curso de ORA."
 
-#: xblock/staff_area_mixin.py:242
+#: xblock/staff_area_mixin.py:241
 msgid "Pending"
 msgstr "Pendiente"
 
-#: xblock/staff_area_mixin.py:243
+#: xblock/staff_area_mixin.py:242
 msgid "Complete/Overwritten"
 msgstr "Completo / Sobrescrito"
 
-#: xblock/staff_area_mixin.py:246
+#: xblock/staff_area_mixin.py:245
 msgid "Not applicable"
 msgstr "No aplica"
 
-#: xblock/staff_area_mixin.py:247
+#: xblock/staff_area_mixin.py:246
 msgid "Not submitted"
 msgstr "No entregado"
 
-#: xblock/staff_area_mixin.py:248
+#: xblock/staff_area_mixin.py:247
 msgid "Submitted"
 msgstr "Enviado"
 
-#: xblock/staff_area_mixin.py:342
+#: xblock/staff_area_mixin.py:341
 msgid "Error getting learner information."
 msgstr "Error al obtener la información del estudiante."
 
-#: xblock/staff_area_mixin.py:385
+#: xblock/staff_area_mixin.py:384
 msgid "Error loading the checked out learner response."
 msgstr "Error cargando la respuesta elegida por el estudiante."
 
-#: xblock/staff_area_mixin.py:386
+#: xblock/staff_area_mixin.py:385
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 "No hay otras respuestas de estudiantes disponibles para calificar en este "
 "momento."
 
-#: xblock/staff_area_mixin.py:388
+#: xblock/staff_area_mixin.py:387
 msgid "Error getting staff grade information."
 msgstr "Error obteniendo la información de calificación del equipo del curso."
 
-#: xblock/staff_area_mixin.py:409
+#: xblock/staff_area_mixin.py:408
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Error obteniendo el conteo de respuestas enviadas y no calificadas."
 
-#: xblock/staff_area_mixin.py:703
+#: xblock/staff_area_mixin.py:702
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor ingrese una razón válida para eliminar este envío."
 
-#: xblock/staff_area_mixin.py:714
+#: xblock/staff_area_mixin.py:713
 msgid "Submission not found"
 msgstr "Entrega no encontrada"
 
-#: xblock/staff_area_mixin.py:725
+#: xblock/staff_area_mixin.py:724
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 "Entrega para el trabajo de grupo no cuenta con ninguna entrega asociada al "
 "equipo"
 
-#: xblock/staff_area_mixin.py:754
+#: xblock/staff_area_mixin.py:753
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2970,7 +2970,7 @@ msgstr ""
 "del estudiante para el problema, dándole la oportunidad de enviar nuevamente "
 "una respuesta."
 
-#: xblock/staff_area_mixin.py:789
+#: xblock/staff_area_mixin.py:788
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -3065,28 +3065,28 @@ msgstr ""
 "La fecha de comienzo '{start}' no puede ser después que la fecha límite "
 "'{due}'"
 
-#: xblock/utils/validation.py:118
+#: xblock/utils/validation.py:120
 msgid "This problem must include at least one assessment."
 msgstr "Este problema debe incluir por lo menos una valoración"
 
-#: xblock/utils/validation.py:122
+#: xblock/utils/validation.py:124
 msgid "The assessment order you selected is invalid."
 msgstr "El orden de revisión que seleccionó es inválido."
 
-#: xblock/utils/validation.py:132
+#: xblock/utils/validation.py:134
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 "En las revisiones por pares, el valor de \"Revisiones requeridas\"  debe ser "
 "un entero positivo."
 
-#: xblock/utils/validation.py:135
+#: xblock/utils/validation.py:137
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 "En la calificación por pares, el valor de \"Calificado por\" debe ser un "
 "número entero positivo."
 
-#: xblock/utils/validation.py:139
+#: xblock/utils/validation.py:141
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
@@ -3094,26 +3094,26 @@ msgstr ""
 "En la calificación por pares, el valor de \"Revisiones requeridas\" debe ser "
 "mayor o igual al valor de \"debe ser calificado por\"."
 
-#: xblock/utils/validation.py:148
+#: xblock/utils/validation.py:150
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 "Debe proporcionar al menos una respuesta de ejemplo para el entrenamiento de "
 "los estudiantes."
 
-#: xblock/utils/validation.py:151
+#: xblock/utils/validation.py:153
 msgid "Each example response for learner training must be unique."
 msgstr ""
 "Cada respuesta de ejemplo para el entrenamiento de los estudiantes debe ser "
 "único."
 
-#: xblock/utils/validation.py:158
+#: xblock/utils/validation.py:160
 msgid ""
 "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 "El valor \"requerido\" debe estar en true si la calificación de miembros del "
 "equipo del curso es el único paso."
 
-#: xblock/utils/validation.py:162
+#: xblock/utils/validation.py:164
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
@@ -3121,7 +3121,7 @@ msgstr ""
 "El número de valoraciones no puede ser cambiado luego de que el problema "
 "haya sido liberado."
 
-#: xblock/utils/validation.py:167
+#: xblock/utils/validation.py:169
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr ""
@@ -3136,11 +3136,11 @@ msgstr ""
 "La estrategia de calificación para evaluaciones por pares no puede cambiarse "
 "una vez publicada la tarea."
 
-#: xblock/utils/validation.py:190
+#: xblock/utils/validation.py:200
 msgid "This rubric definition is not valid."
 msgstr "La definición de esta rúbrica no es válida"
 
-#: xblock/utils/validation.py:193
+#: xblock/utils/validation.py:203
 #, fuzzy
 #| msgid "You must provide at least one example response for learner training."
 msgid "You must provide at least one prompt."
@@ -3148,55 +3148,55 @@ msgstr ""
 "Debe proporcionar al menos una respuesta de ejemplo para el entrenamiento de "
 "los estudiantes."
 
-#: xblock/utils/validation.py:199
+#: xblock/utils/validation.py:209
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 "Las opciones en '{criterion}' tiene el nombre(s):  duplicado {duplicates}"
 
-#: xblock/utils/validation.py:207
+#: xblock/utils/validation.py:217
 msgid "Criteria with no options must require written feedback."
 msgstr "Criterios sin opciones deben requerir retroalimentación escrita."
 
-#: xblock/utils/validation.py:216
+#: xblock/utils/validation.py:226
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 "Las preguntas o planteamientos del ejercicio no se pueden crear o borrar "
 "luego de que un problema ha sido liberado."
 
-#: xblock/utils/validation.py:220
+#: xblock/utils/validation.py:230
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 "El número de criterios no puede ser cambiado después de que un problema ha "
 "sido liberado."
 
-#: xblock/utils/validation.py:233
+#: xblock/utils/validation.py:243
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 "Los nombres de los criterios no pueden cambiarse después de que un problema "
 "ha sido liberado."
 
-#: xblock/utils/validation.py:238
+#: xblock/utils/validation.py:248
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 "El número de opciones no puede ser cambiado después de que un problema ha "
 "sido liberado."
 
-#: xblock/utils/validation.py:243
+#: xblock/utils/validation.py:253
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 "Los valores de puntaje no puede ser cambiados después de que un problema ha "
 "sido liberado."
 
-#: xblock/utils/validation.py:294
+#: xblock/utils/validation.py:304
 msgid "Learner training must have at least one training example."
 msgstr "El entrenamiento del estudiante debe tener al menos un ejemplo."
 
-#: xblock/utils/validation.py:359
+#: xblock/utils/validation.py:369
 msgid "Leaderboard number is invalid."
 msgstr ""
 "El número ingresado para el tablero de estudiantes destacados es inválido."
 
-#: xblock/utils/validation.py:382
+#: xblock/utils/validation.py:392
 msgid "The submission format is invalid."
 msgstr "El formato del envío es inválido"
