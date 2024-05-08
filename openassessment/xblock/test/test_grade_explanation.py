@@ -4,6 +4,8 @@ Tests for grade explanation in Open Response Assessment XBlock.
 
 import json
 
+from django.conf import settings
+from django.test.utils import override_settings
 from unittest.mock import patch
 
 from ddt import ddt, data
@@ -17,6 +19,9 @@ from .base import (
     XBlockHandlerTestCase,
     scenario
 )
+
+FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
 
 
 @ddt
@@ -68,6 +73,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
 
             mock_send_staff_notification.assert_called_once()
 
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
     @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml", user_id='Bernard')
     def test_render_grade_explanation_peer_only_mean_calculation(self, xblock):
         self.create_submission_and_assessments(

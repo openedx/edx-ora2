@@ -2335,11 +2335,11 @@ class TestPeerApi(CacheResetTest):
             )
 
     @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
-    @patch("openassessment.assessment.api.peer.Assessment")
-    def test_get_peer_score_with_grading_strategy_disabled(
-        self,
-        assessment_mock
-    ):
+    @patch(
+        "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
+        {"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+    )
+    def test_get_peer_score_with_grading_strategy_disabled(self):
         """Test get score when grading strategy feature is off.
 
         When grading strategy is disabled, the score is calculated using the
@@ -2352,21 +2352,16 @@ class TestPeerApi(CacheResetTest):
             "grading_strategy": "mean",
         }
         submission_uuid = "test_submission_uuid"
-        scores_by_criterion = {
-            "criterion_1": [6, 8, 15, 29, 37],
-            "criterion_2": [0, 1, 2, 4, 9]
-        }
-        assessment_mock.scores_by_criterion.return_value = scores_by_criterion
 
-        peer_api.get_assessment_scores_with_grading_strategy(
+        scores = peer_api.get_assessment_scores_with_grading_strategy(
             submission_uuid,
             workflow_requirements
         )
 
-        assessment_mock.get_score_dict.assert_called_once_with(
-            scores_by_criterion,
-            "median"
-        )
+        self.assertDictEqual(scores, {
+            "criterion_1": 15,
+            "criterion_2": 2
+        })
 
     def test_mean_score_calculation(self):
         """Test mean score calculation for peer assessments."""
