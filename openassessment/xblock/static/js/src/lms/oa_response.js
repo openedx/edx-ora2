@@ -517,18 +517,19 @@ export class ResponseView {
 
       const view = this;
       const title = gettext('Confirm Submit Response');
-      let msg = "";
+      let msg = '';
       if (this.allowLearnerResubmissions === 'True') {
         msg = gettext(
           'You\'re about to submit your response for this assignment. '
           + 'After you submit this response, you may have a limited '
-          + 'time to resubmit before your submission is graded.'
+          + 'time to resubmit before your submission is graded.',
         );
       } else {
         msg = gettext(
           'You\'re about to submit your response for this assignment. '
           + 'After you submit this response, you can\'t change it or '
-          + 'submit a new response.');
+          + 'submit a new response.',
+        );
       }
 
       this.confirmationDialog.confirm(
