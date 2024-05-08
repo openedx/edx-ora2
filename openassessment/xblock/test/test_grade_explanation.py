@@ -73,7 +73,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, Submis
 
             mock_send_staff_notification.assert_called_once()
 
-    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
     @scenario("data/peer_assessment_mean_grading_strategy_scenario.xml", user_id='Bernard')
     def test_render_grade_explanation_peer_only_mean_calculation(self, xblock):
         self.create_submission_and_assessments(
