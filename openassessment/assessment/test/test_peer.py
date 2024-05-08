@@ -1371,11 +1371,15 @@ class TestPeerApi(CacheResetTest):
                 peer_api.get_rubric_max_scores(tim["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get')
-    def test_median_score_db_error(self, mock_filter):
+    @data("mean", "median")
+    def test_median_score_db_error(self, grading_strategy, mock_filter):
         with raises(peer_api.PeerAssessmentInternalError):
             mock_filter.side_effect = DatabaseError("Bad things happened")
             tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-            peer_api.get_assessment_median_scores(tim["uuid"])
+            peer_api.get_assessment_scores_with_grading_strategy(
+                tim["uuid"],
+                grading_strategy
+            )
 
     @patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_get_assessments_db_error(self, mock_filter):
