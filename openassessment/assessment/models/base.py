@@ -36,6 +36,12 @@ logger = logging.getLogger("openassessment.assessment.models")  # pylint: disabl
 KEY_SEPARATOR = '/'
 
 
+class PeerGradingStrategy:
+    """Grading strategies for peer assessments."""
+    MEAN = "mean"
+    MEDIAN = "median"
+
+
 class InvalidRubricSelection(Exception):
     """
     The specified criterion/option do not exist in the rubric.
@@ -502,6 +508,11 @@ class Assessment(models.Model):
             (dict): A dictionary with criterion name keys and median score
                 values.
         """
+        assert grading_strategy in [
+            PeerGradingStrategy.MEDIAN,
+            PeerGradingStrategy.MEAN,
+        ], "Invalid grading strategy."
+
         return getattr(cls, f"get_{grading_strategy}_score_dict")(scores_dict)
 
     @classmethod

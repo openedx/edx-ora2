@@ -16,7 +16,7 @@ from submissions import api as sub_api
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
-                                              PeerWorkflow, PeerWorkflowItem)
+                                              PeerWorkflow, PeerWorkflowItem, PeerGradingStrategy)
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
 
@@ -26,12 +26,6 @@ PEER_TYPE = "PE"
 
 FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS = 7
 FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE = 30
-
-
-class PeerGradingStrategy:
-    """Grading strategies for peer assessments."""
-    MEAN = "mean"
-    MEDIAN = "median"
 
 
 def flexible_peer_grading_enabled(peer_requirements, course_settings):
@@ -60,10 +54,18 @@ def flexible_peer_grading_active(submission_uuid, peer_requirements, course_sett
 
 def get_peer_grading_strategy(workflow_requirements):
     """
-    Get the peer grading type, either mean or median. Default is median.
+    Get the peer grading type, either mean or median. If no grading strategy is
+    provided in the peer requirements or the feature flag is not enabled, the
+    default median score calculation is used.
     """
+    # If the feature flag is not enabled, use the median score calculation
+    # as the default behavior.
+    if not settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
+        return PeerGradingStrategy.MEDIAN
+
     if "peer" not in workflow_requirements:
         return workflow_requirements.get("grading_strategy", PeerGradingStrategy.MEDIAN)
+
     return workflow_requirements.get("peer", {}).get(
         "grading_strategy", PeerGradingStrategy.MEDIAN,
     )
@@ -523,11 +525,9 @@ def get_rubric_max_scores(submission_uuid):
 
 def get_assessment_scores_with_grading_strategy(submission_uuid, workflow_requirements):
     """Get the score for each rubric criterion calculated given grading strategy
-    obtained from the peer requirements dictionary. If no grading strategy is
-    provided in the peer requirements or the feature flag is not enabled, the
-    default median score calculation is used.
+    obtained from the peer requirements dictionary.
 
-    This function is based on get_assessment_median_scores, but allows the caller
+    This function is based on the archived get_assessment_median_scores, but allows the caller
     to specify the grading strategy (mean, median) to use when calculating the score.
 
     Args:
@@ -544,11 +544,6 @@ def get_assessment_scores_with_grading_strategy(submission_uuid, workflow_requir
         PeerAssessmentInternalError: If any error occurs while retrieving
             information to form the median/mean scores, an error is raised.
     """
-    # If the feature flag is not enabled, use the median score calculation
-    # as the default behavior.
-    if not settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
-        return get_assessment_median_scores(submission_uuid)
-
     current_grading_strategy = get_peer_grading_strategy(workflow_requirements)
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
@@ -559,46 +554,6 @@ def get_assessment_scores_with_grading_strategy(submission_uuid, workflow_requir
             scores,
             grading_strategy=current_grading_strategy,
         )
-    except PeerWorkflow.DoesNotExist:
-        return {}
-    except DatabaseError as ex:
-        error_message = (
-            "Error getting assessment median scores for submission {uuid}"
-        ).format(uuid=submission_uuid)
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message) from ex
-
-
-def get_assessment_median_scores(submission_uuid):
-    """Get the median score for each rubric criterion
-
-    For a given assessment, collect the median score for each criterion on the
-    rubric. This set can be used to determine the overall score, as well as each
-    part of the individual rubric scores.
-
-    If there is a true median score, it is returned. If there are two median
-    values, the average of those two values is returned, rounded up to the
-    greatest integer value.
-
-    Args:
-        submission_uuid (str): The submission uuid is used to get the
-            assessments used to score this submission, and generate the
-            appropriate median score.
-
-    Returns:
-        dict: A dictionary of rubric criterion names,
-        with a median score of the peer assessments.
-
-    Raises:
-        PeerAssessmentInternalError: If any error occurs while retrieving
-            information to form the median scores, an error is raised.
-    """
-    try:
-        workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
-        items = workflow.graded_by.filter(scored=True)
-        assessments = [item.assessment for item in items]
-        scores = Assessment.scores_by_criterion(assessments)
-        return Assessment.get_median_score_dict(scores)
     except PeerWorkflow.DoesNotExist:
         return {}
     except DatabaseError as ex:
