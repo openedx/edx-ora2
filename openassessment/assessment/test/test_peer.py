@@ -2257,7 +2257,6 @@ class TestPeerApi(CacheResetTest):
         grading_strategy,
         scores_by_criterion,
         _,
-        __
     ):
         """Test get score when grading strategy feature is on.
 
