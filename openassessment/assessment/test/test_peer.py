@@ -2245,7 +2245,7 @@ class TestPeerApi(CacheResetTest):
     @patch("openassessment.assessment.api.peer.PeerWorkflow")
     @patch(
         "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
-        {"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
     )
     @data(
         ("mean", {"criterion_1": 19, "criterion_2": 4}),
@@ -2257,6 +2257,7 @@ class TestPeerApi(CacheResetTest):
         grading_strategy,
         scores_by_criterion,
         _,
+        __,
     ):
         """Test get score when grading strategy feature is on.
 
@@ -2337,9 +2338,10 @@ class TestPeerApi(CacheResetTest):
     @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
     @patch(
         "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
-        {"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
     )
-    def test_get_peer_score_with_grading_strategy_disabled(self):
+    @patch("openassessment.assessment.api.peer.PeerWorkflow")
+    def test_get_peer_score_with_grading_strategy_disabled(self, _, __):
         """Test get score when grading strategy feature is off.
 
         When grading strategy is disabled, the score is calculated using the

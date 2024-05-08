@@ -4,9 +4,10 @@ Tests for grade explanation in Open Response Assessment XBlock.
 
 import json
 
+from unittest.mock import patch
+
 from django.conf import settings
 from django.test.utils import override_settings
-from unittest.mock import patch
 
 from ddt import ddt, data
 
