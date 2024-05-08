@@ -172,16 +172,18 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertIsNot(resp[2], None)
 
+    @patch("openassessment.xblock.openassessmentblock.allow_resubmission")
     @patch("openassessment.xblock.openassessmentblock.import_student_module")
     @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
     @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
     @scenario("data/basic_scenario.xml", user_id="Bob")
     def test_reset_submission(
-        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock
+        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
         xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
         mock_user.return_value = "test-user"
         mock_reset.return_value = True
+        mock_allow_resubmission.return_value = True
         mock_student_module.return_value = "test-student-module"
 
         resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
@@ -189,30 +191,45 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         self.assertTrue(resp["success"])
         self.assertEqual(resp["msg"], "Submission reset successfully.")
 
+    @patch("openassessment.xblock.openassessmentblock.allow_resubmission")
+    @scenario("data/basic_scenario.xml", user_id="Bob")
+    def test_reset_submission_not_allow_resubmission(self, xblock, mock_allow_resubmission: Mock):
+        mock_allow_resubmission.return_value = False
+
+        resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
+
+        self.assertFalse(resp["success"])
+        self.assertEqual(resp["msg"], "You can't reset your submission.")
+
+    @patch("openassessment.xblock.openassessmentblock.allow_resubmission")
     @patch("openassessment.xblock.openassessmentblock.import_student_module")
     @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
     @scenario("data/basic_scenario.xml", user_id="Bob")
     def test_reset_submission_user_not_found_error(
-        self, xblock, mock_user: Mock, mock_student_module: Mock
+        self, xblock, mock_user: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
+        mock_allow_resubmission.return_value = True
         mock_student_module.return_value = "test-student-module"
         mock_user.side_effect = get_user_model().DoesNotExist
 
         resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
+
         self.assertFalse(resp["success"])
         self.assertEqual(resp["msg"], "The user does not exist.")
 
+    @patch("openassessment.xblock.openassessmentblock.allow_resubmission")
     @patch("openassessment.xblock.openassessmentblock.import_student_module")
     @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
     @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
     @scenario("data/basic_scenario.xml", user_id="Bob")
     def test_reset_submission_submission_not_found_error(
-        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock
+        self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
         xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
         mock_user.side_effect = "test-user"
         error_mock = Mock()
         error_mock.DoesNotExist = ObjectDoesNotExist
+        mock_allow_resubmission.return_value = True
         mock_student_module.return_value = error_mock
         mock_reset.side_effect = ObjectDoesNotExist
 
