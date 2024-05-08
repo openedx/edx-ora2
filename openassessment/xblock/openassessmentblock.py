@@ -195,7 +195,7 @@ class OpenAssessmentBlock(
 
     resubmissions_grace_period = String(
         default="",
-        scope=Scope.content,
+        scope=Scope.settings,
         help="The time in hours and minutes after the student's submission date that resubmissions are allowed."
     )
 
