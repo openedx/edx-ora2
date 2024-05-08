@@ -54,6 +54,7 @@ from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
 from openassessment.xblock.ui_mixins.legacy.views_mixin import LegacyViewsMixin
 from openassessment.xblock.ui_mixins.mfe.mixin import MfeMixin
+from openassessment.xblock.utils.allow_resubmission import allow_resubmission
 from openassessment.xblock.utils.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
@@ -1353,6 +1354,9 @@ class OpenAssessmentBlock(
         Returns:
             dict: A dictionary indication the status with keys 'success' (bool) and 'msg' (str)
         """
+        if not allow_resubmission(self.config_data, self.workflow_data, self.submission_data):
+            return {"success": False, "msg": self._("You can't reset your submission.")}
+
         StudentModule = import_student_module()
         User = get_user_model()
 
