@@ -59,6 +59,7 @@ export class ResponseView {
       this.announceStatus = false;
       this.isRendering = false;
       this.fileCountBeforeUpload = 0;
+      this.allowLearnerResubmissions = false;
       this.dateFactory = new DateTimeFactory(this.element);
     }
 
@@ -127,6 +128,7 @@ export class ResponseView {
       const submit = $('.step--response__submit', this.element);
       this.textResponse = $(submit).attr('text_response');
       this.fileUploadResponse = $(submit).attr('file_upload_response');
+      this.allowLearnerResubmissions = $(submit).attr('allow_learner_resubmissions');
 
       // Install a click handler for submission
       sel.find('.step--response__submit').click(
@@ -515,12 +517,20 @@ export class ResponseView {
 
       const view = this;
       const title = gettext('Confirm Submit Response');
-      const msg = gettext(
-        'You\'re about to submit your response for this assignment. '
-        + 'After you submit this response, you can\'t change it or '
-        + 'submit a new response, unless the instructor has activated '
-        + 'the resubmission feature.',
-      );
+      let msg = "";
+      if (this.allowLearnerResubmissions === 'True') {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you may have a limited '
+          + 'time to resubmit before your submission is graded.'
+        );
+      } else {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you can\'t change it or '
+          + 'submit a new response.');
+      }
+
       this.confirmationDialog.confirm(
         title,
         msg,
