@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-06 21:30-0500\n"
+"POT-Creation-Date: 2024-05-08 13:24-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -351,7 +351,8 @@ msgstr ""
 msgid ""
 "Specify the maximum period during which resubmissions are allowed. If left "
 "blank, learners will be able to reset their submission as long as it has not "
-"been graded."
+"been graded. The grace period starts once the learner has submitted their "
+"response."
 msgstr ""
 
 #: templates/legacy/edit/oa_edit_criterion.html:6
@@ -1604,7 +1605,7 @@ msgstr ""
 msgid "We could not submit your response"
 msgstr ""
 
-#: templates/legacy/response/oa_response.html:332
+#: templates/legacy/response/oa_response.html:333
 msgid "Submit your response and move to the next step"
 msgstr ""
 
@@ -2356,15 +2357,19 @@ msgstr ""
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
 
-#: xblock/openassessmentblock.py:1367
+#: xblock/openassessmentblock.py:1358
+msgid "You can't reset your submission."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1371
 msgid "The user does not exist."
 msgstr ""
 
-#: xblock/openassessmentblock.py:1370
+#: xblock/openassessmentblock.py:1374
 msgid "There is no submission to reset."
 msgstr ""
 
-#: xblock/openassessmentblock.py:1372
+#: xblock/openassessmentblock.py:1376
 msgid "Submission reset successfully."
 msgstr ""
 
