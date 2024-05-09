@@ -2,19 +2,21 @@
 
 import copy
 import datetime
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from ddt import ddt, file_data, data, unpack
 import pytz
 
+from django.conf import settings
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
+from django.test.utils import override_settings
 from freezegun import freeze_time
 from pytest import raises
 
 from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.errors.peer import PeerAssessmentWorkflowError
+from openassessment.assessment.errors.peer import PeerAssessmentInternalError, PeerAssessmentWorkflowError
 from openassessment.assessment.models import (
     Assessment,
     AssessmentFeedback,
@@ -166,6 +168,11 @@ COURSE_SETTINGS = {}
 COURSE_SETTINGS_FLEXIBLE_ON = {
     'force_on_flexible_peer_openassessments': True
 }
+
+FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_OFF = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
+FEATURES_WITH_GRADING_STRATEGY_OFF['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = False
 
 
 @ddt
@@ -1364,11 +1371,15 @@ class TestPeerApi(CacheResetTest):
                 peer_api.get_rubric_max_scores(tim["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get')
-    def test_median_score_db_error(self, mock_filter):
+    @data("mean", "median")
+    def test_median_score_db_error(self, grading_strategy, mock_filter):
         with raises(peer_api.PeerAssessmentInternalError):
             mock_filter.side_effect = DatabaseError("Bad things happened")
             tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-            peer_api.get_assessment_median_scores(tim["uuid"])
+            peer_api.get_assessment_scores_with_grading_strategy(
+                tim["uuid"],
+                grading_strategy
+            )
 
     @patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_get_assessments_db_error(self, mock_filter):
@@ -2229,6 +2240,141 @@ class TestPeerApi(CacheResetTest):
             # Even though flexible peer grading is activated, we use all available grades
             self.assertTrue(peer_api.flexible_peer_grading_active(alice_sub['uuid'], requirements, COURSE_SETTINGS))
             self._assert_num_scored_items(alice_sub, 4)
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @patch("openassessment.assessment.api.peer.PeerWorkflow")
+    @patch(
+        "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+    )
+    @data(
+        ("mean", {"criterion_1": 19, "criterion_2": 4}),
+        ("median", {"criterion_1": 15, "criterion_2": 2}),
+    )
+    @unpack
+    def test_get_peer_score_with_grading_strategy_enabled(
+        self,
+        grading_strategy,
+        scores_by_criterion,
+        _,
+        __,
+    ):
+        """Test get score when grading strategy feature is on.
+
+        When grading strategy is enabled, the score is calculated using the
+        mean or median calculation method based on the grading strategy
+        configured for the peers step requirement.
+        """
+        workflow_requirements = {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 4,
+                "enable_flexible_grading": False,
+                "grading_strategy": grading_strategy,
+            },
+        }
+        submission_uuid = "test_submission_uuid"
+
+        score_dict = peer_api.get_assessment_scores_with_grading_strategy(
+            submission_uuid,
+            workflow_requirements
+        )
+
+        self.assertDictEqual(score_dict, scores_by_criterion)
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @patch("openassessment.assessment.api.peer.PeerWorkflow.objects.get")
+    @patch("openassessment.assessment.api.peer.Assessment.scores_by_criterion")
+    @data("mean", "median")
+    def test_get_peer_score_with_grading_strategy_raise_errors(
+        self,
+        grading_strategy,
+        scores_by_criterion_mock,
+        peer_workflow_mock
+    ):
+        """Test get score when grading strategy feature is on and the
+        application flow raises errors.
+
+        When grading strategy is enabled, the score is calculated using the
+        mean or median calculation method based on the grading strategy
+        configured for the peers step requirement.
+        """
+        workflow_requirements = {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 4,
+                "enable_flexible_grading": False,
+                "grading_strategy": grading_strategy,
+            },
+        }
+
+        submission_uuid = "test_submission_uuid"
+        scores_by_criterion = {
+            "criterion_1": [6, 8, 15, 29, 37],
+            "criterion_2": [0, 1, 2, 4, 9]
+        }
+        scores_by_criterion_mock.return_value = scores_by_criterion
+        peer_workflow_mock.side_effect = PeerWorkflow.DoesNotExist
+
+        self.assertDictEqual(
+            {},
+            peer_api.get_assessment_scores_with_grading_strategy(
+                submission_uuid,
+                workflow_requirements
+            )
+        )
+
+        workflow = Mock()
+        peer_workflow_mock.side_effect = workflow
+        workflow.return_value.graded_by.filter.return_value = []
+        scores_by_criterion_mock.side_effect = DatabaseError
+
+        with self.assertRaises(PeerAssessmentInternalError):
+            peer_api.get_assessment_scores_with_grading_strategy(
+                submission_uuid,
+                workflow_requirements
+            )
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
+    @patch(
+        "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+    )
+    @patch("openassessment.assessment.api.peer.PeerWorkflow")
+    def test_get_peer_score_with_grading_strategy_disabled(self, _, __):
+        """Test get score when grading strategy feature is off.
+
+        When grading strategy is disabled, the score is calculated using the
+        median of the peer assessments calculation method.
+        """
+        workflow_requirements = {
+            "must_grade": 5,
+            "must_be_graded_by": 4,
+            "enable_flexible_grading": False,
+            "grading_strategy": "mean",
+        }
+        submission_uuid = "test_submission_uuid"
+
+        scores = peer_api.get_assessment_scores_with_grading_strategy(
+            submission_uuid,
+            workflow_requirements
+        )
+
+        self.assertDictEqual(scores, {
+            "criterion_1": 15,
+            "criterion_2": 2
+        })
+
+    def test_mean_score_calculation(self):
+        """Test mean score calculation for peer assessments."""
+        self.assertEqual(0, Assessment.get_mean_score([]))
+        self.assertEqual(5, Assessment.get_mean_score([5]))
+        self.assertEqual(6, Assessment.get_mean_score([5, 6]))
+        self.assertEqual(19, Assessment.get_mean_score([5, 6, 12, 16, 22, 53]))
+        self.assertEqual(19, Assessment.get_mean_score([6, 5, 12, 53, 16, 22]))
+        self.assertEqual(31, Assessment.get_mean_score([5, 6, 12, 16, 22, 53, 102]))
+        self.assertEqual(31, Assessment.get_mean_score([16, 6, 12, 102, 22, 53, 5]))
+        self.assertEqual(2, Assessment.get_mean_score([0, 1, 3, 1, 5]))
 
 
 class PeerWorkflowTest(CacheResetTest):

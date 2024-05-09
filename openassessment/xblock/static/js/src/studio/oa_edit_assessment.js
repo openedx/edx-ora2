@@ -91,6 +91,7 @@ export class EditPeerAssessmentView {
       must_grade: this.mustGradeNum(),
       must_be_graded_by: this.mustBeGradedByNum(),
       enable_flexible_grading: this.enableFlexibleGrading(),
+      grading_strategy: this.gradingStrategy(),
       start: this.startDatetime(),
       due: this.dueDatetime(),
     };
@@ -161,6 +162,27 @@ export class EditPeerAssessmentView {
       self.val(isEnabled ? '0' : '1');
     }
     return self.val() === '1';
+  }
+
+  /**
+     Get or set the mean/median grading setting to enabled/disabled
+
+     Args:
+     strategy (string, optional): If provided, set `grading_strategy` to the given value
+
+     Returns:
+     string
+    * */
+  gradingStrategy(strategy) {
+    const self = $('#peer_assessment_grading_strategy', this.element);
+    if (strategy !== undefined) {
+      self.val(strategy);
+    }
+    if (self.val() === undefined || self.val() === '') {
+      self.val('median');
+      return 'median';
+    }
+    return self.val();
   }
 
   /**

@@ -36,6 +36,12 @@ logger = logging.getLogger("openassessment.assessment.models")  # pylint: disabl
 KEY_SEPARATOR = '/'
 
 
+class PeerGradingStrategy:
+    """Grading strategies for peer assessments."""
+    MEAN = "mean"
+    MEDIAN = "median"
+
+
 class InvalidRubricSelection(Exception):
     """
     The specified criterion/option do not exist in the rubric.
@@ -489,6 +495,27 @@ class Assessment(models.Model):
         return cls.objects.create(**assessment_params)
 
     @classmethod
+    def get_score_dict(cls, scores_dict, grading_strategy):
+        """Determine the score in a dictionary of lists of scores based on the
+        grading strategy calculation configuration.
+
+        Args:
+            scores_dict (dict): A dictionary of lists of int values. These int values
+                are reduced to a single value that represents the median.
+            grading_strategy (str): The type of score to calculate.  Defaults to "median".
+
+        Returns:
+            (dict): A dictionary with criterion name keys and median score
+                values.
+        """
+        assert grading_strategy in [
+            PeerGradingStrategy.MEDIAN,
+            PeerGradingStrategy.MEAN,
+        ], "Invalid grading strategy."
+
+        return getattr(cls, f"get_{grading_strategy}_score_dict")(scores_dict)
+
+    @classmethod
     def get_median_score_dict(cls, scores_dict):
         """Determine the median score in a dictionary of lists of scores
 
@@ -517,6 +544,36 @@ class Assessment(models.Model):
             criterion_score = Assessment.get_median_score(criterion_scores)
             median_scores[criterion] = criterion_score
         return median_scores
+
+    @classmethod
+    def get_mean_score_dict(cls, scores_dict):
+        """Determine the mean score in a dictionary of lists of scores
+
+        For a dictionary of lists, where each list contains a set of scores,
+        determine the mean value in each list.
+
+        Args:
+            scores_dict (dict): A dictionary of lists of int values. These int
+                values are reduced to a single value that represents the mean.
+
+        Returns:
+            (dict): A dictionary with criterion name keys and mean score
+                values.
+
+        Examples:
+            >>> scores = {
+            >>>     "foo": [5, 6, 12, 16, 22, 53],
+            >>>     "bar": [5, 6, 12, 16, 22, 53, 102]
+            >>> }
+            >>> Assessment.get_mean_score_dict(scores)
+            {"foo": 19, "bar": 31}
+
+        """
+        mean_scores = {}
+        for criterion, criterion_scores in scores_dict.items():
+            criterion_score = Assessment.get_mean_score(criterion_scores)
+            mean_scores[criterion] = criterion_score
+        return mean_scores
 
     @staticmethod
     def get_median_score(scores):
@@ -551,6 +608,28 @@ class Assessment(models.Model):
                 )
             )
         return median_score
+
+    @staticmethod
+    def get_mean_score(scores):
+        """Calculate the mean score from a list of scores
+
+        Args:
+            scores (list): A list of int values. These int values
+                are reduced to a single value that represents the mean.
+
+        Returns:
+            (int): The mean score.
+
+        Examples:
+            >>> scores = [5, 6, 12, 16, 22, 53]
+            >>> Assessment.get_mean_score(scores)
+            19
+
+        """
+        total_criterion_scores = len(scores)
+        if total_criterion_scores == 0:
+            return 0
+        return math.ceil(sum(scores) / float(total_criterion_scores))
 
     @classmethod
     def scores_by_criterion(cls, assessments):

@@ -16,6 +16,7 @@ RUBRIC_REUSE = 'rubric_reuse'
 ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
 MFE_VIEWS = 'mfe_views'
 SELECTABLE_LEARNER_WAITING_REVIEW = 'selectable_learner_waiting_review'
+ENABLE_PEER_CONFIGURABLE_GRADING = 'peer_configurable_grading'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
@@ -24,7 +25,8 @@ FEATURE_TOGGLES_BY_FLAG_NAME = {
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
     ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER',
-    SELECTABLE_LEARNER_WAITING_REVIEW: 'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW'
+    SELECTABLE_LEARNER_WAITING_REVIEW: 'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW',
+    ENABLE_PEER_CONFIGURABLE_GRADING: 'ENABLE_ORA_PEER_CONFIGURABLE_GRADING',
 }
 
 
@@ -180,3 +182,17 @@ class ConfigMixin:
         # .. toggle_creation_date: 2024-02-09
         # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2025
         return self.is_feature_enabled(SELECTABLE_LEARNER_WAITING_REVIEW)
+
+    @cached_property
+    def enable_peer_configurable_grading(self):
+        """
+        Return a boolean indicating the peer configurable grading feature is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_PEER_CONFIGURABLE_GRADING']
+        # .. toggle_implementation: SettingToggle
+        # .. toggle_default: False
+        # .. toggle_description: Enable configurable grading for peer review.
+        # .. toggle_use_cases: open_edx
+        # .. toggle_creation_date: 2024-03-25
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2196
+        return self.is_feature_enabled(ENABLE_PEER_CONFIGURABLE_GRADING)

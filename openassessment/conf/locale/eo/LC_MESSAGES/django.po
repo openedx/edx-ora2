@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 18:39-0500\n"
+"POT-Creation-Date: 2024-05-07 14:52-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -579,6 +579,35 @@ msgstr ""
 "єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє "
 "νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕє#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Grading strategy for the peer assessment"
+msgstr ""
+"Grädïng strätégý för thé péér ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Mean"
+msgstr "Méän Ⱡ'σяєм ι#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Median (default)"
+msgstr "Médïän (défäült) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Select the preferred grading strategy for the peer assessment. By default, "
+"the median across all peer reviews is used to calculate the final grade. If "
+"you select the mean, the average of all peer reviews will be used."
+msgstr ""
+"Séléçt thé préférréd grädïng strätégý för thé péér ässéssmént. Bý défäült, "
+"thé médïän äçröss äll péér révïéws ïs üséd tö çälçüläté thé fïnäl grädé. Ìf "
+"ýöü séléçt thé méän, thé ävérägé öf äll péér révïéws wïll ßé üséd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαт#"
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
 msgid "Peer Assessment Deadlines"
@@ -2831,10 +2860,6 @@ msgstr "Féédßäçk sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 msgid "Staff Comments"
 msgstr "Stäff Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: xblock/grade_mixin.py
-msgid "Peer Median Grade"
-msgstr "Péér Médïän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
-
 #: xblock/grade_mixin.py xblock/grade_mixin.py
 #, python-brace-format
 msgid "Peer {peer_index}"
@@ -2857,6 +2882,14 @@ msgid "Your Comments"
 msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: xblock/grade_mixin.py
+msgid "Peer Mean Grade"
+msgstr "Péér Méän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: xblock/grade_mixin.py
+msgid "Peer Median Grade"
+msgstr "Péér Médïän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: xblock/grade_mixin.py
 msgid "Waiting for peer reviews"
 msgstr "Wäïtïng för péér révïéws Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
@@ -2865,14 +2898,6 @@ msgid "The grade for this problem is determined by your Staff Grade."
 msgstr ""
 "Thé grädé för thïs prößlém ïs détérmïnéd ßý ýöür Stäff Grädé. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/grade_mixin.py
-msgid ""
-"The grade for this problem is determined by the median score of your Peer "
-"Assessments."
-msgstr ""
-"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé médïän sçöré öf ýöür Péér "
-"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: xblock/grade_mixin.py
 msgid "The grade for this problem is determined by your Self Assessment."
@@ -2896,6 +2921,22 @@ msgid ""
 msgstr ""
 "Ýöü hävé nöt ýét réçéïvéd äll néçéssärý péér révïéws tö détérmïné ýöür fïnäl"
 " grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: xblock/grade_mixin.py
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé médïän sçöré öf ýöür Péér "
+"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: xblock/grade_mixin.py
+msgid ""
+"The grade for this problem is determined by the mean score of your Peer "
+"Assessments."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé méän sçöré öf ýöür Péér "
+"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: xblock/openassesment_template_mixin.py
 msgid "Peer Assessment Only"
@@ -3221,6 +3262,14 @@ msgid ""
 msgstr ""
 "Thé ässéssmént týpé çännöt ßé çhängéd äftér thé prößlém häs ßéén réléäséd. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: xblock/utils/validation.py
+msgid ""
+"The grading strategy for peer assessments cannot be changed after the "
+"problem has been released."
+msgstr ""
+"Thé grädïng strätégý för péér ässéssménts çännöt ßé çhängéd äftér thé "
+"prößlém häs ßéén réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: xblock/utils/validation.py
 msgid "This rubric definition is not valid."

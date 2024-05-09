@@ -15,6 +15,7 @@ from voluptuous import (
     Required,
     Schema,
 )
+from openassessment.assessment.api.peer import PeerGradingStrategy
 from openassessment.xblock.utils.defaults import DATE_CONFIG_MANUAL, DATE_CONFIG_SUBSECTION, DATE_CONFIG_COURSE_END
 from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 
@@ -135,6 +136,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
             Required('enable_flexible_grading', default=False): bool,
+            Optional('grading_strategy', default=PeerGradingStrategy.MEDIAN): str,
             'examples': [
                 Schema({
                     Required('answer'): [utf8_validator],

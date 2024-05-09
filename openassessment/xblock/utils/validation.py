@@ -4,6 +4,8 @@ Validate changes to an XBlock before it is updated.
 
 from collections import Counter
 
+from django.conf import settings
+
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 from openassessment.xblock.utils.data_conversion import convert_training_examples_list_to_dict
@@ -165,6 +167,14 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         current_names = [assessment.get('name') for assessment in current_assessments]
         if names != current_names:
             return False, _("The assessment type cannot be changed after the problem has been released.")
+
+        if settings.FEATURES["ENABLE_ORA_PEER_CONFIGURABLE_GRADING"]:
+            grading_strategies = [assessment.get('grading_strategy') for assessment in assessments]
+            current_grading_strategies = [assessment.get('grading_strategy') for assessment in current_assessments]
+            if grading_strategies != current_grading_strategies:
+                return False, _(
+                    "The grading strategy for peer assessments cannot be changed after the problem has been released."
+                )
 
     return True, ''
 

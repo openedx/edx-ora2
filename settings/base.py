@@ -168,10 +168,14 @@ FEATURES = {
     # Set to True to enable copying/reusing rubric data
     # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
     'ENABLE_ORA_RUBRIC_REUSE': False,
-    
+
     # Set to True to enable selectable learners in waiting step list
     # See: https://github.com/openedx/edx-ora2/pull/2025
-    'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW': False
+    'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW': False,
+
+    # Set to True to enable configurable grading for peer review
+    # See: https://github.com/openedx/edx-ora2/pull/2196
+    'ENABLE_ORA_PEER_CONFIGURABLE_GRADING': False,
 }
 
 # disable indexing on history_date
