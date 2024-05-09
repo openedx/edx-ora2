@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-08 13:24-0500\n"
+"POT-Creation-Date: 2024-05-09 08:22-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 
-#: assessment/score_type_constants.py:21 xblock/grade_mixin.py:524
+#: assessment/score_type_constants.py:21 xblock/grade_mixin.py:547
 msgid "Peer"
 msgstr ""
 
@@ -503,6 +503,25 @@ msgid ""
 "This feature is being enabled by the course-level setting. It can be found "
 "under the Open Response Assessment Settings card on the Pages & Resources "
 "studio page."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:60
+msgid "Grading strategy for the peer assessment"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:62
+msgid "Mean"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:63
+msgid "Median (default)"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html:66
+msgid ""
+"Select the preferred grading strategy for the peer assessment. By default, "
+"the median across all peer reviews is used to calculate the final grade. If "
+"you select the mean, the average of all peer reviews will be used."
 msgstr ""
 
 #: templates/legacy/edit/oa_edit_peer_assessment_schedule.html:5
@@ -1770,7 +1789,7 @@ msgid ""
 "will receive a grade of Incomplete."
 msgstr ""
 
-#: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:365
+#: templates/legacy/staff/oa_staff_grade.html:13 xblock/grade_mixin.py:369
 msgid "Staff Grade"
 msgstr ""
 
@@ -2257,84 +2276,94 @@ msgstr ""
 msgid "Loading Open Response Assessment..."
 msgstr ""
 
-#: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
+#: xblock/grade_mixin.py:78 xblock/leaderboard_mixin.py:61
 msgid "An unexpected error occurred."
 msgstr ""
 
-#: xblock/grade_mixin.py:179
+#: xblock/grade_mixin.py:180
 msgid "Peer Assessment"
 msgstr ""
 
-#: xblock/grade_mixin.py:181
+#: xblock/grade_mixin.py:182
 msgid "Self Assessment"
 msgstr ""
 
-#: xblock/grade_mixin.py:221
+#: xblock/grade_mixin.py:222
 msgid "Assessment feedback could not be saved."
 msgstr ""
 
-#: xblock/grade_mixin.py:232
+#: xblock/grade_mixin.py:233
 msgid "Feedback saved."
 msgstr ""
 
-#: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
+#: xblock/grade_mixin.py:370 xblock/grade_mixin.py:535
 msgid "Staff Comments"
 msgstr ""
 
-#: xblock/grade_mixin.py:372
-msgid "Peer Median Grade"
-msgstr ""
-
-#: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
+#: xblock/grade_mixin.py:383 xblock/grade_mixin.py:542
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr ""
 
-#: xblock/grade_mixin.py:378
+#: xblock/grade_mixin.py:384
 msgid "Peer Comments"
 msgstr ""
 
-#: xblock/grade_mixin.py:388
+#: xblock/grade_mixin.py:394
 msgid "Self Assessment Grade"
 msgstr ""
 
-#: xblock/grade_mixin.py:388
+#: xblock/grade_mixin.py:394
 msgid "Your Self Assessment"
 msgstr ""
 
-#: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
+#: xblock/grade_mixin.py:395 xblock/grade_mixin.py:554
 msgid "Your Comments"
 msgstr ""
 
-#: xblock/grade_mixin.py:485
+#: xblock/grade_mixin.py:429
+msgid "Peer Mean Grade"
+msgstr ""
+
+#: xblock/grade_mixin.py:430
+msgid "Peer Median Grade"
+msgstr ""
+
+#: xblock/grade_mixin.py:508
 msgid "Waiting for peer reviews"
 msgstr ""
 
-#: xblock/grade_mixin.py:655
+#: xblock/grade_mixin.py:677
 msgid "The grade for this problem is determined by your Staff Grade."
 msgstr ""
 
-#: xblock/grade_mixin.py:657
-msgid ""
-"The grade for this problem is determined by the median score of your Peer "
-"Assessments."
-msgstr ""
-
-#: xblock/grade_mixin.py:660
+#: xblock/grade_mixin.py:681
 msgid "The grade for this problem is determined by your Self Assessment."
 msgstr ""
 
-#: xblock/grade_mixin.py:666
+#: xblock/grade_mixin.py:687
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a {earned_points}/"
 "{total_points}."
 msgstr ""
 
-#: xblock/grade_mixin.py:674
+#: xblock/grade_mixin.py:695
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final "
 "grade."
+msgstr ""
+
+#: xblock/grade_mixin.py:710
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+
+#: xblock/grade_mixin.py:715
+msgid ""
+"The grade for this problem is determined by the mean score of your Peer "
+"Assessments."
 msgstr ""
 
 #: xblock/openassesment_template_mixin.py:66
@@ -2473,30 +2502,30 @@ msgid ""
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/studio_mixin.py:245 xblock/studio_mixin.py:257
+#: xblock/studio_mixin.py:246 xblock/studio_mixin.py:258
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: xblock/studio_mixin.py:262
+#: xblock/studio_mixin.py:263
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:266
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:269
+#: xblock/studio_mixin.py:270
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:293
+#: xblock/studio_mixin.py:294
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: xblock/studio_mixin.py:327
+#: xblock/studio_mixin.py:328
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
@@ -2543,98 +2572,104 @@ msgstr ""
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 
-#: xblock/utils/validation.py:118
+#: xblock/utils/validation.py:120
 msgid "This problem must include at least one assessment."
 msgstr ""
 
-#: xblock/utils/validation.py:122
+#: xblock/utils/validation.py:124
 msgid "The assessment order you selected is invalid."
 msgstr ""
 
-#: xblock/utils/validation.py:132
+#: xblock/utils/validation.py:134
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 
-#: xblock/utils/validation.py:135
+#: xblock/utils/validation.py:137
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 
-#: xblock/utils/validation.py:139
+#: xblock/utils/validation.py:141
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr ""
 
-#: xblock/utils/validation.py:148
+#: xblock/utils/validation.py:150
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 
-#: xblock/utils/validation.py:151
+#: xblock/utils/validation.py:153
 msgid "Each example response for learner training must be unique."
 msgstr ""
 
-#: xblock/utils/validation.py:158
+#: xblock/utils/validation.py:160
 msgid ""
 "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 
-#: xblock/utils/validation.py:162
+#: xblock/utils/validation.py:164
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr ""
 
-#: xblock/utils/validation.py:167
+#: xblock/utils/validation.py:169
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr ""
 
-#: xblock/utils/validation.py:190
+#: xblock/utils/validation.py:176
+msgid ""
+"The grading strategy for peer assessments cannot be changed after the "
+"problem has been released."
+msgstr ""
+
+#: xblock/utils/validation.py:200
 msgid "This rubric definition is not valid."
 msgstr ""
 
-#: xblock/utils/validation.py:193
+#: xblock/utils/validation.py:203
 msgid "You must provide at least one prompt."
 msgstr ""
 
-#: xblock/utils/validation.py:199
+#: xblock/utils/validation.py:209
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 
-#: xblock/utils/validation.py:207
+#: xblock/utils/validation.py:217
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 
-#: xblock/utils/validation.py:216
+#: xblock/utils/validation.py:226
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 
-#: xblock/utils/validation.py:220
+#: xblock/utils/validation.py:230
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 
-#: xblock/utils/validation.py:233
+#: xblock/utils/validation.py:243
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 
-#: xblock/utils/validation.py:238
+#: xblock/utils/validation.py:248
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 
-#: xblock/utils/validation.py:243
+#: xblock/utils/validation.py:253
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 
-#: xblock/utils/validation.py:294
+#: xblock/utils/validation.py:304
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: xblock/utils/validation.py:359
+#: xblock/utils/validation.py:369
 msgid "Leaderboard number is invalid."
 msgstr ""
 
-#: xblock/utils/validation.py:382
+#: xblock/utils/validation.py:392
 msgid "The submission format is invalid."
 msgstr ""
