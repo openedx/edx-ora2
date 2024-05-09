@@ -181,6 +181,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
         xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
+        xblock.workflow_data.workflow = {"submission_uuid": "test-submission-uuid"}
         mock_user.return_value = "test-user"
         mock_reset.return_value = True
         mock_allow_resubmission.return_value = True
@@ -195,6 +196,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     @scenario("data/basic_scenario.xml", user_id="Bob")
     def test_reset_submission_not_allow_resubmission(self, xblock, mock_allow_resubmission: Mock):
         mock_allow_resubmission.return_value = False
+        xblock.workflow_data.workflow = {"submission_uuid": "test-submission-uuid"}
 
         resp = self.request(xblock, "reset_submission", json.dumps({}), response_format="json")
 
@@ -208,6 +210,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     def test_reset_submission_user_not_found_error(
         self, xblock, mock_user: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
+        xblock.workflow_data.workflow = {"submission_uuid": "test-submission-uuid"}
         mock_allow_resubmission.return_value = True
         mock_student_module.return_value = "test-student-module"
         mock_user.side_effect = get_user_model().DoesNotExist
@@ -226,6 +229,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
         xblock.xmodule_runtime = Mock(course_id=COURSE_ID)
+        xblock.workflow_data.workflow = {"submission_uuid": "test-submission-uuid"}
         mock_user.side_effect = "test-user"
         error_mock = Mock()
         error_mock.DoesNotExist = ObjectDoesNotExist
