@@ -401,22 +401,20 @@ msgstr ""
 "formulando su respuesta."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:167
-#, fuzzy
-#| msgid "Allow LaTeX Responses"
 msgid "Allow Learner Resubmissions"
-msgstr "Permitir respuestas en LaTeX"
+msgstr "Permitir Reenvíos de Estudiantes"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:174
 msgid ""
 "Set to TRUE to allow learners to resubmit ungraded work. Set to FALSE if "
 "resubmissions are not allowed."
 msgstr ""
+"Configura en VERDADERO para permitir a los estudiantes reenviar trabajos no "
+"calificados. Configura en FALSO si los reenvíos no están permitidos."
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:178
-#, fuzzy
-#| msgid "Remove Submission From Peer Grading"
 msgid "Resubmission Grace Period"
-msgstr "Eliminar envío de la calificación por pares"
+msgstr "Período de Gracia para Reenvíos"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:187
 msgid ""
@@ -425,6 +423,10 @@ msgid ""
 "been graded. The grace period starts once the learner has submitted their "
 "response."
 msgstr ""
+"Especifica el período máximo durante el cual se permiten los reenvíos. Si se "
+"deja en blanco, los estudiantes podrán restablecer su envío siempre y cuando "
+"no haya sido calificado. El período de gracia comienza una vez que el "
+"estudiante ha enviado su respuesta."
 
 #: templates/legacy/edit/oa_edit_criterion.html:6
 #: templates/legacy/staff_area/oa_student_info.html:122
@@ -2109,14 +2111,12 @@ msgstr ""
 "                    "
 
 #: templates/legacy/response/oa_response_submitted.html:63
-#, fuzzy
-#| msgid "We could not submit your response"
 msgid "We could not reset your response"
-msgstr "No pudimos subir su respuesta"
+msgstr "No pudimos restablecer su respuesta"
 
 #: templates/legacy/response/oa_response_submitted.html:69
 msgid "Reset response and submit again"
-msgstr ""
+msgstr "Restablecer respuesta y enviar de nuevo"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
@@ -2903,26 +2903,20 @@ msgid "Self Assessment to Staff Assessment"
 msgstr "Auto Evaluación a Evaluación del Personal"
 
 #: xblock/openassessmentblock.py:1358
-#, fuzzy
-#| msgid "Click to preview your submission in LaTeX."
 msgid "You can't reset your submission."
-msgstr "Haga clic para previsualizar su envío en LaTeX."
+msgstr "No puede restablecer su envío."
 
 #: xblock/openassessmentblock.py:1371
 msgid "The user does not exist."
-msgstr ""
+msgstr "El usuario no existe."
 
 #: xblock/openassessmentblock.py:1374
-#, fuzzy
-#| msgid "The submission is waiting for assessments."
 msgid "There is no submission to reset."
-msgstr "El envío está esperando las evaluaciones ."
+msgstr "No hay envío para restablecer."
 
 #: xblock/openassessmentblock.py:1376
-#, fuzzy
-#| msgid "Submission not found"
 msgid "Submission reset successfully."
-msgstr "Entrega no encontrada"
+msgstr "Envío restablecido con éxito."
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."

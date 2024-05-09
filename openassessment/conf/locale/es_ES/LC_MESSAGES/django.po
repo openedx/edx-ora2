@@ -395,7 +395,7 @@ msgstr ""
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:167
 msgid "Allow Learner Resubmissions"
-msgstr "Permitir Reenvíos de los Estudiantes"
+msgstr "Permitir Reenvíos de Estudiantes"
 
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:174
 msgid ""

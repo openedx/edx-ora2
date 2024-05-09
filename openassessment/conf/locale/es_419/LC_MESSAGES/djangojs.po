@@ -59,10 +59,8 @@ msgstr "Esta respuesta no pudo ser enviada."
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:8
 #: xblock/static/dist/openassessment-studio.fba153d2eafbb4c8e78c.js:1
 #: xblock/static/js/src/oa_server.js:237
-#, fuzzy
-#| msgid "The submission could not be removed from the grading pool."
 msgid "The submission could not be reset."
-msgstr "La entrega no pudo ser eliminada de la lista de evaluaciones"
+msgstr "El envío no pudo ser restablecido."
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:8
 #: xblock/static/dist/openassessment-studio.fba153d2eafbb4c8e78c.js:1
@@ -337,17 +335,14 @@ msgstr "Confirmar Respuesta Enviada"
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:377
 #: xblock/static/js/src/lms/oa_response.js:523
-#, fuzzy
-#| msgid ""
-#| "You're about to submit your response for this assignment. After you "
-#| "submit this response, you can't change it or submit a new response."
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you may have a limited time to resubmit before your "
 "submission is graded."
 msgstr ""
-"Está a punto de subir su respuesta para esta tarea. Después de subirla, no "
-"podrá cambiarla o subir una nueva respuesta."
+"Está a punto de subir su respuesta para esta tarea. Después de subirla, "
+"podría tener un tiempo limitado para volver a subirla antes de que su "
+"respuesta sea calificada."
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:377
 #: xblock/static/js/src/lms/oa_response.js:529
@@ -360,24 +355,19 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:377
 #: xblock/static/js/src/lms/oa_response.js:571
-#, fuzzy
-#| msgid "Confirm"
 msgid "Confirm Reset"
-msgstr "Confirmar"
+msgstr "Confirmar Restablecimiento"
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:377
 #: xblock/static/js/src/lms/oa_response.js:573
-#, fuzzy
-#| msgid ""
-#| "You're about to submit your response for this assignment. After you "
-#| "submit this response, you can't change it or submit a new response."
 msgid ""
 "You're about to reset your response for this assignment. You will need to "
 "submit a new response in order to complete this step. Are you sure you want "
 "to continue?"
 msgstr ""
-"Está a punto de subir su respuesta para esta tarea. Después de subirla, no "
-"podrá cambiarla o subir una nueva respuesta."
+"Está a punto de restablecer su respuesta para esta tarea. Necesitará subir "
+"una nueva respuesta para completar este paso. ¿Está seguro de que desea "
+"continuar?"
 
 #: xblock/static/dist/openassessment-lms.d29f0bd34bb5d82d36fb.js:377
 #: xblock/static/js/src/lms/oa_response.js:644
@@ -685,6 +675,8 @@ msgid ""
 "Time must be in the format dd:hh:mm. The days must be between 00 and 99, the "
 "hours between 00 and 23, and the minutes between 00 and 59."
 msgstr ""
+"El tiempo debe estar en el formato dd:hh:mm. Los días deben estar entre 00 y "
+"99, las horas entre 00 y 23, y los minutos entre 00 y 59."
 
 #: xblock/static/dist/openassessment-studio.fba153d2eafbb4c8e78c.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:118
