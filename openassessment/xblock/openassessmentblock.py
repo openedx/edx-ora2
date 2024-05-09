@@ -1354,7 +1354,7 @@ class OpenAssessmentBlock(
         Returns:
             dict: A dictionary indication the status with keys 'success' (bool) and 'msg' (str)
         """
-        if not allow_resubmission(self.config_data, self.workflow_data, self.submission_data):
+        if not allow_resubmission(self.config_data, self.workflow_data, self.submission_data.student_submission):
             return {"success": False, "msg": self._("You can't reset your submission.")}
 
         StudentModule = import_student_module()
