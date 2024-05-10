@@ -329,7 +329,9 @@ describe("OpenAssessment.Server", function() {
             fileTypeWhiteList: ['pdf', 'doc'],
             multipleFilesEnabled: true,
             latexEnabled: true,
-            leaderboardNum: 15
+            leaderboardNum: 15,
+            allowLearnerResubmissions: false,
+            resubmissionsGracePeriod: ""
         });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
@@ -348,7 +350,9 @@ describe("OpenAssessment.Server", function() {
                 white_listed_file_types: ['pdf', 'doc'],
                 allow_multiple_files: true,
                 allow_latex: true,
-                leaderboard_show: 15
+                leaderboard_show: 15,
+                allow_learner_resubmissions: false,
+                resubmissions_grace_period: ""
             }),
             contentType : jsonContentType
         });

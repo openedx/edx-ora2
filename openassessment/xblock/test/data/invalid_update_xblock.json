@@ -10,6 +10,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -40,6 +42,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -95,6 +99,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -152,6 +158,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -208,6 +216,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -266,6 +276,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -324,6 +336,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -374,6 +388,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -423,6 +439,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             []
@@ -450,6 +468,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -499,6 +519,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -534,6 +556,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -578,6 +602,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -627,6 +653,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -675,6 +703,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "criteria": [
             {
                 "order_num": 0,
@@ -722,6 +752,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "criteria": [
             {
                 "order_num": 0,
@@ -800,6 +832,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -862,6 +896,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -922,6 +958,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -985,6 +1023,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1048,6 +1088,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1105,6 +1147,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1169,6 +1213,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1225,6 +1271,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1282,6 +1330,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1314,6 +1364,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1370,6 +1422,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1426,6 +1480,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1505,6 +1561,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1562,6 +1620,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1620,6 +1680,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1678,6 +1740,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1737,6 +1801,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "criteria": [
             {

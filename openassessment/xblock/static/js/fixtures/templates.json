@@ -430,6 +430,8 @@
             "text_response": "required",
             "file_upload_response": "",
             "leaderboard_show": 12,
+            "allow_learner_resubmissions": false,
+            "resubmissions_grace_period": "",
             "necessity_options": {
                 "required": "Required",
                 "optional": "Optional",
@@ -523,6 +525,8 @@
             "text_response": "required",
             "file_upload_response": "",
             "leaderboard_show": 12,
+            "allow_learner_resubmissions": false,
+            "resubmissions_grace_period": "",
             "necessity_options": {
                 "required": "Required",
                 "optional": "Optional",

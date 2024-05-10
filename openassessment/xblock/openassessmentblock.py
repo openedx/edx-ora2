@@ -11,6 +11,7 @@ import pkg_resources
 import pytz
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.template.loader import get_template
 
 from bleach.sanitizer import Cleaner
@@ -20,6 +21,8 @@ from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
 
+from openassessment.runtime_imports.functions import reset_student_attempts, get_user_by_username_or_email
+from openassessment.runtime_imports.classes import import_student_module
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.grades_api import GradesAPI
@@ -51,6 +54,7 @@ from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
 from openassessment.xblock.ui_mixins.legacy.views_mixin import LegacyViewsMixin
 from openassessment.xblock.ui_mixins.mfe.mixin import MfeMixin
+from openassessment.xblock.utils.allow_resubmission import allow_resubmission
 from openassessment.xblock.utils.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
@@ -135,6 +139,12 @@ class OpenAssessmentBlock(
         help="Allow multiple files uploaded with submission (if file upload enabled)."
     )
 
+    allow_learner_resubmissions = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Allow learners to resubmit their response."
+    )
+
     date_config_type = String(
         default=DATE_CONFIG_MANUAL,
         scope=Scope.settings,
@@ -181,6 +191,12 @@ class OpenAssessmentBlock(
         default='text',
         scope=Scope.content,
         help="The type of prompt. html or text"
+    )
+
+    resubmissions_grace_period = String(
+        default="",
+        scope=Scope.settings,
+        help="The time in hours and minutes after the student's submission date that resubmissions are allowed."
     )
 
     rubric_criteria = List(
@@ -915,6 +931,7 @@ class OpenAssessmentBlock(
 
         block.allow_file_upload = config['allow_file_upload']
         block.allow_latex = config['allow_latex']
+        block.allow_learner_resubmissions = config['allow_learner_resubmissions']
         block.allow_multiple_files = config['allow_multiple_files']
         block.file_upload_response = config['file_upload_response']
         block.file_upload_type = config['file_upload_type']
@@ -922,6 +939,7 @@ class OpenAssessmentBlock(
         block.leaderboard_show = config['leaderboard_show']
         block.prompts = config['prompts']
         block.prompts_type = config['prompts_type']
+        block.resubmissions_grace_period = config['resubmissions_grace_period']
         block.rubric_criteria = config['rubric_criteria']
         block.rubric_feedback_prompt = config['rubric_feedback_prompt']
         block.rubric_feedback_default_text = config['rubric_feedback_default_text']
@@ -1323,6 +1341,39 @@ class OpenAssessmentBlock(
             self, event_name,
             event_data
         )
+
+    @XBlock.json_handler
+    def reset_submission(self, data, suffix=""):  # pylint: disable=unused-argument
+        """
+        Reset the student's submission.
+
+        Args:
+            data (dict): Unused parameter. Defaults to {}.
+            suffix (str, optional): Unused parameter. Defaults to ''.
+
+        Returns:
+            dict: A dictionary indication the status with keys 'success' (bool) and 'msg' (str)
+        """
+        if not allow_resubmission(self.config_data, self.workflow_data, self.submission_data.student_submission):
+            return {"success": False, "msg": self._("You can't reset your submission.")}
+
+        StudentModule = import_student_module()
+        User = get_user_model()
+
+        block_user = self.runtime.service(self, "user").get_current_user()
+        username = block_user.opt_attrs.get("edx-platform.username")
+
+        try:
+            user = get_user_by_username_or_email(username)
+            reset_student_attempts(self.course_id, user, self.location, user, True)  # pylint: disable=no-member
+        except User.DoesNotExist as error:
+            logger.exception(f"An error occurred while resetting the submission: {error}")
+            return {"success": False, "msg": self._("The user does not exist.")}
+        except StudentModule.DoesNotExist as error:
+            logger.exception(f"An error occurred while resetting the submission: {error}")
+            return {"success": False, "msg": self._("There is no submission to reset.")}
+
+        return {"success": True, "msg": self._("Submission reset successfully.")}
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):  # pylint: disable=unused-argument

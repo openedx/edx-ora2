@@ -8,6 +8,7 @@ class ORAConfigAPI:
     XBLOCK_FIELDS = [
         "allow_file_upload",
         "allow_latex",
+        "allow_learner_resubmissions",
         "allow_multiple_files",
         "date_config_type",
         "file_upload_response_raw",
@@ -16,6 +17,7 @@ class ORAConfigAPI:
         "leaderboard_show",
         "prompt",
         "prompts_type",
+        "resubmissions_grace_period",
         "rubric_criteria",
         "rubric_feedback_prompt",
         "rubric_feedback_default_text",

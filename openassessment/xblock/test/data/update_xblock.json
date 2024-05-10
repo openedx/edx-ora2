@@ -39,6 +39,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "01:12:34",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -101,6 +103,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:00:30",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -159,6 +163,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "02:00:59",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -217,6 +223,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -286,6 +294,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:10:40",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -344,6 +354,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "03:00:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -402,6 +414,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "01:01:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -460,6 +474,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:20:59",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [

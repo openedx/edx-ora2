@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 14:51-0400\n"
+"POT-Creation-Date: 2024-05-09 08:30-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Jesica Greco, 2022-2023\n"
 "Language-Team: Spanish (Spain) (http://app.transifex.com/open-edx/edx-"
@@ -264,6 +264,7 @@ msgstr "Permitir múltiples archivos"
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:93
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:131
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:169
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
 msgstr "Falso"
@@ -272,6 +273,7 @@ msgstr "Falso"
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:132
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:170
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
 msgstr "Verdadero"
@@ -390,6 +392,34 @@ msgid ""
 msgstr ""
 "Especifica si los estudiantes pueden ver la rúbrica mientras se trabajan en "
 "su respuesta."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:167
+msgid "Allow Learner Resubmissions"
+msgstr "Permitir Reenvíos de Estudiantes"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:174
+msgid ""
+"Set to TRUE to allow learners to resubmit ungraded work. Set to FALSE if "
+"resubmissions are not allowed."
+msgstr ""
+"Establece en VERDADERO para permitir a los estudiantes reenviar trabajos no "
+"calificados. Establece en FALSO si no se permiten reenvíos."
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:178
+msgid "Resubmission Grace Period"
+msgstr "Período de Gracia para Reenvíos"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:187
+msgid ""
+"Specify the maximum period during which resubmissions are allowed. If left "
+"blank, learners will be able to reset their submission as long as it has not "
+"been graded. The grace period starts once the learner has submitted their "
+"response."
+msgstr ""
+"Especifica el período máximo durante el cual se permiten los reenvíos. Si se "
+"deja en blanco, los estudiantes podrán restablecer su entrega siempre que no "
+"haya sido calificada. El período de gracia comienza una vez que el estudiante "
+"ha enviado su respuesta."
 
 #: templates/legacy/edit/oa_edit_criterion.html:6
 #: templates/legacy/staff_area/oa_student_info.html:122
@@ -1956,7 +1986,7 @@ msgstr ""
 msgid "We could not submit your response"
 msgstr "No se ha podido enviar tu respuesta"
 
-#: templates/legacy/response/oa_response.html:332
+#: templates/legacy/response/oa_response.html:333
 msgid "Submit your response and move to the next step"
 msgstr "Envía tu respuesta y continúa con el paso siguiente"
 
@@ -2085,6 +2115,14 @@ msgstr ""
 "                        Aún tienes que completar el paso de "
 "%(start_tag)sautoevaluación%(end_tag)s.\n"
 "                    "
+
+#: templates/legacy/response/oa_response_submitted.html:63
+msgid "We could not reset your response"
+msgstr "No se ha podido restablecer tu respuesta"
+
+#: templates/legacy/response/oa_response_submitted.html:69
+msgid "Reset response and submit again"
+msgstr "Restablecer respuesta y enviar de nuevo"
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
 msgid "Error"
@@ -2873,6 +2911,22 @@ msgstr "Autoevaluación a evaluación por pares"
 msgid "Self Assessment to Staff Assessment"
 msgstr "Autoevaluación a evaluación del equipo docente"
 
+#: xblock/openassessmentblock.py:1358
+msgid "You can't reset your submission."
+msgstr "No puedes restablecer tu entrega."
+
+#: xblock/openassessmentblock.py:1371
+msgid "The user does not exist."
+msgstr "El usuario no existe."
+
+#: xblock/openassessmentblock.py:1374
+msgid "There is no submission to reset."
+msgstr "No hay ninguna entrega para restablecer."
+
+#: xblock/openassessmentblock.py:1376
+msgid "Submission reset successfully."
+msgstr "Entrega restablecida con éxito."
+
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
@@ -2992,36 +3046,36 @@ msgstr ""
 "menos que elimines el estado de la tarea de uno de los miembros del equipo "
 "para permitir al equipo reenviar una respuesta."
 
-#: xblock/studio_mixin.py:244 xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:246 xblock/studio_mixin.py:258
 msgid "Error updating XBlock configuration"
 msgstr "Error al actualizar la configuración del XBlock"
 
-#: xblock/studio_mixin.py:261
+#: xblock/studio_mixin.py:263
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 "Error: no se puede deshabilitar el texto de respuesta y la respuesta por "
 "carga de archivo a la vez"
 
-#: xblock/studio_mixin.py:265
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 "Error: cuando el texto de respuesta está deshabilitado, la respuesta por "
 "subida de archivo es obligatoria"
 
-#: xblock/studio_mixin.py:268
+#: xblock/studio_mixin.py:270
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 "Error: cuando la respuesta por subida de archivo está deshabilitada, el "
 "texto de respuesta es obligatorio"
 
-#: xblock/studio_mixin.py:292
+#: xblock/studio_mixin.py:294
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Error de validación: {error}"
 
-#: xblock/studio_mixin.py:324
+#: xblock/studio_mixin.py:328
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock actualizado con éxito"
 

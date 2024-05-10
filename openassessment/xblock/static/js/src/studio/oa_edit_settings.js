@@ -45,6 +45,8 @@ export class EditSettingsView {
     this.validate = this.validate.bind(this);
     this.validationErrors = this.validationErrors.bind(this);
     this.clearValidationErrors = this.clearValidationErrors.bind(this);
+    this.allowLearnerResubmissions = this.allowLearnerResubmissions.bind(this);
+    this.resubmissionsGracePeriod = this.resubmissionsGracePeriod.bind(this);
 
     new SelectControl(
       $('#openassessment_submission_file_upload_response', this.element),
@@ -69,6 +71,16 @@ export class EditSettingsView {
       new Notifier([new AssessmentToggleListener()]),
     ).install();
 
+    new SelectControl(
+      $('#openassessment_allow_learner_resubmissions_selector', this.element),
+      (selectedValue) => {
+        const isHidden = selectedValue === '0';
+        const el = $('#openassessment_resubmissions_grace_period_wrapper', this.element);
+        el.toggleClass('is--hidden', isHidden);
+      },
+      new Notifier([new AssessmentToggleListener()]),
+    ).install();
+
     this.teamsEnabledSelectControl = new SelectControl(
       $('#openassessment_team_enabled_selector', this.element),
       this.onTeamsEnabledChange,
@@ -80,6 +92,21 @@ export class EditSettingsView {
     this.leaderboardIntField = new IntField(
       $('#openassessment_leaderboard_editor', this.element),
       { min: 0, max: 100 },
+    );
+
+    this.resubmissionsGracePeriodInputField = new InputControl(
+      $('#openassessment_resubmissions_grace_period', this.element),
+      ((value) => {
+        const errors = [];
+        const isValidFormat = /^$|^([0-9][0-9]):([0-1][0-9]|2[0-3]):([0-5][0-9])$/gm.test(value);
+
+        if (!isValidFormat) {
+          errors.push(gettext('Time must be in the format dd:hh:mm. The days must be between 00 and 99, the hours between 00 and 23, and the minutes between 00 and 59.'));
+          return errors;
+        }
+
+        return errors;
+      }),
     );
 
     this.fileTypeWhiteListInputField = new InputControl(
@@ -432,6 +459,23 @@ export class EditSettingsView {
   }
 
   /**
+    Get or set the time to allow resubmissions to learners.
+
+    Args:
+        time (string, optional): If provided, set the time in dd:hh:mm format
+
+    Returns:
+        String: time in dd:hh:mm format
+
+    * */
+  resubmissionsGracePeriod(time) {
+    if (time !== undefined) {
+      this.resubmissionsGracePeriodInputField.set(time);
+    }
+    return this.resubmissionsGracePeriodInputField.get(time);
+  }
+
+  /**
     Enable / disable showing learners the assessment rubric while working on their response.
 
     Args:
@@ -441,6 +485,18 @@ export class EditSettingsView {
      * */
   showRubricDuringResponse(isEnabled) {
     return this.settingSelectorEnabled('#openassessment_show_rubric_during_response_selector', isEnabled);
+  }
+
+  /**
+    Enable / disable allowing learners to resubmit their assessment.
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable allowing resubmissions
+    Returns:
+        boolean
+     * */
+  allowLearnerResubmissions(isEnabled) {
+    return this.settingSelectorEnabled('#openassessment_allow_learner_resubmissions_selector', isEnabled);
   }
 
   /**
@@ -455,6 +511,8 @@ export class EditSettingsView {
     let isValid = true;
 
     isValid = (this.leaderboardIntField.validate() && isValid);
+    isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
+
     if (this.fileUploadType() === 'custom') {
       isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
     } else {
@@ -486,6 +544,9 @@ export class EditSettingsView {
     if (this.fileTypeWhiteListInputField.validationErrors().length > 0) {
       errors = errors.concat(this.fileTypeWhiteListInputField.validationErrors());
     }
+    if (this.resubmissionsGracePeriodInputField.validationErrors().length > 0) {
+      errors = errors.concat(this.resubmissionsGracePeriodInputField.validationErrors());
+    }
 
     return errors;
   }
@@ -496,6 +557,7 @@ export class EditSettingsView {
   clearValidationErrors() {
     this.leaderboardIntField.clearValidationErrors();
     this.fileTypeWhiteListInputField.clearValidationErrors();
+    this.resubmissionsGracePeriodInputField.clearValidationErrors();
   }
 }
 

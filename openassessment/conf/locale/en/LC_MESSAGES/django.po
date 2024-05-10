@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 14:52-0400\n"
+"POT-Creation-Date: 2024-05-09 08:22-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -224,6 +224,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:93
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:131
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:157
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:169
 #: templates/legacy/edit/oa_edit_peer_assessment.html:45
 msgid "False"
 msgstr ""
@@ -232,6 +233,7 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:94
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:132
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:158
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:170
 #: templates/legacy/edit/oa_edit_peer_assessment.html:46
 msgid "True"
 msgstr ""
@@ -328,6 +330,28 @@ msgstr ""
 #: templates/legacy/edit/oa_edit_basic_settings_list.html:162
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
+"response."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:167
+msgid "Allow Learner Resubmissions"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:174
+msgid ""
+"Set to TRUE to allow learners to resubmit ungraded work. Set to FALSE if "
+"resubmissions are not allowed."
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:178
+msgid "Resubmission Grace Period"
+msgstr ""
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html:187
+msgid ""
+"Specify the maximum period during which resubmissions are allowed. If left "
+"blank, learners will be able to reset their submission as long as it has not "
+"been graded. The grace period starts once the learner has submitted their "
 "response."
 msgstr ""
 
@@ -1600,7 +1624,7 @@ msgstr ""
 msgid "We could not submit your response"
 msgstr ""
 
-#: templates/legacy/response/oa_response.html:332
+#: templates/legacy/response/oa_response.html:333
 msgid "Submit your response and move to the next step"
 msgstr ""
 
@@ -1698,6 +1722,14 @@ msgid ""
 "                        You still need to complete the %(start_tag)sself "
 "assessment%(end_tag)s step.\n"
 "                    "
+msgstr ""
+
+#: templates/legacy/response/oa_response_submitted.html:63
+msgid "We could not reset your response"
+msgstr ""
+
+#: templates/legacy/response/oa_response_submitted.html:69
+msgid "Reset response and submit again"
 msgstr ""
 
 #: templates/legacy/response/oa_response_team_already_submitted.html:15
@@ -2354,6 +2386,22 @@ msgstr ""
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
 
+#: xblock/openassessmentblock.py:1358
+msgid "You can't reset your submission."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1371
+msgid "The user does not exist."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1374
+msgid "There is no submission to reset."
+msgstr ""
+
+#: xblock/openassessmentblock.py:1376
+msgid "Submission reset successfully."
+msgstr ""
+
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
@@ -2454,30 +2502,30 @@ msgid ""
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/studio_mixin.py:244 xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:246 xblock/studio_mixin.py:258
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: xblock/studio_mixin.py:261
+#: xblock/studio_mixin.py:263
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:265
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:268
+#: xblock/studio_mixin.py:270
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:292
+#: xblock/studio_mixin.py:294
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: xblock/studio_mixin.py:324
+#: xblock/studio_mixin.py:328
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 

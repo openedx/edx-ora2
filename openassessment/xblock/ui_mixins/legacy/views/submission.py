@@ -11,6 +11,7 @@ from openassessment.xblock.utils.data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
 )
+from openassessment.xblock.utils.allow_resubmission import allow_resubmission
 from openassessment.xblock.utils.user_data import get_user_preferences
 
 
@@ -185,6 +186,12 @@ def get_submission_context(config, submission_info):
     file_urls = submission_info.files.uploaded_files
     if file_urls:
         submission_context.update(file_urls)
+
+    # Determine if the student can resubmit their response
+    if submission_info.has_submitted:
+        response_config["allow_learner_resubmissions"] = allow_resubmission(
+            config, submission_info.workflow_data, submission_info.student_submission
+        )
 
     # Get access information (whether problem is closed) and reasons
     workflow_context = {}

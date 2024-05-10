@@ -193,6 +193,8 @@ class StudioMixin:
             'allow_multiple_files': self.allow_multiple_files,
             'white_listed_file_types': white_listed_file_types_string,
             'allow_latex': self.allow_latex,
+            'allow_learner_resubmissions': self.allow_learner_resubmissions,
+            'resubmissions_grace_period': self.resubmissions_grace_period,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
@@ -315,6 +317,8 @@ class StudioMixin:
             self.white_listed_file_types_string = None
         self.allow_multiple_files = bool(data['allow_multiple_files'])
         self.allow_latex = bool(data['allow_latex'])
+        self.allow_learner_resubmissions = bool(data['allow_learner_resubmissions'])
+        self.resubmissions_grace_period = data['resubmissions_grace_period']
         self.leaderboard_show = data['leaderboard_show']
         self.teams_enabled = bool(data.get('teams_enabled', False))
         self.selected_teamset_id = data.get('selected_teamset_id', '')

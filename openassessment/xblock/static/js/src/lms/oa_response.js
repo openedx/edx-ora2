@@ -59,6 +59,7 @@ export class ResponseView {
       this.announceStatus = false;
       this.isRendering = false;
       this.fileCountBeforeUpload = 0;
+      this.allowLearnerResubmissions = false;
       this.dateFactory = new DateTimeFactory(this.element);
     }
 
@@ -127,6 +128,7 @@ export class ResponseView {
       const submit = $('.step--response__submit', this.element);
       this.textResponse = $(submit).attr('text_response');
       this.fileUploadResponse = $(submit).attr('file_upload_response');
+      this.allowLearnerResubmissions = $(submit).attr('allow_learner_resubmissions');
 
       // Install a click handler for submission
       sel.find('.step--response__submit').click(
@@ -145,6 +147,12 @@ export class ResponseView {
           view.save();
         },
       );
+
+      // Install a click handler for the resubmission button
+      sel.find('.reset__submission').click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleResubmissionClicked();
+      });
 
       // Install click handler for the preview button
       this.baseView.bindLatexPreview(sel);
@@ -509,9 +517,21 @@ export class ResponseView {
 
       const view = this;
       const title = gettext('Confirm Submit Response');
-      // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-      // eslint-disable-next-line max-len
-      const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
+      let msg = '';
+      if (this.allowLearnerResubmissions === 'True') {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you may have a limited '
+          + 'time to resubmit before your submission is graded.',
+        );
+      } else {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you can\'t change it or '
+          + 'submit a new response.',
+        );
+      }
+
       this.confirmationDialog.confirm(
         title,
         msg,
@@ -539,6 +559,41 @@ export class ResponseView {
 
             // Re-enable the submit button so the user can retry
             this.submitEnabled(true);
+          }
+        });
+    }
+
+    /**
+     Handler for the resubmission button
+     * */
+    handleResubmissionClicked() {
+      const view = this;
+      const title = gettext('Confirm Reset');
+      const msg = gettext(
+        'You\'re about to reset your response for this assignment. '
+        + 'You will need to submit a new response in order to complete '
+        + 'this step. Are you sure you want to continue?',
+      );
+      this.confirmationDialog.confirm(
+        title,
+        msg,
+        () => view.resetSubmission(),
+        () => {},
+      );
+    }
+
+    /**
+      Reset a response submission to the server and update the view.
+      * */
+    resetSubmission() {
+      this.server
+        .resetSubmission()
+        .done(() => {
+          window.location.reload(true);
+        })
+        .fail((errMsg) => {
+          if (errMsg) {
+            this.baseView.toggleActionError('submit', errMsg);
           }
         });
     }

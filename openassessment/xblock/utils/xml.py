@@ -748,6 +748,12 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.allow_latex is not None:
         root.set('allow_latex', str(oa_block.allow_latex))
 
+    if oa_block.allow_learner_resubmissions is not None:
+        root.set('allow_learner_resubmissions', str(oa_block.allow_learner_resubmissions))
+
+    if oa_block.resubmissions_grace_period:
+        root.set('resubmissions_grace_period', str(oa_block.resubmissions_grace_period))
+
     # Set group access setting if not empty
     if oa_block.group_access:
         root.set('group_access', json.dumps(GroupAccessDict().to_json(oa_block.group_access)))
@@ -917,6 +923,14 @@ def parse_from_xml(root):
     if 'allow_latex' in root.attrib:
         allow_latex = _parse_boolean(str(root.attrib['allow_latex']))
 
+    allow_learner_resubmissions = False
+    if 'allow_learner_resubmissions' in root.attrib:
+        allow_learner_resubmissions = _parse_boolean(str(root.attrib['allow_learner_resubmissions']))
+
+    resubmissions_grace_period = None
+    if 'resubmissions_grace_period' in root.attrib:
+        resubmissions_grace_period = str(root.attrib['resubmissions_grace_period'])
+
     group_access = {}
     if 'group_access' in root.attrib:
         group_access = GroupAccessDict().from_json(json.loads(root.attrib['group_access']))
@@ -989,6 +1003,8 @@ def parse_from_xml(root):
         'teams_enabled': teams_enabled,
         'selected_teamset_id': selected_teamset_id,
         'show_rubric_during_response': show_rubric_during_response,
+        'allow_learner_resubmissions': allow_learner_resubmissions,
+        'resubmissions_grace_period': resubmissions_grace_period,
     }
 
 
