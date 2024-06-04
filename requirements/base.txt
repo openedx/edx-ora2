@@ -17,13 +17,13 @@ backports-zoneinfo==0.2.1 ; python_version < "3.9"
     #   djangorestframework
 bleach==6.1.0
     # via -r requirements/base.in
-boto3==1.34.91
+boto3==1.34.118
     # via -r requirements/base.in
-botocore==1.34.91
+botocore==1.34.118
     # via
     #   boto3
     #   s3transfer
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
 cffi==1.16.0
     # via pynacl
@@ -37,7 +37,7 @@ code-annotations==1.8.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==4.2.11
+django==4.2.13
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -45,6 +45,7 @@ django==4.2.11
     #   django-model-utils
     #   django-waffle
     #   djangorestframework
+    #   edx-django-release-util
     #   edx-django-utils
     #   edx-i18n-tools
     #   edx-submissions
@@ -56,7 +57,7 @@ django-crum==0.7.9
     # via
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.5.0
+django-model-utils==4.5.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
@@ -72,18 +73,25 @@ djangorestframework==3.15.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==5.12.0
+dnspython==2.6.1
+    # via pymongo
+edx-ccx-keys==1.3.0
+    # via openedx-events
+edx-django-release-util==1.4.0
+    # via edx-submissions
+edx-django-utils==5.14.2
     # via
     #   -r requirements/base.in
     #   edx-toggles
     #   openedx-events
 edx-i18n-tools==1.6.0
     # via -r requirements/base.in
-edx-opaque-keys[django]==2.8.0
+edx-opaque-keys[django]==2.9.0
     # via
     #   -r requirements/base.in
+    #   edx-ccx-keys
     #   openedx-events
-edx-submissions==3.7.0
+edx-submissions==3.7.1
     # via -r requirements/base.in
 edx-toggles==5.2.0
     # via -r requirements/base.in
@@ -99,7 +107,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==3.1.3
+jinja2==3.1.4
     # via code-annotations
 jmespath==1.0.1
     # via
@@ -115,7 +123,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-lxml[html-clean]==5.2.1
+lxml[html-clean]==5.2.2
     # via
     #   -r requirements/base.in
     #   edx-i18n-tools
@@ -123,16 +131,16 @@ lxml[html-clean]==5.2.1
     #   xblock
 lxml-html-clean==0.1.1
     # via lxml
-mako==1.3.3
+mako==1.3.5
     # via xblock
 markupsafe==2.1.5
     # via
     #   jinja2
     #   mako
     #   xblock
-newrelic==9.9.0
+newrelic==9.10.0
     # via edx-django-utils
-openedx-events==9.9.2
+openedx-events==9.10.0
     # via -r requirements/base.in
 openedx-filters==1.8.1
     # via -r requirements/base.in
@@ -151,7 +159,7 @@ psutil==5.9.8
     # via edx-django-utils
 pycparser==2.22
     # via cffi
-pymongo==3.13.0
+pymongo==4.4.0
     # via edx-opaque-keys
 pynacl==1.5.0
     # via edx-django-utils
@@ -175,9 +183,10 @@ pytz==2024.1
 pyyaml==6.0.1
     # via
     #   code-annotations
+    #   edx-django-release-util
     #   edx-i18n-tools
     #   xblock
-requests==2.31.0
+requests==2.32.3
     # via python-swiftclient
 s3transfer==0.10.1
     # via boto3
@@ -186,6 +195,8 @@ simplejson==3.19.2
 six==1.16.0
     # via
     #   bleach
+    #   edx-ccx-keys
+    #   edx-django-release-util
     #   fs
     #   html5lib
     #   python-dateutil
@@ -199,7 +210,7 @@ stevedore==5.2.0
     #   edx-opaque-keys
 text-unidecode==1.3
     # via python-slugify
-typing-extensions==4.11.0
+typing-extensions==4.12.1
     # via
     #   asgiref
     #   edx-opaque-keys
