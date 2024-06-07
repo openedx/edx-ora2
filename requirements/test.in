@@ -17,3 +17,4 @@ tox
 more-itertools
 xblock-sdk
 celery                              # Celery task queue framework
+django-storages[google]			 	# Django storage backend for Google Cloud Storage
