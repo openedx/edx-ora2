@@ -13,6 +13,7 @@ from datetime import timedelta
 import logging
 import random
 
+from django.conf import settings
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
@@ -108,7 +109,7 @@ class PeerWorkflow(models.Model):
 
     """
     # Amount of time before a lease on a submission expires
-    TIME_LIMIT = timedelta(hours=8)
+    TIME_LIMIT = timedelta(hours=getattr(settings, "PEER_LEASE_EXPIRATION_HOURS", 8))
 
     student_id = models.CharField(max_length=40, db_index=True)
     item_id = models.CharField(max_length=255, db_index=True)
