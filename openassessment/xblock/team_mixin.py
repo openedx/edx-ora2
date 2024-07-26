@@ -134,7 +134,7 @@ class TeamMixin:
             raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
         if team_submission_uuid:
             team_submission = get_team_submission(team_submission_uuid)
-        elif individual_submission_uuid:
+        else:
             team_submission = get_team_submission_from_individual_submission(individual_submission_uuid)
 
         team = self.teams_service.get_team_by_team_id(team_submission['team_id'])

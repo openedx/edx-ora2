@@ -564,6 +564,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
     @freeze_time(TEST_START_DATE)
     def test_bulk_fetch_annotated_staff_workflows(self, xblock, set_up_grades, set_up_locks):
         """ Unit test for bulk_fetch_annotated_staff_workflows """
+        assessment_ids = None
         if set_up_grades:
             # If we are grading, student_0 graded by staff_1, student_1 ungraded,
             #  student_2 graded by staff_0, student_3 by staff_1
