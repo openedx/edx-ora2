@@ -6,7 +6,7 @@ import logging
 from django.conf import settings
 from openedx_events.learning.signals import COURSE_NOTIFICATION_REQUESTED
 from openedx_events.learning.data import CourseNotificationData
-from xmodule.modulestore.django import modulestore
+from openassessment.runtime_imports.functions import modulestore
 
 logger = logging.getLogger(__name__)
 
