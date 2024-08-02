@@ -2,7 +2,7 @@
 Unit test for notification util
 """
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from openassessment.xblock.utils.notifications import send_staff_notification
 
@@ -11,8 +11,9 @@ class TestSendStaffNotification(unittest.TestCase):
     """
     Test for send_staff_notification function
     """
+    @patch('openassessment.xblock.utils.notifications.modulestore')
     @patch('openassessment.xblock.utils.notifications.COURSE_NOTIFICATION_REQUESTED.send_event')
-    def test_send_staff_notification(self, mock_send_event):
+    def test_send_staff_notification(self, mock_send_event, mocked_modulestore):
         """
         Test send_staff_notification function
         """
@@ -20,6 +21,8 @@ class TestSendStaffNotification(unittest.TestCase):
         course_id = 'course_id'
         problem_id = 'problem_id'
         ora_name = 'ora_name'
+
+        mocked_modulestore.return_value = MagicMock()
 
         # Call the function
         send_staff_notification(course_id, problem_id, ora_name)
@@ -37,9 +40,10 @@ class TestSendStaffNotification(unittest.TestCase):
         self.assertEqual(notification_data.app_name, "grading")
         self.assertEqual(notification_data.audience_filters['course_roles'], ['staff', 'instructor'])
 
+    @patch('openassessment.xblock.utils.notifications.modulestore')
     @patch('openassessment.xblock.utils.notifications.logger.error')
     @patch('openassessment.xblock.utils.notifications.COURSE_NOTIFICATION_REQUESTED.send_event')
-    def test_send_staff_notification_error_logging(self, mock_send_event, mock_logger_error):
+    def test_send_staff_notification_error_logging(self, mock_send_event, mock_logger_error, mocked_modulestore):
         """
         Test send_staff_notification function when an exception is raised
         """
@@ -47,6 +51,8 @@ class TestSendStaffNotification(unittest.TestCase):
         course_id = 'course_id'
         problem_id = 'problem_id'
         ora_name = 'ora_name'
+
+        mocked_modulestore.return_value = MagicMock()
 
         # Mock exception
         mock_exception = Exception('Test exception')
