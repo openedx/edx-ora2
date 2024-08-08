@@ -3,7 +3,7 @@
 
 from django.conf import settings
 
-from . import django_storage, filesystem, s3, swift
+from . import django_storage, filesystem, gcs, s3, swift
 
 
 def get_backend():
@@ -18,6 +18,8 @@ def get_backend():
         return filesystem.Backend()
     elif backend_setting == "swift":
         return swift.Backend()
+    elif backend_setting == "gcs":
+        return gcs.Backend()
     elif backend_setting == "django":
         return django_storage.Backend()
     else:
