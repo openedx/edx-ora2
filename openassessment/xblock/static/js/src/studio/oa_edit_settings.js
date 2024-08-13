@@ -74,13 +74,9 @@ export class EditSettingsView {
     this.allowResubmissionsSelectControl = new SelectControl(
       $('#openassessment_allow_learner_resubmissions_selector', this.element),
       (selectedValue) => {
-        console.log("--- resubmissions selector value changed!!! ---")
         const isHidden = selectedValue === '0';
-        console.log(isHidden);
         const el = $('#openassessment_resubmissions_grace_period_wrapper', this.element);
         el.toggleClass('is--hidden', isHidden);
-        console.log("hidden toggled!!!")
-        console.log($('#openassessment_resubmissions_grace_period_wrapper', this.element).hasClass('is--hidden'))
       },
       new Notifier([new AssessmentToggleListener()]),
     ).install();
@@ -509,15 +505,14 @@ export class EditSettingsView {
   conditionallyValidateOrClear(field, fieldEnabled) {
     if (fieldEnabled) {
       return field.validate();
-    } else {
-      // we want to keep a valid value in case the author reenables the field
-      /* eslint-disable-next-line no-lonely-if */
-      if (field.get() && !field.validate()) {
-        // but will clear the field in case it is invalid
-        field.set('');
-      }
-      return true;
     }
+    // we want to keep a valid value in case the author reenables the field
+    /* eslint-disable-next-line no-lonely-if */
+    if (field.get() && !field.validate()) {
+      // but will clear the field in case it is invalid
+      field.set('');
+    }
+    return true;
   }
 
   /**
