@@ -36,6 +36,7 @@ htmlcov
 coverage.xml
 test_ora2db
 test_ora2db-journal
+test/logs/
 
 # Mr Developer
 .mr.developer.cfg
