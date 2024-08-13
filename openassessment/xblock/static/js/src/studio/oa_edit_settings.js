@@ -71,12 +71,16 @@ export class EditSettingsView {
       new Notifier([new AssessmentToggleListener()]),
     ).install();
 
-    new SelectControl(
+    this.allowResubmissionsSelectControl = new SelectControl(
       $('#openassessment_allow_learner_resubmissions_selector', this.element),
       (selectedValue) => {
+        console.log("--- resubmissions selector value changed!!! ---")
         const isHidden = selectedValue === '0';
+        console.log(isHidden);
         const el = $('#openassessment_resubmissions_grace_period_wrapper', this.element);
         el.toggleClass('is--hidden', isHidden);
+        console.log("hidden toggled!!!")
+        console.log($('#openassessment_resubmissions_grace_period_wrapper', this.element).hasClass('is--hidden'))
       },
       new Notifier([new AssessmentToggleListener()]),
     ).install();
@@ -496,6 +500,9 @@ export class EditSettingsView {
         boolean
      * */
   allowLearnerResubmissions(isEnabled) {
+    if (isEnabled !== undefined) {
+      this.allowResubmissionsSelectControl.change(isEnabled ? '1' : '0');
+    }
     return this.settingSelectorEnabled('#openassessment_allow_learner_resubmissions_selector', isEnabled);
   }
 
@@ -511,7 +518,16 @@ export class EditSettingsView {
     let isValid = true;
 
     isValid = (this.leaderboardIntField.validate() && isValid);
-    isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
+    if (this.allowLearnerResubmissions()) {
+      isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
+    } else {
+      // we want to keep the valid grace period in case author reenables 
+      /* eslint-disable-next-line no-lonely-if */
+      if (this.resubmissionsGracePeriodInputField.get() && !this.resubmissionsGracePeriodInputField.validate()) {
+        // but will clear the field in case it is invalid
+        this.resubmissionsGracePeriodInputField.set('');
+      }
+    }
 
     if (this.fileUploadType() === 'custom') {
       isValid = (this.fileTypeWhiteListInputField.validate() && isValid);

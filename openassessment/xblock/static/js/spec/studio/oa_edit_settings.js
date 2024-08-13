@@ -236,4 +236,44 @@ describe("OpenAssessment.EditSettingsView", function() {
         });
         expect($('#openassessment_leaderboard_editor').prop('disabled')).toBe(true);
     });
+
+    it("enables the grace period option when resubmission is enabled, and disabled it otherwise", () => {
+        const isGracePeriodHidden = () => $('#openassessment_resubmissions_grace_period_wrapper')[0].classList.contains('is--hidden');
+
+        view.allowLearnerResubmissions(false);
+        expect(isGracePeriodHidden()).toBe(true);
+
+        view.allowLearnerResubmissions(true);
+        expect(isGracePeriodHidden()).toBe(false);
+    });
+
+    describe('validates grace period', () => {
+        it('when resubmission is enabled', () => {
+            view.allowLearnerResubmissions(true);
+
+            view.resubmissionsGracePeriod('00:01:00');
+            expect(view.validate()).toBe(true);
+
+            view.resubmissionsGracePeriod('invalid');
+            expect(view.validate()).toBe(false);
+        });
+
+        describe('when resubmission is disabled', () => {
+            beforeEach(() => {
+                view.allowLearnerResubmissions(false);
+            })
+
+            it('a valid grace period is not cleared on validate', () =>{
+                view.resubmissionsGracePeriod('00:01:00');
+                expect(view.validate()).toBe(true);
+                expect(view.resubmissionsGracePeriod()).toBe('00:01:00');    
+            })
+
+            it('an invalid grace period is cleared on validate', () =>{
+                view.resubmissionsGracePeriod('invalid');
+                expect(view.validate()).toBe(true);
+                expect(view.resubmissionsGracePeriod()).toBe('');
+            });
+        });
+    });
 });
