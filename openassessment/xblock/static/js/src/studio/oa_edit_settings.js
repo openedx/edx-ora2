@@ -506,6 +506,20 @@ export class EditSettingsView {
     return this.settingSelectorEnabled('#openassessment_allow_learner_resubmissions_selector', isEnabled);
   }
 
+  conditionallyValidateOrClear(field, fieldEnabled) {
+    if (fieldEnabled) {
+      return field.validate();
+    } else {
+      // we want to keep a valid value in case the author reenables the field
+      /* eslint-disable-next-line no-lonely-if */
+      if (field.get() && !field.validate()) {
+        // but will clear the field in case it is invalid
+        field.set('');
+      }
+      return true;
+    }
+  }
+
   /**
     Mark validation errors.
 
@@ -518,27 +532,15 @@ export class EditSettingsView {
     let isValid = true;
 
     isValid = (this.leaderboardIntField.validate() && isValid);
-    if (this.allowLearnerResubmissions()) {
-      isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
-    } else {
-      // we want to keep the valid grace period in case author reenables 
-      /* eslint-disable-next-line no-lonely-if */
-      if (this.resubmissionsGracePeriodInputField.get() && !this.resubmissionsGracePeriodInputField.validate()) {
-        // but will clear the field in case it is invalid
-        this.resubmissionsGracePeriodInputField.set('');
-      }
-    }
 
-    if (this.fileUploadType() === 'custom') {
-      isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
-    } else {
-      // we want to keep the valid white list in case author changes upload type back to custom
-      /* eslint-disable-next-line no-lonely-if */
-      if (this.fileTypeWhiteListInputField.get() && !this.fileTypeWhiteListInputField.validate()) {
-        // but will clear the field in case it is invalid
-        this.fileTypeWhiteListInputField.set('');
-      }
-    }
+    isValid = (this.conditionallyValidateOrClear(
+      this.resubmissionsGracePeriodInputField,
+      this.allowLearnerResubmissions(),
+    ) && isValid);
+    isValid = (this.conditionallyValidateOrClear(
+      this.fileTypeWhiteListInputField,
+      this.fileUploadType() === 'custom',
+    ) && isValid);
 
     return isValid;
   }
