@@ -71,7 +71,7 @@ export class EditSettingsView {
       new Notifier([new AssessmentToggleListener()]),
     ).install();
 
-    new SelectControl(
+    this.allowResubmissionsSelectControl = new SelectControl(
       $('#openassessment_allow_learner_resubmissions_selector', this.element),
       (selectedValue) => {
         const isHidden = selectedValue === '0';
@@ -496,7 +496,23 @@ export class EditSettingsView {
         boolean
      * */
   allowLearnerResubmissions(isEnabled) {
+    if (isEnabled !== undefined) {
+      this.allowResubmissionsSelectControl.change(isEnabled ? '1' : '0');
+    }
     return this.settingSelectorEnabled('#openassessment_allow_learner_resubmissions_selector', isEnabled);
+  }
+
+  conditionallyValidateOrClear(field, fieldEnabled) {
+    if (fieldEnabled) {
+      return field.validate();
+    }
+    // we want to keep a valid value in case the author reenables the field
+    /* eslint-disable-next-line no-lonely-if */
+    if (field.get() && !field.validate()) {
+      // but will clear the field in case it is invalid
+      field.set('');
+    }
+    return true;
   }
 
   /**
@@ -511,18 +527,15 @@ export class EditSettingsView {
     let isValid = true;
 
     isValid = (this.leaderboardIntField.validate() && isValid);
-    isValid = (this.resubmissionsGracePeriodInputField.validate() && isValid);
 
-    if (this.fileUploadType() === 'custom') {
-      isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
-    } else {
-      // we want to keep the valid white list in case author changes upload type back to custom
-      /* eslint-disable-next-line no-lonely-if */
-      if (this.fileTypeWhiteListInputField.get() && !this.fileTypeWhiteListInputField.validate()) {
-        // but will clear the field in case it is invalid
-        this.fileTypeWhiteListInputField.set('');
-      }
-    }
+    isValid = (this.conditionallyValidateOrClear(
+      this.resubmissionsGracePeriodInputField,
+      this.allowLearnerResubmissions(),
+    ) && isValid);
+    isValid = (this.conditionallyValidateOrClear(
+      this.fileTypeWhiteListInputField,
+      this.fileUploadType() === 'custom',
+    ) && isValid);
 
     return isValid;
   }

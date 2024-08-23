@@ -927,7 +927,7 @@ def parse_from_xml(root):
     if 'allow_learner_resubmissions' in root.attrib:
         allow_learner_resubmissions = _parse_boolean(str(root.attrib['allow_learner_resubmissions']))
 
-    resubmissions_grace_period = None
+    resubmissions_grace_period = ''
     if 'resubmissions_grace_period' in root.attrib:
         resubmissions_grace_period = str(root.attrib['resubmissions_grace_period'])
 
