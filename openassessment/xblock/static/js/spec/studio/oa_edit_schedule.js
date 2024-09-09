@@ -77,6 +77,66 @@ describe('OpenAssessment.EditScheduleView', function() {
         expect(courseEndEl.prop('disabled')).toBe(true);
     });
 
+    it('stashes and restores manual dates on date config change', function() {
+        const dateConfigRadios = {
+            manual: $('input#manual_date_config_type', this.element),
+            subsection: $('input#subsection_date_config_type', this.element),
+            course_end: $('input#course_end_date_config_type', this.element),
+        }
+        function expectSelectedRadio(expectedValue) {
+            // Helper to cleanly assert the currently selected radio button
+            expect($('input[name="date_config_type"][type="radio"]:checked').val()).toEqual(expectedValue);
+        }
+        function getCurrentValues() {
+            // Helper to get the current state of the controls as an object
+            return {
+                submission: {
+                    start: view.submissionStart(),
+                    due: view.submissionDue(),
+                },
+                self: {
+                    start: assessmentViews.oa_self_assessment_editor.startDatetimeControl.datetime(),
+                    due: assessmentViews.oa_self_assessment_editor.dueDatetimeControl.datetime(),
+                },
+                peer: {
+                    start: assessmentViews.oa_peer_assessment_editor.startDatetimeControl.datetime(),
+                    due: assessmentViews.oa_peer_assessment_editor.dueDatetimeControl.datetime(),
+                }
+            }
+        }
+        // If we select a non-manual setting, the current manual values should be stashed, and the
+        // values of the controls should be set to a default, to avoid any backend validation issues.
+        const startingValues = getCurrentValues();
+        expectSelectedRadio('manual')
+        dateConfigRadios.subsection.trigger('click');
+        expectSelectedRadio('subsection');
+
+        const expectedPostStashValues = {
+            submission: {
+                start: "2001-01-01",
+                due: "2099-12-31",
+            },
+            self: {
+                start: "2001-01-01",
+                due: "2099-12-31",
+            },
+            peer: {
+                start: "2001-01-01",
+                due: "2099-12-31",
+            },
+        }
+
+        expect(getCurrentValues()).toEqual(expectedPostStashValues);
+        // clicking course end now should have no effect
+        dateConfigRadios.course_end.trigger('click');
+        expectSelectedRadio('course_end');
+        expect(getCurrentValues()).toEqual(expectedPostStashValues);
+        // clicking manual will pop the stashed values back into the controls
+        dateConfigRadios.manual.trigger('click');
+        expectSelectedRadio('manual');
+        expect(getCurrentValues()).toEqual(startingValues);
+    });
+
     it('validates submission start datetime fields', function() {
         testValidateDate(
             view.startDatetimeControl,
