@@ -26,6 +26,7 @@ from model_utils.models import StatusModel, TimeStampedModel
 from submissions import api as sub_api, team_api as sub_team_api
 from openassessment.assessment.errors.base import AssessmentError
 from openassessment.assessment.signals import assessment_complete_signal
+from openassessment.xblock.utils.notifications import send_grade_assigned_notification
 
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
@@ -376,6 +377,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     if override_submitter_requirements:
                         step.submitter_completed_at = common_now
                     step.save()
+                if self.status == self.STATUS.done:
+                    score = self.get_score(assessment_requirements, course_settings, step_for_name)
+                    submission_dict = sub_api.get_submission_and_student(self.submission_uuid)
+                    send_grade_assigned_notification(self.item_id, submission_dict['student_item']['student_id'], score)
+                    return
 
         if self.status == self.STATUS.done:
             return
@@ -443,6 +449,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 if score.get("staff_id") is None:
                     self.set_score(score)
                 new_status = self.STATUS.done
+                submission_dict = sub_api.get_submission_and_student(self.submission_uuid)
+                send_grade_assigned_notification(self.item_id, submission_dict['student_item']['student_id'] ,score)
 
         # Finally save our changes if the status has changed
         if self.status != new_status:
