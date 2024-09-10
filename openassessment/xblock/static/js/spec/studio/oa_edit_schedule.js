@@ -43,9 +43,9 @@ describe('OpenAssessment.EditScheduleView', function() {
         }
     };
 
-    beforeEach(function() {
+    var setupTest = function (fixture) {
         // Load the DOM fixture
-        loadFixtures('oa_edit.html');
+        loadFixtures(fixture);
 
         // Create the view
         var element = $('#oa_schedule_editor_wrapper', this.element).get(0);
@@ -54,6 +54,13 @@ describe('OpenAssessment.EditScheduleView', function() {
 
         view.submissionStart('2014-01-01', '00:00');
         view.submissionDue('2014-03-04', '00:00');
+    }
+    beforeAll(function() {
+        this.setupTest = setupTest.bind(this)
+    })
+
+    beforeEach(function() {
+        this.setupTest('oa_edit.html')
     });
 
     it('sets and loads the submission start/due dates', function() {
@@ -65,6 +72,7 @@ describe('OpenAssessment.EditScheduleView', function() {
     });
 
     it('has working date config type', function() {
+        this.setupTest('oa_edit_no_subsection_course_deadlines.html')
         const expectedValue = $('input[name="date_config_type"][type="radio"]:checked', this.element).val();
         expect(view.dateConfigType()).toEqual(expectedValue);
 
@@ -113,16 +121,16 @@ describe('OpenAssessment.EditScheduleView', function() {
 
         const expectedPostStashValues = {
             submission: {
-                start: "2001-01-01",
-                due: "2099-12-31",
+                start: "2001-01-01T00:00",
+                due: "2099-12-31T00:00",
             },
             self: {
-                start: "2001-01-01",
-                due: "2099-12-31",
+                start: "2001-01-01T00:00",
+                due: "2099-12-31T00:00",
             },
             peer: {
-                start: "2001-01-01",
-                due: "2099-12-31",
+                start: "2001-01-01T00:00",
+                due: "2099-12-31T00:00",
             },
         }
 

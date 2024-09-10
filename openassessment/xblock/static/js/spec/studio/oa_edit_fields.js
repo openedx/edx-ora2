@@ -105,40 +105,40 @@ describe("OpenAssessment.DatetimeControl", function() {
 
     describe("stash and pop", function() {
         const dates = ["2024-09-09", "2030-03-02", "2031-03-05"]
-        const times = ["05:28", "01:01", "02:13"]
+        const times = ["05:28", null, "02:13"]
 
         beforeEach(function() {
             datetimeControl.datetime(dates[0], times[0]);
-            expect(datetimeControl.describe()).toEqual(`${dates[0]}T${times[0]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[0]}T${times[0]}`);
         })
 
         it('update values correctly', function() {
-            datetimeControl.stash(dates[1], times[1]);
-            expect(datetimeControl.describe()).toEqual(`${dates[1]}T${times[1]}`);
+            datetimeControl.stash(dates[1]);
+            expect(datetimeControl.datetime()).toEqual(`${dates[1]}T00:00`);
 
             datetimeControl.pop()
-            expect(datetimeControl.describe()).toEqual(`${dates[0]}T${times[0]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[0]}T${times[0]}`);
         });
 
         it('stashing multiple times does nothing until popping', function() {
             datetimeControl.stash(dates[1], times[1]);
-            expect(datetimeControl.describe()).toEqual(`${dates[1]}T${times[1]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[1]}T00:00`);
             datetimeControl.stash(dates[2], times[2]);
-            expect(datetimeControl.describe()).toEqual(`${dates[1]}T${times[1]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[1]}T00:00`);
 
             datetimeControl.pop()
-            expect(datetimeControl.describe()).toEqual(`${dates[0]}T${times[0]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[0]}T${times[0]}`);
         });
 
         it('popping multiple times does nothing', function() {
             datetimeControl.stash(dates[1], times[1]);
-            expect(datetimeControl.describe()).toEqual(`${dates[1]}T${times[1]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[1]}T00:00`);
 
             datetimeControl.pop()
-            expect(datetimeControl.describe()).toEqual(`${dates[0]}T${times[0]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[0]}T${times[0]}`);
 
             datetimeControl.pop()
-            expect(datetimeControl.describe()).toEqual(`${dates[0]}T${times[0]}`);
+            expect(datetimeControl.datetime()).toEqual(`${dates[0]}T${times[0]}`);
         });
     })
 

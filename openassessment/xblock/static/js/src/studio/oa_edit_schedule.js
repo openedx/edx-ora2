@@ -1,4 +1,5 @@
 import { DatetimeControl, SelectControl } from './oa_edit_fields';
+import Notifier from './oa_edit_notifier';
 /**
 Editing interface for OpenAssessment schedule settings.
 
@@ -13,8 +14,12 @@ export class EditScheduleView {
   constructor(element, assessmentViews) {
     this.element = element;
     this.tabElement = $('#oa_edit_schedule_tab');
-
     this.assessmentViews = assessmentViews;
+
+    this.handleDateTimeConfigChanged = this.handleDateTimeConfigChanged.bind(this);
+    this.showSelectedDateConfigSettings = this.showSelectedDateConfigSettings.bind(this);
+    this.stashManualDates = this.stashManualDates.bind(this);
+    this.popManualDates = this.popManualDates.bind(this);
 
     // Configure the date and time fields
     this.startDatetimeControl = new DatetimeControl(
@@ -34,6 +39,7 @@ export class EditScheduleView {
     new SelectControl(
       $('input[name="date_config_type"][type="radio"]', this.element),
       this.handleDateTimeConfigChanged,
+      new Notifier([]),
     ).install();
   }
 
