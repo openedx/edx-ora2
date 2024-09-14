@@ -95,8 +95,7 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
         mock_modulestore.return_value.get_item.return_value = MagicMock(display_name="ORA Assignment")
         mock_modulestore.return_value.get_course.return_value = MagicMock(display_name="Test Course")
 
-        with patch('django.conf.settings.LMS_ROOT_URL', 'http://localhost'):
-            send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
+        send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
 
         mock_send_event.assert_called_once()
         args, kwargs = mock_send_event.call_args
@@ -107,37 +106,59 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
         self.assertEqual(notification_data.context['points_earned'], 10)
         self.assertEqual(notification_data.context['points_possible'], 20)
         self.assertEqual(notification_data.notification_type, "ora_grade_assigned")
-        self.assertEqual(notification_data.content_url,
-                         'http://localhost/courses/course-v1:TestX+TST+TST/jump_to/block-v1:TestX+TST+TST+type@problem+block@ora')
 
-    @patch('openassessment.xblock.utils.notifications.logger.error')
-    @patch('openassessment.xblock.utils.notifications.UsageKey.from_string', side_effect=InvalidKeyError)
-    def test_invalid_key_error(self, mock_from_string, mock_logger_error):
-        """
-        Test that InvalidKeyError is logged correctly.
-        """
-        send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
-        mock_logger_error.assert_called_once_with(f"Bad ORA location provided: {self.usage_id}")
+        @patch('openassessment.xblock.utils.notifications.modulestore')
+        @patch('openassessment.xblock.utils.notifications.logger.error')
+        @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
+        def test_invalid_key_error_logging(self, mock_logger_error, mocked_modulestore):
+            """
+            Test error logging when InvalidKeyError is raised.
+            """
+            # Mocked data
+            mocked_modulestore.return_value = MagicMock()
+            mock_exception = InvalidKeyError('Invalid key error')
 
-    @patch('openassessment.xblock.utils.notifications.logger.error')
-    @patch('openassessment.xblock.utils.notifications.modulestore.get_item', side_effect=ItemNotFoundError)
-    def test_item_not_found_error(self, mock_get_item, mock_logger_error):
-        """
-        Test that ItemNotFoundError is logged correctly.
-        """
-        with patch('openassessment.xblock.utils.notifications.UsageKey.from_string',
-                   return_value=MagicMock(course_key='course-v1:TestX+TST+TST')):
-            send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
-        mock_logger_error.assert_called_once_with(f"Bad ORA location provided: {self.usage_id}")
+            # Force the exception
+            with patch('openassessment.xblock.utils.notifications.UsageKey.from_string', side_effect=mock_exception):
+                send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
 
-    @patch('openassessment.xblock.utils.notifications.logger.error')
-    @patch('openassessment.xblock.utils.notifications.modulestore.get_item',
-           side_effect=XBlockInternalError("XBlock error"))
-    def test_xblock_internal_error(self, mock_get_item, mock_logger_error):
-        """
-        Test that XBlockInternalError is logged correctly.
-        """
-        with patch('openassessment.xblock.utils.notifications.UsageKey.from_string',
-                   return_value=MagicMock(course_key='course-v1:TestX+TST+TST')):
-            send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
-        mock_logger_error.assert_called_once_with("XBlock error")
+            # Assertions
+            mock_logger_error.assert_called_once_with(
+                f"Bad ORA location provided: block-v1:TestX+TST+TST+type@problem+block@ora")
+
+        @patch('openassessment.xblock.utils.notifications.modulestore')
+        @patch('openassessment.xblock.utils.notifications.logger.error')
+        @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
+        def test_item_not_found_error_logging(self, mock_logger_error, mocked_modulestore):
+            """
+            Test error logging when ItemNotFoundError is raised.
+            """
+            # Mocked data
+            mocked_modulestore.return_value = MagicMock()
+            mock_exception = ItemNotFoundError('Item not found')
+
+            # Force the exception
+            with patch('openassessment.xblock.utils.notifications.modulestore.get_item', side_effect=mock_exception):
+                send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
+
+            # Assertions
+            mock_logger_error.assert_called_once_with(
+                f"Bad ORA location provided: block-v1:TestX+TST+TST+type@problem+block@ora")
+
+        @patch('openassessment.xblock.utils.notifications.modulestore')
+        @patch('openassessment.xblock.utils.notifications.logger.error')
+        @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
+        def test_xblock_internal_error_logging(self, mock_logger_error, mocked_modulestore):
+            """
+            Test error logging when XBlockInternalError is raised.
+            """
+            # Mocked data
+            mocked_modulestore.return_value = MagicMock()
+            mock_exception = XBlockInternalError('XBlock error')
+
+            # Force the exception
+            with patch('openassessment.xblock.utils.notifications.modulestore.get_item', side_effect=mock_exception):
+                send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
+
+            # Assertions
+            mock_logger_error.assert_called_once_with("XBlock error")

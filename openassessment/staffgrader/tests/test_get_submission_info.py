@@ -9,6 +9,16 @@ from openassessment.xblock.test.base import scenario
 from openassessment.data import VersionNotFoundException
 from openassessment.staffgrader.tests.test_base import StaffGraderMixinTestBase
 
+from unittest.mock import MagicMock
+import openassessment.workflow.models as workflow_models
+
+def setUpModule():
+    """
+    This method is run once for the entire test module.
+    We use it to globally replace send_grade_assigned_notification with a mock.
+    """
+    workflow_models.send_grade_assigned_notification = MagicMock()
+
 
 class GetSubmissionInfoTests(StaffGraderMixinTestBase):
     """ Tests for the get_submission_info handler endpoint """

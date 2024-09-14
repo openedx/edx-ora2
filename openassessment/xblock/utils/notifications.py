@@ -67,7 +67,8 @@ def send_grade_assigned_notification(usage_id, ora_user_anonymized_id, score):
                 'points_possible': score['points_possible'],
             },
             notification_type="ora_grade_assigned",
-            content_url=f"{getattr(settings, 'LMS_ROOT_URL', '')}/courses/{str(course_id)}/jump_to/{str(ora_usage_key)}",
+            content_url=f"{getattr(settings, 'LMS_ROOT_URL', '')}/courses/{str(course_id)}"
+                        f"/jump_to/{str(ora_usage_key)}",
             app_name="grading",
             course_key=course_id,
         )

@@ -29,6 +29,16 @@ from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 
+from unittest.mock import MagicMock
+import openassessment.workflow.models as workflow_models
+
+def setUpModule():
+    """
+    This method is run once for the entire test module.
+    We use it to globally replace send_grade_assigned_notification with a mock.
+    """
+    workflow_models.send_grade_assigned_notification = MagicMock()
+
 STUDENT_ITEM = {
     "student_id": "Tim",
     "course_id": "Demo_Course",
