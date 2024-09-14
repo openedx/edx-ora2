@@ -19,12 +19,14 @@ from openassessment.tests.factories import UserFactory
 from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
+
 def setUpModule():
     """
     This method is run once for the entire test module.
     We use it to globally replace send_grade_assigned_notification with a mock.
     """
     workflow_models.send_grade_assigned_notification = MagicMock()
+
 
 USERNAME_1 = 'user1'
 USERNAME_2 = 'user2'

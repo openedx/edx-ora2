@@ -21,11 +21,9 @@ from .base import (
     scenario
 )
 
-FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
-FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
-
 from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
+
 
 def setUpModule():
     """
@@ -33,6 +31,11 @@ def setUpModule():
     We use it to globally replace send_grade_assigned_notification with a mock.
     """
     workflow_models.send_grade_assigned_notification = MagicMock()
+
+
+FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
+
 
 @ddt
 class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, SubmissionTestMixin):

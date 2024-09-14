@@ -28,12 +28,14 @@ from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POS
 from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
+
 def setUpModule():
     """
     This method is run once for the entire test module.
     We use it to globally replace send_grade_assigned_notification with a mock.
     """
     workflow_models.send_grade_assigned_notification = MagicMock()
+
 
 @ddt
 class TestStaffAssessment(CacheResetTest):

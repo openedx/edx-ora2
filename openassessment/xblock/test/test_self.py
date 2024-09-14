@@ -19,6 +19,7 @@ from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
+
 def setUpModule():
     """
     This method is run once for the entire test module.

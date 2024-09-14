@@ -32,6 +32,7 @@ from .test_staff_area import NullUserService, UserStateService, STUDENT_ITEM
 from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
+
 def setUpModule():
     """
     This method is run once for the entire test module.
