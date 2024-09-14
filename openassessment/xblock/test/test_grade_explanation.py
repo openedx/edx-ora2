@@ -4,12 +4,14 @@ Tests for grade explanation in Open Response Assessment XBlock.
 
 import json
 
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.conf import settings
 from django.test.utils import override_settings
 
 from ddt import ddt, data
+
+import openassessment.workflow.models as workflow_models
 
 from .base import (
     PEER_ASSESSMENTS,
@@ -20,9 +22,6 @@ from .base import (
     XBlockHandlerTestCase,
     scenario
 )
-
-from unittest.mock import MagicMock
-import openassessment.workflow.models as workflow_models
 
 
 def setUpModule():

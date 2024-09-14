@@ -59,7 +59,6 @@ class AssessmentApiLoadError(AssessmentWorkflowInternalError):
 
 class ItemNotFoundError(Exception):
     """An item was not found in the modulestore"""
-    pass
 
 
 class ExceptionWithContext(Exception):

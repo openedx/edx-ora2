@@ -22,11 +22,9 @@ from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaf
 from openassessment.test_utils import CacheResetTest
 from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
+import openassessment.workflow.models as workflow_models
 
 from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
-
-from unittest.mock import MagicMock
-import openassessment.workflow.models as workflow_models
 
 
 def setUpModule():
@@ -34,7 +32,7 @@ def setUpModule():
     This method is run once for the entire test module.
     We use it to globally replace send_grade_assigned_notification with a mock.
     """
-    workflow_models.send_grade_assigned_notification = MagicMock()
+    workflow_models.send_grade_assigned_notification = mock.MagicMock()
 
 
 @ddt

@@ -2,7 +2,7 @@
 Tests for AssessmentResponseSerializer
 """
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.test import TestCase
 from openassessment.workflow import api as workflow_api
@@ -24,7 +24,6 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentSubmitRequestSerializer,
 )
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

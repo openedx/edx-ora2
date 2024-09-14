@@ -5,7 +5,7 @@ from copy import deepcopy
 from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
-from unittest.mock import Mock, PropertyMock, patch
+from unittest.mock import Mock, PropertyMock, patch, MagicMock
 
 import ddt
 from rest_framework.fields import ValidationError
@@ -30,8 +30,6 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
     UnknownActiveStepException,
 )
 
-
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

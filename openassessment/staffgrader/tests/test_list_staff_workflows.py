@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 import json
 import random
+from unittest.mock import MagicMock
 
 import ddt
 from freezegun import freeze_time
@@ -24,7 +25,6 @@ from openassessment.tests.factories import (
 import openassessment.workflow.api as workflow_api
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

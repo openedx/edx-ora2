@@ -1,6 +1,7 @@
 """ Tests for the get_submission_and_assessment_info endpoint """
 from contextlib import contextmanager
 from uuid import uuid4
+from unittest.mock import MagicMock
 
 from mock import patch, Mock
 from submissions import api as sub_api
@@ -9,7 +10,6 @@ from openassessment.xblock.test.base import scenario
 from openassessment.data import VersionNotFoundException
 from openassessment.staffgrader.tests.test_base import StaffGraderMixinTestBase
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

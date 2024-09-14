@@ -3,7 +3,7 @@ from os.path import join
 from contextlib import contextmanager
 import tempfile
 import json
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 
 from django.core.management import call_command
 from django.core.management.base import CommandError
@@ -16,7 +16,6 @@ from openassessment.workflow import api as workflow_api
 from openassessment.management.commands.create_oa_submissions_from_file import Command, SUPERUSER_USERNAME
 from openassessment.tests.factories import UserFactory
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

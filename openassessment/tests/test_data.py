@@ -30,7 +30,6 @@ from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

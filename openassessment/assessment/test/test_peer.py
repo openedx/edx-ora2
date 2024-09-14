@@ -2,7 +2,7 @@
 
 import copy
 import datetime
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
 
 from ddt import ddt, file_data, data, unpack
 import pytz
@@ -29,7 +29,6 @@ from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

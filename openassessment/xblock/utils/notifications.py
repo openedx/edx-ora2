@@ -9,8 +9,8 @@ from opaque_keys import InvalidKeyError
 from django.conf import settings
 from openedx_events.learning.signals import COURSE_NOTIFICATION_REQUESTED, USER_NOTIFICATION_REQUESTED
 from openedx_events.learning.data import CourseNotificationData, UserNotificationData
-from openassessment.runtime_imports.functions import modulestore
 from django.contrib.auth import get_user_model
+from openassessment.runtime_imports.functions import modulestore
 from openassessment.workflow.errors import ItemNotFoundError, XBlockInternalError
 
 logger = logging.getLogger(__name__)

@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 from opaque_keys import InvalidKeyError
 
 from openassessment.xblock.utils.notifications import send_staff_notification, send_grade_assigned_notification
-from openassessment.workflow.errors import ItemNotFoundError, XBlockInternalError
+from openassessment.workflow.errors import ItemNotFoundError
 
 
 class TestSendStaffNotification(unittest.TestCase):
@@ -110,10 +110,9 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.User.objects.get')
     @patch('openassessment.xblock.utils.notifications.UsageKey.from_string')
     @patch('openassessment.xblock.utils.notifications.modulestore')
-    @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.xblock.utils.notifications.logger.error')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
-    def test_invalid_key_error_logging(self, mock_map_to_username, mock_logger_error, mock_send_event, mock_modulestore,
+    def test_invalid_key_error_logging(self, mock_map_to_username, mock_logger_error, mock_modulestore,
                                        mock_from_string, mock_get_user):
         """
         Test error logging when InvalidKeyError is raised.
@@ -135,10 +134,9 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.User.objects.get')
     @patch('openassessment.xblock.utils.notifications.UsageKey.from_string')
     @patch('openassessment.xblock.utils.notifications.modulestore')
-    @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.xblock.utils.notifications.logger.error')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
-    def test_item_not_found_error_logging(self, mock_map_to_username, mock_logger_error, mock_send_event,
+    def test_item_not_found_error_logging(self, mock_map_to_username, mock_logger_error,
                                           mock_modulestore,
                                           mock_from_string, mock_get_user):
         """

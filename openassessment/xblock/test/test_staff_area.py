@@ -35,7 +35,6 @@ from openassessment.xblock.test.test_team import (
     MOCK_TEAM_ID
 )
 
-from unittest.mock import MagicMock
 import openassessment.workflow.models as workflow_models
 
 

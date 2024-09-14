@@ -6,9 +6,12 @@ Tests for grade handlers in Open Assessment XBlock.
 import copy
 import json
 
+from unittest.mock import MagicMock
+
 import ddt
 
 from openassessment.assessment.api import peer as peer_api
+import openassessment.workflow.models as workflow_models
 
 from .base import (
     PEER_ASSESSMENTS,
@@ -20,9 +23,6 @@ from .base import (
     XBlockHandlerTestCase,
     scenario
 )
-
-from unittest.mock import MagicMock
-import openassessment.workflow.models as workflow_models
 
 
 def setUpModule():
