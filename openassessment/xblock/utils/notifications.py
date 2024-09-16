@@ -78,6 +78,10 @@ def send_grade_assigned_notification(usage_id, ora_user_anonymized_id, score):
     except (InvalidKeyError, ItemNotFoundError):
         logger.error(f"Bad ORA location provided: {usage_id}")
 
+    # Error with getting User
+    except User.DoesNotExist as exc:
+        logger.error(f'Unknown User Error: {exc}')
+
     # Issues with the XBlock handlers
     except XBlockInternalError as ex:
         logger.error(ex)

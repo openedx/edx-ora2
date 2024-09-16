@@ -6,8 +6,11 @@ from unittest.mock import patch, MagicMock
 
 from opaque_keys import InvalidKeyError
 
+from django.contrib.auth import get_user_model
 from openassessment.xblock.utils.notifications import send_staff_notification, send_grade_assigned_notification
 from openassessment.workflow.errors import ItemNotFoundError
+
+User = get_user_model()
 
 
 class TestSendStaffNotification(unittest.TestCase):
@@ -111,9 +114,10 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.UsageKey.from_string')
     @patch('openassessment.xblock.utils.notifications.modulestore')
     @patch('openassessment.xblock.utils.notifications.logger.error')
+    @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
-    def test_invalid_key_error_logging(self, mock_map_to_username, mock_logger_error, mock_modulestore,
-                                       mock_from_string, mock_get_user):
+    def test_invalid_key_error_logging(self, mock_map_to_username, mock_send_event, mock_logger_error,
+                                       mock_modulestore, mock_from_string, mock_get_user):
         """
         Test error logging when InvalidKeyError is raised.
         """
@@ -130,15 +134,16 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
 
         # Assertions
         mock_logger_error.assert_called_once_with(f"Bad ORA location provided: {self.usage_id}")
+        mock_send_event.assert_not_called()
 
     @patch('openassessment.xblock.utils.notifications.User.objects.get')
     @patch('openassessment.xblock.utils.notifications.UsageKey.from_string')
     @patch('openassessment.xblock.utils.notifications.modulestore')
     @patch('openassessment.xblock.utils.notifications.logger.error')
+    @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
-    def test_item_not_found_error_logging(self, mock_map_to_username, mock_logger_error,
-                                          mock_modulestore,
-                                          mock_from_string, mock_get_user):
+    def test_item_not_found_error_logging(self, mock_map_to_username, mock_send_event, mock_logger_error,
+                                          mock_modulestore, mock_from_string, mock_get_user):
         """
         Test error logging when ItemNotFoundError is raised.
         """
@@ -153,3 +158,22 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
 
         # Assertions
         mock_logger_error.assert_called_once_with(f"Bad ORA location provided: {self.usage_id}")
+        mock_send_event.assert_not_called()
+
+    @patch('openassessment.xblock.utils.notifications.logger.error')
+    @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
+    @patch('openassessment.data.map_anonymized_ids_to_usernames')
+    @patch('openassessment.xblock.utils.notifications.User.objects.get')
+    def test_user_does_not_exist_error_logging(self, mock_get_user, mock_map_to_username, mock_send_event,
+                                               mock_logger_error):
+        """
+        Test error logging when User.DoesNotExist is raised.
+        """
+        mock_map_to_username.return_value = {self.ora_user_anonymized_id: 'non_existent_user'}
+        mock_get_user.side_effect = User.DoesNotExist('User does not exist')
+
+        send_grade_assigned_notification(self.usage_id, self.ora_user_anonymized_id, self.score)
+
+        # Assertions
+        mock_logger_error.assert_called_once_with('Unknown User Error: User does not exist')
+        mock_send_event.assert_not_called()
