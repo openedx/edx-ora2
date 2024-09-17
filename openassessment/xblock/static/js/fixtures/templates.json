@@ -510,9 +510,106 @@
                 "peer_assessment",
                 "self_assessment",
                 "staff_assessment"
-            ]
+            ],
+            "subsection_end_date": "2024-09-09",
+            "course_end_date": "2040-10-11"
         },
         "output": "oa_edit.html"
+    },
+    {
+        "template": "legacy/edit/oa_edit.html",
+        "context": {
+            "prompts": [{ "description": "How much do you like waffles?" }, { "description": "How much do you like waffles 2?" }],
+            "title": "The most important of all questions.",
+            "submission_start": "2014-01-02T12:15",
+            "submission_due": "2014-10-01T04:53",
+            "date_config_type": "manual",
+            "text_response": "required",
+            "file_upload_response": "",
+            "leaderboard_show": 12,
+            "allow_learner_resubmissions": false,
+            "resubmissions_grace_period": "",
+            "necessity_options": {
+                "required": "Required",
+                "optional": "Optional",
+                "": "None"
+            },
+            "teams_feature_enabled": true,
+            "teams_enabled": false,
+            "criteria": [
+                {
+                    "name": "criterion_1",
+                    "label": "Criterion with two options",
+                    "prompt": "Prompt for criterion with two options",
+                    "order_num": 0,
+                    "feedback": "disabled",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 1,
+                            "name": "option_1",
+                            "label": "Fair",
+                            "explanation": "Fair explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "option_2",
+                            "label": "Good",
+                            "explanation": "Good explanation"
+                        }
+                    ],
+                    "points_possible": 2
+                },
+                {
+                    "name": "criterion_2",
+                    "label": "Criterion with no options",
+                    "prompt": "Prompt for criterion with no options",
+                    "order_num": 0,
+                    "options": [],
+                    "feedback": "required",
+                    "points_possible": 0
+                },
+                {
+                    "name": "criterion_3",
+                    "label": "Criterion with optional feedback",
+                    "prompt": "Prompt for criterion with optional feedback",
+                    "order_num": 2,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 2,
+                            "name": "option_1",
+                            "label": "Good",
+                            "explanation": "Good explanation"
+                        }
+                    ],
+                    "points_possible": 2
+                }
+            ],
+            "feedbackprompt": "Feedback default prompt",
+            "feedback_default_text": "Feedback default text",
+            "assessments": {
+                "peer_assessment": {
+                    "start": "2014-01-02T00:00",
+                    "due": "2014-01-03T00:00",
+                    "must_grade": 5,
+                    "must_be_graded_by": 3
+                },
+                "self_assessment": {
+                    "start": "2014-01-04T00:00",
+                    "due": "2014-01-05T00:00"
+                }
+            },
+            "editor_assessments_order": [
+                "student_training",
+                "peer_assessment",
+                "self_assessment",
+                "staff_assessment"
+            ]
+        },
+        "output": "oa_edit_no_subsection_course_deadlines.html"
     },
     {
         "template": "legacy/edit/oa_edit.html",
