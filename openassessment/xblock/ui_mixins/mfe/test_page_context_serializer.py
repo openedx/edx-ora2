@@ -5,7 +5,7 @@ from copy import deepcopy
 from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
-from unittest.mock import Mock, PropertyMock, patch, MagicMock
+from unittest.mock import Mock, PropertyMock, patch
 
 import ddt
 from rest_framework.fields import ValidationError
@@ -29,16 +29,6 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
     TeamInfoSerializer,
     UnknownActiveStepException,
 )
-
-import openassessment.workflow.models as workflow_models
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
 
 
 @ddt.ddt

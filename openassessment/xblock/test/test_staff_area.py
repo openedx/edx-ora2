@@ -35,17 +35,6 @@ from openassessment.xblock.test.test_team import (
     MOCK_TEAM_ID
 )
 
-import openassessment.workflow.models as workflow_models
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
-
-
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
 SAVED_FILES_NAMES = ['file1.txt', 'file2.txt']

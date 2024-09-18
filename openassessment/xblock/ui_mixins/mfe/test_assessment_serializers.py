@@ -2,7 +2,7 @@
 Tests for AssessmentResponseSerializer
 """
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from django.test import TestCase
 from openassessment.workflow import api as workflow_api
@@ -23,16 +23,6 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentCriterionSerializer,
     AssessmentSubmitRequestSerializer,
 )
-
-import openassessment.workflow.models as workflow_models
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
 
 
 class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixin):

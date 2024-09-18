@@ -4,14 +4,12 @@ Tests for grade explanation in Open Response Assessment XBlock.
 
 import json
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from django.conf import settings
 from django.test.utils import override_settings
 
 from ddt import ddt, data
-
-import openassessment.workflow.models as workflow_models
 
 from .base import (
     PEER_ASSESSMENTS,
@@ -22,15 +20,6 @@ from .base import (
     XBlockHandlerTestCase,
     scenario
 )
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
-
 
 FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
 FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True

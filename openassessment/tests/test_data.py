@@ -30,16 +30,6 @@ from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
 
-import openassessment.workflow.models as workflow_models
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
-
 
 COURSE_ID = "Test_Course"
 

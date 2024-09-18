@@ -6,7 +6,7 @@ Tests for staff assessment handlers in Open Assessment XBlock.
 import copy
 import json
 
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 from submissions import team_api as team_sub_api
 from openassessment.assessment.api import (
@@ -16,7 +16,6 @@ from openassessment.assessment.api import (
 from openassessment.tests.factories import UserFactory
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 from openassessment.workflow import team_api as team_workflow_api
-import openassessment.workflow.models as workflow_models
 
 from .base import (
     PEER_ASSESSMENTS,
@@ -29,14 +28,6 @@ from .base import (
     scenario
 )
 from .test_staff_area import NullUserService, UserStateService, STUDENT_ITEM
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = MagicMock()
 
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):

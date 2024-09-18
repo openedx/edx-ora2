@@ -7,6 +7,7 @@ from opaque_keys.edx.keys import UsageKey, CourseKey
 from opaque_keys import InvalidKeyError
 
 from django.conf import settings
+from django.core.exceptions import FieldError
 from openedx_events.learning.signals import COURSE_NOTIFICATION_REQUESTED, USER_NOTIFICATION_REQUESTED
 from openedx_events.learning.data import CourseNotificationData, UserNotificationData
 from django.contrib.auth import get_user_model
@@ -48,9 +49,17 @@ def send_grade_assigned_notification(usage_id, ora_user_anonymized_id, score):
     """
     from openassessment.data import map_anonymized_ids_to_usernames as map_to_username
 
+    user_name_list = []
     try:
-        # Get ORA user
+        # Get ORA user name
         user_name_list = map_to_username([ora_user_anonymized_id])
+    except FieldError as exc:
+        logger.error(f'Error while getting user name for the user id {ora_user_anonymized_id}: {exc}')
+
+    try:
+        if (not user_name_list) or (not user_name_list[ora_user_anonymized_id]):
+            return
+        # Get ORA user
         ora_user = User.objects.get(username=user_name_list[ora_user_anonymized_id])
         # Get ORA block
         ora_usage_key = UsageKey.from_string(usage_id)

@@ -13,17 +13,8 @@ import pytz
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.utils.data_conversion import create_rubric_dict
-import openassessment.workflow.models as workflow_models
 
 from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
-
-
-def setUpModule():
-    """
-    This method is run once for the entire test module.
-    We use it to globally replace send_grade_assigned_notification with a mock.
-    """
-    workflow_models.send_grade_assigned_notification = mock.MagicMock()
 
 
 class TestSelfAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
