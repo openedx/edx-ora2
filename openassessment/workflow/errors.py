@@ -59,18 +59,3 @@ class AssessmentApiLoadError(AssessmentWorkflowInternalError):
 
 class ItemNotFoundError(Exception):
     """An item was not found in the modulestore"""
-
-
-class ExceptionWithContext(Exception):
-    """An exception with optional context dict to be supplied in serialized result"""
-
-    def __init__(self, context=None):
-        super().__init__(self)
-        self.context = context
-
-
-class XBlockInternalError(ExceptionWithContext):
-    """Errors from XBlock handlers"""
-
-    def __str__(self):
-        return str(self.context)

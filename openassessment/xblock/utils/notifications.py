@@ -12,7 +12,7 @@ from openedx_events.learning.signals import COURSE_NOTIFICATION_REQUESTED, USER_
 from openedx_events.learning.data import CourseNotificationData, UserNotificationData
 from django.contrib.auth import get_user_model
 from openassessment.runtime_imports.functions import modulestore
-from openassessment.workflow.errors import ItemNotFoundError, XBlockInternalError
+from openassessment.workflow.errors import ItemNotFoundError
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -90,7 +90,3 @@ def send_grade_assigned_notification(usage_id, ora_user_anonymized_id, score):
     # Error with getting User
     except User.DoesNotExist as exc:
         logger.error(f'Unknown User Error: {exc}')
-
-    # Issues with the XBlock handlers
-    except XBlockInternalError as ex:
-        logger.error(ex)
