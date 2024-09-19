@@ -381,7 +381,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     score = self.get_score(assessment_requirements, course_settings, step_for_name)
                     submission_dict = sub_api.get_submission_and_student(self.submission_uuid)
                     if submission_dict['student_item']['student_id']:
-                        send_grade_assigned_notification(self.item_id, submission_dict['student_item']['student_id'], score)
+                        send_grade_assigned_notification(self.item_id,
+                                                         submission_dict['student_item']['student_id'], score)
                     return
 
         if self.status == self.STATUS.done:
