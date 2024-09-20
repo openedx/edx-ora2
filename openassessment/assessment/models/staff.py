@@ -6,6 +6,7 @@ Models for managing staff assessments.
 from datetime import timedelta
 import logging
 
+from django.conf import settings
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
@@ -28,7 +29,7 @@ class StaffWorkflow(models.Model):
 
     """
     # Amount of time before a lease on a submission expires
-    TIME_LIMIT = timedelta(hours=8)
+    TIME_LIMIT = timedelta(hours=getattr(settings, "STAFF_LEASE_EXPIRATION_HOURS", 8))
 
     scorer_id = models.CharField(max_length=40, db_index=True, blank=True)
     course_id = models.CharField(max_length=255, db_index=True)
