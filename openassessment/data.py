@@ -597,14 +597,9 @@ class OraAggregateData:
         Returns:
             string that should be included in the relevant 'feedback_options' column for this set of assessments' row
         """
-
-        returned_string = ""
-        for assessment in assessments:
-            for feedback in assessment.assessment_feedback.all():
-                for option in feedback.options.all():
-                    returned_string += option.text + "\n"
-
-        return returned_string
+        return '\n'.join(Assessment.objects
+                     .filter(id__in=(a.id for a in assessments), assessment_feedback__options__text__isnull=False)
+                     .values_list('assessment_feedback__options__text', flat=True))
 
     @classmethod
     def _build_feedback_cell(cls, submission_uuid):
