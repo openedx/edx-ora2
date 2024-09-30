@@ -7,8 +7,11 @@ import json
 import logging
 import re
 
-import pkg_resources
 import pytz
+try:
+    from xblock.utils.resources import ResourceLoader
+except ModuleNotFoundError:
+    from xblockutils.resources import ResourceLoader
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -72,12 +75,12 @@ from openassessment.xblock.apis.assessments.student_training_api import StudentT
 from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+resource_loader = ResourceLoader(__name__)
 
 
 def load(path):
     """Handy helper for getting resources from our kit."""
-    data = pkg_resources.resource_string(__name__, path)
-    return data.decode("utf8")
+    return resource_loader.load_unicode(path)
 
 
 @XBlock.needs("i18n")
