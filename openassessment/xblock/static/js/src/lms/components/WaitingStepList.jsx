@@ -87,6 +87,7 @@ const WaitingStepList = ({
 };
 
 WaitingStepList.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   studentList: PropTypes.arrayOf(PropTypes.object).isRequired,
   refreshData: PropTypes.func,
   findLearner: PropTypes.func,
