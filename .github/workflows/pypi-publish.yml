@@ -10,17 +10,13 @@ jobs:
   push:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [3.11, 3.12]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.12
 
       - name: Install pip
         run: pip install -r requirements/pip.txt
