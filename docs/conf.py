@@ -8,35 +8,34 @@
 import os
 from datetime import datetime
 
-project = 'edx-ora2'
+project = "edx-ora2"
 current_year = datetime.now().year
 copyright = f"{current_year}, Open edX Community"
-author = 'Open edX Community'
-release = 'latest'
+author = "Open edX Community"
+release = "latest"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinxcontrib.contentui',
-    'sphinx_copybutton',
-    'sphinx.ext.graphviz',
-    'sphinxcontrib.mermaid',
+    "sphinxcontrib.contentui",
+    "sphinx_copybutton",
+    "sphinx.ext.graphviz",
+    "sphinxcontrib.mermaid",
 ]
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-language = 'en'
+language = "en"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_book_theme'
-html_static_path = ['_static']
+html_theme = "sphinx_book_theme"
+html_static_path = ["_static"]
 
 html_theme_options = {
-
     "repository_url": "https://github.com/openedx/edx-ora2",
     "repository_branch": "master",
     "path_to_docs": "docs/",
@@ -63,7 +62,7 @@ html_theme_options = {
                 rel="license"
                 href="https://creativecommons.org/licenses/by-sa/4.0/"
             >Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-    """
+    """,
 }
 
 # Note the logo won't show up properly yet because there is an upstream
@@ -74,8 +73,8 @@ html_logo = "https://logos.openedx.org/open-edx-logo-color.png"
 html_favicon = "https://logos.openedx.org/open-edx-favicon.ico"
 
 # Set the DJANGO_SETTINGS_MODULE if it's not set.
-if not os.environ.get('DJANGO_SETTINGS_MODULE'):
-   os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.base'
+if not os.environ.get("DJANGO_SETTINGS_MODULE"):
+    os.environ["DJANGO_SETTINGS_MODULE"] = "settings.base"
 
 # -- Read the Docs Specific Configuration
 # Define the canonical URL if you are using a custom domain on Read the Docs
@@ -86,4 +85,3 @@ if os.environ.get("READTHEDOCS", "") == "True":
     if "html_context" not in globals():
         html_context = {}
     html_context["READTHEDOCS"] = True
-
