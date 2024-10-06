@@ -6,9 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
+from datetime import datetime
 
 project = 'edx-ora2'
-copyright = '2023, Open edX Community'
+current_year = datetime.now().year
+copyright = f"{current_year}, Open edX Community"
 author = 'Open edX Community'
 release = 'latest'
 
