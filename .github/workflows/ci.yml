@@ -5,7 +5,7 @@ on:
     branches: [master]
   pull_request:
     branches:
-    - '**'
+      - "**"
 
 jobs:
   run_tests:
@@ -15,43 +15,43 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.8', '3.11']
+        python-version: ["3.8", "3.11"]
         node-version: [16]
         toxenv: [quality, js, django42]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: setup python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install pip
-      run: pip install -r requirements/pip.txt
+      - name: Install pip
+        run: pip install -r requirements/pip.txt
 
-    - name: Set env variable
-      run: export AWS_CONFIG_FILE=/dev/null
+      - name: Set env variable
+        run: export AWS_CONFIG_FILE=/dev/null
 
-    - name: Install Dependencies
-      run: pip install -r requirements/ci.txt
+      - name: Install Dependencies
+        run: pip install -r requirements/ci.txt
 
-    - name: Install GNU gettext
-      run: sudo apt-get install gettext
+      - name: Install GNU gettext
+        run: sudo apt-get install gettext
 
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Run Tests
-      env:
-        TOXENV: ${{ matrix.toxenv }}
-      run: tox
+      - name: Run Tests
+        env:
+          TOXENV: ${{ matrix.toxenv }}
+        run: tox
 
-    - name: Run Coverage
-      if: matrix.python-version == '3.8' && matrix.toxenv=='django42'
-      uses: codecov/codecov-action@v4
-      with:
-        flags: unittests
-        fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run Coverage
+        if: matrix.python-version == '3.8' && matrix.toxenv=='django42'
+        uses: codecov/codecov-action@v4
+        with:
+          flags: unittests
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
