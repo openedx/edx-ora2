@@ -19,6 +19,7 @@ from pytest import raises
 from openassessment.fileupload import api, exceptions, urls
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
+from openassessment.fileupload.backends.gcs import get_blob_object
 from openassessment.fileupload.backends.filesystem import (
     get_cache as get_filesystem_cache,
 )
@@ -499,3 +500,127 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # File no longer exists
         download_url = self.backend.get_download_url(self.key)
         self.assertIsNone(download_url)
+
+
+@override_settings(
+    ORA2_FILEUPLOAD_BACKEND="gcs",
+    DEFAULT_FILE_STORAGE="storages.backends.gcloud.GoogleCloudStorage",
+    FILE_UPLOAD_STORAGE_PREFIX="submissions_on_gcp",
+    FILE_UPLOAD_STORAGE_BUCKET_NAME="testbucket",
+    LMS_ROOT_URL="http://foobar.example.com",
+)
+@ddt.ddt
+class TestFileUploadServiceWithGoogleStorageBackend(TestCase):
+    """
+    Test open assessment file upload using GCS storage backend.
+    """
+    class MockBlob:
+        def __init__(self):
+            self.exist_testing_flag = False
+            self.delete_called_during_test = False
+
+        def generate_signed_url(self, **kwargs):
+            return "http://foobar.example.com/submissions_on_gcs/signed_url_called.txt"
+
+        def delete(self):
+            self.delete_called_during_test = True
+
+        def exists(self):
+            return self.exist_testing_flag
+
+    def setUp(self):
+        super().setUp()
+        self.backend = api.backends.get_backend()
+        self.patchers = {
+            "get_blob_object": patch(
+                "openassessment.fileupload.backends.gcs.get_blob_object",
+                return_value=self.MockBlob(),
+            ),
+            "log": patch("openassessment.fileupload.backends.gcs.log.exception"),
+        }
+
+        self.mock_get_blob_object = self.patchers["get_blob_object"].start()
+        self.mock_log = self.patchers["log"].start()
+
+    def tearDown(self):
+        """
+        Stop the patcher.
+        """
+        for patcher in self.patchers.values():
+            patcher.stop()
+
+    def test_get_backend(self):
+        """
+        Ensure the django storage backend is returned when ORA2_FILEUPLOAD_BACKEND="gcs".
+        """
+        self.assertTrue(isinstance(self.backend, api.backends.gcs.Backend))
+
+    @ddt.data(
+        ("get_upload_url", {'key': 'whatever', 'content_type': 'whatever'}),
+        ("get_download_url", {'key': 'whatever'}),
+        ("remove_file", {'key': 'whatever'}),
+    )
+    @ddt.unpack
+    def test_errors_raise_file_upload_internal_error(self, method_name, kwargs):
+        """
+        Ensure that exceptions are caught and raised as FileUploadInternalError.
+        """
+        self.mock_get_blob_object.side_effect = Exception("Some error!")
+        with raises(exceptions.FileUploadInternalError):
+            getattr(self.backend, method_name)(**kwargs)
+        self.mock_log.assert_called_once_with(
+            f"Internal exception occurred while executing ora2 file-upload backend gcs.{method_name}: Some error!"
+        )
+
+    def test_get_upload_url(self):
+        """
+        Verify the upload URL.
+        """
+        url = self.backend.get_upload_url("foo", "_text")
+        self.mock_get_blob_object.assert_called_once_with("testbucket", "submissions_on_gcp/foo")
+        self.assertEqual(url, "http://foobar.example.com/submissions_on_gcs/signed_url_called.txt")
+
+    def test_get_download_url(self):
+        """
+        Verify the download URL.
+        """
+        url = self.backend.get_download_url("foo")
+        self.mock_get_blob_object.assert_called_once_with("testbucket", "submissions_on_gcp/foo")
+        self.assertEqual(url, "")
+
+        self.mock_get_blob_object.return_value.exist_testing_flag = True
+        url = self.backend.get_download_url("foo")
+        self.assertEqual(url, "http://foobar.example.com/submissions_on_gcs/signed_url_called.txt")
+
+    def test_remove_file(self):
+        """
+        Verify the remove file method.
+        """
+        self.assertFalse(self.mock_get_blob_object.return_value.delete_called_during_test)
+        result = self.backend.remove_file("foo")
+        self.mock_get_blob_object.assert_called_once_with("testbucket", "submissions_on_gcp/foo")
+        self.assertFalse(result)
+
+        self.mock_get_blob_object.return_value.exist_testing_flag = True
+        self.assertFalse(self.mock_get_blob_object.return_value.delete_called_during_test)
+        result = self.backend.remove_file("foo")
+        self.assertTrue(result)
+        self.assertTrue(self.mock_get_blob_object.return_value.delete_called_during_test)
+
+    def test_get_blob_object(self):
+        """
+        Verify the get_blob_object method.
+        """
+        with patch("google.cloud.storage") as mock_storage:
+            blob = Mock(id="the_test_blob")
+
+            bucket = Mock()
+            bucket.blob.return_value = blob
+
+            client = Mock()
+            client.bucket.return_value = bucket
+
+            mock_storage.Client.return_value = client
+
+            result = get_blob_object("testbucket", "submissions_on_gcp/foo")
+            self.assertEqual(result.id, "the_test_blob")
