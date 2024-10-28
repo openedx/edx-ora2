@@ -16,9 +16,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ['3.8', '3.11']
-        node-version: [18, 20]
         toxenv: [quality, js, django42]
-    continue-on-error: ${{ matrix.node == 20 }}
 
     steps:
     - uses: actions/checkout@v4
@@ -42,7 +40,7 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.nvmrc'
 
     - name: Run Tests
       env:
