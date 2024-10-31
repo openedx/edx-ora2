@@ -3,7 +3,7 @@
 		extract_translations compile_translations generate_dummy_translations validate_translations \
 		detect_changed_source_translations pull_translations push_translations check_translations_up_to_date \
 		quality test-python render-templates test-js test-js-debug test test-acceptance test-a11y test-sandbox \
-		install-osx-requirements
+		compile-requirements install-osx-requirements
 
 .DEFAULT_GOAL := help
 
@@ -43,23 +43,23 @@ $(COMMON_CONSTRAINTS_TXT):
 	wget -O "$(@)" https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt || touch "$(@)"
 	echo "$(COMMON_CONSTRAINTS_TEMP_COMMENT)" | cat - $(@) > temp && mv temp $(@)
 
-upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
-upgrade: $(COMMON_CONSTRAINTS_TXT)  ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+compile-requirements: export CUSTOM_COMPILE_COMMAND=make upgrade
+compile-requirements: $(COMMON_CONSTRAINTS_TXT)  ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
     # global common_constraints has this pin.
 	sed 's/django-simple-history==3.0.0//g' requirements/common_constraints.txt > requirements/common_constraints.tmp
 	mv requirements/common_constraints.tmp requirements/common_constraints.txt
 	pip install -qr requirements/pip-tools.txt
-	pip-compile --upgrade --allow-unsafe -o requirements/pip.txt requirements/pip.in
-	pip-compile --upgrade -o requirements/pip-tools.txt requirements/pip-tools.in
+	pip-compile ${COMPILE_OPTS} --allow-unsafe -o requirements/pip.txt requirements/pip.in
+	pip-compile ${COMPILE_OPTS} -o requirements/pip-tools.txt requirements/pip-tools.in
 	pip install -qr requirements/pip.txt
 	pip install -qr requirements/pip-tools.txt
-	pip-compile --upgrade -o requirements/base.txt requirements/base.in
-	pip-compile --upgrade -o requirements/test.txt requirements/test.in
-	pip-compile --upgrade -o requirements/quality.txt requirements/quality.in
-	pip-compile --upgrade -o requirements/test-acceptance.txt requirements/test-acceptance.in
-	pip-compile --upgrade -o requirements/tox.txt requirements/tox.in
-	pip-compile --upgrade -o requirements/ci.txt requirements/ci.in
-	pip-compile --upgrade -o requirements/docs.txt requirements/docs.in
+	pip-compile ${COMPILE_OPTS} --allow-unsafe -o requirements/base.txt requirements/base.in
+	pip-compile ${COMPILE_OPTS} -o requirements/test.txt requirements/test.in
+	pip-compile ${COMPILE_OPTS} --allow-unsafe -o requirements/quality.txt requirements/quality.in
+	pip-compile ${COMPILE_OPTS} -o requirements/test-acceptance.txt requirements/test-acceptance.in
+	pip-compile ${COMPILE_OPTS} -o requirements/tox.txt requirements/tox.in
+	pip-compile ${COMPILE_OPTS} --allow-unsafe -o requirements/ci.txt requirements/ci.in
+	pip-compile ${COMPILE_OPTS} -o requirements/docs.txt requirements/docs.in
 	# Delete django pin from test requirements to avoid tox version collision
 	sed -i.tmp '/^[d|D]jango==/d' requirements/test.txt
 	sed -i.tmp '/^djangorestframework==/d' requirements/test.txt
@@ -69,6 +69,9 @@ upgrade: $(COMMON_CONSTRAINTS_TXT)  ## update the requirements/*.txt files with 
 	sed -i.tmp '/^--trusted-host/d' requirements/*.txt
 	# Delete temporary files
 	rm requirements/*.txt.tmp
+
+upgrade:  ## update the pip requirements files to use the latest releases satisfying our constraints
+	$(MAKE) compile-requirements COMPILE_OPTS="--upgrade"
 
 ##############################
 # Generate js/css output files
@@ -85,9 +88,9 @@ update-npm-requirements: ## update NPM requrements
 static: ## Webpack JavaScript and SASS source files
 	npm run build
 
-################
-#Translations Handling
-################
+#######################
+# Translations Handling
+#######################
 
 extract_translations: ## creates the django-partial.po & django-partial.mo files
 	cd ./openassessment && django-admin makemessages -l en -v1 -d django
@@ -113,9 +116,9 @@ push_translations: ## push source translation files (.po) to Transifex
 
 check_translations_up_to_date: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
-################
-#Tests and checks
-################
+##################
+# Tests and checks
+##################
 
 quality: ## Run linting and code quality checks
 	npm run lint
@@ -142,9 +145,9 @@ install-osx-requirements: ## Install OSX specific requirements using Homebrew
 	brew install gettext
 	brew link gettext --force
 
-##################
-#Devstack commands
-##################
+###################
+# Devstack commands
+###################
 
 install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
 	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'

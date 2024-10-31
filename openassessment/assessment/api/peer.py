@@ -313,7 +313,7 @@ def get_score(submission_uuid, peer_requirements, course_settings):
     }
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         scorer_submission_uuid,
         scorer_id,
         options_selected,
@@ -420,7 +420,7 @@ def create_assessment(
 
 
 @transaction.atomic
-def _complete_assessment(
+def _complete_assessment(  # pylint: disable=too-many-positional-arguments
         rubric_dict,
         scorer_id,
         peer_submission_uuid,

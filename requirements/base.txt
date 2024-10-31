@@ -10,11 +10,11 @@ asgiref==3.8.1
     # via django
 attrs==24.2.0
     # via openedx-events
-bleach==6.1.0
+bleach==6.2.0
     # via -r requirements/base.in
-boto3==1.35.29
+boto3==1.35.52
     # via -r requirements/base.in
-botocore==1.35.29
+botocore==1.35.52
     # via
     #   boto3
     #   s3transfer
@@ -22,7 +22,7 @@ certifi==2024.8.30
     # via requests
 cffi==1.17.1
     # via pynacl
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 click==8.1.7
     # via
@@ -34,6 +34,7 @@ defusedxml==0.7.1
     # via -r requirements/base.in
 django==4.2.16
     # via
+    #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django-crum
@@ -68,13 +69,13 @@ djangorestframework==3.15.2
     # via
     #   -r requirements/base.in
     #   edx-submissions
-dnspython==2.6.1
+dnspython==2.7.0
     # via pymongo
 edx-ccx-keys==1.3.0
     # via openedx-events
 edx-django-release-util==1.4.0
     # via edx-submissions
-edx-django-utils==5.15.0
+edx-django-utils==7.0.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -86,7 +87,7 @@ edx-opaque-keys[django]==2.11.0
     #   -r requirements/base.in
     #   edx-ccx-keys
     #   openedx-events
-edx-submissions==3.8.0
+edx-submissions==3.8.3
     # via -r requirements/base.in
 edx-toggles==5.2.0
     # via -r requirements/base.in
@@ -124,20 +125,20 @@ lxml[html-clean]==5.3.0
     #   edx-i18n-tools
     #   lxml-html-clean
     #   xblock
-lxml-html-clean==0.2.2
+lxml-html-clean==0.3.1
     # via lxml
-mako==1.3.5
+mako==1.3.6
     # via xblock
-markupsafe==2.1.5
+markupsafe==3.0.2
     # via
     #   jinja2
     #   mako
     #   xblock
-newrelic==10.0.0
+newrelic==10.2.0
     # via edx-django-utils
-openedx-events==9.14.1
+openedx-events==9.15.0
     # via -r requirements/base.in
-openedx-filters==1.10.0
+openedx-filters==1.11.0
     # via -r requirements/base.in
 path==13.1.0
     # via
@@ -150,11 +151,11 @@ pbr==6.1.0
     # via stevedore
 polib==1.2.0
     # via edx-i18n-tools
-psutil==6.0.0
+psutil==6.1.0
     # via edx-django-utils
 pycparser==2.22
     # via cffi
-pymongo==4.9.1
+pymongo==4.10.1
     # via edx-opaque-keys
 pynacl==1.5.0
     # via edx-django-utils
@@ -183,13 +184,12 @@ pyyaml==6.0.2
     #   xblock
 requests==2.32.3
     # via python-swiftclient
-s3transfer==0.10.2
+s3transfer==0.10.3
     # via boto3
 simplejson==3.19.3
     # via xblock
 six==1.16.0
     # via
-    #   bleach
     #   edx-ccx-keys
     #   edx-django-release-util
     #   fs
@@ -221,10 +221,11 @@ webencodings==0.5.1
     # via
     #   bleach
     #   html5lib
-webob==1.8.8
+webob==1.8.9
     # via xblock
 xblock==5.1.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools
+setuptools==75.3.0
+    # via fs

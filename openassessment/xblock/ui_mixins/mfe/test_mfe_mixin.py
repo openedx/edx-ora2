@@ -560,7 +560,7 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             'teamUploadedFiles': None,
         }
 
-    def _create_team_submission_and_workflow(
+    def _create_team_submission_and_workflow(  # pylint: disable=too-many-positional-arguments
         self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
     ):
         """ Create a team submission and team workflow with the given info """
@@ -770,7 +770,7 @@ class FileUploadTest(MFEHandlersTestBase):
         ({'get_upload_url.side_effect': FileUploadError(':(')}, 500, error_codes.UNABLE_TO_GENERATE_UPLOAD_URL, ':('),
     )
     @ddt.unpack
-    def test_upload_url_error(
+    def test_upload_url_error(  # pylint: disable=too-many-positional-arguments
         self,
         xblock,
         mock_url_behavior,
@@ -973,6 +973,7 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
         ('peer', False, False, True)
     )
     @scenario("data/basic_scenario.xml")
+    # pylint: disable=too-many-positional-arguments
     def test_assess(self, xblock, mfe_step, expect_self, expect_training, expect_peer):
         workflow_step = MFE_STEP_TO_WORKFLOW_MAPPINGS[mfe_step]
         with self.mock_workflow_status(workflow_step):

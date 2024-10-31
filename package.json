@@ -1,11 +1,11 @@
 {
   "name": "edx-ora2",
-  "version": "6.12.0",
+  "version": "6.12.2",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
     "@edx/frontend-build": "8.0.6",
     "@openedx/paragon": "^21.5.7",
-    "backbone": "^1.2.3",
+    "backbone": "1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
     "edx-ui-toolkit": "^1.5.4",
@@ -16,7 +16,7 @@
     "react-dom": "^17.0.2",
     "react-intl": "^5.25.1",
     "requirejs": "^2.3.6",
-    "underscore": "^1.13.2"
+    "underscore": "1.13.2"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
