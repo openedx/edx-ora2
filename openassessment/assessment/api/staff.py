@@ -298,7 +298,7 @@ def get_staff_grading_statistics(course_id, item_id):
     return StaffWorkflow.get_workflow_statistics(course_id, item_id)
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         submission_uuid,
         scorer_id,
         options_selected,
@@ -389,7 +389,7 @@ def create_assessment(
 
 
 @transaction.atomic
-def _complete_assessment(
+def _complete_assessment(  # pylint: disable=too-many-positional-arguments
         submission_uuid,
         scorer_id,
         options_selected,

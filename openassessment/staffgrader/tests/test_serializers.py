@@ -143,7 +143,7 @@ class TestSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
-    def mock_serializer_methods(
+    def mock_serializer_methods(  # pylint: disable=too-many-positional-arguments
         self,
         gradedBy=False,
         username=False,
@@ -451,7 +451,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             yield
 
     @contextmanager
-    def mock_serializer_methods(
+    def mock_serializer_methods(  # pylint: disable=too-many-positional-arguments
         self, gradedBy=False, username=False, email=False, fullname=False, teamName=False, score=False, verify=False
     ):
         with ExitStack() as stack:

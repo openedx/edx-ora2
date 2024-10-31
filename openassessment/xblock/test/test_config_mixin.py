@@ -161,7 +161,7 @@ class ConfigMixinTest(TestCase):
             'is_selectable_learner_waiting_review_enabled',
         )
 
-    def _run_feature_toggle_test(
+    def _run_feature_toggle_test(  # pylint: disable=too-many-positional-arguments
         self, flag_name, waffle_switch_input, waffle_flag_input, settings_input, feature_property
     ):
         """

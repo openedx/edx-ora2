@@ -2,3 +2,4 @@
 -r tox.txt
 
 coveralls
+setuptools
