@@ -20,7 +20,7 @@ colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.6.3
+coverage[toml]==7.6.4
     # via coveralls
 coveralls==4.0.1
     # via -r requirements/ci.in
@@ -59,11 +59,15 @@ pyproject-api==1.8.0
     #   tox
 requests==2.32.3
     # via coveralls
-tox==4.23.0
+tox==4.23.2
     # via -r requirements/tox.txt
 urllib3==2.2.3
     # via requests
-virtualenv==20.27.0
+virtualenv==20.27.1
     # via
     #   -r requirements/tox.txt
     #   tox
+
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==75.3.0
+    # via -r requirements/ci.in
