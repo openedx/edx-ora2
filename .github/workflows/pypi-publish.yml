@@ -3,10 +3,9 @@ name: Publish package to PyPi
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
-
   push:
     runs-on: ubuntu-latest
 
