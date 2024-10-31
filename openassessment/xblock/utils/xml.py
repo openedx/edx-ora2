@@ -625,6 +625,7 @@ def serialize_training_examples(examples, assessment_el):
         answer_el = etree.SubElement(example_el, 'answer')
         try:
             answer = example_dict.get('answer')
+            parts = []
             if answer is None:
                 parts = []
             elif isinstance(answer, dict):

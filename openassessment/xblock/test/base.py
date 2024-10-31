@@ -187,7 +187,7 @@ class XBlockHandlerTestCaseMixin:
         block_id = self.runtime.parse_xml_string(self.load_fixture_str(xml_path))
         return self.runtime.get_block(block_id)
 
-    def request(
+    def request(  # pylint: disable=too-many-positional-arguments
         self,
         xblock,
         handler_name,
@@ -403,7 +403,7 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
 
     STEPS = ['peer', 'self']
 
-    def create_submission_and_assessments(
+    def create_submission_and_assessments(  # pylint: disable=too-many-positional-arguments
             self, xblock, submission_text, peers, peer_assessments, self_assessment,
             waiting_for_peer=False,
     ):
@@ -473,6 +473,7 @@ class SubmitAssessmentsMixin(SubmissionTestMixin):
             workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
         return returned_subs
 
+    # pylint: disable=too-many-positional-arguments
     def create_peer_assessment(self, scorer_sub, scorer, sub_to_assess, assessment, criteria, grading_requirements):
         """Create a peer assessment of submission sub_to_assess by scorer."""
         peer_api.create_peer_workflow_item(scorer_sub['uuid'], sub_to_assess['uuid'])

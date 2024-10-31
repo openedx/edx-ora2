@@ -132,6 +132,7 @@ class TeamMixin:
         """
         if not any((team_submission_uuid, individual_submission_uuid)):
             raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
+        team_submission = None
         if team_submission_uuid:
             team_submission = get_team_submission(team_submission_uuid)
         elif individual_submission_uuid:

@@ -613,6 +613,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             )
 
     @classmethod
+    # pylint: disable=too-many-positional-arguments
     def cancel_workflow(cls, submission_uuid, comments, cancelled_by_id, assessment_requirements, course_settings):
         """
         Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.

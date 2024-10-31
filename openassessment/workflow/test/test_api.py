@@ -514,7 +514,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             [obj["status"] for obj in retrieved],
         )
 
-    def _create_workflow_with_status(
+    def _create_workflow_with_status(  # pylint: disable=too-many-positional-arguments
             self, student_id, course_id, item_id,
             status, answer="answer", steps=None
     ):

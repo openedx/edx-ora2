@@ -46,7 +46,7 @@ class TestMessageRender(XBlockHandlerTestCase):
     }
 
     @staticmethod
-    def _assert_path_and_context(  # pylint: disable=dangerous-default-value
+    def _assert_path_and_context(  # pylint: disable=dangerous-default-value,too-many-positional-arguments
             xblock, expected_path, expected_context,
             workflow_status, deadline_information, has_peers_to_grade,
             workflow_status_details=DEFAULT_STATUS_DETAILS,
