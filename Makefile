@@ -85,9 +85,9 @@ update-npm-requirements: ## update NPM requrements
 static: ## Webpack JavaScript and SASS source files
 	npm run build
 
-################
-#Translations Handling
-################
+#######################
+# Translations Handling
+#######################
 
 extract_translations: ## creates the django-partial.po & django-partial.mo files
 	cd ./openassessment && django-admin makemessages -l en -v1 -d django
@@ -113,9 +113,9 @@ push_translations: ## push source translation files (.po) to Transifex
 
 check_translations_up_to_date: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
-################
-#Tests and checks
-################
+##################
+# Tests and checks
+##################
 
 quality: ## Run linting and code quality checks
 	npm run lint
@@ -142,9 +142,9 @@ install-osx-requirements: ## Install OSX specific requirements using Homebrew
 	brew install gettext
 	brew link gettext --force
 
-##################
-#Devstack commands
-##################
+###################
+# Devstack commands
+###################
 
 install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
 	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
