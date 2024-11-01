@@ -5,6 +5,7 @@ from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
+import unittest
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
@@ -1422,3 +1423,32 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         self.assertEqual(content["display_name"], "Open Response Assessment")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
+
+
+
+class TestResourceLoaderImport(unittest.TestCase):
+    @patch('xblock.utils.resources')
+    def test_import_falls_back(self, mock_resources):
+        # Simulate a ModuleNotFoundError for the first import
+        mock_resources.ResourceLoader.side_effect = ModuleNotFoundError
+
+        # Now try to import and check if the fallback works
+        try:
+            from openassessmentblock import ResourceLoader
+        except ImportError:
+            self.fail("Import should not raise ImportError")
+
+        # Check if ResourceLoader is the one from xblockutils.resources
+        from xblockutils.resources import ResourceLoader as FallbackLoader
+        self.assertIs(ResourceLoader, FallbackLoader)
+
+class TestLoadFunction(unittest.TestCase):
+    @patch('openassessmentblock.resource_loader')  # Patch the resource_loader variable directly
+    def test_load_calls_load_unicode(self, mock_resource_loader):
+        mock_resource_loader.load_unicode.return_value = "mocked resource content"
+        path = "some/path/to/resource"
+
+        result = openassessmentblock.load(path)
+
+        mock_resource_loader.load_unicode.assert_called_once_with(path)
+        self.assertEqual(result, "mocked resource content")
