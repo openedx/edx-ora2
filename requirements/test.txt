@@ -26,12 +26,12 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.2.0
     # via -r requirements/base.txt
-boto3==1.35.52
+boto3==1.35.54
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.35.52
+botocore==1.35.54
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -164,7 +164,7 @@ edx-toggles==5.2.0
     # via -r requirements/base.txt
 factory-boy==3.3.1
     # via -r requirements/test.in
-faker==30.8.1
+faker==30.8.2
     # via factory-boy
 fastavro==1.9.7
     # via
@@ -368,7 +368,7 @@ requests==2.32.3
     #   xblock-sdk
 responses==0.25.3
     # via moto
-rich==13.9.3
+rich==13.9.4
     # via cookiecutter
 s3transfer==0.10.3
     # via
@@ -453,7 +453,7 @@ webob==1.8.9
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-werkzeug==3.0.6
+werkzeug==3.1.1
     # via moto
 xblock==5.1.0
     # via
