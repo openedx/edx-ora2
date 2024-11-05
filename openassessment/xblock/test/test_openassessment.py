@@ -6,6 +6,7 @@ import datetime as dt
 from io import StringIO
 import json
 import unittest
+import importlib
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
@@ -113,6 +114,31 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
         self.assertIn("step--grade", grade_response.body.decode('utf-8'))
+
+    @scenario("data/basic_scenario.xml")
+    def test_load_author_view(self, xblock):
+        """OA XBlock returns some HTML to the author in Studio.
+
+        View basic test for verifying we're returned some HTML about the
+        Open Assessment XBlock for authoring purposes.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Author"
+        )
+        xblock.mfe_views_enabled = True
+        xblock_fragment = self.runtime.render(xblock, "author_view")
+
+        # Validate that the author view renders and contains expected content.
+        self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
+        self.assertIn("IS_STUDIO", xblock_fragment.body_html())
+
+        # Test that calling update_workflow_status doesn't throw an error.
+        try:
+            xblock.update_workflow_status()
+        except AssessmentWorkflowError:
+            self.fail(
+                "update_workflow_status raised AssessmentWorkflowError unexpectedly!"
+            )
 
     def _staff_assessment_view_helper(self, xblock):
         """
@@ -1423,32 +1449,3 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         self.assertEqual(content["display_name"], "Open Response Assessment")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
-
-
-
-class TestResourceLoaderImport(unittest.TestCase):
-    @patch('xblock.utils.resources')
-    def test_import_falls_back(self, mock_resources):
-        # Simulate a ModuleNotFoundError for the first import
-        mock_resources.ResourceLoader.side_effect = ModuleNotFoundError
-
-        # Now try to import and check if the fallback works
-        try:
-            from openassessmentblock import ResourceLoader
-        except ImportError:
-            self.fail("Import should not raise ImportError")
-
-        # Check if ResourceLoader is the one from xblockutils.resources
-        from xblockutils.resources import ResourceLoader as FallbackLoader
-        self.assertIs(ResourceLoader, FallbackLoader)
-
-class TestLoadFunction(unittest.TestCase):
-    @patch('openassessmentblock.resource_loader')  # Patch the resource_loader variable directly
-    def test_load_calls_load_unicode(self, mock_resource_loader):
-        mock_resource_loader.load_unicode.return_value = "mocked resource content"
-        path = "some/path/to/resource"
-
-        result = openassessmentblock.load(path)
-
-        mock_resource_loader.load_unicode.assert_called_once_with(path)
-        self.assertEqual(result, "mocked resource content")

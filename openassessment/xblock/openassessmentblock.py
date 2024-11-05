@@ -8,10 +8,7 @@ import logging
 import re
 
 import pytz
-try:
-    from xblock.utils.resources import ResourceLoader
-except ModuleNotFoundError:
-    from xblockutils.resources import ResourceLoader
+from xblock.utils.resources import ResourceLoader
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
