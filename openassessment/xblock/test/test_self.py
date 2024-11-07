@@ -446,7 +446,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             resp = self.request(xblock, 'render_self_assessment', json.dumps({}))
             self.assertIn('error', resp.decode('utf-8').lower())
 
-    def _assert_path_and_context(
+    def _assert_path_and_context(  # pylint: disable=too-many-positional-arguments
             self, xblock, expected_path, expected_context,
             workflow_status=None, status_details=None,
             submission_uuid=None

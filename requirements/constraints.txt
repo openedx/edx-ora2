@@ -1,5 +1,7 @@
 # Version constraints for pip-installation.
 
+-c common_constraints.txt
+
 # Base dependencies
 Django<4.3                         # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
@@ -20,13 +22,6 @@ networkx<2.5
 moto<5.0
 # path 13.2.0 drops support for Python 3.5
 path<13.2.0
-
-# Needed to resolve requirements between path and tox
-# path only requires >=0.5 but tox requires <2
-# path is defined in base.in so it compiles to the most recent version in base.txt,
-#     and tox comes in in test.in
-importlib-metadata<2
-setuptools<60.0
 
 # incremental upgrade plan.
 django-simple-history<=3.1.1

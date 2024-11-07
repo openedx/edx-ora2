@@ -24,7 +24,7 @@ from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAss
 from .base import XBlockHandlerTestCase, scenario
 
 
-def assert_is_closed(
+def assert_is_closed(  # pylint: disable=too-many-positional-arguments
         xblock,
         now,
         step,

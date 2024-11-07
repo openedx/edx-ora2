@@ -180,6 +180,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         ) as patched_map:
             yield patched_map
 
+    # pylint: disable=too-many-positional-arguments
     def submit_staff_assessment(self, xblock, student, grader, option, option_2=None):
         """
         Helper method to submit a staff assessment
@@ -205,7 +206,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit_staff_assessment', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
 
-    def add_expected_response_dict(
+    def add_expected_response_dict(  # pylint: disable=too-many-positional-arguments
         self,
         expected_response,
         student,
@@ -564,6 +565,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
     @freeze_time(TEST_START_DATE)
     def test_bulk_fetch_annotated_staff_workflows(self, xblock, set_up_grades, set_up_locks):
         """ Unit test for bulk_fetch_annotated_staff_workflows """
+        assessment_ids = []
         if set_up_grades:
             # If we are grading, student_0 graded by staff_1, student_1 ungraded,
             #  student_2 graded by staff_0, student_3 by staff_1

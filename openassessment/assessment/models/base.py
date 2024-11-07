@@ -460,6 +460,7 @@ class Assessment(models.Model):
         return f"Assessment {self.id}"
 
     @classmethod
+    # pylint: disable=too-many-positional-arguments
     def create(cls, rubric, scorer_id, submission_uuid, score_type, feedback=None, scored_at=None):
         """
         Create a new assessment.

@@ -2,4 +2,6 @@
 # them deterministically with `pip-sync`.
 # `pip-compile` itself is used to generate pip-tools.txt.
 
+-c constraints.txt
+
 pip-tools

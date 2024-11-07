@@ -181,7 +181,7 @@ class OpenAssessmentTemplatesMixin:
 
         return ui_models
 
-    def _create_fragment(
+    def _create_fragment(  # pylint: disable=too-many-positional-arguments
         self,
         template,
         context_dict,

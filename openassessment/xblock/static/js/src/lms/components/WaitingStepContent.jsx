@@ -66,6 +66,7 @@ WaitingStepContent.propTypes = {
     must_grade: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     waiting_count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     overwritten_count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    // eslint-disable-next-line react/forbid-prop-types
     student_data: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   refreshData: PropTypes.func,

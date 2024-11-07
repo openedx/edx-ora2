@@ -39,7 +39,7 @@ def send_staff_notification(course_id, problem_id, ora_name):
             audience_filters=audience_filters,
         )
         COURSE_NOTIFICATION_REQUESTED.send_event(course_notification_data=notification_data)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logger.error(f"Error while sending ora staff notification: {e}")
 
 

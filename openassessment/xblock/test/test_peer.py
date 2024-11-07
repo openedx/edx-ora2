@@ -759,7 +759,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             continue_grading=True,
         )
 
-    def _assert_path_and_context(
+    def _assert_path_and_context(  # pylint: disable=too-many-positional-arguments
             self, xblock, expected_path, expected_context,
             continue_grading=False, workflow_status=None,
             graded_enough=False,
@@ -939,6 +939,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase, SubmissionTestMixin):
         mock_call.side_effect = workflow_api.AssessmentWorkflowInternalError
         self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
 
+    # pylint: disable=too-many-positional-arguments
     def _submit_peer_assessment(self, xblock, student_id, scorer_id, assessment, expect_failure=False):
         """
         Create submissions for a student and scorer, then create a peer assessment

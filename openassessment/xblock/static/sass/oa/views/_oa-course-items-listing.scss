@@ -17,6 +17,7 @@
   .open-response-assessment-summary {
     td {
       border: none;
+      padding: 0.5rem;
     }
   }
 
@@ -31,6 +32,7 @@
     th {
       background-color: #ffffff;
       text-align: left;
+      padding: 0.5rem;
 
       button {
         background: none;
@@ -48,6 +50,7 @@
     }
 
     td {
+      padding: 0.5rem;
       a {
         cursor: pointer;
       }
@@ -73,7 +76,7 @@
   .ora-summary-value {
     @extend %truncated-digits;
     font-size: 1.5em;
-    padding-top: 3px;
+    padding-top: 0.5rem;
   }
 
   .backgrid {

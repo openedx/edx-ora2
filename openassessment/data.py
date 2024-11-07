@@ -1095,7 +1095,7 @@ class OraDownloadData:
         return {user["student_id"]: user["path_id"] for user in users}
 
     @classmethod
-    def _submission_directory_name(
+    def _submission_directory_name(  # pylint: disable=too-many-positional-arguments
         cls,
         section_index,
         section_name,
@@ -1366,6 +1366,7 @@ class SubmissionFileUpload:
 
     DEFAULT_DESCRIPTION = _("No description provided.")
 
+    # pylint: disable=too-many-positional-arguments
     def __init__(self, key, name=None, description=None, size=0, url=None):
         self.key = key
         self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
