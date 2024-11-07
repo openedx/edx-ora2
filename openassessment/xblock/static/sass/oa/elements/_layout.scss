@@ -4,3 +4,30 @@
 // NOTES:
 // * Grid and common page layout rules
 // * any manual layout breakpoints for ORA (a la shirt sizes - s,m,l,xl) - needed since media queries of UI xblocks are contained in don't give enough context
+
+.loader {
+    float: right;
+    margin: 16px !important;
+    width: 32px;
+    height: 32px;
+    border: 6px solid #666 !important;
+    border-bottom-color: transparent !important;
+    border-radius: 50%;
+    display: inline-block !important;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+
+    .hidden {
+        visibility: hidden;
+    }
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
