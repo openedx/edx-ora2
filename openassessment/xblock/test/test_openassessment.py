@@ -5,8 +5,6 @@ from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
-import unittest
-import importlib
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings

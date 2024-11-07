@@ -6,10 +6,7 @@ import logging
 from urllib.parse import urlparse
 
 from django.conf import settings
-try:
-    from xblock.utils.resources import ResourceLoader
-except ModuleNotFoundError:
-    from xblockutils.resources import ResourceLoader
+from xblock.utils.resources import ResourceLoader
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
