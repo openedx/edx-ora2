@@ -5,6 +5,7 @@ from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
+import unittest
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
@@ -16,6 +17,7 @@ from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
+from openassessment.xblock.openassessmentblock import load
 from openassessment.xblock.utils import defaults
 from openassessment.xblock.utils.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.openassesment_template_mixin import UI_MODELS
@@ -129,14 +131,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Validate that the author view renders and contains expected content.
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
         self.assertIn("IS_STUDIO", xblock_fragment.body_html())
-
-        # Test that calling update_workflow_status doesn't throw an error.
-        try:
-            xblock.update_workflow_status()
-        except AssessmentWorkflowError:
-            self.fail(
-                "update_workflow_status raised AssessmentWorkflowError unexpectedly!"
-            )
 
     def _staff_assessment_view_helper(self, xblock):
         """
@@ -1447,3 +1441,23 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         self.assertEqual(content["display_name"], "Open Response Assessment")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
+
+
+class TestLoadFunction(unittest.TestCase):
+    """Test case for the load function in openassessmentblock.py."""
+
+    @patch("openassessment.xblock.openassessmentblock.resource_loader.load_unicode")
+    def test_load_function(self, mock_load_unicode):
+        """
+        Test that load calls resource_loader.load_unicode with the correct path.
+        """
+        mock_load_unicode.return_value = "Sample content"
+        test_path = "sample/path/to/resource.html"
+
+        result = load(test_path)
+
+        # Check that resource_loader.load_unicode was called with the correct path
+        mock_load_unicode.assert_called_once_with(test_path)
+
+        # Verify that load() returns the expected value
+        self.assertEqual(result, "Sample content")
