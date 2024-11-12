@@ -5,8 +5,8 @@ import json
 import logging
 from urllib.parse import urlparse
 
-from pkg_resources import resource_string
 from django.conf import settings
+from xblock.utils.resources import ResourceLoader
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -31,6 +31,8 @@ class LoadStatic:
     _base_url = ''
     _is_loaded = False
 
+    resource_loader = ResourceLoader(__name__)
+
     @staticmethod
     def reload_manifest():
         """
@@ -45,7 +47,7 @@ class LoadStatic:
             logger.error('LMS_ROOT_URL is undefined')
 
         try:
-            json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
+            json_data = LoadStatic.resource_loader.load_unicode('static/dist/manifest.json')
             LoadStatic._manifest = json.loads(json_data)
             base_url_override = LoadStatic._manifest.get('base_url', None)
             LoadStatic._is_loaded = True
