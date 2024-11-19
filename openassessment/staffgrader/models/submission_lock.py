@@ -12,6 +12,8 @@ from openassessment.staffgrader.errors.submission_lock import SubmissionLockCont
 class SubmissionGradingLock(models.Model):
     """
     Internal model for locking a submission for exclusive grading
+
+    .. no_pii:
     """
     TIMEOUT = StaffWorkflow.TIME_LIMIT
 
