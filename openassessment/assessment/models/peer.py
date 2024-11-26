@@ -34,6 +34,8 @@ class AssessmentFeedbackOption(models.Model):
     Over time, we may decide to add, delete, or reword assessment feedback options.
     To preserve data integrity, we will always get-or-create `AssessmentFeedbackOption`s
     based on the option text.
+
+    .. no_pii:
     """
     text = models.CharField(max_length=255, unique=True)
 
@@ -53,6 +55,8 @@ class AssessmentFeedback(models.Model):
     ("Please provide any thoughts or comments on the feedback you received from your peers")
     as well as zero or more feedback options
     ("Please select the statements below that reflect what you think of this peer grading experience")
+
+    .. no_pii:
     """
     MAXSIZE = 1024 * 100     # 100KB
 
@@ -107,6 +111,7 @@ class PeerWorkflow(models.Model):
     The student item is the author of the submission.  Peer Workflow Items are
     created for each assessment made by this student.
 
+    .. no_pii:
     """
     # Amount of time before a lease on a submission expires
     TIME_LIMIT = timedelta(hours=getattr(settings, "ORA_PEER_LEASE_EXPIRATION_HOURS", 8))
@@ -514,6 +519,7 @@ class PeerWorkflowItem(models.Model):
     associated workflow represents the scorer of the given submission, and the
     assessment represents the completed assessment for this work item.
 
+    .. no_pii:
     """
     scorer = models.ForeignKey(PeerWorkflow, related_name='graded', on_delete=models.CASCADE)
     author = models.ForeignKey(PeerWorkflow, related_name='graded_by', on_delete=models.CASCADE)

@@ -61,6 +61,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     submissions you have to assess = 5"). The "status" field on this model is
     an after the fact recording of the last known state of that information so
     we can search easily.
+
+    .. no_pii:
     """
     STAFF_STEP_NAME = 'staff'
 
@@ -701,6 +703,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 class TeamAssessmentWorkflow(AssessmentWorkflow):
     """
     Extends AssessmentWorkflow to support team based assessments.
+
+    .. no_pii:
     """
     # Only staff assessments are supported for teams
     TEAM_STAFF_STEP_NAME = 'teams'
@@ -855,6 +859,7 @@ class AssessmentWorkflowStep(models.Model):
     sync until someone views this problem again (which will trigger a workflow
     update to occur).
 
+    .. no_pii:
     """
     workflow = models.ForeignKey(AssessmentWorkflow, related_name="steps", on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
@@ -1029,6 +1034,8 @@ class AssessmentWorkflowCancellation(models.Model):
 
     It is created when a staff member requests removal of a submission
     from the peer grading pool.
+
+    .. no_pii:
     """
     workflow = models.ForeignKey(AssessmentWorkflow, related_name='cancellations', on_delete=models.CASCADE)
     comments = models.TextField(max_length=10000)

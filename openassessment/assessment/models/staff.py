@@ -27,6 +27,7 @@ class StaffWorkflow(models.Model):
     3) Does this staff member already have a submission open for assessment?
     4) Close open assessments when completed.
 
+    .. no_pii:
     """
     # Amount of time before a lease on a submission expires
     TIME_LIMIT = timedelta(hours=getattr(settings, "ORA_STAFF_LEASE_EXPIRATION_HOURS", 8))
@@ -214,6 +215,8 @@ class StaffWorkflow(models.Model):
 class TeamStaffWorkflow(StaffWorkflow):
     """
     Extends the StafWorkflow to be used for team based assessments.
+
+    .. no_pii:
     """
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
