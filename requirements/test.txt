@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-amqp==5.2.0
+amqp==5.3.1
     # via kombu
 appdirs==1.4.4
     # via
@@ -26,12 +26,12 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.2.0
     # via -r requirements/base.txt
-boto3==1.35.54
+boto3==1.35.74
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.35.54
+botocore==1.35.74
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -74,7 +74,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-code-annotations==1.8.0
+code-annotations==2.0.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -82,11 +82,11 @@ colorama==0.4.6
     # via tox
 cookiecutter==2.6.0
     # via xblock-sdk
-coverage[toml]==7.6.4
+coverage[toml]==7.6.8
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==43.0.3
+cryptography==44.0.0
     # via moto
 ddt==1.0.0
     # via
@@ -126,7 +126,7 @@ django-simple-history==3.1.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-django-waffle==4.1.0
+django-waffle==4.2.0
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
@@ -138,7 +138,7 @@ dnspython==2.7.0
     # via
     #   -r requirements/base.txt
     #   pymongo
-edx-ccx-keys==1.3.0
+edx-ccx-keys==2.0.2
     # via
     #   -r requirements/base.txt
     #   openedx-events
@@ -146,7 +146,7 @@ edx-django-release-util==1.4.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-edx-django-utils==7.0.0
+edx-django-utils==7.0.1
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -164,7 +164,7 @@ edx-toggles==5.2.0
     # via -r requirements/base.txt
 factory-boy==3.3.1
     # via -r requirements/test.in
-faker==30.8.2
+faker==33.1.0
     # via factory-boy
 fastavro==1.9.7
     # via
@@ -227,11 +227,11 @@ lxml[html-clean]==5.3.0
     #   lxml-html-clean
     #   xblock
     #   xblock-sdk
-lxml-html-clean==0.3.1
+lxml-html-clean==0.4.1
     # via
     #   -r requirements/base.txt
     #   lxml
-mako==1.3.6
+mako==1.3.7
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -254,7 +254,7 @@ moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-newrelic==10.2.0
+newrelic==10.3.1
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
@@ -262,7 +262,7 @@ openedx-events==9.15.0
     # via -r requirements/base.txt
 openedx-filters==1.11.0
     # via -r requirements/base.txt
-packaging==24.1
+packaging==24.2
     # via
     #   pyproject-api
     #   pytest
@@ -315,7 +315,7 @@ pypng==0.20220715.0
     # via xblock-sdk
 pyproject-api==1.8.0
     # via tox
-pytest==8.3.3
+pytest==8.3.4
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -370,7 +370,7 @@ responses==0.25.3
     # via moto
 rich==13.9.4
     # via cookiecutter
-s3transfer==0.10.3
+s3transfer==0.10.4
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -390,11 +390,11 @@ six==1.16.0
     #   html5lib
     #   python-dateutil
     #   python-swiftclient
-sqlparse==0.5.1
+sqlparse==0.5.2
     # via
     #   -r requirements/base.txt
     #   django
-stevedore==5.3.0
+stevedore==5.4.0
     # via
     #   -r requirements/base.txt
     #   code-annotations
@@ -430,7 +430,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.27.1
+virtualenv==20.28.0
     # via tox
 voluptuous==0.15.2
     # via
@@ -453,7 +453,7 @@ webob==1.8.9
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-werkzeug==3.1.1
+werkzeug==3.1.3
     # via moto
 xblock==5.1.0
     # via
