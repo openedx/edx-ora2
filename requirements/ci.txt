@@ -8,7 +8,7 @@ cachetools==5.5.0
     # via
     #   -r requirements/tox.txt
     #   tox
-certifi==2024.8.30
+certifi==2024.12.14
     # via requests
 chardet==5.2.0
     # via
@@ -20,7 +20,7 @@ colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.6.8
+coverage[toml]==7.6.9
     # via coveralls
 coveralls==4.0.1
     # via -r requirements/ci.in
