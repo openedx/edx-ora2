@@ -3,12 +3,14 @@ Base class for handler-level testing of the XBlock.
 """
 
 
+from contextlib import contextmanager
 import copy
 from functools import wraps
 import json
 import os.path
 
 from unittest import mock
+from mock import PropertyMock, patch
 from workbench.runtime import WorkbenchRuntime
 
 import webob
@@ -17,6 +19,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.apis.submissions import submissions_actions
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [
@@ -181,12 +184,19 @@ class XBlockHandlerTestCaseMixin:
         Returns:
             XBlock
         """
-        block_id = self.runtime.parse_xml_string(
-            self.load_fixture_str(xml_path), self.runtime.id_generator
-        )
+        block_id = self.runtime.parse_xml_string(self.load_fixture_str(xml_path))
         return self.runtime.get_block(block_id)
 
-    def request(self, xblock, handler_name, content, request_method="POST", response_format=None, use_runtime=True):
+    def request(  # pylint: disable=too-many-positional-arguments
+        self,
+        xblock,
+        handler_name,
+        content,
+        request_method="POST",
+        response_format=None,
+        use_runtime=True,
+        suffix=''
+    ):
         """
         Make a request to an XBlock handler.
 
@@ -198,8 +208,9 @@ class XBlockHandlerTestCaseMixin:
         Keyword Arguments:
             request_method (str): The HTTP method of the request (defaults to POST)
             response_format (None or str): Expected format of the response string.
-                If `None`, return the raw response content; if 'json', parse the
-                response as JSON and return the result.
+                If `None`, return the raw response content.
+                If 'json', parse the response as JSON and return the result.
+                If 'response', return the entire response object (helpful for asserting response codes).
 
         Raises:
             NotImplementedError: Response format not supported.
@@ -208,13 +219,13 @@ class XBlockHandlerTestCaseMixin:
             Content of the response (mixed).
         """
         # Create a fake request
-        request = webob.Request(dict())
+        request = webob.Request({})
         request.method = request_method
         request.body = content.encode('utf-8')
 
         # Send the request to the XBlock handler
         if use_runtime:
-            response = self.runtime.handle(xblock, handler_name, request)
+            response = self.runtime.handle(xblock, handler_name, request, suffix=suffix)
         else:
             response = getattr(xblock, handler_name)(request)
 
@@ -223,11 +234,13 @@ class XBlockHandlerTestCaseMixin:
             return response.body
         elif response_format == 'json':
             return json.loads(response.body.decode('utf-8'))
+        elif response_format == 'response':
+            return response
         else:
             raise NotImplementedError(f"Response format '{response_format}' not supported")
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
-        """ Checks assessment event published successfuly. """
+        """ Checks assessment event published successfully. """
         parts_list = []
         for part in assessment["parts"]:
             # Some assessment parts do not include point values,
@@ -264,8 +277,8 @@ class XBlockHandlerTestCaseMixin:
             "parts": parts_list
         }
 
-        for key in kwargs:
-            event_data[key] = kwargs[key]
+        for key, value in kwargs.items():
+            event_data[key] = value
 
         self.assert_event_published(
             xblock, event_name, event_data
@@ -297,6 +310,30 @@ class XBlockHandlerTestCaseMixin:
         with open(os.path.join(base_dir, path)) as file_handle:
             return file_handle.read()
 
+    @staticmethod
+    def _create_mock_runtime(
+            item_id,
+            is_staff,
+            is_admin,
+            anonymous_user_id,
+            user_is_beta=False,
+    ):
+        """
+        Internal helper to define a mock runtime.
+        """
+        mock_runtime = mock.Mock(
+            course_id='test_course',
+            item_id=item_id,
+            anonymous_student_id=anonymous_user_id,
+            user_is_staff=is_staff,
+            user_is_admin=is_admin,
+            user_is_beta=user_is_beta,
+            service=lambda self, service: mock.Mock(
+                get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
+            )
+        )
+        return mock_runtime
+
 
 class XBlockHandlerTestCase(XBlockHandlerTestCaseMixin, CacheResetTest):
     """
@@ -313,7 +350,47 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     """
 
 
-class SubmitAssessmentsMixin:
+class SubmissionTestMixin:
+    """
+    Mixin for creating test submissions
+    """
+
+    DEFAULT_TEST_SUBMISSION_TEXT = ('A man must have a code', 'A man must have an umbrella too.')
+
+    def create_test_submission(self, xblock, student_item=None, submission_text=None):
+        """
+        Helper for creating test submissions. Also updates workflow status.
+
+        Args:
+        * xblock: The XBlock to create the submission under
+
+        Kwargs:
+        * student_item (Dict): Student item dict. Where not specified, will
+          collect from the xblock
+        * submission_text (List(str)): Allows specifying submission text (or
+          empty submission). Otherwise, will use default text.
+
+        Returns:
+        * submission
+        """
+
+        if student_item is None:
+            student_item = xblock.get_student_item_dict()
+        if submission_text is None:
+            submission_text = self.DEFAULT_TEST_SUBMISSION_TEXT
+
+        submission = submissions_actions.create_submission(
+            student_item,
+            submission_text,
+            xblock.config_data,
+            xblock.submission_data,
+            xblock.workflow_data
+        )
+
+        return submission
+
+
+class SubmitAssessmentsMixin(SubmissionTestMixin):
     """
     A mixin for creating a submission and peer/self assessments so that the user can
     receive a grade. This is useful for getting into the "waiting for peer assessment" state.
@@ -326,7 +403,7 @@ class SubmitAssessmentsMixin:
 
     STEPS = ['peer', 'self']
 
-    def create_submission_and_assessments(
+    def create_submission_and_assessments(  # pylint: disable=too-many-positional-arguments
             self, xblock, submission_text, peers, peer_assessments, self_assessment,
             waiting_for_peer=False,
     ):
@@ -350,7 +427,7 @@ class SubmitAssessmentsMixin:
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, submission_text)
+        submission = self.create_test_submission(xblock, student_item=student_item, submission_text=submission_text)
 
         if peers:
             # Create submissions and (optionally) assessments from other users
@@ -396,6 +473,7 @@ class SubmitAssessmentsMixin:
             workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
         return returned_subs
 
+    # pylint: disable=too-many-positional-arguments
     def create_peer_assessment(self, scorer_sub, scorer, sub_to_assess, assessment, criteria, grading_requirements):
         """Create a peer assessment of submission sub_to_assess by scorer."""
         peer_api.create_peer_workflow_item(scorer_sub['uuid'], sub_to_assess['uuid'])
@@ -426,16 +504,22 @@ class SubmitAssessmentsMixin:
         xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 
     @staticmethod
-    def set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
-        xblock.get_workflow_info = mock.Mock(return_value={
-            'status': workflow_status,
-            'status_details': status_details,
-            'submission_uuid': submission_uuid
-        })
+    @contextmanager
+    def mock_workflow_status(workflow_status, status_details, submission_uuid):
+        with patch(
+            "openassessment.xblock.apis.workflow_api.WorkflowAPI.workflow",
+            new_callable=PropertyMock,
+        ) as mock_workflow:
+            mock_workflow.return_value = {
+                "status": workflow_status,
+                "status_details": status_details,
+                "submission_uuid": submission_uuid,
+            }
+            yield
 
     def submit_staff_assessment(self, xblock, submission, assessment):
         """
-        Submits a staff assessment for the specified submission.
+        Submits a staff assessment for the specified submission and refreshes workflow
 
         Args:
             xblock: The XBlock being assessed.
@@ -447,3 +531,6 @@ class SubmitAssessmentsMixin:
         assessment['submission_uuid'] = submission['uuid']
         resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
+
+        # refresh workflow status
+        xblock.workflow_data.update_workflow_status()

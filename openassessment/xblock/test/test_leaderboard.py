@@ -16,7 +16,7 @@ import boto3
 from moto import mock_s3
 from submissions import api as sub_api
 from openassessment.fileupload import api
-from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import create_submission_dict, prepare_submission_for_serialization
 
 from .base import XBlockHandlerTransactionTestCase, scenario
 
@@ -26,28 +26,46 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_no_leaderboard(self, xblock):
+        xblock.mfe_views_enabled = False
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+
         # Since there's no leaderboard set in the problem XML,
         # it should not be visible
         self._assert_leaderboard_visible(xblock, False)
 
     @scenario('data/leaderboard_unavailable.xml')
     def test_unavailable(self, xblock):
+        xblock.mfe_views_enabled = False
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Start date is in the future for this scenario
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/leaderboard/oa_leaderboard_waiting.html',
+            'legacy/leaderboard/oa_leaderboard_waiting.html',
             {'xblock_id': xblock.scope_ids.usage_id}
         )
         self._assert_leaderboard_visible(xblock, True)
 
     @scenario('data/leaderboard_show.xml')
     def test_show_no_submissions(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = False
         # No submissions created yet, so the leaderboard shouldn't display any scores
         self._assert_scores(xblock, [])
         self._assert_leaderboard_visible(xblock, True)
 
     @scenario('data/leaderboard_show.xml')
     def test_show_submissions(self, xblock):
+        xblock.mfe_views_enabled = False
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
             (prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2')), 1),
@@ -93,6 +111,10 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
     @scenario('data/leaderboard_show.xml')
     def test_show_submissions_that_have_greater_than_0_score(self, xblock):
+        xblock.mfe_views_enabled = False
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
             (prepare_submission_for_serialization(('test answer 0 part 1', 'test answer 0 part 2')), 0),
@@ -286,7 +308,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/leaderboard/oa_leaderboard_show.html',
+            'legacy/leaderboard/oa_leaderboard_show.html',
             {
                 'topscores': scores,
                 'allow_multiple_files': xblock.allow_multiple_files,

@@ -52,9 +52,12 @@ describe("OpenAssessment.StudioView", function() {
         feedback_default_text: "Feedback default text",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
+        dateConfigType: 'manual',
         fileUploadType: null,
         leaderboardNum: 12,
         showRubricDuringResponse: false,
+        allowLearnerResubmissions: false,
+        resubmissionsGracePeriod: '',
         criteria: [
             {
                 order_num: 0,
@@ -111,7 +114,8 @@ describe("OpenAssessment.StudioView", function() {
                 due: "2014-01-03T00:00",
                 must_grade: 5,
                 must_be_graded_by: 3,
-                enable_flexible_grading: false
+                enable_flexible_grading: false,
+                grading_strategy: "median"
             },
             {
                 name: "self-assessment",
@@ -161,9 +165,12 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData.feedback_default_text).toEqual(EXPECTED_SERVER_DATA.feedback_default_text);
         expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
         expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
+        expect(server.receivedData.dateConfigType).toEqual(EXPECTED_SERVER_DATA.dateConfigType);
         expect(server.receivedData.fileUploadType).toEqual(EXPECTED_SERVER_DATA.fileUploadType);
         expect(server.receivedData.leaderboardNum).toEqual(EXPECTED_SERVER_DATA.leaderboardNum);
         expect(server.receivedData.showRubricDuringResponse).toEqual(EXPECTED_SERVER_DATA.showRubricDuringResponse)
+        expect(server.receivedData.allowLearnerResubmissions).toEqual(EXPECTED_SERVER_DATA.allowLearnerResubmissions);
+        expect(server.receivedData.resubmissionsGracePeriod).toEqual(EXPECTED_SERVER_DATA.resubmissionsGracePeriod);
 
         // Criteria
         for (var criterion_idx = 0; criterion_idx < EXPECTED_SERVER_DATA.criteria.length; criterion_idx++) {

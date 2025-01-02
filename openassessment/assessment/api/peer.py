@@ -8,6 +8,7 @@ the workflow for a given submission.
 
 import logging
 
+from django.conf import settings
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils import timezone
 
@@ -15,7 +16,7 @@ from submissions import api as sub_api
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
-                                              PeerWorkflow, PeerWorkflowItem)
+                                              PeerWorkflow, PeerWorkflowItem, PeerGradingStrategy)
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
 
@@ -27,7 +28,50 @@ FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS = 7
 FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE = 30
 
 
-def required_peer_grades(submission_uuid, peer_requirements):
+def flexible_peer_grading_enabled(peer_requirements, course_settings):
+    """
+    Is flexible peer grading turned on? Either at the course override
+    level or the block level?
+    """
+    if course_settings.get('force_on_flexible_peer_openassessments'):
+        return True
+    return peer_requirements.get("enable_flexible_grading")
+
+
+def flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+    """
+    Is flexible peer grading on, and has enough time elapsed since submission to enable it?
+    """
+    if not flexible_peer_grading_enabled(peer_requirements, course_settings):
+        return False
+
+    submission = sub_api.get_submission(submission_uuid)
+    # find how many days elapsed since subimitted
+    days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
+    # check if flexible grading applies. if it does, then update must_grade
+    return days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS
+
+
+def get_peer_grading_strategy(workflow_requirements):
+    """
+    Get the peer grading type, either mean or median. If no grading strategy is
+    provided in the peer requirements or the feature flag is not enabled, the
+    default median score calculation is used.
+    """
+    # If the feature flag is not enabled, use the median score calculation
+    # as the default behavior.
+    if not settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
+        return PeerGradingStrategy.MEDIAN
+
+    if "peer" not in workflow_requirements:
+        return workflow_requirements.get("grading_strategy", PeerGradingStrategy.MEDIAN)
+
+    return workflow_requirements.get("peer", {}).get(
+        "grading_strategy", PeerGradingStrategy.MEDIAN,
+    )
+
+
+def required_peer_grades(submission_uuid, peer_requirements, course_settings):
     """
     Given a submission id, finds how many peer assessment required.
 
@@ -41,20 +85,11 @@ def required_peer_grades(submission_uuid, peer_requirements):
         int
     """
 
-    submission = sub_api.get_submission(submission_uuid)
-
     must_grade = peer_requirements["must_be_graded_by"]
-
-    if peer_requirements.get("enable_flexible_grading"):
-
-        # find how many days elapsed since subimitted
-        days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
-
-        # check if flexible grading applies. if it does, then update must_grade
-        if days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS:
-            must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
-            if must_grade == 0:
-                must_grade = 1
+    if flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+        must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
+        if must_grade == 0:
+            must_grade = 1
 
     return must_grade
 
@@ -125,7 +160,7 @@ def get_graded_by_count(submission_uuid):
     return scored_items.count()
 
 
-def assessment_is_finished(submission_uuid, peer_requirements):
+def assessment_is_finished(submission_uuid, peer_requirements, course_settings):
     """
     Check whether the submitter has received enough assessments
     to get a score.
@@ -151,7 +186,7 @@ def assessment_is_finished(submission_uuid, peer_requirements):
     if count is None:
         return False
 
-    return count >= required_peer_grades(submission_uuid, peer_requirements)
+    return count >= required_peer_grades(submission_uuid, peer_requirements, course_settings)
 
 
 def on_start(submission_uuid):
@@ -196,7 +231,7 @@ def on_start(submission_uuid):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
-def get_score(submission_uuid, peer_requirements):
+def get_score(submission_uuid, peer_requirements, course_settings):
     """
     Retrieve a score for a submission if requirements have been satisfied.
 
@@ -205,6 +240,7 @@ def get_score(submission_uuid, peer_requirements):
         requirements (dict): Dictionary with the key "must_be_graded_by"
             indicating the required number of assessments the student
             must receive to get a score.
+        course_settings (dict): Dictionary with course-level settings
 
     Returns:
         A dictionary with the points earned, points possible, and
@@ -232,8 +268,21 @@ def get_score(submission_uuid, peer_requirements):
     ).order_by('-assessment')
 
     # Check if enough peers have graded this submission
-    if items.count() < required_peer_grades(submission_uuid, peer_requirements):
+    # This value will be the number configured on the peer step, or the reduced number if flexible
+    # peer grading is active
+    num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements, course_settings)
+    num_recieved_peer_grades = items.count()
+    if num_recieved_peer_grades < num_required_peer_grades:
         return None
+
+    # If we are in a scenario where flexible grading is active, but we have more peer grades than
+    # flexible would reduces us to need, use as many grades as we can to generate the grade
+    # (up to the defined requirement on the peer step)
+    if flexible_peer_grading_active(submission_uuid, peer_requirements, course_settings):
+        num_required_peer_grades = min(
+            num_recieved_peer_grades,
+            peer_requirements['must_be_graded_by']
+        )
 
     # Unfortunately, we cannot use update() after taking a slice,
     # so we need to update the and save the items individually.
@@ -243,22 +292,28 @@ def get_score(submission_uuid, peer_requirements):
     # which is not supported by some versions of MySQL.
     # Although this approach generates more database queries, the number is likely to
     # be relatively small (at least 1 and very likely less than 5).
-    for scored_item in items[:peer_requirements["must_be_graded_by"]]:
+    for scored_item in items[:num_required_peer_grades]:
+        # If we've already gone through and marked items as scored, that should
+        # not change; if we've found a scored item we've done it already and should stop
+        if scored_item.scored:
+            break
         scored_item.scored = True
         scored_item.save()
     assessments = [item.assessment for item in items]
 
+    scores_dict = get_assessment_scores_with_grading_strategy(
+        submission_uuid,
+        peer_requirements,
+    )
     return {
-        "points_earned": sum(
-            get_assessment_median_scores(submission_uuid).values()
-        ),
+        "points_earned": sum(scores_dict.values()),
         "points_possible": assessments[0].points_possible,
         "contributing_assessments": [assessment.id for assessment in assessments],
         "staff_id": None,
     }
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         scorer_submission_uuid,
         scorer_id,
         options_selected,
@@ -365,7 +420,7 @@ def create_assessment(
 
 
 @transaction.atomic
-def _complete_assessment(
+def _complete_assessment(  # pylint: disable=too-many-positional-arguments
         rubric_dict,
         scorer_id,
         peer_submission_uuid,
@@ -468,36 +523,37 @@ def get_rubric_max_scores(submission_uuid):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
-def get_assessment_median_scores(submission_uuid):
-    """Get the median score for each rubric criterion
+def get_assessment_scores_with_grading_strategy(submission_uuid, workflow_requirements):
+    """Get the score for each rubric criterion calculated given grading strategy
+    obtained from the peer requirements dictionary.
 
-    For a given assessment, collect the median score for each criterion on the
-    rubric. This set can be used to determine the overall score, as well as each
-    part of the individual rubric scores.
-
-    If there is a true median score, it is returned. If there are two median
-    values, the average of those two values is returned, rounded up to the
-    greatest integer value.
+    This function is based on the archived get_assessment_median_scores, but allows the caller
+    to specify the grading strategy (mean, median) to use when calculating the score.
 
     Args:
         submission_uuid (str): The submission uuid is used to get the
             assessments used to score this submission, and generate the
-            appropriate median score.
+            appropriate median/mean score.
+        workflow_requirements (dict): Dictionary with the key "grading_strategy"
 
     Returns:
         dict: A dictionary of rubric criterion names,
-        with a median score of the peer assessments.
+        with a median/mean score of the peer assessments.
 
     Raises:
         PeerAssessmentInternalError: If any error occurs while retrieving
-            information to form the median scores, an error is raised.
+            information to form the median/mean scores, an error is raised.
     """
+    current_grading_strategy = get_peer_grading_strategy(workflow_requirements)
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         items = workflow.graded_by.filter(scored=True)
         assessments = [item.assessment for item in items]
         scores = Assessment.scores_by_criterion(assessments)
-        return Assessment.get_median_score_dict(scores)
+        return Assessment.get_score_dict(
+            scores,
+            grading_strategy=current_grading_strategy,
+        )
     except PeerWorkflow.DoesNotExist:
         return {}
     except DatabaseError as ex:
@@ -674,7 +730,37 @@ def get_submitted_assessments(submission_uuid, limit=None):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
-def get_submission_to_assess(submission_uuid, graded_by):
+def get_active_assessment_submission(submission_uuid):
+    """
+    Gets the current active submission being assessed, or None if there is
+    no active assessment. This will not find a new submission to assess, for
+    that, call `get_submission_to_assess`.
+    """
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+
+    if not workflow:
+        raise PeerAssessmentWorkflowError(
+            "A Peer Assessment Workflow does not exist for the student "
+            "with submission UUID {}".format(submission_uuid)
+        )
+
+    if workflow.is_cancelled:
+        return None
+
+    active_assessment = workflow.find_active_assessments()
+    if not active_assessment:
+        return None
+
+    try:
+        return sub_api.get_submission(active_assessment.submission_uuid)
+    except sub_api.SubmissionNotFoundError as ex:
+        error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
+        error_message_args = (active_assessment.submission_uuid, workflow.student_id)
+        logger.exception(error_message, error_message_args[0], error_message_args[1])
+        raise PeerAssessmentWorkflowError(error_message % error_message_args) from ex
+
+
+def get_submission_to_assess(submission_uuid, graded_by, peek=False):
     """Get a submission to peer evaluate.
 
     Retrieves a submission for assessment for the given student. This will
@@ -692,6 +778,8 @@ def get_submission_to_assess(submission_uuid, graded_by):
             associated Peer Workflow.
         graded_by (int): The number of assessments a submission
             requires before it has completed the peer assessment process.
+        peek (bool): When True, will verify a submission is available, without
+            creating a workflow to begin grading.
 
     Returns:
         dict: A peer submission for assessment. This contains a 'student_item',
@@ -741,14 +829,15 @@ def get_submission_to_assess(submission_uuid, graded_by):
     if peer_submission_uuid:
         try:
             submission_data = sub_api.get_submission(peer_submission_uuid)
-            PeerWorkflow.create_item(workflow, peer_submission_uuid)
-            _log_workflow(peer_submission_uuid, workflow)
+            if not peek:
+                PeerWorkflow.create_item(workflow, peer_submission_uuid)
+                _log_workflow(peer_submission_uuid, workflow)
             return submission_data
         except sub_api.SubmissionNotFoundError as ex:
             error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
-            error_meesage_args = (peer_submission_uuid, workflow.student_id)
-            logger.exception(error_message, error_meesage_args[0], error_meesage_args[1])
-            raise PeerAssessmentWorkflowError(error_message % error_meesage_args) from ex
+            error_message_args = (peer_submission_uuid, workflow.student_id)
+            logger.exception(error_message, error_message_args[0], error_message_args[1])
+            raise PeerAssessmentWorkflowError(error_message % error_message_args) from ex
     else:
         logger.info(
             "No submission found for %s to assess (%s, %s)",
@@ -872,7 +961,7 @@ def set_assessment_feedback(feedback_dict):
     """
     submission_uuid = feedback_dict.get('submission_uuid')
     feedback_text = feedback_dict.get('feedback_text')
-    selected_options = feedback_dict.get('options', list())
+    selected_options = feedback_dict.get('options', [])
 
     if feedback_text and len(feedback_text) > AssessmentFeedback.MAXSIZE:
         error_message = "Assessment feedback too large."
@@ -1027,3 +1116,12 @@ def get_waiting_step_details(
         submission_uuids,
         must_be_graded_by
     )
+
+
+def get_bulk_scored_assessments(submission_uuids):
+    """
+    Given a list of submission uuids, return a set of assessments that
+    are "scored", which is to say, included in the calculation of the final score,
+    as opposed to "extra" peer reviews.
+    """
+    return set(PeerWorkflowItem.get_bulk_scored_assessments(submission_uuids))

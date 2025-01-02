@@ -1,0 +1,117 @@
+{% load tz %}
+{% load i18n %}
+{% if show_survey %}
+    <div id="openassessment_hotjar"></div>
+    <script type="text/javascript">
+        // check to see if hotjar is available, then trigger hotjar event
+        const hasWindow = typeof window !== 'undefined';
+        if (hasWindow && window.hj) {
+          window.hj('event', 'lms_openassessment_survey');
+        }
+    </script>
+{% endif %}
+{% block list_item %}
+<li
+    id="openassessment__peer-assessment__{{ xblock_id }}"
+    class="openassessment__steps__step step--peer-assessment is--in-progress is--showing ui-slidable__container {% if allow_latex %} allow--latex {%endif%}"
+    data-submission-uuid="{{ peer_submission.uuid }}"
+    tabindex="-1"
+>
+{% endblock %}
+{% spaceless %}
+
+    <header class="step__header ui-slidable__control">
+        <span>
+            {% block button %}
+                <button class="ui-slidable" aria-expanded="true" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content" aria-labeledby="oa_step_title_peer">
+                    <span class="icon fa fa-caret-right" aria-hidden="false"/>
+                </button>
+            {% endblock %}
+        </span>
+
+        <span>
+            <h4 class="step__title">
+                <span class="step__counter"></span>
+                <span class="wrapper--copy">
+                    <span id="oa_step_title_peer" class="step__label" aria-describedby="oa_step_status_peer oa_step_deadline_peer">{% trans "Assess Peers" %}</span>
+                </span>
+            </h4>
+        </span>
+
+        {% if peer_start %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)" #}
+            {% blocktrans with start_date=peer_start|timezone:"UTC"|date:"c" time_until=peer_start|timeuntil %}
+            <span id="oa_step_deadline_peer" class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+        {% elif peer_due %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)" #}
+            {% blocktrans with due_date=peer_due|timezone:"UTC"|date:"c" time_until=peer_due|timeuntil %}
+            <span id="oa_step_deadline_peer" class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+        {% endif %}
+        {% block title %}
+        <span class="step__status">
+          <span id="oa_step_status_peer" class="step__status__value">
+            <span class="copy">
+                {% with review_num_string=review_num|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
+                {% blocktrans with review_number='<span class="step__status__number--current">'|safe|add:review_num_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
+                    In Progress ({{ review_number }} of {{ num_must_grade }})
+                {% endblocktrans %}
+                {% endwith %}
+            </span>
+          </span>
+        </span>
+        {% endblock %}
+    </header>
+
+    {% block body %}
+    <div class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer{{ xblock_id }}_content">
+        <div class="wrapper--step__content">
+            <div class="step__instruction">
+                <p>{% trans "Read and assess the following response from one of your peers." %}</p>
+            </div>
+
+            <div class="step__content">
+                <ul class="list--peer-assessments">
+                    <li class="list--peer-assessments__item">
+                        <article class="peer-assessment peer-assessment--001">
+                            <div class="peer-assessment__display">
+
+                                {% trans "Your peer's response to the prompt above" as translated_label %}
+                                {% include "legacy/oa_submission_answer.html" with answer=peer_submission.answer answer_text_label=translated_label %}
+
+                                {% trans "Associated Files"  as translated_header %}
+                                {% include "legacy/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=peer_file_urls header=translated_header class_prefix="peer-assessment" show_warning="true" including_template="peer_assessment" xblock_id=xblock_id %}
+                            </div>
+
+                            <form class="peer-assessment--001__assessment peer-assessment__assessment" method="post">
+                                {% include "legacy/oa_rubric.html" with rubric_type="peer" submission=peer_submission %}
+                            </form>
+                        </article>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--inline message--error message--error-server" tabindex="-1">
+                    <h5 class="message__title">{% trans "We could not submit your assessment" %}</h5>
+                    <div class="message__content"></div>
+                </div>
+
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" class="peer-assessment--001__assessment__submit action action--submit" disabled>
+                            {{ submit_button_text }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+{% endspaceless %}
+</li>

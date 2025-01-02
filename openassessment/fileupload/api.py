@@ -133,6 +133,7 @@ class FileUpload:
     A layer of abstraction over the various components of file
     data stored as ORA XBlock user-scoped fields.
     """
+    # pylint: disable=too-many-positional-arguments
     def __init__(self, name=None, description=None, size=None, index=0, descriptionless=False, **student_item_dict):
         """
         Args:
@@ -218,8 +219,8 @@ class FileUpload:
         return hash(self._to_dict())
 
 
-FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
-TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
+FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'size', 'show_delete_button'])
+TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'size', 'uploaded_by'])
 
 
 class FileUploadManager:
@@ -242,7 +243,7 @@ class FileUploadManager:
     """
     def __init__(self, openassessment_xblock):
         self.block = openassessment_xblock
-        self.shared_uploads_for_team_by_key_cache = dict()
+        self.shared_uploads_for_team_by_key_cache = {}
 
     @cached_property
     def student_item_dict(self):
@@ -343,6 +344,7 @@ class FileUploadManager:
                 download_url=upload.download_url,
                 description=upload.description,
                 name=upload.name,
+                size=upload.size,
                 show_delete_button=show_delete_button,
             )._asdict())
 
@@ -358,6 +360,7 @@ class FileUploadManager:
                 download_url=upload.download_url,
                 description=upload.description,
                 name=upload.name,
+                size=upload.size,
                 uploaded_by=self.block.get_username(upload.student_id)
             )._asdict()
             for upload in self.get_team_uploads(team_id=team_id)
@@ -398,7 +401,7 @@ class FileUploadManager:
         if hasattr(self, 'shared_uploads_for_student_by_key'):
             del self.shared_uploads_for_student_by_key
 
-        self.shared_uploads_for_team_by_key_cache = dict()
+        self.shared_uploads_for_team_by_key_cache = {}
 
     def append_uploads(self, *new_uploads):
         """
@@ -543,7 +546,7 @@ class FileUploadManager:
     def _descriptionless_uploads(self):
         """
         This is the old behavior, required for a corner case and should be eventually removed.
-        https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
+        https://github.com/openedx/edx-ora2/pull/1275 closed a loophole that allowed files
         to be uploaded without descriptions. In that case, an ORA block's saved_file_descriptions would be
         an empty list, but a key corresponding to their student item information would exist (and thus,
         so would a valid download URL).
@@ -615,7 +618,7 @@ class FileUploadManager:
         for _dict in dicts:
             for key in required_keys:
                 if key not in _dict:
-                    raise FileUploadError('Missing required key {} in {}'.format(key, _dict))
+                    raise FileUploadError(f'Missing required key {key} in {_dict}')
                 result[key].append(_dict[key])
 
         return tuple(result[key] for key in required_keys)

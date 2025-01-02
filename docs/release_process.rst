@@ -5,12 +5,12 @@ ORA2 Release Processs
 
 Github Checklist
 ----------------
-- create a PR on edx-ora2 containing the version bump. This needs to happen in  `setup.py <https://github.com/edx/edx-ora2/blob/4cc85e5a057fe8ea2d876e7c27344deb67df54d3/setup.py#L39>`_ and `package.json <https://github.com/edx/edx-ora2/blob/4cc85e5a057fe8ea2d876e7c27344deb67df54d3/package.json#L3>`_
+- create a PR on edx-ora2 containing the version bump. This needs to happen in  `setup.py <https://github.com/openedx/edx-ora2/blob/4cc85e5a057fe8ea2d876e7c27344deb67df54d3/setup.py#L39>`_ and `package.json <https://github.com/openedx/edx-ora2/blob/4cc85e5a057fe8ea2d876e7c27344deb67df54d3/package.json#L3>`_
 - get a green Travis build on said PR
 - merge to master
 - green build on master
-- create a release `tag on GitHub <https://github.com/edx/edx-ora2/releases>`_
-- ORA2 is a dependency in platform. If immediate release is needed, create PR to update `requirements files` in `edx-platform`. See `PR for reference <https://github.com/edx/edx-platform/pull/24830>`_ . Otherwise, a bot will automatically update the requirements in platform.
+- create a release `tag on GitHub <https://github.com/openedx/edx-ora2/releases>`_
+- ORA2 is a dependency in platform. If immediate release is needed, create PR to update `requirements files` in `edx-platform`. See `PR for reference <https://github.com/openedx/edx-platform/pull/24830>`_ . Otherwise, a bot will automatically update the requirements in platform.
 - If manual testing of the changes against edx-platform is desired, create a sandbox.
 - get green build on the edx-platform PR, merge
 - manually test changes on stage
@@ -38,11 +38,11 @@ Releasing edx-submissions
 -------------------------
 - ensure that the release number has been bumped in setup.py
 
-- create a corresponding release in `edx submissions on GitHub: <https://github.com/edx/edx-submissions/releases>`_
+- create a corresponding release in `edx submissions on GitHub: <https://github.com/openedx/edx-submissions/releases>`_
 
 - generate a diff between the new tag and the old one
 
-  - e.g. https://github.com/edx/edx-submissions/compare/0.1.2...0.1.3 
+  - e.g. https://github.com/openedx/edx-submissions/compare/0.1.2...0.1.3 
   - verify that only the expected changes are included 
   - ask anyone with commits to verify their changes on stage
  
@@ -58,11 +58,11 @@ Releasing edx-ora2
 
 - ensure that the release number has been bumped in setup.py
 
-- create a corresponding release on GitHub: https://github.com/edx/edx-ora2/releases
+- create a corresponding release on GitHub: https://github.com/openedx/edx-ora2/releases
 
 - generate a diff between the new tag and the old one
 
-  - e.g. https://github.com/edx/edx-ora2/compare/0.2.2...0.2.3
+  - e.g. https://github.com/openedx/edx-ora2/compare/0.2.2...0.2.3
   - verify that only the expected changes are included
   - ask anyone with commits to verify their changes on stage
  

@@ -6,6 +6,7 @@ Models for managing staff assessments.
 from datetime import timedelta
 import logging
 
+from django.conf import settings
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
@@ -26,19 +27,20 @@ class StaffWorkflow(models.Model):
     3) Does this staff member already have a submission open for assessment?
     4) Close open assessments when completed.
 
+    .. no_pii:
     """
     # Amount of time before a lease on a submission expires
-    TIME_LIMIT = timedelta(hours=8)
+    TIME_LIMIT = timedelta(hours=getattr(settings, "ORA_STAFF_LEASE_EXPIRATION_HOURS", 8))
 
-    scorer_id = models.CharField(max_length=40, db_index=True)
+    scorer_id = models.CharField(max_length=40, db_index=True, blank=True)
     course_id = models.CharField(max_length=255, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
-    grading_completed_at = models.DateTimeField(null=True, db_index=True)
-    grading_started_at = models.DateTimeField(null=True, db_index=True)
-    cancelled_at = models.DateTimeField(null=True, db_index=True)
-    assessment = models.CharField(max_length=128, db_index=True, null=True)
+    grading_completed_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    grading_started_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    cancelled_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    assessment = models.CharField(max_length=128, db_index=True, null=True, blank=True)
 
     class Meta:
         ordering = ["created_at", "id"]
@@ -185,6 +187,21 @@ class StaffWorkflow(models.Model):
 
         return assessments_list
 
+    @classmethod
+    def get_staff_workflows_for_course(cls, course_id):
+        """
+        Retrieve all staff workflows for a certain course
+        """
+        return cls.objects.filter(course_id=course_id)
+
+    @classmethod
+    def get_staff_workflow(cls, course_id, item_id, submission_uuid):
+        return cls.objects.get(
+            course_id=course_id,
+            item_id=item_id,
+            submission_uuid=submission_uuid
+        )
+
     def close_active_assessment(self, assessment, scorer_id):
         """
         Assign assessment to workflow, and mark the grading as complete.
@@ -198,6 +215,8 @@ class StaffWorkflow(models.Model):
 class TeamStaffWorkflow(StaffWorkflow):
     """
     Extends the StafWorkflow to be used for team based assessments.
+
+    .. no_pii:
     """
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
@@ -208,3 +227,11 @@ class TeamStaffWorkflow(StaffWorkflow):
         (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
         """
         return self.team_submission_uuid
+
+    @classmethod
+    def get_team_staff_workflow(cls, course_id, item_id, team_submission_uuid):
+        return cls.objects.get(
+            course_id=course_id,
+            item_id=item_id,
+            team_submission_uuid=team_submission_uuid
+        )

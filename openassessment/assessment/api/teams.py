@@ -35,7 +35,7 @@ def submitter_is_finished(team_submission_uuid, team_requirements):  # pylint: d
     return True
 
 
-def assessment_is_finished(team_submission_uuid, staff_requirements):
+def assessment_is_finished(team_submission_uuid, staff_requirements, _):
     """
     Determine if the staff assessment step of the given team submission is completed.
     This checks to see if staff have completed the assessment.
@@ -126,7 +126,7 @@ def on_cancel(team_submission_uuid):
         raise StaffAssessmentInternalError(error_message) from ex
 
 
-def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument
+def get_score(team_submission_uuid, staff_requirements, course_settings):  # pylint: disable=unused-argument
     """
     Generate a score based on a completed assessment for the given team submission.
     If no assessment has been completed for this submission, this will return
@@ -135,6 +135,7 @@ def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unus
     Args:
         team_submission_uuid (str): The UUID for the submission to get a score for.
         staff_requirements (dict): Not used.
+        course_settings (dict): Not used.
 
     Returns:
         A dictionary with the points earned, points possible,
@@ -232,7 +233,7 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
     except DatabaseError as ex:
-        error_message = "Error getting staff assessment scores for {}".format(team_submission_uuid)
+        error_message = f"Error getting staff assessment scores for {team_submission_uuid}"
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message) from ex
 
@@ -298,7 +299,7 @@ def get_staff_grading_statistics(course_id, item_id):
     return TeamStaffWorkflow.get_workflow_statistics(course_id, item_id)
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         team_submission_uuid,
         scorer_id,
         options_selected,

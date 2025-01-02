@@ -27,6 +27,15 @@
 // Developer styles for Staff Section
 // --------------------
 
+
+.ora-confirmation-alert{
+  @include confirm-jquery-ui;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
 .wrapper--openassessment .wrapper--staff-area {
   width: 100%;
   overflow: auto;
@@ -41,7 +50,8 @@
 
     .ui-staff__button {
       @extend %btn-reset;
-
+      display: inline-block;
+      margin-top: $baseline-v/2;
       padding: ($baseline-v/4) ($baseline-v/2);
       font-size: 12px;
       border-radius: ($baseline-v/4);
@@ -63,6 +73,16 @@
         background-color: $action-primary-color;
       }
     }
+
+    .button-enhanced-staff-grader-demo {
+      $primary-500: #0A3055;
+      color: white;
+      background-color: $primary-500; // paragon primary-500
+
+      &:hover {
+        background-color: darken($primary-500, 7.5%);
+      }
+    }
   }
 
   .wrapper--ui-staff {
@@ -78,6 +98,7 @@
       // Remove button styling
       font-size: 12px;
       -webkit-appearance: none;
+      appearance: none;
       background-image: none;
       text-shadow: none;
       box-shadow: none;
@@ -984,6 +1005,64 @@
       @include margin(15px, 0, 10px, 30px);
     }
 
+    .openassessment_date_config_radio_container {
+      border-bottom: 1px solid #e5e5e5;
+
+      .date_config_radio_header {
+        font-size: 1.4em;
+        font-weight: 600;
+      }
+
+      .date_config_doc_link {
+        margin: 16px 0;
+        color: #0075b4;
+        :hover {
+          color: #065683;
+        }
+      }
+
+      .openassessment_date_config_radio_wrapper {      
+        display: flex;
+        gap: 1em;
+        padding: 10px 0;
+  
+        .wrapper-comp-setting {
+          min-width: unset;
+          display: flex;
+          align-items: center;
+  
+          input[type="radio"] {
+            height: 20px;
+            min-width: auto;
+            width: 20px;
+            margin: 0 8px;
+          }
+          
+          input:disabled+label {
+            color: $edx-gray-l2;
+            font-weight: normal;
+          }
+  
+          .setting-label {
+            width: auto;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 992px) {
+      .openassessment_date_config_radio_wrapper {
+        flex-direction: column;
+        gap: 0;
+
+        .wrapper-comp-setting input[type="radio"] {
+          width: auto;
+          margin: 0 5px;
+        }
+      }
+    }
+
     li {
       &:nth-child(2) {
         border-bottom: 1px solid #e5e5e5;
@@ -1181,7 +1260,7 @@
   }
 
   .file--upload {
-    margin: $baseline-v ($baseline-v/2);
+    margin: $baseline-v ($baseline-v/2) $baseline-v 0;
   }
 
   .delete__uploaded__file {

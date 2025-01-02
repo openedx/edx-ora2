@@ -59,10 +59,12 @@ describe("OpenAssessment.BaseView", function() {
         // Create a new stub server
         server = new StubServer();
         server.renderLatex = jasmine.createSpy('renderLatex');
+        window.rewriteStaticLinks = jasmine.createSpy('rewriteStaticLinks');
 
         // Create the object under test
         var el = $(".openassessment").get(0);
         var data = {
+            TEXT_RESPONSE_EDITOR: 'text',
             AVAILABLE_EDITORS: {
                 'text': {
                     'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
@@ -72,6 +74,10 @@ describe("OpenAssessment.BaseView", function() {
         view = new BaseView(runtime, el, server, data);
         view.load();
         expect($(".openassessment__steps__step").hasClass('is--loading')).toBeFalsy();
+    });
+
+    afterEach(function() {
+        delete window.rewriteStaticLinks;
     });
 
     it("Loads each step", function() {

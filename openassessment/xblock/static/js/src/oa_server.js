@@ -27,6 +27,7 @@ export class Server {
     this.save = this.save.bind(this);
     this.submitFeedbackOnAssessment = this.submitFeedbackOnAssessment.bind(this);
     this.submitAssessment = this.submitAssessment.bind(this);
+    this.resetSubmission = this.resetSubmission.bind(this);
     this.peerAssess = this.peerAssess.bind(this);
     this.selfAssess = this.selfAssess.bind(this);
     this.staffAssess = this.staffAssess.bind(this);
@@ -217,6 +218,28 @@ export class Server {
   }
 
   /**
+   * Reset a student's submission.
+   *
+    * @returns {promise} A promise which resolves with no arguments if successful,
+   *     and which fails with an error message otherwise.
+   */
+  resetSubmission() {
+    const url = this.url('reset_submission');
+    return $.Deferred((defer) => {
+      $.ajax({
+        type: 'POST',
+        url,
+        data: JSON.stringify({}),
+        contentType: jsonContentType,
+      }).done(function (data) {
+        if (data.success) { defer.resolve(); } else { defer.rejectWith(this, [data.msg]); }
+      }).fail(function () {
+        defer.rejectWith(this, [gettext('The submission could not be reset.')]);
+      });
+    }).promise();
+  }
+
+  /**
    * Save a response without submitting it.
    *
    * @param {string} submission The text of the student's response.
@@ -234,7 +257,7 @@ export class Server {
       }).done(function (data) {
         if (data.success) { defer.resolve(); } else { defer.rejectWith(this, [data.msg]); }
       }).fail(function () {
-        defer.rejectWith(this, [gettext('This response could not be saved.')]);
+        defer.rejectWith(this, [gettext('Please check your internet connection.')]);
       });
     }).promise();
   }
@@ -459,6 +482,7 @@ export class Server {
       title: options.title,
       submission_start: options.submissionStart,
       submission_due: options.submissionDue,
+      date_config_type: options.dateConfigType,
       criteria: options.criteria,
       assessments: options.assessments,
       editor_assessments_order: options.editorAssessmentsOrder,
@@ -473,6 +497,8 @@ export class Server {
       teams_enabled: options.teamsEnabled,
       selected_teamset_id: options.selectedTeamsetId,
       show_rubric_during_response: options.showRubricDuringResponse,
+      allow_learner_resubmissions: options.allowLearnerResubmissions,
+      resubmissions_grace_period: options.resubmissionsGracePeriod,
     });
     return $.Deferred((defer) => {
       $.ajax({

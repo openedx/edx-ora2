@@ -9,22 +9,24 @@ edx-toggles
 djangorestframework
 Xblock
 edx-opaque-keys
+openedx-filters
+openedx-events
 
 django
 django-simple-history
 
 # Third Party Requirements
-bleach
+bleach>=6.0.0
 html5lib
 boto3
 python-swiftclient
 defusedxml
 django-model-utils
-jsonfield2
+jsonfield
 lazy
-libsass
 loremipsum
 lxml
+openedx-events
 path.py
 python-dateutil
 pytz

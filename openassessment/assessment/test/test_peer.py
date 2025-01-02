@@ -2,17 +2,21 @@
 
 import copy
 import datetime
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from ddt import ddt, file_data, data, unpack
 import pytz
 
+from django.conf import settings
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
+from django.test.utils import override_settings
+from freezegun import freeze_time
 from pytest import raises
 
 from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.errors.peer import PeerAssessmentInternalError, PeerAssessmentWorkflowError
 from openassessment.assessment.models import (
     Assessment,
     AssessmentFeedback,
@@ -25,12 +29,12 @@ from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 
-STUDENT_ITEM = dict(
-    student_id="Tim",
-    course_id="Demo_Course",
-    item_id="item_one",
-    item_type="Peer_Submission",
-)
+STUDENT_ITEM = {
+    "student_id": "Tim",
+    "course_id": "Demo_Course",
+    "item_id": "item_one",
+    "item_type": "Peer_Submission",
+}
 
 ANSWER_ONE = "this is my answer!"
 
@@ -159,6 +163,17 @@ STEP_REQUIREMENTS = {
     }
 }
 
+COURSE_SETTINGS = {}
+
+COURSE_SETTINGS_FLEXIBLE_ON = {
+    'force_on_flexible_peer_openassessments': True
+}
+
+FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_OFF = settings.FEATURES.copy()
+FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
+FEATURES_WITH_GRADING_STRATEGY_OFF['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = False
+
 
 @ddt
 class TestPeerApi(CacheResetTest):
@@ -177,7 +192,7 @@ class TestPeerApi(CacheResetTest):
             assessment = peer_api.create_assessment(
                 bob_sub["uuid"],
                 bob["student_id"],
-                ASSESSMENT_DICT['options_selected'], dict(), "",
+                ASSESSMENT_DICT['options_selected'], {}, "",
                 RUBRIC_DICT,
                 REQUIRED_GRADED_BY,
             )
@@ -240,6 +255,51 @@ class TestPeerApi(CacheResetTest):
         # Bob was not graded by anyone and graded Tim
         self.assertEqual(students_waiting[0]['graded_by'], 0)
         self.assertEqual(students_waiting[0]['graded'], 1)
+
+    def test_get_bulk_scored_assessments(self):
+        # Create three learners and submissions
+        submission_and_learner = [self._create_student_and_submission(f"Learner{i}", f"{i} answer") for i in [0, 1, 2]]
+
+        # Each learner assesses two peers, so everyone scores 2 and is scored by 2
+        for submission, learner in submission_and_learner:
+            for _ in range(2):
+                peer_api.get_submission_to_assess(submission['uuid'], 1)
+                peer_api.create_assessment(
+                    submission["uuid"],
+                    learner["student_id"],
+                    ASSESSMENT_DICT['options_selected'],
+                    ASSESSMENT_DICT['criterion_feedback'],
+                    ASSESSMENT_DICT['overall_feedback'],
+                    RUBRIC_DICT,
+                    1,
+                )
+
+        # call get_score for all three to mark items as 'scored'. Everyone shoulfd have a score because
+        # they have at least one peer review and have done at least one review.
+        for submission, _ in submission_and_learner:
+            peer_score = peer_api.get_score(
+                submission['uuid'],
+                {'must_be_graded_by': 1, 'must_grade': 1},
+                COURSE_SETTINGS
+            )
+            assert peer_score is not None
+
+        # There should be three "scored" assessments
+        scored_assessment_ids = {
+            assessment.id for assessment in
+            peer_api.get_bulk_scored_assessments(
+                [submission['uuid'] for submission, _ in submission_and_learner]
+            )
+        }
+        assert len(scored_assessment_ids) == 3
+
+        # Each learner should have recieved one "scored" and one "unscored" peer assessment
+        for submission, _ in submission_and_learner:
+            workflow = PeerWorkflow.objects.prefetch_related('graded_by').get(submission_uuid=submission['uuid'])
+            unscored = workflow.graded_by.get(scored=False)
+            scored = workflow.graded_by.get(scored=True)
+            assert unscored.assessment_id not in scored_assessment_ids
+            assert scored.assessment_id in scored_assessment_ids
 
     def test_create_assessment_criterion_with_zero_options(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -308,7 +368,7 @@ class TestPeerApi(CacheResetTest):
             bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT_HUGE['options_selected'],
-            dict(),
+            {},
             ASSESSMENT_DICT_HUGE['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
@@ -486,7 +546,9 @@ class TestPeerApi(CacheResetTest):
             }
         }
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -570,7 +632,9 @@ class TestPeerApi(CacheResetTest):
             }
         }
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -597,7 +661,9 @@ class TestPeerApi(CacheResetTest):
 
         # Tim should have no score.
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -624,7 +690,9 @@ class TestPeerApi(CacheResetTest):
 
         # Tim should not have a score since he did not grade peers..
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -891,7 +959,7 @@ class TestPeerApi(CacheResetTest):
         assessment = peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
+            ASSESSMENT_DICT['options_selected'], {}, "",
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
@@ -929,8 +997,11 @@ class TestPeerApi(CacheResetTest):
         # Cancel the Xander's submission.
         PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
         workflow_api.cancel_workflow(
-            submission_uuid=xander_answer["uuid"], comments='Cancellation reason', cancelled_by_id=_['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            submission_uuid=xander_answer["uuid"],
+            comments='Cancellation reason',
+            cancelled_by_id=_['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -961,7 +1032,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -996,7 +1068,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=buffy_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
@@ -1040,7 +1113,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_answer['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -1098,7 +1172,8 @@ class TestPeerApi(CacheResetTest):
             {
                 'must_grade': 1,
                 'must_be_graded_by': 1
-            }
+            },
+            COURSE_SETTINGS
         )
         feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
         self.assertIsNone(feedback)
@@ -1175,6 +1250,19 @@ class TestPeerApi(CacheResetTest):
             mock_filter.side_effect = DatabaseError("Oh no.")
             tim_answer, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
             peer_api.get_assessment_feedback(tim_answer['uuid'])
+
+    def test_get_assessments_null(self):
+        # Test to fix serialization of incomplete, unscored assessments
+
+        # Tim & Buffy submit
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+
+        # Buffy starts but does not finish assessing Tim's answer
+        peer_api.get_submission_to_assess(buffy_answer['uuid'], REQUIRED_GRADED_BY)
+
+        # Tim gets unscored assessments, this used to throw an error
+        PeerWorkflowItem.get_unscored_assessments(tim_answer["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflowItem.get_scored_assessments')
     def test_set_assessment_feedback_error(self, mock_filter):
@@ -1283,11 +1371,15 @@ class TestPeerApi(CacheResetTest):
                 peer_api.get_rubric_max_scores(tim["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get')
-    def test_median_score_db_error(self, mock_filter):
+    @data("mean", "median")
+    def test_median_score_db_error(self, grading_strategy, mock_filter):
         with raises(peer_api.PeerAssessmentInternalError):
             mock_filter.side_effect = DatabaseError("Bad things happened")
             tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-            peer_api.get_assessment_median_scores(tim["uuid"])
+            peer_api.get_assessment_scores_with_grading_strategy(
+                tim["uuid"],
+                grading_strategy
+            )
 
     @patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_get_assessments_db_error(self, mock_filter):
@@ -1445,7 +1537,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is able to review Xander's submission.
@@ -1539,7 +1632,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=buffy_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=xander['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
         self.assertTrue(peer_api.is_workflow_cancelled(submission_uuid=buffy_sub['uuid']))
 
@@ -1592,7 +1686,7 @@ class TestPeerApi(CacheResetTest):
         # enough assessments.
         # Part of the bug was that this would call `get_score()` which
         # implicitly marked peer workflow items as scored.
-        peer_api.assessment_is_finished(bob_sub['uuid'], requirements)
+        peer_api.assessment_is_finished(bob_sub['uuid'], requirements, COURSE_SETTINGS)
 
         # Sue creates a submission
         sue_sub, sue = self._create_student_and_submission('Sue', 'Sue submission')
@@ -1623,7 +1717,7 @@ class TestPeerApi(CacheResetTest):
 
         # This used to create a second assessment,
         # which was the bug.
-        score = peer_api.get_score(bob_sub['uuid'], requirements)
+        score = peer_api.get_score(bob_sub['uuid'], requirements, COURSE_SETTINGS)
 
         # Verify that only the first assessment was used to generate the score
         self.assertEqual(score['points_earned'], 14)
@@ -1705,16 +1799,26 @@ class TestPeerApi(CacheResetTest):
         # make workflow date equals to the submission_date.
         # We need this because we depend on workflow.created_at to determine
         # if the submission is min 7 days old
-        for i, _ in enumerate(user_submissions):
-            sub, _ = user_submissions[i]
+        for i, value in enumerate(user_submissions):
+            sub, _ = value
             workflow = PeerWorkflow.get_by_submission_uuid(sub['uuid'])
             workflow.created_at = submission_date
             workflow.save()
 
+        # pylint: disable=inconsistent-return-statements
+        def get_submission_index(target_submission):
+            for i, value in enumerate(user_submissions):
+                submission, _ = value
+                if target_submission['uuid'] == submission['uuid']:
+                    return i
+
         # Do peer 3 assessment on 1st submission
         for i in range(4):
             sub, student = user_submissions[i]
-            peer_api.get_submission_to_assess(sub['uuid'], student['student_id'])
+            # User 0 can't assess themselves so they assess learner 1 but the next three assess learner 0
+            submission_to_assess = peer_api.get_submission_to_assess(sub['uuid'], student['student_id'])
+            assert get_submission_index(submission_to_assess) == (1 if i == 0 else 0)
+
             peer_api.create_assessment(
                 sub['uuid'],
                 student['student_id'],
@@ -1724,9 +1828,8 @@ class TestPeerApi(CacheResetTest):
                 RUBRIC_DICT,
                 required_graded_by
             )
-
         # check grade of 1st submission.
-        score = peer_api.get_score(user_submissions[0][0]['uuid'], requirements)
+        score = peer_api.get_score(user_submissions[0][0]['uuid'], requirements, COURSE_SETTINGS)
 
         if is_graded:
             assert score is not None
@@ -1735,6 +1838,9 @@ class TestPeerApi(CacheResetTest):
             assert score is None
 
     def test_flexible_peer_grading__zero_graded(self):
+        """
+        Test that flexible peer graing won't round someone down to requiring zero assessments
+        """
         # create a student with a submission from eight days ago
         submission_date = timezone.now() - datetime.timedelta(days=8)
         submission, _ = self._create_student_and_submission(
@@ -1750,8 +1856,8 @@ class TestPeerApi(CacheResetTest):
         # The learner has not been graded by anyone, but flexible grading rounds the required 3 to .9 and casts to 0
         # The must_grade = 0 is technically disallowed by validation rules but these api calls don't care
         requirements = {'must_grade': 0, 'must_be_graded_by': 3, 'enable_flexible_grading': True}
-        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], requirements))
-        self.assertIsNone(peer_api.get_score(submission['uuid'], requirements))
+        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], requirements, COURSE_SETTINGS))
+        self.assertIsNone(peer_api.get_score(submission['uuid'], requirements, COURSE_SETTINGS))
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None, steps=None):
@@ -1763,11 +1869,16 @@ class TestPeerApi(CacheResetTest):
         workflow_api.create_workflow(submission["uuid"], steps or STEPS)
         return submission, new_student_item
 
-    def _assert_assessment_workflow_status(self, uuid, expected_status, step_requirements):
-        workflow = workflow_api.get_workflow_for_submission(uuid, step_requirements)
+    def _assert_assessment_workflow_status(self, uuid, expected_status, step_requirements, course_settings):
+        workflow = workflow_api.get_workflow_for_submission(uuid, step_requirements, course_settings)
         self.assertEqual(workflow['status'], expected_status)
 
     def test_get_waiting_step_details__peer_item_created_not_assessed(self):
+        """
+        PeerWorkflowItem objects are created when a peer is assigned another peer to grade.
+        Make sure that they aren't counted as "recieved peer grades" unless an assessment has
+        actually been formed.
+        """
         step_requirements = {'peer': {'must_grade': 1, 'must_be_graded_by': 2}}
 
         # a target student and submission, and some other students and submissions
@@ -1782,7 +1893,10 @@ class TestPeerApi(CacheResetTest):
         ]
 
         # Have the target student submit her required assessment, they should now be waiting.
-        peer_api.get_submission_to_assess(target_learner_sub['uuid'], target_learner['student_id'])
+        peer_api.get_submission_to_assess(
+            target_learner_sub['uuid'],
+            target_learner['student_id']
+        )
         peer_api.create_assessment(
             target_learner_sub['uuid'],
             target_learner['student_id'],
@@ -1792,7 +1906,12 @@ class TestPeerApi(CacheResetTest):
             RUBRIC_DICT,
             step_requirements['peer']['must_be_graded_by']
         )
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
 
         # Call get_submission_to_assess once more so that target_learner has an open incomplete peer assessment
         peer_api.get_submission_to_assess(target_learner_sub['uuid'], target_learner['student_id'])
@@ -1817,7 +1936,12 @@ class TestPeerApi(CacheResetTest):
         )
 
         # The target learner is still in waiting and has five items but only one peer grade
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
         self.assertEqual(PeerWorkflow.get_by_submission_uuid(target_learner_sub['uuid']).graded_by.count(), 5)
         self.assertEqual(peer_api.get_graded_by_count(target_learner_sub['uuid']), 1)
 
@@ -1833,6 +1957,424 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNotNone(target_learner_entry)
         self.assertEqual(target_learner_entry['graded'], 1)
         self.assertEqual(target_learner_entry['graded_by'], 1)
+
+    def test_flexible_peer_grading__additional_grades_after_grade(self):
+        """
+        When flexile grading is enabled and a learner recieves their grades,
+        we should accurately record which assessments were actually used in the score.
+        """
+        peer_requirements = {'must_grade': 1, 'must_be_graded_by': 2, 'enable_flexible_grading': True}
+        assessment_requirements = {'peer': peer_requirements}
+
+        # Make some random learners with submissions
+        other_learner_submissions = [
+            self._create_student_and_submission(f'Student{i}', f'Student{i} submission', steps=['peer'])
+            for i in range(3)
+        ]
+
+        # create a student with a submission from eight days ago
+        submission_date = timezone.now() - datetime.timedelta(days=8)
+        submission, learner = self._create_student_and_submission(
+            'test-student',
+            'student-submission',
+            date=submission_date,
+            steps=['peer']
+        )
+        # Backdate created_by so that flexible grading kicks in
+        workflow = PeerWorkflow.get_by_submission_uuid(submission['uuid'])
+        workflow.created_at = submission_date
+        workflow.save()
+
+        # It doesn't yet have a score but only requires one peer grade
+        assert peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS) is None
+        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], peer_requirements, COURSE_SETTINGS))
+
+        # The target learner assesses a peer, so they have completed their requirements.
+        peer_api.get_submission_to_assess(submission['uuid'], learner['student_id'])
+        peer_api.create_assessment(
+            submission['uuid'],
+            learner['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            peer_requirements['must_be_graded_by']
+        )
+
+        # Helper function to peer assess until we peer assess the target learner
+        def peer_assess_until_we_assess_target_submission(other_learner_index, assessment_dict):
+            grading_learner_submission, grading_learner = other_learner_submissions[other_learner_index]
+            current_peer_review_uuid = 'None'
+            while current_peer_review_uuid != submission['uuid']:
+                submission_to_assess = peer_api.get_submission_to_assess(
+                    grading_learner_submission['uuid'],
+                    grading_learner['student_id']
+                )
+                current_peer_review_uuid = submission_to_assess['uuid']
+                peer_api.create_assessment(
+                    grading_learner_submission['uuid'],
+                    grading_learner['student_id'],
+                    assessment_dict['options_selected'],
+                    assessment_dict['criterion_feedback'],
+                    assessment_dict['overall_feedback'],
+                    RUBRIC_DICT,
+                    peer_requirements['must_be_graded_by']
+                )
+
+        # One learner reviews the target learner. The target learner has now recieved enough reviews
+        # and recieves a grade (0)
+        peer_assess_until_we_assess_target_submission(0, ASSESSMENT_DICT_FAIL)
+        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements, COURSE_SETTINGS)
+        assert workflow['status'] == 'done'
+        assert workflow['score']['points_earned'] == 0
+        assert workflow['score']['points_possible'] == 14
+
+        peer_score = peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS)
+        assessment_1 = Assessment.objects.get(submission_uuid=submission['uuid'])
+        assert assessment_1.peerworkflowitem_set.first().scored
+        assert peer_score == {
+            "points_earned": 0,
+            "points_possible": 14,
+            "contributing_assessments": [assessment_1.id],
+            "staff_id": None,
+        }
+
+        # Two more learners peer assess the target learner
+        peer_assess_until_we_assess_target_submission(1, ASSESSMENT_DICT_PASS)
+        peer_assess_until_we_assess_target_submission(2, ASSESSMENT_DICT_PASS)
+
+        peer_score = peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS)
+        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements, COURSE_SETTINGS)
+        item_qs = PeerWorkflowItem.objects.filter(author__student_id=learner['student_id'])
+        # Get the three PeerWorkflowItems in order. Student 1, 2, 3
+        items = [item_qs.get(scorer__student_id=other_learner_submissions[i][1]['student_id']) for i in [0, 1, 2]]
+        # Flexible peer grading only includes the first score in the actual grade,
+        # so only the first item should be `scored`
+        assert items[0].scored and not items[1].scored and not items[2].scored
+        # Contributing assessments is still not reflecting "scored" but the points should match the workflow
+        assert peer_score == {
+            "points_earned": 0,
+            "points_possible": 14,
+            "contributing_assessments": [item.assessment_id for item in items],
+            "staff_id": None,
+        }
+        # Workflow hasn't changed, the score is still the same
+        assert workflow['status'] == 'done'
+        assert workflow['score']['points_earned'] == 0
+        assert workflow['score']['points_possible'] == 14
+
+        assert peer_score['points_earned'] == workflow['score']['points_earned']
+
+    @unpack
+    @data(
+        (True, True, True),
+        (True, False, True),
+        (False, True, True),
+        (False, False, False)
+    )
+    def test_flexible_peer_grading_enabled(self, block_setting, course_override, expected_flexible):
+        """ Test for the behavior for flexible_peer_grading_enabled """
+        result = peer_api.flexible_peer_grading_enabled(
+            {"enable_flexible_grading": block_setting},
+            {"force_on_flexible_peer_openassessments": course_override}
+        )
+        assert result == expected_flexible
+
+    def test_get_active_assessment(self):
+        """
+        Test for behavior of get_active_assessment
+        """
+        # Three learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+        carlos_sub, _ = self._create_student_and_submission('carlos', 'carlos sub', steps=['peer'])
+
+        # No one has any active assessment currently
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(carlos_sub['uuid']) is None
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice's active assessment is now Bob, and Bob is unaffected
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == bob_sub['uuid']
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+
+        # Alice assesses Bob and then should have no active assessment
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # Alice requests a new peer to assess and gets Carlos, who is now her active assessment
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == carlos_sub['uuid']
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == carlos_sub['uuid']
+
+        # Assess Carlos, active assessment is now None
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # There are no more peers to assess, and the returned None does not affect the active assessment
+        assert peer_api.get_submission_to_assess(alice_sub['uuid'], 3) is None
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_cancelled(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice is then cancelled, so then her active assessment is None
+        workflow_api.cancel_workflow(
+            alice_sub['uuid'], "cancel", "1", STEP_REQUIREMENTS, COURSE_SETTINGS
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_nonexistant(self):
+        # If we request the active assessment submission for a nonexistant workflow,
+        # raise an error
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission('nonexistant-uuid')
+
+    def test_get_active_assessment_error(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, bob_item = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Delete bob's submission to induce an error
+        sub_api.reset_score(
+            bob_item['student_id'],
+            bob_item['course_id'],
+            bob_item['item_id'],
+            clear_state=True,
+            emit_signal=False
+        )
+
+        # Expected error is raised
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission(alice_sub['uuid'])
+
+    def _assert_num_scored_items(self, submission, expected_scored_items):
+        peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission['uuid'])
+        self.assertEqual(
+            expected_scored_items,
+            peer_workflow.graded_by.filter(scored=True).count()
+        )
+
+    def test_flexible_peer_grading_waiting_on_submitter(self):
+        """
+        Test for behavior when rather than waiting on peers to review a learner, the submitter
+        themselves is the one who needs to complete grading
+        """
+        requirements = {'must_grade': 5, 'must_be_graded_by': 4, 'enable_flexible_grading': True}
+        t0 = datetime.datetime(2024, 3, 13, tzinfo=pytz.UTC)
+
+        # Alice, and five others submit on t0
+        alice_sub, alice = self._create_student_and_submission('Alice', 'Alice submission', date=t0)
+        other_students = [
+            self._create_student_and_submission(f'student {i}', f'student {i} submission', date=t0)
+            for i in range(5)
+        ]
+
+        # The other students all dutifully complete their required peer assessment on t1
+        with freeze_time(t0 + datetime.timedelta(days=1)):
+            for submission, learner in other_students:
+                for _ in range(5):
+                    peer_api.get_submission_to_assess(submission['uuid'], learner['student_id'])
+                    peer_api.create_assessment(
+                        submission['uuid'],
+                        learner['student_id'],
+                        ASSESSMENT_DICT['options_selected'],
+                        ASSESSMENT_DICT['criterion_feedback'],
+                        ASSESSMENT_DICT['overall_feedback'],
+                        RUBRIC_DICT,
+                        requirements['must_be_graded_by']
+                    )
+
+            # other_students all have scores but Alice does not because she
+            # has not completed her peer assessments
+            self.assertIsNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+            for submission, _ in other_students:
+                self.assertIsNotNone(peer_api.get_score(submission['uuid'], requirements, COURSE_SETTINGS))
+                # The scores come from must_be_graded_by number of scores
+                self._assert_num_scored_items(submission, requirements['must_be_graded_by'])
+
+        # Alice doesn't complete her required grades until t8, which then gives her a score
+        with freeze_time(t0 + datetime.timedelta(days=8)):
+            for _ in range(5):
+                peer_api.get_submission_to_assess(alice_sub['uuid'], alice['student_id'])
+                peer_api.create_assessment(
+                    alice_sub['uuid'],
+                    alice['student_id'],
+                    ASSESSMENT_DICT['options_selected'],
+                    ASSESSMENT_DICT['criterion_feedback'],
+                    ASSESSMENT_DICT['overall_feedback'],
+                    RUBRIC_DICT,
+                    requirements['must_be_graded_by']
+                )
+            self.assertIsNotNone(peer_api.get_score(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+            # Even though flexible peer grading is activated, we use all available grades
+            self.assertTrue(peer_api.flexible_peer_grading_active(alice_sub['uuid'], requirements, COURSE_SETTINGS))
+            self._assert_num_scored_items(alice_sub, 4)
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @patch("openassessment.assessment.api.peer.PeerWorkflow")
+    @patch(
+        "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+    )
+    @data(
+        ("mean", {"criterion_1": 19, "criterion_2": 4}),
+        ("median", {"criterion_1": 15, "criterion_2": 2}),
+    )
+    @unpack
+    def test_get_peer_score_with_grading_strategy_enabled(
+        self,
+        grading_strategy,
+        scores_by_criterion,
+        _,
+        __,
+    ):
+        """Test get score when grading strategy feature is on.
+
+        When grading strategy is enabled, the score is calculated using the
+        mean or median calculation method based on the grading strategy
+        configured for the peers step requirement.
+        """
+        workflow_requirements = {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 4,
+                "enable_flexible_grading": False,
+                "grading_strategy": grading_strategy,
+            },
+        }
+        submission_uuid = "test_submission_uuid"
+
+        score_dict = peer_api.get_assessment_scores_with_grading_strategy(
+            submission_uuid,
+            workflow_requirements
+        )
+
+        self.assertDictEqual(score_dict, scores_by_criterion)
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @patch("openassessment.assessment.api.peer.PeerWorkflow.objects.get")
+    @patch("openassessment.assessment.api.peer.Assessment.scores_by_criterion")
+    @data("mean", "median")
+    def test_get_peer_score_with_grading_strategy_raise_errors(
+        self,
+        grading_strategy,
+        scores_by_criterion_mock,
+        peer_workflow_mock
+    ):
+        """Test get score when grading strategy feature is on and the
+        application flow raises errors.
+
+        When grading strategy is enabled, the score is calculated using the
+        mean or median calculation method based on the grading strategy
+        configured for the peers step requirement.
+        """
+        workflow_requirements = {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 4,
+                "enable_flexible_grading": False,
+                "grading_strategy": grading_strategy,
+            },
+        }
+
+        submission_uuid = "test_submission_uuid"
+        scores_by_criterion = {
+            "criterion_1": [6, 8, 15, 29, 37],
+            "criterion_2": [0, 1, 2, 4, 9]
+        }
+        scores_by_criterion_mock.return_value = scores_by_criterion
+        peer_workflow_mock.side_effect = PeerWorkflow.DoesNotExist
+
+        self.assertDictEqual(
+            {},
+            peer_api.get_assessment_scores_with_grading_strategy(
+                submission_uuid,
+                workflow_requirements
+            )
+        )
+
+        workflow = Mock()
+        peer_workflow_mock.side_effect = workflow
+        workflow.return_value.graded_by.filter.return_value = []
+        scores_by_criterion_mock.side_effect = DatabaseError
+
+        with self.assertRaises(PeerAssessmentInternalError):
+            peer_api.get_assessment_scores_with_grading_strategy(
+                submission_uuid,
+                workflow_requirements
+            )
+
+    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
+    @patch(
+        "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
+        return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}
+    )
+    @patch("openassessment.assessment.api.peer.PeerWorkflow")
+    def test_get_peer_score_with_grading_strategy_disabled(self, _, __):
+        """Test get score when grading strategy feature is off.
+
+        When grading strategy is disabled, the score is calculated using the
+        median of the peer assessments calculation method.
+        """
+        workflow_requirements = {
+            "must_grade": 5,
+            "must_be_graded_by": 4,
+            "enable_flexible_grading": False,
+            "grading_strategy": "mean",
+        }
+        submission_uuid = "test_submission_uuid"
+
+        scores = peer_api.get_assessment_scores_with_grading_strategy(
+            submission_uuid,
+            workflow_requirements
+        )
+
+        self.assertDictEqual(scores, {
+            "criterion_1": 15,
+            "criterion_2": 2
+        })
+
+    def test_mean_score_calculation(self):
+        """Test mean score calculation for peer assessments."""
+        self.assertEqual(0, Assessment.get_mean_score([]))
+        self.assertEqual(5, Assessment.get_mean_score([5]))
+        self.assertEqual(6, Assessment.get_mean_score([5, 6]))
+        self.assertEqual(19, Assessment.get_mean_score([5, 6, 12, 16, 22, 53]))
+        self.assertEqual(19, Assessment.get_mean_score([6, 5, 12, 53, 16, 22]))
+        self.assertEqual(31, Assessment.get_mean_score([5, 6, 12, 16, 22, 53, 102]))
+        self.assertEqual(31, Assessment.get_mean_score([16, 6, 12, 102, 22, 53, 5]))
+        self.assertEqual(2, Assessment.get_mean_score([0, 1, 3, 1, 5]))
 
 
 class PeerWorkflowTest(CacheResetTest):

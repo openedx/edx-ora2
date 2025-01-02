@@ -4,7 +4,7 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 from submissions.api import SubmissionRequestError, get_submissions
 from openassessment.assessment.api.peer import get_assessments
@@ -32,12 +32,12 @@ def get_evaluations_for_student_item(request, course_id, student_id, item_id):  
             student item.
 
     """
-    student_item_dict = dict(
-        course_id=course_id,
-        student_id=student_id,
-        item_id=item_id,
-    )
-    context = dict(**student_item_dict)
+    student_item_dict = {
+        "course_id": course_id,
+        "student_id": student_id,
+        "item_id": item_id,
+    }
+    context = {**student_item_dict}
     try:
         submissions = get_submissions(student_item_dict)
         evaluations = []
@@ -52,4 +52,4 @@ def get_evaluations_for_student_item(request, course_id, student_id, item_id):  
     except SubmissionRequestError:
         context["error"] = "The specified student item was not found."
 
-    return render_to_response('evaluations.html', context)
+    return render(request, 'evaluations.html', context)

@@ -1,0 +1,3399 @@
+# #-#-#-#-#  django.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# EdX Team <info@edx.org>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-ora2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 17:55-0500\n"
+"PO-Revision-Date: 2014-06-04 15:41-0400\n"
+"Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
+"Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: assessment/api/student_training.py
+msgid "Could not parse serialized rubric"
+msgstr ""
+"Çöüld nöt pärsé sérïälïzéd rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: assessment/api/student_training.py
+msgid ""
+"If your assignment includes a learner training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
+msgstr ""
+"Ìf ýöür ässïgnmént ïnçlüdés ä léärnér träïnïng stép, thé rüßrïç müst hävé ät"
+" léäst öné çrïtérïön, änd thät çrïtérïön müst hävé ät léäst öné öptïön. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм #"
+
+#: assessment/api/student_training.py
+#, python-brace-format
+msgid "Example {example_number} has a validation error: {error}"
+msgstr ""
+"Éxämplé {example_number} häs ä välïdätïön érrör: {error} Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: assessment/api/student_training.py
+#, python-brace-format
+msgid ""
+"Example {example_number} has an invalid option for \"{criterion_name}\": "
+"\"{option_name}\""
+msgstr ""
+"Éxämplé {example_number} häs än ïnvälïd öptïön för \"{criterion_name}\": "
+"\"{option_name}\" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: assessment/api/student_training.py
+#, python-brace-format
+msgid "Example {example_number} has an extra option for \"{criterion_name}\""
+msgstr ""
+"Éxämplé {example_number} häs än éxträ öptïön för \"{criterion_name}\" Ⱡ'σяєм"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: assessment/api/student_training.py
+#, python-brace-format
+msgid "Example {example_number} is missing an option for \"{criterion_name}\""
+msgstr ""
+"Éxämplé {example_number} ïs mïssïng än öptïön för \"{criterion_name}\" "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: assessment/score_type_constants.py xblock/grade_mixin.py
+msgid "Peer"
+msgstr "Péér Ⱡ'σяєм ι#"
+
+#: assessment/score_type_constants.py
+msgid "Self"
+msgstr "Sélf Ⱡ'σяєм ι#"
+
+#: assessment/score_type_constants.py
+msgid "Staff"
+msgstr "Stäff Ⱡ'σяєм ιρѕ#"
+
+#: assessment/score_type_constants.py
+msgid "Unknown"
+msgstr "Ûnknöwn Ⱡ'σяєм ιρѕυм #"
+
+#: data.py
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr "Çrïtérïön {number}: {label} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: data.py
+#, python-brace-format
+msgid "Points {number}"
+msgstr "Pöïnts {number} Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: data.py
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr "Médïän Sçöré {number} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: data.py
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr "Féédßäçk {number} Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: data.py
+msgid "Item ID"
+msgstr "Ìtém ÌD Ⱡ'σяєм ιρѕυм #"
+
+#: data.py
+msgid "Submission ID"
+msgstr "Süßmïssïön ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: data.py
+msgid "Anonymized Student ID"
+msgstr "Ànönýmïzéd Stüdént ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: data.py
+msgid "Assessment ID"
+msgstr "Àsséssmént ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: data.py
+msgid "Assessment Scored Date"
+msgstr "Àsséssmént Sçöréd Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: data.py
+msgid "Assessment Scored Time"
+msgstr "Àsséssmént Sçöréd Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: data.py
+msgid "Assessment Type"
+msgstr "Àsséssmént Týpé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: data.py
+msgid "Anonymous Scorer Id"
+msgstr "Ànönýmöüs Sçörér Ìd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: data.py templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Overall Feedback"
+msgstr "Övéräll Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: data.py
+msgid "Assessment Score Earned"
+msgstr "Àsséssmént Sçöré Éärnéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: data.py
+msgid "Assessment Scored At"
+msgstr "Àsséssmént Sçöréd Àt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: data.py
+msgid "Date/Time Final Score Given"
+msgstr "Däté/Tïmé Fïnäl Sçöré Gïvén Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: data.py
+msgid "Final Score Earned"
+msgstr "Fïnäl Sçöré Éärnéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: data.py
+msgid "Final Score Possible"
+msgstr "Fïnäl Sçöré Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: data.py
+msgid "Feedback Statements Selected"
+msgstr "Féédßäçk Stätéménts Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: data.py
+msgid "Feedback on Assessment"
+msgstr "Féédßäçk ön Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: data.py
+msgid "Response Files"
+msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: data.py
+msgid "No description provided."
+msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: data.py templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
+msgid "None"
+msgstr "Nöné Ⱡ'σяєм ι#"
+
+#: templates/legacy/edit/oa_edit.html
+msgid "Save"
+msgstr "Sävé Ⱡ'σяєм ι#"
+
+#: templates/legacy/edit/oa_edit.html
+msgid "Cancel"
+msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/edit/oa_edit_assessment_steps.html
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr ""
+"Öpén Réspönsé Àsséssménts ällöw ýöü tö çönfïgüré sïnglé ör mültïplé stéps ïn"
+" ä rüßrïç ßäséd öpén réspönsé ässéssmént séqüénçé. Thé stéps äväïläßlé ßélöw"
+" çän ßé énäßléd, dïsäßlé, änd ördéréd för ä fléxïßlé sét öf pédägögïçäl "
+"nééds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Display Name "
+msgstr "Dïspläý Nämé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "The display name for this component."
+msgstr ""
+"Thé dïspläý nämé för thïs çömpönént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Text Response"
+msgstr "Téxt Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners must include a text based response to this "
+"problem's prompt."
+msgstr ""
+"Spéçïfý whéthér léärnérs müst ïnçlüdé ä téxt ßäséd réspönsé tö thïs "
+"prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Response Editor"
+msgstr "Réspönsé Édïtör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Select which editor learners will use to include a text based response to "
+"this problem's prompt."
+msgstr ""
+"Séléçt whïçh édïtör léärnérs wïll üsé tö ïnçlüdé ä téxt ßäséd réspönsé tö "
+"thïs prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "File Uploads Response"
+msgstr "Fïlé Ûplöäds Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners are able to upload files as a part of their "
+"response."
+msgstr ""
+"Spéçïfý whéthér léärnérs äré äßlé tö üplöäd fïlés äs ä pärt öf théïr "
+"réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Allow Multiple Files"
+msgstr "Àllöw Mültïplé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "False"
+msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "True"
+msgstr "Trüé Ⱡ'σяєм ι#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners can upload more than one file. This has no effect "
+"if File Uploads Response is set to None. This is automatically set to True "
+"for Team Assignments. "
+msgstr ""
+"Spéçïfý whéthér léärnérs çän üplöäd möré thän öné fïlé. Thïs häs nö éfféçt "
+"ïf Fïlé Ûplöäds Réspönsé ïs sét tö Nöné. Thïs ïs äütömätïçällý sét tö Trüé "
+"för Téäm Àssïgnménts.  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg "
+"єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт "
+"єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт "
+"αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη "
+"νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
+"σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "File Upload Types"
+msgstr "Fïlé Ûplöäd Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "PDF or Image Files"
+msgstr "PDF ör Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Image Files"
+msgstr "Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Custom File Types"
+msgstr "Çüstöm Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners can submit files along with their text responses."
+msgstr ""
+"Spéçïfý whéthér léärnérs çän süßmït fïlés älöng wïth théïr téxt réspönsés. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "File Types"
+msgstr "Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Enter the file extensions, separated by commas, that you want learners to be"
+" able to upload. For example: pdf,doc,docx."
+msgstr ""
+"Éntér thé fïlé éxténsïöns, sépärätéd ßý çömmäs, thät ýöü wänt léärnérs tö ßé"
+" äßlé tö üplöäd. För éxämplé: pdf,döç,döçx. Ⱡ'σяєм ιρѕυм#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr ""
+"Tö ädd möré fïlé éxténsïöns, séléçt Çüstöm Fïlé Týpés änd éntér thé füll "
+"lïst öf äççéptäßlé fïlé éxténsïöns tö ßé ïnçlüdéd. Ⱡ'σяєм ιρ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Allow LaTeX Responses"
+msgstr "Àllöw LäTéX Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Specify whether learners can write LaTeX formatted strings"
+msgstr ""
+"Spéçïfý whéthér léärnérs çän wrïté LäTéX förmättéd strïngs Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html
+msgid "Top Responses"
+msgstr "Töp Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid " (Disabled)"
+msgstr " (Dïsäßléd) Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
+"Spéçïfý thé nümßér öf töp sçörïng réspönsés tö dïspläý äftér thé léärnér häs"
+" süßmïttéd ä réspönsé. Välïd nümßérs äré 0 tö 99. Ìf thé nümßér ïs 0, thé "
+"Töp Réspönsés séçtïön döés nöt äppéär tö léärnérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
+"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
+"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
+"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
+"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "When Teams Enabled is set to true, Top Responses will be disabled."
+msgstr ""
+"Whén Téäms Énäßléd ïs sét tö trüé, Töp Réspönsés wïll ßé dïsäßléd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Teams Enabled"
+msgstr "Téäms Énäßléd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Specify whether team submissions are allowed for this response."
+msgstr ""
+"Spéçïfý whéthér téäm süßmïssïöns äré ällöwéd för thïs réspönsé. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Select Team-Set"
+msgstr "Séléçt Téäm-Sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Show Rubric During Response"
+msgstr "Shöw Rüßrïç Dürïng Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners can see the rubric while they are working on their "
+"response."
+msgstr ""
+"Spéçïfý whéthér léärnérs çän séé thé rüßrïç whïlé théý äré wörkïng ön théïr "
+"réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Allow Learner Resubmissions"
+msgstr "Àllöw Léärnér Résüßmïssïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Set to TRUE to allow learners to resubmit ungraded work. Set to FALSE if "
+"resubmissions are not allowed."
+msgstr ""
+"Sét tö TRÛÉ tö ällöw léärnérs tö résüßmït üngrädéd wörk. Sét tö FÀLSÉ ïf "
+"résüßmïssïöns äré nöt ällöwéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid "Resubmission Grace Period"
+msgstr "Résüßmïssïön Gräçé Pérïöd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify the maximum period during which resubmissions are allowed. If left "
+"blank, learners will be able to reset their submission as long as it has not"
+" been graded. The grace period starts once the learner has submitted their "
+"response."
+msgstr ""
+"Spéçïfý thé mäxïmüm pérïöd dürïng whïçh résüßmïssïöns äré ällöwéd. Ìf léft "
+"ßlänk, léärnérs wïll ßé äßlé tö rését théïr süßmïssïön äs löng äs ït häs nöt"
+" ßéén grädéd. Thé gräçé pérïöd stärts önçé thé léärnér häs süßmïttéd théïr "
+"réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłł#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Criterion"
+msgstr "Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid "You cannot delete a criterion after the assignment has been released."
+msgstr ""
+"Ýöü çännöt délété ä çrïtérïön äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_prompt.html
+#: templates/legacy/edit/oa_training_example.html
+msgid "Remove"
+msgstr "Rémövé Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid "Criterion Name"
+msgstr "Çrïtérïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid "Criterion Prompt"
+msgstr "Çrïtérïön Prömpt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid "Add Option"
+msgstr "Àdd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid "Feedback for This Criterion"
+msgstr "Féédßäçk för Thïs Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
+msgid "Optional"
+msgstr "Öptïönäl Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/oa_rubric.html
+#: templates/legacy/student_training/student_training.html
+#: xblock/studio_mixin.py
+msgid "Required"
+msgstr "Réqüïréd Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_criterion.html
+msgid ""
+"Select one of the options above. This describes whether or not the reviewer "
+"will have to provide criterion feedback."
+msgstr ""
+"Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé révïéwér "
+"wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σ#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+msgid "Open Response Assessment"
+msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_prompt.html
+msgid "Prompt"
+msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+msgid "Rubric"
+msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+msgid "Schedule"
+msgstr "Sçhédülé Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+msgid "Assessment steps"
+msgstr "Àsséssmént stéps Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+msgid "Settings"
+msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_option.html
+msgid "Option"
+msgstr "Öptïön Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/edit/oa_edit_option.html
+msgid "Option Name"
+msgstr "Öptïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/edit/oa_edit_option.html
+msgid "Option Points"
+msgstr "Öptïön Pöïnts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_option.html
+msgid "Option Explanation"
+msgstr "Öptïön Éxplänätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Step: Peer Assessment"
+msgstr "Stép: Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Peer Assessment allows students to provide feedback to other students and "
+"also receive feedback from others in their final grade. Often, though not "
+"always, this step is preceded by Self Assessment or Learner Training steps."
+msgstr ""
+"Péér Àsséssmént ällöws stüdénts tö prövïdé féédßäçk tö öthér stüdénts änd "
+"älsö réçéïvé féédßäçk fröm öthérs ïn théïr fïnäl grädé. Öftén, thöügh nöt "
+"älwäýs, thïs stép ïs préçédéd ßý Sélf Àsséssmént ör Léärnér Träïnïng stéps. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Configuration: For this step to be configured you must specify the number of"
+" peer reviews a student will be assessed with, and the number of peer a "
+"student must grade. Additional options can be specified."
+msgstr ""
+"Çönfïgürätïön: För thïs stép tö ßé çönfïgüréd ýöü müst spéçïfý thé nümßér öf"
+" péér révïéws ä stüdént wïll ßé ässésséd wïth, änd thé nümßér öf péér ä "
+"stüdént müst grädé. Àddïtïönäl öptïöns çän ßé spéçïfïéd. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
+"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
+"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
+"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
+"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "View Options & Configuration"
+msgstr "Vïéw Öptïöns & Çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Must Grade"
+msgstr "Müst Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Specify the number of peer assessments that each learner must complete. "
+"Valid numbers are 1 to 99."
+msgstr ""
+"Spéçïfý thé nümßér öf péér ässéssménts thät éäçh léärnér müst çömplété. "
+"Välïd nümßérs äré 1 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Graded By"
+msgstr "Grädéd Bý Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Specify the number of learners that each response must be assessed by. Valid"
+" numbers are 1 to 99."
+msgstr ""
+"Spéçïfý thé nümßér öf léärnérs thät éäçh réspönsé müst ßé ässésséd ßý. Välïd"
+" nümßérs äré 1 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr ""
+"Énäßlé Fléxïßlé Péér Grädé Àvérägïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr ""
+"Whén énäßléd, léärnérs whö hävé réçéïvéd ät léäst 30%% öf thé réqüïréd \\ "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"This feature is being enabled by the course-level setting. It can be found "
+"under the Open Response Assessment Settings card on the Pages & Resources "
+"studio page."
+msgstr ""
+"Thïs féätüré ïs ßéïng énäßléd ßý thé çöürsé-lévél séttïng. Ìt çän ßé föünd "
+"ündér thé Öpén Réspönsé Àsséssmént Séttïngs çärd ön thé Pägés & Résöürçés "
+"stüdïö pägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ "
+"∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ "
+"мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ "
+"єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє "
+"νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕє#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Grading strategy for the peer assessment"
+msgstr ""
+"Grädïng strätégý för thé péér ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Mean"
+msgstr "Méän Ⱡ'σяєм ι#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid "Median (default)"
+msgstr "Médïän (défäült) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment.html
+msgid ""
+"Select the preferred grading strategy for the peer assessment. By default, "
+"the median across all peer reviews is used to calculate the final grade. If "
+"you select the mean, the average of all peer reviews will be used."
+msgstr ""
+"Séléçt thé préférréd grädïng strätégý för thé péér ässéssmént. Bý défäült, "
+"thé médïän äçröss äll péér révïéws ïs üséd tö çälçüläté thé fïnäl grädé. Ìf "
+"ýöü séléçt thé méän, thé ävérägé öf äll péér révïéws wïll ßé üséd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαт#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+msgid "Peer Assessment Deadlines"
+msgstr "Péér Àsséssmént Déädlïnés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "Start Date"
+msgstr "Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "Start Time"
+msgstr "Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+msgid "The date and time when learners can begin assessing peer responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng péér réspönsés. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Due Date"
+msgstr "Düé Däté Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "Due Time"
+msgstr "Düé Tïmé Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+msgid "The date and time when all peer assessments must be complete."
+msgstr ""
+"Thé däté änd tïmé whén äll péér ässéssménts müst ßé çömplété. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_prompt.html
+msgid "You cannot delete a prompt after the assignment has been released."
+msgstr ""
+"Ýöü çännöt délété ä prömpt äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_prompts.html
+msgid ""
+"Prompts. Replace the sample text with your own text. For more information, "
+"see the ORA documentation."
+msgstr ""
+"Prömpts. Répläçé thé sämplé téxt wïth ýöür öwn téxt. För möré ïnförmätïön, "
+"séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/edit/oa_edit_prompts.html
+msgid "Add Prompt"
+msgstr "Àdd Prömpt Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid ""
+"Rubrics are made up of criteria, which usually contain one or more options. "
+"Each option has a point value. This template contains two sample criteria "
+"and their options. Replace the sample text with your own text. For more "
+"information, see the ORA documentation."
+msgstr ""
+"Rüßrïçs äré mädé üp öf çrïtérïä, whïçh üsüällý çöntäïn öné ör möré öptïöns. "
+"Éäçh öptïön häs ä pöïnt välüé. Thïs témpläté çöntäïns twö sämplé çrïtérïä "
+"änd théïr öptïöns. Répläçé thé sämplé téxt wïth ýöür öwn téxt. För möré "
+"ïnförmätïön, séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σł#"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid "Add Criterion"
+msgstr "Àdd Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid "Feedback for This Response"
+msgstr "Féédßäçk för Thïs Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid "Feedback Instructions"
+msgstr "Féédßäçk Ìnstrüçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid ""
+"Encourage learners to provide feedback on the response they have graded. You"
+" can replace the sample text with your own."
+msgstr ""
+"Énçöürägé léärnérs tö prövïdé féédßäçk ön thé réspönsé théý hävé grädéd. Ýöü"
+" çän répläçé thé sämplé téxt wïth ýöür öwn. Ⱡ'σяєм ιρѕυм#"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid "Default Feedback Text"
+msgstr "Défäült Féédßäçk Téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_rubric.html
+msgid ""
+"Enter feedback text that learners will see before they enter their own "
+"feedback. Use this text to show learners a good example peer assessment."
+msgstr ""
+"Éntér féédßäçk téxt thät léärnérs wïll séé ßéföré théý éntér théïr öwn "
+"féédßäçk. Ûsé thïs téxt tö shöw léärnérs ä gööd éxämplé péér ässéssmént. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Deadlines Configuration"
+msgstr "Déädlïnés Çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Select a deadline configuration option"
+msgstr ""
+"Séléçt ä déädlïné çönfïgürätïön öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Configure deadlines manually"
+msgstr "Çönfïgüré déädlïnés mänüällý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+"Mätçh déädlïnés tö thé süßséçtïön düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Match deadlines to the course end date"
+msgstr ""
+"Mätçh déädlïnés tö thé çöürsé énd däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Learn more about open response date settings"
+msgstr ""
+"Léärn möré äßöüt öpén réspönsé däté séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Response Start Date"
+msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Response Start Time"
+msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "The date and time when learners can begin submitting responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Response Due Date"
+msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "Response Due Time"
+msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/edit/oa_edit_schedule.html
+msgid "The date and time when learners can no longer submit responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_self_assessment.html
+msgid "Step: Self Assessment"
+msgstr "Stép: Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/edit/oa_edit_self_assessment.html
+msgid ""
+"Self Assessment asks learners to grade their own submissions against the "
+"rubric."
+msgstr ""
+"Sélf Àsséssmént äsks léärnérs tö grädé théïr öwn süßmïssïöns ägäïnst thé "
+"rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "Self Assessment Deadlines"
+msgstr "Sélf Àsséssmént Déädlïnés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "The date and time when learners can begin assessing their responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng théïr réspönsés. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+msgid "The date and time when all self assessments must be complete."
+msgstr ""
+"Thé däté änd tïmé whén äll sélf ässéssménts müst ßé çömplété. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html
+msgid "Step: Staff Assessment"
+msgstr "Stép: Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/edit/oa_edit_staff_assessment.html
+msgid ""
+"Staff Assessment gates sets the final grade for students if enabled with "
+"other steps, though it can also be used as a standalone step."
+msgstr ""
+"Stäff Àsséssmént gätés séts thé fïnäl grädé för stüdénts ïf énäßléd wïth "
+"öthér stéps, thöügh ït çän älsö ßé üséd äs ä ständälöné stép. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαвσяυм#"
+
+#: templates/legacy/edit/oa_edit_student_training.html
+msgid "Step: Learner Training"
+msgstr "Stép: Léärnér Träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/edit/oa_edit_student_training.html
+msgid ""
+"Learner Training is used to help students practice grading a simulated peer "
+"submission in order to train them on the rubric and ensure learner's "
+"understand the rubric for either Self or Peer Assessment steps."
+msgstr ""
+"Léärnér Träïnïng ïs üséd tö hélp stüdénts präçtïçé grädïng ä sïmülätéd péér "
+"süßmïssïön ïn ördér tö träïn thém ön thé rüßrïç änd énsüré léärnér's "
+"ündérständ thé rüßrïç för éïthér Sélf ör Péér Àsséssmént stéps. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
+
+#: templates/legacy/edit/oa_edit_student_training.html
+msgid ""
+"Configuration: For this step to be fully configured you must provide one or "
+"more graded sample responses. Learners must then match this instructor score"
+" to advance and are provided feedback when their score doesn't match the "
+"sample response."
+msgstr ""
+"Çönfïgürätïön: För thïs stép tö ßé füllý çönfïgüréd ýöü müst prövïdé öné ör "
+"möré grädéd sämplé réspönsés. Léärnérs müst thén mätçh thïs ïnstrüçtör sçöré"
+" tö ädvänçé änd äré prövïdéd féédßäçk whén théïr sçöré döésn't mätçh thé "
+"sämplé réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, "
+"ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм "
+"α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ "
+"єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє"
+" νєłιт#"
+
+#: templates/legacy/edit/oa_edit_student_training.html
+msgid "View / Add Sample Responses"
+msgstr "Vïéw / Àdd Sämplé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/edit/oa_edit_student_training.html
+msgid "Add Sample Response"
+msgstr "Àdd Sämplé Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "Clone Rubric"
+msgstr "Çlöné Rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only affect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr ""
+"Tö çlöné ä rüßrïç fröm än éxïstïng püßlïshéd ör ünpüßlïshéd dräft, ýöü çän "
+"séärçh ßý thé Blöçk ÌD. Nöté thät çlönïng ïs öné-wäý, méänïng çhängés mädé "
+"äftér çlönïng wïll önlý äfféçt thé rüßrïç ßéïng mödïfïéd, änd wïll nöt "
+"mödïfý äný rüßrïç ït wäs çlönéd fröm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη #"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "Block ID For this ORA:"
+msgstr "Blöçk ÌD För thïs ÖRÀ: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "Block ID"
+msgstr "Blöçk ÌD Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "No other Open Response Assessments found in course"
+msgstr ""
+"Nö öthér Öpén Réspönsé Àsséssménts föünd ïn çöürsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "Clone"
+msgstr "Çlöné Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/edit/oa_rubric_reuse.html
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr ""
+"Rüßrïç Süççéssfüllý Çlönéd fröm Blöçk ÌD:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/edit/oa_training_example.html
+msgid "Scored Response"
+msgstr "Sçöréd Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/edit/oa_training_example.html
+msgid "Response Score"
+msgstr "Réspönsé Sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/edit/oa_training_example.html
+msgid "Response"
+msgstr "Réspönsé Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/edit/oa_training_example_criterion.html
+msgid "Not Selected"
+msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/edit/oa_training_example_criterion.html
+#: templates/legacy/oa_rubric.html
+#: templates/legacy/student_training/student_training.html
+msgid "points"
+msgstr "pöïnts Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/grade/oa_assessment_feedback.html
+#, python-format
+msgid ""
+"\n"
+"                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
+"              "
+msgstr ""
+"\n"
+"                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
+"               Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/grade/oa_assessment_title.html
+#, python-format
+msgid ""
+"\n"
+"                      %(assessment_title)s - %(points)s point\n"
+"                  "
+msgid_plural ""
+"\n"
+"                      %(assessment_title)s - %(points)s points\n"
+"                  "
+msgstr[0] ""
+"\n"
+"                      %(assessment_title)s - %(points)s pöïnt\n"
+"                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+msgstr[1] ""
+"\n"
+"                      %(assessment_title)s - %(points)s pöïnts\n"
+"                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/grade/oa_assessment_title.html
+#, python-format
+msgid "More information about %(name)s"
+msgstr "Möré ïnförmätïön äßöüt %(name)s Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/grade/oa_grade_cancelled.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_not_started.html
+#: templates/legacy/grade/oa_grade_waiting.html
+msgid "Your Grade"
+msgstr "Ýöür Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/grade/oa_grade_cancelled.html
+#, python-format
+msgid ""
+"\n"
+"                                        %(points_earned)s out of %(points_possible)s\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        %(points_earned)s öüt öf %(points_possible)s\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/grade/oa_grade_cancelled.html
+msgid "Your submission has been cancelled."
+msgstr ""
+"Ýöür süßmïssïön häs ßéén çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+#, python-format
+msgid ""
+"\n"
+"                                            %(points_earned)s out of %(points_possible)s\n"
+"                                        "
+msgstr ""
+"\n"
+"                                            %(points_earned)s öüt öf %(points_possible)s\n"
+"                                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/response/oa_response.html
+msgid "Your Response"
+msgstr "Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Your Upload"
+msgstr "Ýöür Ûplöäd Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Assessments of Your Response"
+msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_waiting.html
+#: templates/legacy/message/oa_message_cancelled.html
+#: templates/legacy/message/oa_message_closed.html
+#: templates/legacy/message/oa_message_complete.html
+#: templates/legacy/message/oa_message_incomplete.html
+#: templates/legacy/peer/oa_peer_closed.html
+#: templates/legacy/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
+#: templates/legacy/peer/oa_peer_waiting.html
+#: templates/legacy/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_closed.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_team_already_submitted.html
+#: templates/legacy/self/oa_self_closed.html
+#: templates/legacy/student_training/student_training_closed.html
+msgid "Status"
+msgstr "Stätüs Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Overall Grade"
+msgstr "Övéräll Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Points"
+msgstr "Pöïnts Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Additional comments on your response"
+msgstr ""
+"Àddïtïönäl çömménts ön ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Provide feedback on peer assessments"
+msgstr ""
+"Prövïdé féédßäçk ön péér ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Submitting Feedback"
+msgstr "Süßmïttïng Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid ""
+"Your feedback has been submitted. Course staff will be able to see this "
+"feedback when they review course records."
+msgstr ""
+"Ýöür féédßäçk häs ßéén süßmïttéd. Çöürsé stäff wïll ßé äßlé tö séé thïs "
+"féédßäçk whén théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid ""
+"Course staff will be able to see any feedback that you provide here when "
+"they review course records."
+msgstr ""
+"Çöürsé stäff wïll ßé äßlé tö séé äný féédßäçk thät ýöü prövïdé héré whén "
+"théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid ""
+"Select the statements below that best reflect your experience with peer "
+"assessments."
+msgstr ""
+"Séléçt thé stätéménts ßélöw thät ßést réfléçt ýöür éxpérïénçé wïth péér "
+"ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "These assessments were useful."
+msgstr "Thésé ässéssménts wéré üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "These assessments were not useful."
+msgstr ""
+"Thésé ässéssménts wéré nöt üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "I disagree with one or more of the peer assessments of my response."
+msgstr ""
+"Ì dïsägréé wïth öné ör möré öf thé péér ässéssménts öf mý réspönsé. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Some comments I received were inappropriate."
+msgstr ""
+"Sömé çömménts Ì réçéïvéd wéré ïnäppröprïäté. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid ""
+"Provide feedback on the grade or comments that you received from your peers."
+msgstr ""
+"Prövïdé féédßäçk ön thé grädé ör çömménts thät ýöü réçéïvéd fröm ýöür péérs."
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "I feel the feedback I received was..."
+msgstr ""
+"Ì féél thé féédßäçk Ì réçéïvéd wäs... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "We could not submit your feedback"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/grade/oa_grade_complete.html
+msgid "Submit feedback on peer assessments"
+msgstr ""
+"Süßmït féédßäçk ön péér ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/grade/oa_grade_incomplete.html
+msgid "Not Completed"
+msgstr "Nöt Çömplétéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/grade/oa_grade_incomplete.html
+msgid "You have not completed all the steps of this problem."
+msgstr ""
+"Ýöü hävé nöt çömplétéd äll thé stéps öf thïs prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
+" αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/grade/oa_grade_not_started.html
+msgid "Not Started"
+msgstr "Nöt Stärtéd Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/grade/oa_grade_not_started.html
+msgid "You have not started this problem yet."
+msgstr ""
+"Ýöü hävé nöt stärtéd thïs prößlém ýét. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/grade/oa_grade_waiting.html
+msgid "Waiting for Assessments"
+msgstr "Wäïtïng för Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/legacy/grade/oa_grade_waiting.html
+msgid ""
+"You have completed your steps in the assignment, but some assessments still "
+"need to be done on your response. When the assessments of your response are "
+"complete, you will see feedback from everyone who assessed your response, "
+"and you will receive your final grade."
+msgstr ""
+"Ýöü hävé çömplétéd ýöür stéps ïn thé ässïgnmént, ßüt sömé ässéssménts stïll "
+"nééd tö ßé döné ön ýöür réspönsé. Whén thé ässéssménts öf ýöür réspönsé äré "
+"çömplété, ýöü wïll séé féédßäçk fröm évérýöné whö ässésséd ýöür réspönsé, "
+"änd ýöü wïll réçéïvé ýöür fïnäl grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυ#"
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Grade Available Responses"
+msgstr "Grädé Àväïläßlé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr ""
+"Grädé Àväïläßlé Réspönsés ïs ünäväïläßlé. Thïs ïtém ïs nöt çönfïgüréd för "
+"Stäff Àsséssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/instructor_dashboard/oa_listing.html
+msgid "Please wait"
+msgstr "Pléäsé wäït Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html
+msgid "Waiting Step Details"
+msgstr "Wäïtïng Stép Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr ""
+"Wäïtïng Stép détäïls vïéw ïs ünäväïläßlé. Thïs ïtém ïs nöt çönfïgüréd för "
+"péér ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
+#, python-format
+msgid "%(num_points)s points"
+msgstr "%(num_points)s pöïnts Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+msgid "Your peer's response to the prompt above"
+msgstr ""
+"Ýöür péér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html
+msgid ""
+"After you complete all the steps of this assignment, you can see the top-"
+"scoring responses from your peers."
+msgstr ""
+"Àftér ýöü çömplété äll thé stéps öf thïs ässïgnmént, ýöü çän séé thé töp-"
+"sçörïng réspönsés fröm ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/message/oa_message_cancelled.html
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr ""
+"Ýöür téäm’s süßmïssïön häs ßéén çänçélléd. Ýöür téäm wïll réçéïvé ä grädé öf"
+" zérö ünléss çöürsé stäff réséts ýöür ässéssmént tö ällöw thé téäm tö "
+"résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg "
+"єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт "
+"єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт "
+"αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη "
+"νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
+"σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ι#"
+
+#: templates/legacy/message/oa_message_cancelled.html
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr ""
+"Ýöür süßmïssïön häs ßéén çänçélléd. Ýöü wïll réçéïvé ä grädé öf zérö ünléss "
+"çöürsé stäff réséts ýöür ässéssmént tö ällöw ýöü tö résüßmït ä réspönsé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
+
+#: templates/legacy/message/oa_message_closed.html
+msgid ""
+"This task is not yet available. Check back to complete the assignment once "
+"this section has opened."
+msgstr ""
+"Thïs täsk ïs nöt ýét äväïläßlé. Çhéçk ßäçk tö çömplété thé ässïgnmént önçé "
+"thïs séçtïön häs öpénéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/message/oa_message_closed.html
+msgid ""
+"This assignment has closed. One or more deadlines for this assignment have "
+"passed. You will receive an incomplete grade for this assignment."
+msgstr ""
+"Thïs ässïgnmént häs çlöséd. Öné ör möré déädlïnés för thïs ässïgnmént hävé "
+"pässéd. Ýöü wïll réçéïvé än ïnçömplété grädé för thïs ässïgnmént. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт ł#"
+
+#: templates/legacy/message/oa_message_complete.html
+msgid ""
+"You have completed this assignment. Your final grade will be available when "
+"the assessments of your response are complete."
+msgstr ""
+"Ýöü hävé çömplétéd thïs ässïgnmént. Ýöür fïnäl grädé wïll ßé äväïläßlé whén "
+"thé ässéssménts öf ýöür réspönsé äré çömplété. Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/message/oa_message_complete.html
+msgid ""
+"You have completed this assignment. Review your grade and your assessment "
+"details."
+msgstr ""
+"Ýöü hävé çömplétéd thïs ässïgnmént. Révïéw ýöür grädé änd ýöür ässéssmént "
+"détäïls. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+msgid ""
+"This assignment is in progress. Learner training will close soon. Complete "
+"the learner training step to move on."
+msgstr ""
+"Thïs ässïgnmént ïs ïn prögréss. Léärnér träïnïng wïll çlösé söön. Çömplété "
+"thé léärnér träïnïng stép tö mövé ön. Ⱡ'σяєм ιρѕυм ∂σłσя#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+msgid ""
+"This assignment is in progress. Complete the learner training step to move "
+"on."
+msgstr ""
+"Thïs ässïgnmént ïs ïn prögréss. Çömplété thé léärnér träïnïng stép tö mövé "
+"ön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
+msgid ""
+"This assignment is in progress. Check back later when the assessment period "
+"has started."
+msgstr ""
+"Thïs ässïgnmént ïs ïn prögréss. Çhéçk ßäçk lätér whén thé ässéssmént pérïöd "
+"häs stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    %(start_strong)sThïs ässïgnmént ïs ïn prögréss. Thé sélf ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Thïs ässïgnmént ïs ïn prögréss. Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυ#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Thïs ässïgnmént ïs ïn prögréss.%(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιq#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Thïs ässïgnmént ïs ïn prögréss. Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ #"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Thïs ässïgnmént ïs ïn prögréss. %(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
+
+#: templates/legacy/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Thïs ässïgnmént ïs ïn prögréss. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυ#"
+
+#: templates/legacy/message/oa_message_no_team.html
+msgid "Team membership is required to view this assignment"
+msgstr ""
+"Téäm mémßérshïp ïs réqüïréd tö vïéw thïs ässïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/message/oa_message_no_team.html
+#, python-format
+msgid ""
+"\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
+msgstr ""
+"\n"
+"            Thïs ïs ä téäm ässïgnmént för téäm-sét \"%(teamset_name)s\".\n"
+"            Ýöü äré çürréntlý nöt ön ä téäm ïn téäm-sét \"%(teamset_name)s\".\n"
+"            Ýöü müst ßé ön ä téäm ïn téäm-sét \"%(teamset_name)s\" tö äççéss thïs téäm ässïgnmént.\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяι#"
+
+#: templates/legacy/message/oa_message_open.html
+#, python-format
+msgid ""
+"\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr ""
+"\n"
+"                    Àssïgnmént süßmïssïöns wïll çlösé söön. Tö réçéïvé ä grädé, fïrst prövïdé ä réspönsé tö thé prömpt, thén çömplété thé stéps ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
+
+#: templates/legacy/message/oa_message_open.html
+#, python-format
+msgid ""
+"\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr ""
+"\n"
+"                    Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
+
+#: templates/legacy/message/oa_message_unavailable.html
+msgid "Instructions Unavailable"
+msgstr "Ìnstrüçtïöns Ûnäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/message/oa_message_unavailable.html
+msgid "The instructions for this step could not be loaded."
+msgstr ""
+"Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/oa_base.html templates/openassessmentblock/base.html
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the prompt. The other steps appear below the Your Response "
+"field."
+msgstr ""
+"Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä "
+"réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
+"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
+
+#: templates/legacy/oa_base.html templates/openassessmentblock/base.html
+#: templates/openassessmentblock/base.html
+msgid "Loading"
+msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
+
+#: templates/legacy/oa_latex_preview.html
+msgid "Preview in LaTeX"
+msgstr "Prévïéw ïn LäTéX Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/oa_latex_preview.html
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
+"Çlïçk tö prévïéw ýöür süßmïssïön ïn LäTéX. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/oa_latex_preview.html
+msgid "Preview Response"
+msgstr "Prévïéw Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/oa_rubric.html
+msgid "Comments"
+msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/oa_submission_answer.html
+msgid "The question for this section"
+msgstr "Thé qüéstïön för thïs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/oa_team_uploaded_files.html
+msgid "Files that were uploaded by your teammates:"
+msgstr ""
+"Fïlés thät wéré üplöädéd ßý ýöür téämmätés: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/oa_team_uploaded_files.html
+#: templates/legacy/oa_uploaded_file.html
+msgid "View the files associated with this submission:"
+msgstr ""
+"Vïéw thé fïlés ässöçïätéd wïth thïs süßmïssïön: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/oa_team_uploaded_files.html
+msgid "Uploaded by"
+msgstr "Ûplöädéd ßý Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/oa_uploaded_file.html
+msgid "Files that were uploaded by you:"
+msgstr ""
+"Fïlés thät wéré üplöädéd ßý ýöü: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/oa_uploaded_file.html
+msgid ""
+"Caution: These files were uploaded by another course learner and have not "
+"been verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you access the files, you do so at your own risk.)"
+msgstr ""
+"Çäütïön: Thésé fïlés wéré üplöädéd ßý änöthér çöürsé léärnér änd hävé nöt "
+"ßéén vérïfïéd, sçréénéd, äpprövéd, révïéwéd, ör éndörséd ßý thé sïté "
+"ädmïnïsträtör. Ìf ýöü äççéss thé fïlés, ýöü dö sö ät ýöür öwn rïsk.) Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρт#"
+
+#: templates/legacy/peer/oa_peer_assessment.html
+msgid "Assess Peers"
+msgstr "Àsséss Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
+#. 5 days and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
+#. and 45 minutes)"
+#: templates/legacy/peer/oa_peer_assessment.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/peer/oa_peer_assessment.html
+#, python-format
+msgid ""
+"\n"
+"                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"                "
+msgstr ""
+"\n"
+"                    Ìn Prögréss (%(review_number)s öf %(num_must_grade)s)\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+msgid "Read and assess the following response from one of your peers."
+msgstr ""
+"Réäd änd ässéss thé föllöwïng réspönsé fröm öné öf ýöür péérs. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/self/oa_self_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Associated Files"
+msgstr "Àssöçïätéd Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/self/oa_self_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "We could not submit your assessment"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/peer/oa_peer_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
+#: templates/legacy/self/oa_self_cancelled.html
+#: templates/legacy/student_training/student_training_cancelled.html
+msgid "Cancelled"
+msgstr "Çänçélléd Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/peer/oa_peer_closed.html
+#, python-format
+msgid ""
+"\n"
+"            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr ""
+"\n"
+"            Ìnçömplété (%(num_graded)s öf %(num_must_grade)s)\n"
+"         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/peer/oa_peer_closed.html
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete peer assessments or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr ""
+"Thé düé däté för thïs stép häs pässéd. Thïs stép ïs nöw çlöséd. Ýöü çän nö "
+"löngér çömplété péér ässéssménts ör çöntïnüé wïth thïs ässïgnmént, änd ýöü "
+"wïll réçéïvé ä grädé öf Ìnçömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя"
+" α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє "
+"мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ "
+"łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
+"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
+"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт#"
+
+#: templates/legacy/peer/oa_peer_complete.html
+msgid "Completed"
+msgstr "Çömplétéd Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
+msgid ""
+"You have successfully completed all of the required peer assessments for "
+"this assignment. You may assess additional peer responses if you want to. "
+"Completing additional assessments will not affect your final grade."
+msgstr ""
+"Ýöü hävé süççéssfüllý çömplétéd äll öf thé réqüïréd péér ässéssménts för "
+"thïs ässïgnmént. Ýöü mäý ässéss äddïtïönäl péér réspönsés ïf ýöü wänt tö. "
+"Çömplétïng äddïtïönäl ässéssménts wïll nöt äfféçt ýöür fïnäl grädé. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. є#"
+
+#: templates/legacy/peer/oa_peer_complete.html
+msgid "We could not retrieve additional submissions for assessment"
+msgstr ""
+"Wé çöüld nöt rétrïévé äddïtïönäl süßmïssïöns för ässéssmént Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/peer/oa_peer_complete.html
+msgid "Continue Assessing Peers"
+msgstr "Çöntïnüé Àsséssïng Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
+#, python-format
+msgid ""
+"\n"
+"        Complete (%(num_graded)s)\n"
+"      "
+msgstr ""
+"\n"
+"        Çömplété (%(num_graded)s)\n"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses."
+msgstr ""
+"Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf "
+"möré léärnérs hävé süßmïttéd réspönsés. Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/peer/oa_peer_unavailable.html
+#: templates/legacy/response/oa_response_unavailable.html
+#: templates/legacy/self/oa_self_unavailable.html
+#: templates/legacy/student_training/student_training_unavailable.html
+msgid "Not Available"
+msgstr "Nöt Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/peer/oa_peer_waiting.html
+#, python-format
+msgid ""
+"\n"
+"          In Progress (%(review_number)s of %(num_must_grade)s)\n"
+"        "
+msgstr ""
+"\n"
+"          Ìn Prögréss (%(review_number)s öf %(num_must_grade)s)\n"
+"         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/peer/oa_peer_waiting.html
+msgid ""
+"All available peer responses have been assessed. Check back later to see if "
+"more learners have submitted responses. You will receive your grade after "
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
+msgstr ""
+"Àll äväïläßlé péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf "
+"möré léärnérs hävé süßmïttéd réspönsés. Ýöü wïll réçéïvé ýöür grädé äftér "
+"ýöü'vé çömplétéd äll thé stéps för thïs prößlém änd ýöür péérs hävé ässésséd"
+" ýöür réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, "
+"ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм "
+"α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ "
+"єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє"
+" νєłιт#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Your Team's Response"
+msgstr "Ýöür Téäm's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/response/oa_response.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/response/oa_response.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/self/oa_self_assessment.html
+msgid "In Progress"
+msgstr "Ìn Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/response/oa_response.html
+msgid "Enter your team's response to the prompt."
+msgstr ""
+"Éntér ýöür téäm's réspönsé tö thé prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
+"                      "
+msgstr ""
+"\n"
+"                        Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé ßéföré thé düé däté\n"
+"                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time.\n"
+"                      "
+msgstr ""
+"\n"
+"                        Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé.\n"
+"                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"After you submit a response on behalf of your team, it cannot be edited."
+msgstr ""
+"Àftér ýöü süßmït ä réspönsé ön ßéhälf öf ýöür téäm, ït çännöt ßé édïtéd. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Enter your response to the prompt."
+msgstr ""
+"Éntér ýöür réspönsé tö thé prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé süßséçtïön düé däté  Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé çöürsé énds  Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé düé däté  Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time."
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/legacy/response/oa_response.html
+msgid "After you submit your response, you cannot edit it"
+msgstr ""
+"Àftér ýöü süßmït ýöür réspönsé, ýöü çännöt édït ït Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/response/oa_response.html
+msgid "What will this assignment be graded on?"
+msgstr ""
+"Whät wïll thïs ässïgnmént ßé grädéd ön? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/response/oa_response.html
+msgid "The prompt for this section"
+msgstr "Thé prömpt för thïs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/response/oa_response.html
+msgid "You are on team "
+msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Team Members: "
+msgstr "Téäm Mémßérs:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/response/oa_response.html
+#, python-format
+msgid ""
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              have/has already submitted a response to this assignment with another team,\n"
+"                                              and will not be a part of your team's submission or assignment grade.\n"
+"                                          "
+msgstr ""
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              hävé/häs älréädý süßmïttéd ä réspönsé tö thïs ässïgnmént wïth änöthér téäm,\n"
+"                                              änd wïll nöt ßé ä pärt öf ýöür téäm's süßmïssïön ör ässïgnmént grädé.\n"
+"                                           Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє є#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Team Response "
+msgstr "Téäm Réspönsé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Your Response "
+msgstr "Ýöür Réspönsé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/response/oa_response.html
+msgid "(Required)"
+msgstr "(Réqüïréd) Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/response/oa_response.html
+msgid "(Optional)"
+msgstr "(Öptïönäl) Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"\n"
+"                                              Teams should designate one team member to submit a response on behalf of the\n"
+"                                              entire team.  All team members can use this space to work on draft responses,\n"
+"                                              but you will not be able to see your teammates' drafts made in this space, so\n"
+"                                              please coordinate with them to decide on the final response the designated team\n"
+"                                              member should submit.\n"
+"                                          "
+msgstr ""
+"\n"
+"                                              Téäms shöüld désïgnäté öné téäm mémßér tö süßmït ä réspönsé ön ßéhälf öf thé\n"
+"                                              éntïré téäm.  Àll téäm mémßérs çän üsé thïs späçé tö wörk ön dräft réspönsés,\n"
+"                                              ßüt ýöü wïll nöt ßé äßlé tö séé ýöür téämmätés' dräfts mädé ïn thïs späçé, sö\n"
+"                                              pléäsé çöördïnäté wïth thém tö déçïdé ön thé fïnäl réspönsé thé désïgnätéd téäm\n"
+"                                              mémßér shöüld süßmït.\n"
+"                                          #"
+
+#: templates/legacy/response/oa_response.html
+msgid "Enter your response to the prompt above."
+msgstr ""
+"Éntér ýöür réspönsé tö thé prömpt äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/response/oa_response.html
+#, python-format
+msgid ""
+"\n"
+"                                      You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                      when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                      response and will receive the same grade for this assignment as your former teammates.\n"
+"                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                      receive a grade for their submission.\n"
+"                                  "
+msgstr ""
+"\n"
+"                                      Ýöü äré çürréntlý ön Téäm %(team_name)s. Sïnçé ýöü wéré ön Téäm %(previous_team_name)s\n"
+"                                      whén théý süßmïttéd ä réspönsé tö thïs ässïgnmént, ýöü äré sééïng Téäm %(previous_team_name)s’s\n"
+"                                      réspönsé änd wïll réçéïvé thé sämé grädé för thïs ässïgnmént äs ýöür förmér téämmätés.\n"
+"                                      Ýöü wïll nöt ßé pärt öf Téäm %(team_name)s’s süßmïssïön för thïs ässïgnmént änd wïll nöt\n"
+"                                      réçéïvé ä grädé för théïr süßmïssïön.\n"
+"                                  #"
+
+#: templates/legacy/response/oa_response.html
+msgid "We could not save your progress"
+msgstr "Wé çöüld nöt sävé ýöür prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Status of Your Response"
+msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "File Uploads "
+msgstr "Fïlé Ûplöäds  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"\n"
+"                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                  descriptions to your files to help your teammates identify them.\n"
+"                              "
+msgstr ""
+"\n"
+"                                  Ûplöäd fïlés änd révïéw fïlés üplöädéd ßý ýöü änd ýöür téämmätés ßélöw. Bé süré tö ädd\n"
+"                                  désçrïptïöns tö ýöür fïlés tö hélp ýöür téämmätés ïdéntïfý thém.\n"
+"                               Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт#"
+
+#: templates/legacy/response/oa_response.html
+msgid "We could not upload files"
+msgstr "Wé çöüld nöt üplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "We could not delete files"
+msgstr "Wé çöüld nöt délété fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Select one or more files to upload for this submission."
+msgstr ""
+"Séléçt öné ör möré fïlés tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Select a file to upload for this submission."
+msgstr ""
+"Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/response/oa_response.html
+msgid "Supported file types: "
+msgstr "Süppörtéd fïlé týpés:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Upload files"
+msgstr "Ûplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Upload file"
+msgstr "Ûplöäd fïlé Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/response/oa_response.html
+msgid "This is a team submission."
+msgstr "Thïs ïs ä téäm süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés änd ä "
+"téxt réspönsé ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés ön "
+"ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä téxt réspönsé ön ßéhälf öf thé éntïré téäm. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "One team member should submit on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/response/oa_response.html
+msgid ""
+"\n"
+"                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
+"                  "
+msgstr ""
+"\n"
+"                  Léärn möré äßöüt téäm ässïgnménts héré: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">lïnk</a>)\n"
+"                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/response/oa_response.html
+msgid "We could not submit your response"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/response/oa_response.html
+msgid "Submit your response and move to the next step"
+msgstr ""
+"Süßmït ýöür réspönsé änd mövé tö thé néxt stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/response/oa_response_cancelled.html
+msgid "Your submission was cancelled. "
+msgstr "Ýöür süßmïssïön wäs çänçélléd.  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/response/oa_response_cancelled.html
+#, python-format
+msgid ""
+"\n"
+"                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
+msgstr ""
+"\n"
+"                                Ýöür süßmïssïön häs ßéén çänçélléd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
+"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/response/oa_response_cancelled.html
+#, python-format
+msgid ""
+"\n"
+"                               Your submission was cancelled on %(removed_datetime)s\n"
+"                            "
+msgstr ""
+"\n"
+"                               Ýöür süßmïssïön wäs çänçélléd ön %(removed_datetime)s\n"
+"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/response/oa_response_cancelled.html
+#, python-format
+msgid ""
+"\n"
+"                            Comments: %(comments)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Çömménts: %(comments)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/response/oa_response_closed.html
+#: templates/legacy/self/oa_self_closed.html
+#: templates/legacy/student_training/student_training_closed.html
+msgid "Incomplete"
+msgstr "Ìnçömplété Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/legacy/response/oa_response_closed.html
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer submit a response or continue with this problem, and you will receive"
+" a grade of Incomplete. If you saved but did not submit a response, the "
+"response appears in the course records."
+msgstr ""
+"Thé düé däté för thïs stép häs pässéd. Thïs stép ïs nöw çlöséd. Ýöü çän nö "
+"löngér süßmït ä réspönsé ör çöntïnüé wïth thïs prößlém, änd ýöü wïll réçéïvé"
+" ä grädé öf Ìnçömplété. Ìf ýöü sävéd ßüt dïd nöt süßmït ä réspönsé, thé "
+"réspönsé äppéärs ïn thé çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂#"
+
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/self/oa_self_complete.html
+#: templates/legacy/student_training/student_training_complete.html
+msgid "Complete"
+msgstr "Çömplété Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/self/oa_self_assessment.html
+msgid "Your response"
+msgstr "Ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
+msgid "Your Uploaded Files"
+msgstr "Ýöür Ûplöädéd Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/response/oa_response_submitted.html
+msgid ""
+"Your response has been submitted. You will receive your grade after all "
+"steps are complete and your response is fully assessed."
+msgstr ""
+"Ýöür réspönsé häs ßéén süßmïttéd. Ýöü wïll réçéïvé ýöür grädé äftér äll "
+"stéps äré çömplété änd ýöür réspönsé ïs füllý ässésséd. Ⱡ'σяє#"
+
+#: templates/legacy/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(peer_start_tag)spéér ässéssmént%(end_tag)s änd %(self_start_tag)ssélf ässéssmént%(end_tag)s stéps.\n"
+"                     Ⱡ#"
+
+#: templates/legacy/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(start_tag)spéér ässéssmént%(end_tag)s stép.\n"
+"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
+"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/response/oa_response_submitted.html
+msgid "We could not reset your response"
+msgstr ""
+"Wé çöüld nöt rését ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/response/oa_response_submitted.html
+msgid "Reset response and submit again"
+msgstr "Rését réspönsé änd süßmït ägäïn Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/response/oa_response_team_already_submitted.html
+msgid "Error"
+msgstr "Érrör Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/response/oa_response_team_already_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr ""
+"\n"
+"                            Ýöü jöïnéd Téäm %(team_name)s äftér théý süßmïttéd ä réspönsé för thïs ässïgnmént\n"
+"                            änd ýöü wïll nöt réçéïvé ä grädé för théïr réspönsé. Ýöü hävé älsö nöt prévïöüslý süßmïttéd\n"
+"                            ä réspönsé tö thïs ässïgnmént wïth änöthér téäm. Pléäsé çöntäçt çöürsé stäff tö dïsçüss ýöür\n"
+"                            öptïöns för thïs ässïgnmént.\n"
+"                        #"
+
+#: templates/legacy/self/oa_self_assessment.html
+msgid "Assess Your Response"
+msgstr "Àsséss Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/self/oa_self_assessment.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/self/oa_self_assessment.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"           "
+msgstr ""
+"\n"
+"               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/self/oa_self_assessment.html
+msgid "Submit your assessment"
+msgstr "Süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/self/oa_self_closed.html
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer complete a self assessment or continue with this assignment, and you "
+"will receive a grade of Incomplete."
+msgstr ""
+"Thé düé däté för thïs stép häs pässéd. Thïs stép ïs nöw çlöséd. Ýöü çän nö "
+"löngér çömplété ä sélf ässéssmént ör çöntïnüé wïth thïs ässïgnmént, änd ýöü "
+"wïll réçéïvé ä grädé öf Ìnçömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя"
+" α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє "
+"мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ "
+"łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
+"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
+"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂є#"
+
+#: templates/legacy/staff/oa_staff_grade.html xblock/grade_mixin.py
+msgid "Staff Grade"
+msgstr "Stäff Grädé Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Manage Individual Learners"
+msgstr "Mänägé Ìndïvïdüäl Léärnérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Manage Team Responses"
+msgstr "Mänägé Téäm Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "View Assignment Statistics"
+msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Demo the new Grading Experience"
+msgstr "Démö thé néw Grädïng Éxpérïénçé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "View ORA in Studio"
+msgstr "Vïéw ÖRÀ ïn Stüdïö Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Close"
+msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Manage Teams"
+msgstr "Mänägé Téäms Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Enter an individual learner's username or email"
+msgstr ""
+"Éntér än ïndïvïdüäl léärnér's üsérnämé ör émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Enter a team member's username or edX email"
+msgstr ""
+"Éntér ä téäm mémßér's üsérnämé ör édX émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Submit"
+msgstr "Süßmït Ⱡ'σяєм ιρѕυ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Response total"
+msgstr "Réspönsé tötäl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Location"
+msgstr "Löçätïön Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Learner Progress"
+msgstr "Léärnér Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Problem Step"
+msgstr "Prößlém Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Active Learners in Step"
+msgstr "Àçtïvé Léärnérs ïn Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Dates"
+msgstr "Dätés Ⱡ'σяєм ιρѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "Release Date"
+msgstr "Réléäsé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+msgid "N/A"
+msgstr "N/À Ⱡ'σяєм#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners.html
+msgid "Staff Assessment"
+msgstr "Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+msgid "Give this team a grade using the problem's rubric."
+msgstr ""
+"Gïvé thïs téäm ä grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+msgid "Give this learner a grade using the problem's rubric."
+msgstr ""
+"Gïvé thïs léärnér ä grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
+" αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        Réspönsé för: %(team_name)s wïth %(team_usernames)s\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(student_username)s\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        Réspönsé för: %(student_username)s\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "Learner Response"
+msgstr "Léärnér Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+msgid "The teams's response to the prompt above"
+msgstr ""
+"Thé téäms's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "The learner's response to the prompt above"
+msgstr ""
+"Thé léärnér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "Submit assessment"
+msgstr "Süßmït ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+msgid "Submit assessment and continue grading"
+msgstr ""
+"Süßmït ässéssmént änd çöntïnüé grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/staff_area/oa_staff_grade_learners_count.html
+#, python-format
+msgid ""
+"\n"
+"                %(ungraded)s Available and %(in_progress)s Checked Out\n"
+"            "
+msgstr ""
+"\n"
+"                %(ungraded)s Àväïläßlé änd %(in_progress)s Çhéçkéd Öüt\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "Override this learner's current grade using the problem's rubric."
+msgstr ""
+"Övérrïdé thïs léärnér's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "Override this team's current grade using the problem's rubric."
+msgstr ""
+"Övérrïdé thïs téäm's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+msgid "Team Response"
+msgstr "Téäm Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "The team's response to the prompt above"
+msgstr ""
+"Thé téäm's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                    Viewing learner: %(learner)s\n"
+"                "
+msgstr ""
+"\n"
+"                    Vïéwïng léärnér: %(learner)s\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr ""
+"\n"
+"                    Vïéwïng téäm: %(team)s\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Learner's Response"
+msgstr "Léärnér's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Team's Response"
+msgstr "Téäm's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Léärnér süßmïssïön rémövéd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed on %(removed_datetime)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Léärnér süßmïssïön rémövéd ön %(removed_datetime)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
+msgstr ""
+"\n"
+"                        Çömménts: %(comments)s\n"
+"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Peer Assessments for This Learner"
+msgstr ""
+"Péér Àsséssménts för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Peer Assessments Completed by This Learner"
+msgstr ""
+"Péér Àsséssménts Çömplétéd ßý Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Learner's Self Assessment"
+msgstr "Léärnér's Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Staff Assessment for This Learner"
+msgstr ""
+"Stäff Àsséssmént för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Staff Assessment for this Team"
+msgstr "Stäff Àsséssmént för thïs Téäm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Learner's Final Grade"
+msgstr "Léärnér's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Team's Final Grade"
+msgstr "Téäm's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Fïnäl grädé: %(points_earned)s öüt öf %(points_possible)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Final Grade Details"
+msgstr "Fïnäl Grädé Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                                        %(assessment_label)s - %(points)s point\n"
+"                                    "
+msgid_plural ""
+"\n"
+"                                        %(assessment_label)s - %(points)s points\n"
+"                                    "
+msgstr[0] ""
+"\n"
+"                                        %(assessment_label)s - %(points)s pöïnt\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+msgstr[1] ""
+"\n"
+"                                        %(assessment_label)s - %(points)s pöïnts\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Feedback Recorded"
+msgstr "Féédßäçk Réçördéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "The submission is waiting for assessments."
+msgstr ""
+"Thé süßmïssïön ïs wäïtïng för ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"The learner's submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr ""
+"Thé léärnér's süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé léärnér "
+"réçéïvés ä grädé öf zérö ünléss ýöü délété thé léärnér's stäté för thé "
+"prößlém tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
+msgstr ""
+"Thé téäm’s süßmïssïön häs ßéén rémövéd fröm grädïng. Thé téäm réçéïvés ä "
+"grädé öf zérö ünléss ýöü délété thé ä téäm mémßér’s stäté för thé prößlém tö"
+" ällöw thé téäm tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσ#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "The problem has not been started."
+msgstr ""
+"Thé prößlém häs nöt ßéén stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "The problem has not been completed."
+msgstr ""
+"Thé prößlém häs nöt ßéén çömplétéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Submit Assessment Grade Override"
+msgstr ""
+"Süßmït Àsséssmént Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Submit Team Grade Override"
+msgstr "Süßmït Téäm Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Unable to perform grade override"
+msgstr ""
+"Ûnäßlé tö pérförm grädé övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"Grades are frozen. Grades are automatically frozen 30 days after the course "
+"end date."
+msgstr ""
+"Grädés äré frözén. Grädés äré äütömätïçällý frözén 30 däýs äftér thé çöürsé "
+"énd däté. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to delete the learner’s state for this problem to "
+"allow them to resubmit."
+msgstr ""
+"Thïs süßmïssïön häs ßéén çänçélléd änd çännöt réçïévé ä grädé. Référ tö "
+"döçüméntätïön för höw tö délété thé léärnér’s stäté för thïs prößlém tö "
+"ällöw thém tö résüßmït. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg"
+" єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт"
+" єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт "
+"αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη "
+"νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
+"σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Remove Submission From Peer Grading"
+msgstr ""
+"Rémövé Süßmïssïön Fröm Péér Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Remove Team Submission from Grading"
+msgstr ""
+"Rémövé Téäm Süßmïssïön fröm Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Caution: This Action Cannot Be Undone"
+msgstr ""
+"Çäütïön: Thïs Àçtïön Çännöt Bé Ûndöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"Removing a learner's submission cannot be undone and should be done with "
+"caution."
+msgstr ""
+"Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
+"çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr ""
+"Rémövïng ä téäm's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
+"çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Comments:"
+msgstr "Çömménts: Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "Remove submission"
+msgstr "Rémövé süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/legacy/staff_area/oa_student_info.html
+msgid "A response was not found for this learner."
+msgstr ""
+"À réspönsé wäs nöt föünd för thïs léärnér. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+#, python-format
+msgid ""
+"\n"
+"                            Assessment %(assessment_num)s:\n"
+"                        "
+msgstr ""
+"\n"
+"                            Àsséssmént %(assessment_num)s:\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Assessment Details"
+msgstr "Àsséssmént Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Selected Option"
+msgstr "Séléçtéd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Feedback"
+msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
+msgid "Points Possible"
+msgstr "Pöïnts Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "Learn to Assess Responses"
+msgstr "Léärn tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: templates/legacy/student_training/student_training.html
+#, python-format
+msgid ""
+"\n"
+"                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
+"                  "
+msgstr ""
+"\n"
+"                      Ìn Prögréss (%(current_progress_num)s öf %(training_available_num)s)\n"
+"                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: templates/legacy/student_training/student_training.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: templates/legacy/student_training/student_training.html
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            "
+msgstr ""
+"\n"
+"            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
+msgid "Learning to Assess Responses"
+msgstr "Léärnïng tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/legacy/student_training/student_training.html
+msgid ""
+"Before you begin to assess your peers' responses, you'll learn how to "
+"complete peer assessments by reviewing responses that instructors have "
+"already assessed. If you select the same options for the response that the "
+"instructor selected, you'll move to the next step. If you don't select the "
+"same options, you'll review the response and try again."
+msgstr ""
+"Béföré ýöü ßégïn tö ässéss ýöür péérs' réspönsés, ýöü'll léärn höw tö "
+"çömplété péér ässéssménts ßý révïéwïng réspönsés thät ïnstrüçtörs hävé "
+"älréädý ässésséd. Ìf ýöü séléçt thé sämé öptïöns för thé réspönsé thät thé "
+"ïnstrüçtör séléçtéd, ýöü'll mövé tö thé néxt stép. Ìf ýöü dön't séléçt thé "
+"sämé öptïöns, ýöü'll révïéw thé réspönsé änd trý ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єι#"
+
+#: templates/legacy/student_training/student_training.html
+msgid ""
+"Your assessment differs from the instructor's assessment of this response. "
+"Review the response and consider why the instructor may have assessed it "
+"differently. Then, try the assessment again."
+msgstr ""
+"Ýöür ässéssmént dïfférs fröm thé ïnstrüçtör's ässéssmént öf thïs réspönsé. "
+"Révïéw thé réspönsé änd çönsïdér whý thé ïnstrüçtör mäý hävé ässésséd ït "
+"dïfféréntlý. Thén, trý thé ässéssmént ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "The response to the prompt above:"
+msgstr ""
+"Thé réspönsé tö thé prömpt äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "Selected Options Agree"
+msgstr "Séléçtéd Öptïöns Àgréé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "The option you selected is the option that the instructor selected."
+msgstr ""
+"Thé öptïön ýöü séléçtéd ïs thé öptïön thät thé ïnstrüçtör séléçtéd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/legacy/student_training/student_training.html
+msgid "Selected Options Differ"
+msgstr "Séléçtéd Öptïöns Dïffér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/legacy/student_training/student_training.html
+msgid ""
+"The option you selected is not the option that the instructor selected."
+msgstr ""
+"Thé öptïön ýöü séléçtéd ïs nöt thé öptïön thät thé ïnstrüçtör séléçtéd. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "We could not check your assessment"
+msgstr ""
+"Wé çöüld nöt çhéçk ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/legacy/student_training/student_training.html
+msgid "Compare your selections with the instructor's selections"
+msgstr ""
+"Çömpäré ýöür séléçtïöns wïth thé ïnstrüçtör's séléçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/legacy/student_training/student_training_closed.html
+msgid ""
+"The due date for this step has passed. This step is now closed. You can no "
+"longer continue with this assignment, and you will receive a grade of "
+"Incomplete."
+msgstr ""
+"Thé düé däté för thïs stép häs pässéd. Thïs stép ïs nöw çlöséd. Ýöü çän nö "
+"löngér çöntïnüé wïth thïs ässïgnmént, änd ýöü wïll réçéïvé ä grädé öf "
+"Ìnçömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ "
+"∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ "
+"мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ "
+"єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє "
+"νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
+
+#: templates/legacy/student_training/student_training_error.html
+msgid "Error Loading Learner Training Examples"
+msgstr ""
+"Érrör Löädïng Léärnér Träïnïng Éxämplés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/legacy/student_training/student_training_error.html
+msgid "The Learner Training Step of this assignment could not be loaded."
+msgstr ""
+"Thé Léärnér Träïnïng Stép öf thïs ässïgnmént çöüld nöt ßé löädéd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/openassessmentblock/base.html
+msgid "Loading Open Response Assessment..."
+msgstr ""
+"Löädïng Öpén Réspönsé Àsséssmént... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/grade_mixin.py xblock/leaderboard_mixin.py
+msgid "An unexpected error occurred."
+msgstr "Àn ünéxpéçtéd érrör öççürréd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: xblock/grade_mixin.py
+msgid "Peer Assessment"
+msgstr "Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: xblock/grade_mixin.py
+msgid "Self Assessment"
+msgstr "Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: xblock/grade_mixin.py
+msgid "Assessment feedback could not be saved."
+msgstr ""
+"Àsséssmént féédßäçk çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: xblock/grade_mixin.py
+msgid "Feedback saved."
+msgstr "Féédßäçk sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: xblock/grade_mixin.py xblock/grade_mixin.py
+msgid "Staff Comments"
+msgstr "Stäff Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: xblock/grade_mixin.py xblock/grade_mixin.py
+#, python-brace-format
+msgid "Peer {peer_index}"
+msgstr "Péér {peer_index} Ⱡ'σяєм ιρѕυм ∂#"
+
+#: xblock/grade_mixin.py
+msgid "Peer Comments"
+msgstr "Péér Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: xblock/grade_mixin.py
+msgid "Self Assessment Grade"
+msgstr "Sélf Àsséssmént Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/grade_mixin.py
+msgid "Your Self Assessment"
+msgstr "Ýöür Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/grade_mixin.py xblock/grade_mixin.py
+msgid "Your Comments"
+msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: xblock/grade_mixin.py
+msgid "Peer Mean Grade"
+msgstr "Péér Méän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: xblock/grade_mixin.py
+msgid "Peer Median Grade"
+msgstr "Péér Médïän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: xblock/grade_mixin.py
+msgid "Waiting for peer reviews"
+msgstr "Wäïtïng för péér révïéws Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: xblock/grade_mixin.py
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý ýöür Stäff Grädé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/grade_mixin.py
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý ýöür Sélf Àsséssmént. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/grade_mixin.py
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr ""
+"Ýöü hävé süççéssfüllý çömplétéd thïs prößlém änd réçéïvéd ä "
+"{earned_points}/{total_points}. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/grade_mixin.py
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr ""
+"Ýöü hävé nöt ýét réçéïvéd äll néçéssärý péér révïéws tö détérmïné ýöür fïnäl"
+" grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: xblock/grade_mixin.py
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé médïän sçöré öf ýöür Péér "
+"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: xblock/grade_mixin.py
+msgid ""
+"The grade for this problem is determined by the mean score of your Peer "
+"Assessments."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé méän sçöré öf ýöür Péér "
+"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: xblock/openassesment_template_mixin.py
+msgid "Peer Assessment Only"
+msgstr "Péér Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/openassesment_template_mixin.py
+msgid "Self Assessment Only"
+msgstr "Sélf Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/openassesment_template_mixin.py
+msgid "Staff Assessment Only"
+msgstr "Stäff Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/openassesment_template_mixin.py
+msgid "Self Assessment to Peer Assessment"
+msgstr ""
+"Sélf Àsséssmént tö Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/openassesment_template_mixin.py
+msgid "Self Assessment to Staff Assessment"
+msgstr ""
+"Sélf Àsséssmént tö Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/openassessmentblock.py
+msgid "You can't reset your submission."
+msgstr ""
+"Ýöü çän't rését ýöür süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: xblock/openassessmentblock.py
+msgid "The user does not exist."
+msgstr "Thé üsér döés nöt éxïst. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: xblock/openassessmentblock.py
+msgid "There is no submission to reset."
+msgstr ""
+"Théré ïs nö süßmïssïön tö rését. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: xblock/openassessmentblock.py
+msgid "Submission reset successfully."
+msgstr "Süßmïssïön rését süççéssfüllý. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: xblock/rubric_reuse_mixin.py
+msgid "You must specify a block id from which to copy a rubric."
+msgstr ""
+"Ýöü müst spéçïfý ä ßlöçk ïd fröm whïçh tö çöpý ä rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/rubric_reuse_mixin.py
+msgid "Invalid block id."
+msgstr "Ìnvälïd ßlöçk ïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: xblock/rubric_reuse_mixin.py
+#, python-brace-format
+msgid ""
+"No Open Response Assessment found in {course_id} with block id {block_id}"
+msgstr ""
+"Nö Öpén Réspönsé Àsséssmént föünd ïn {course_id} wïth ßlöçk ïd {block_id} "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "You do not have permission to schedule training"
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö sçhédülé träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "You do not have permission to reschedule tasks."
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö résçhédülé täsks. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "You do not have permission to access the ORA staff area"
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö äççéss thé ÖRÀ stäff äréä Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "You do not have permission to access ORA learner information."
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö äççéss ÖRÀ léärnér ïnförmätïön. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "You do not have permission to access ORA staff grading."
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö äççéss ÖRÀ stäff grädïng. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "Pending"
+msgstr "Péndïng Ⱡ'σяєм ιρѕυм #"
+
+#: xblock/staff_area_mixin.py
+msgid "Complete/Overwritten"
+msgstr "Çömplété/Övérwrïttén Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/staff_area_mixin.py
+msgid "Not applicable"
+msgstr "Nöt äpplïçäßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: xblock/staff_area_mixin.py
+msgid "Not submitted"
+msgstr "Nöt süßmïttéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: xblock/staff_area_mixin.py
+msgid "Submitted"
+msgstr "Süßmïttéd Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: xblock/staff_area_mixin.py
+msgid "Error getting learner information."
+msgstr ""
+"Érrör géttïng léärnér ïnförmätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/staff_area_mixin.py
+msgid "Error loading the checked out learner response."
+msgstr ""
+"Érrör löädïng thé çhéçkéd öüt léärnér réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "No other learner responses are available for grading at this time."
+msgstr ""
+"Nö öthér léärnér réspönsés äré äväïläßlé för grädïng ät thïs tïmé. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/staff_area_mixin.py
+msgid "Error getting staff grade information."
+msgstr ""
+"Érrör géttïng stäff grädé ïnförmätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: xblock/staff_area_mixin.py
+msgid "Error getting staff grade ungraded and checked out counts."
+msgstr ""
+"Érrör géttïng stäff grädé üngrädéd änd çhéçkéd öüt çöünts. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "Please enter valid reason to remove the submission."
+msgstr ""
+"Pléäsé éntér välïd réäsön tö rémövé thé süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid "Submission not found"
+msgstr "Süßmïssïön nöt föünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/staff_area_mixin.py
+msgid "Submission for team assignment has no associated team submission"
+msgstr ""
+"Süßmïssïön för téäm ässïgnmént häs nö ässöçïätéd téäm süßmïssïön Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/staff_area_mixin.py
+msgid ""
+"The learner submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr ""
+"Thé léärnér süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé léärnér "
+"réçéïvés ä grädé öf zérö ünléss ýöü délété thé léärnér's stäté för thé "
+"prößlém tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρ#"
+
+#: xblock/staff_area_mixin.py
+msgid ""
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete a team member’s state for the problem to "
+"allow the team to resubmit a response."
+msgstr ""
+"Thé téäm’s süßmïssïön häs ßéén rémövéd fröm grädïng. Thé téäm réçéïvés ä "
+"grädé öf zérö ünléss ýöü délété ä téäm mémßér’s stäté för thé prößlém tö "
+"ällöw thé téäm tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт,#"
+
+#: xblock/studio_mixin.py xblock/studio_mixin.py
+msgid "Error updating XBlock configuration"
+msgstr ""
+"Érrör üpdätïng XBlöçk çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/studio_mixin.py
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr ""
+"Érrör: Téxt Réspönsé änd Fïlé Ûplöäd Réspönsé çännöt ßöth ßé dïsäßléd Ⱡ'σяєм"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/studio_mixin.py
+msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
+"Érrör: Whén Téxt Réspönsé ïs dïsäßléd, Fïlé Ûplöäd Réspönsé müst ßé Réqüïréd"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: xblock/studio_mixin.py
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr ""
+"Érrör: Whén Fïlé Ûplöäd Réspönsé ïs dïsäßléd, Téxt Réspönsé müst ßé Réqüïréd"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: xblock/studio_mixin.py
+#, python-brace-format
+msgid "Validation error: {error}"
+msgstr "Välïdätïön érrör: {error} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/studio_mixin.py
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr ""
+"Süççéssfüllý üpdätéd ÖpénÀsséssmént XBlöçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: xblock/utils/data_conversion.py
+msgid "You must provide options selected in the assessment."
+msgstr ""
+"Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/data_conversion.py
+msgid "You must provide overall feedback in the assessment."
+msgstr ""
+"Ýöü müst prövïdé övéräll féédßäçk ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/data_conversion.py
+msgid "You must provide feedback for criteria in the assessment."
+msgstr ""
+"Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr ""
+"'{date}' ïs än ïnvälïd däté förmät. Mäké süré thé däté ïs förmättéd äs ÝÝÝÝ-"
+"MM-DDTHH:MM:SS. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr ""
+"'{date}' müst ßé ä däté strïng ör dätétïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr ""
+"Thïs stép's stärt däté '{start}' çännöt ßé éärlïér thän thé prévïöüs stép's "
+"stärt däté '{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr ""
+"Thïs stép's düé däté '{due}' çännöt ßé lätér thän thé néxt stép's düé däté "
+"'{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr ""
+"Thé stärt däté '{start}' çännöt ßé lätér thän thé düé däté '{due}' Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "This problem must include at least one assessment."
+msgstr ""
+"Thïs prößlém müst ïnçlüdé ät léäst öné ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "The assessment order you selected is invalid."
+msgstr ""
+"Thé ässéssmént ördér ýöü séléçtéd ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr ""
+"Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé ä pösïtïvé ïntégér. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr ""
+"Ìn péér ässéssmént, thé \"Grädéd Bý\" välüé müst ßé ä pösïtïvé ïntégér. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr ""
+"Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé gréätér thän ör éqüäl "
+"tö thé \"Grädéd Bý\" välüé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: xblock/utils/validation.py
+msgid "You must provide at least one example response for learner training."
+msgstr ""
+"Ýöü müst prövïdé ät léäst öné éxämplé réspönsé för léärnér träïnïng. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "Each example response for learner training must be unique."
+msgstr ""
+"Éäçh éxämplé réspönsé för léärnér träïnïng müst ßé ünïqüé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "The \"required\" value must be true if staff assessment is the only step."
+msgstr ""
+"Thé \"réqüïréd\" välüé müst ßé trüé ïf stäff ässéssmént ïs thé önlý stép. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: xblock/utils/validation.py
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr ""
+"Thé nümßér öf ässéssménts çännöt ßé çhängéd äftér thé prößlém häs ßéén "
+"réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: xblock/utils/validation.py
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr ""
+"Thé ässéssmént týpé çännöt ßé çhängéd äftér thé prößlém häs ßéén réléäséd. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: xblock/utils/validation.py
+msgid ""
+"The grading strategy for peer assessments cannot be changed after the "
+"problem has been released."
+msgstr ""
+"Thé grädïng strätégý för péér ässéssménts çännöt ßé çhängéd äftér thé "
+"prößlém häs ßéén réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: xblock/utils/validation.py
+msgid "This rubric definition is not valid."
+msgstr ""
+"Thïs rüßrïç défïnïtïön ïs nöt välïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: xblock/utils/validation.py
+msgid "You must provide at least one prompt."
+msgstr ""
+"Ýöü müst prövïdé ät léäst öné prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: xblock/utils/validation.py
+#, python-brace-format
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr ""
+"Öptïöns ïn '{criterion}' hävé düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "Criteria with no options must require written feedback."
+msgstr ""
+"Çrïtérïä wïth nö öptïöns müst réqüïré wrïttén féédßäçk. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "Prompts cannot be created or deleted after a problem is released."
+msgstr ""
+"Prömpts çännöt ßé çréätéd ör délétéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr ""
+"Thé nümßér öf çrïtérïä çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr ""
+"Çrïtérïä nämés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "The number of options cannot be changed after a problem is released."
+msgstr ""
+"Thé nümßér öf öptïöns çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: xblock/utils/validation.py
+msgid "Point values cannot be changed after a problem is released."
+msgstr ""
+"Pöïnt välüés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "Learner training must have at least one training example."
+msgstr ""
+"Léärnér träïnïng müst hävé ät léäst öné träïnïng éxämplé. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
+msgid "Leaderboard number is invalid."
+msgstr "Léädérßöärd nümßér ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: xblock/utils/validation.py
+msgid "The submission format is invalid."
+msgstr ""
+"Thé süßmïssïön förmät ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"

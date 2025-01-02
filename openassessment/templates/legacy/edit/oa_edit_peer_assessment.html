@@ -1,0 +1,73 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+    <div class="drag-handle action"></div>
+
+    <div class="openassessment_inclusion_wrapper">
+        <input type="checkbox" id="include_peer_assessment"
+            {% if assessments.peer_assessment %} checked="true" {% endif %}>
+        <label for="include_peer_assessment">{% trans "Step: Peer Assessment" %}</label>
+    </div>
+
+    <div class="openassessment_assessment_module_editor">
+        <p class="openassessment_description">
+            {% trans "Peer Assessment allows students to provide feedback to other students and also receive feedback from others in their final grade. Often, though not always, this step is preceded by Self Assessment or Learner Training steps." %}
+        </p>
+        <p class="openassessment_description">
+            {% trans "Configuration: For this step to be configured you must specify the number of peer reviews a student will be assessed with, and the number of peer a student must grade. Additional options can be specified." %}
+        </p>
+        <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
+            <p class="openassessment_view_details">
+                <a id="peer_assessment_settings_editor_show_details" class="{% if not assessments.student_training %} is--hidden {% endif %}" href="#">
+                    {% trans "View Options & Configuration" %}
+                </a>
+            </p>
+            <ul id="peer_assessment_settings_editor_details" class="list-input settings-list {% if assessments.student_training %} is--hidden {% endif %}">
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_must_grade" class="setting-label">{% trans "Must Grade" %}</label>
+                        <input id="peer_assessment_must_grade" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_grade }}" min="1" max="99">
+                    </div>
+                    <p class="setting-help">{% trans "Specify the number of peer assessments that each learner must complete. Valid numbers are 1 to 99."%}</p>
+                </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_graded_by" class="setting-label"> {% trans "Graded By" %}</label>
+                        <input id="peer_assessment_graded_by" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_be_graded_by }}" min="1" max="99">
+                    </div>
+                    <p class="setting-help">{% trans "Specify the number of learners that each response must be assessed by. Valid numbers are 1 to 99."%}</p>
+                </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_enable_flexible_grading" class="setting-label">{% trans "Enable Flexible Peer Grade Averaging" %}</label>
+                        <select id="peer_assessment_enable_flexible_grading" class="input setting-input" {% if force_on_flexible_peer_openassessments %} disabled {% endif %}>
+                            <option value="0">{% trans "False" %}</option>
+                            <option value="1" {% if assessments.peer_assessment.enable_flexible_grading %}selected="true"{% endif %}>{% trans "True" %}</option>
+                        </select>
+                    </div>
+                    <p class="setting-help">{% trans "When enabled, learners who have received at least 30% of the required \"Graded By\" peer reviews and who have waited longer than 7 days for a peer review will be assigned a peer review grade using available peer reviews." %}</p>
+                    {% if force_on_flexible_peer_openassessments %}
+                        <p class="setting-help warning-banner">
+                            <span class="icon fa fa-exclamation-circle" area-hidden="false"></span>
+                            {% trans "This feature is being enabled by the course-level setting. It can be found under the Open Response Assessment Settings card on the Pages & Resources studio page." %}
+                        </p>
+                    {% endif %}
+                </li>
+                {% if enable_peer_configurable_grading %}
+                    <li class="field comp-setting-entry">
+                        <div class="wrapper-comp-setting">
+                            <label for="peer_assessment_grading_strategy" class="setting-label">{% trans "Grading strategy for the peer assessment" %}</label>
+                            <select id="peer_assessment_grading_strategy" class="input setting-input">
+                                <option value="mean" {% if assessments.peer_assessment.grading_strategy == 'mean' %}selected="true"{% endif %}>{% trans "Mean" %}</option>
+                                <option value="median" {% if assessments.peer_assessment.grading_strategy == 'median' %}selected="true"{% endif %}>{% trans "Median (default)" %}</option>
+                            </select>
+                        </div>
+                        <p class="setting-help">{% trans "Select the preferred grading strategy for the peer assessment. By default, the median across all peer reviews is used to calculate the final grade. If you select the mean, the average of all peer reviews will be used." %}</p>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</li>
+{% endspaceless %}

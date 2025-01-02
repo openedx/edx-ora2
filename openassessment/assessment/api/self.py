@@ -37,7 +37,7 @@ def submitter_is_finished(submission_uuid, self_requirements):  # pylint: disabl
     ).exists()
 
 
-def assessment_is_finished(submission_uuid, self_requirements):
+def assessment_is_finished(submission_uuid, self_requirements, _):
     """
     Check whether a self-assessment has been completed. For self-assessment,
     this function is synonymous with submitter_is_finished.
@@ -56,13 +56,14 @@ def assessment_is_finished(submission_uuid, self_requirements):
     return submitter_is_finished(submission_uuid, self_requirements)
 
 
-def get_score(submission_uuid, self_requirements):  # pylint: disable=unused-argument
+def get_score(submission_uuid, self_requirements, course_settings):  # pylint: disable=unused-argument
     """
     Get the score for this particular assessment.
 
     Args:
         submission_uuid (str): The unique identifier for the submission
         self_requirements (dict): Not used.
+        course_settings (dict): Not used.
     Returns:
         A dictionary with the points earned, points possible, and
         contributing_assessments information, along with a None staff_id.
@@ -85,7 +86,7 @@ def get_score(submission_uuid, self_requirements):  # pylint: disable=unused-arg
     }
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         submission_uuid,
         user_id,
         options_selected,
@@ -178,7 +179,7 @@ def create_assessment(
 
 
 @transaction.atomic
-def _complete_assessment(
+def _complete_assessment(  # pylint: disable=too-many-positional-arguments
         submission_uuid,
         user_id,
         options_selected,

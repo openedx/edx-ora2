@@ -14,10 +14,10 @@ from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.utils.data_conversion import create_submission_dict
+from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 
-from .user_data import get_user_preferences
+from .utils.user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -103,7 +103,7 @@ class StaffAreaMixin:
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_area/oa_staff_area.html'
+        path = 'legacy/staff_area/oa_staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -123,7 +123,7 @@ class StaffAreaMixin:
         context['prompts_type'] = self.prompts_type
 
         # Include release/due dates for each step in the problem
-        context['step_dates'] = list()
+        context['step_dates'] = []
         for step in ['submission'] + self.assessment_steps:
 
             # Get the dates as a student would see them
@@ -140,6 +140,15 @@ class StaffAreaMixin:
         staff_assessment_required = "staff-assessment" in self.assessment_steps
         context['staff_assessment_required'] = staff_assessment_required
         if staff_assessment_required:
+            # TODO: Remove in AU-617
+            if self.is_team_assignment():
+                context['is_enhanced_staff_grader_enabled'] = False
+            else:
+                context['is_enhanced_staff_grader_enabled'] = self.is_enhanced_staff_grader_enabled
+
+            esg_url = getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', None)
+            context['enhanced_staff_grader_url'] = f'{esg_url}/{str(self.get_xblock_id())}' if esg_url else None
+
             context.update(
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
@@ -190,7 +199,7 @@ class StaffAreaMixin:
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import staff as staff_api
         from openassessment.workflow.api import get_workflows_for_status
-        from openassessment.data import OraAggregateData
+        from openassessment.data import map_anonymized_ids_to_usernames
 
         # Retrieve all items in the `waiting` and `done` steps
         workflows_waiting = get_workflows_for_status(
@@ -209,8 +218,7 @@ class StaffAreaMixin:
             peer_step_config.get('must_be_graded_by'),
         )
         # Get external_id to username map
-        # pylint: disable=protected-access
-        username_map = OraAggregateData._map_anonymized_ids_to_usernames(
+        username_map = map_anonymized_ids_to_usernames(
             [item['student_id'] for item in waiting_student_list]
         )
 
@@ -285,6 +293,33 @@ class StaffAreaMixin:
 
         return Response(json_body=waiting_step_data)
 
+    @staticmethod
+    def get_user_submission(submission_uuid):
+        """
+        Return the most recent submission by user in workflow
+
+        Return the most recent submission.  If no submission is available,
+        return None. All submissions are preserved, but only the most recent
+        will be returned in this function, since the active workflow will only
+        be concerned with the most recent submission.
+
+        NOTE that this doesn't do any access checking, so is only appropriate
+
+        Args:
+            submission_uuid (str): The uuid for the submission to retrieve.
+
+        Returns:
+            (dict): A dictionary representation of a submission to render to
+                the front end.
+        """
+        # Import is placed here to avoid model import at project startup.
+        from submissions import api
+        try:
+            return api.get_submission(submission_uuid)
+        except api.SubmissionRequestError:
+            # This error is actually ok.
+            return None
+
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
     def render_student_info(self, data, suffix=''):  # pylint: disable=W0613
@@ -344,7 +379,7 @@ class StaffAreaMixin:
                         self.add_team_submission_context(
                             submission_context, individual_submission_uuid=submission['uuid'], transform_usernames=True
                         )
-                    path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
+                    path = 'legacy/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._("Error loading the checked out learner response."))
             return self.render_error(self._("No other learner responses are available for grading at this time."))
@@ -366,7 +401,7 @@ class StaffAreaMixin:
                 student_item_dict.get('course_id'), student_item_dict.get('item_id')
             )
 
-            path = 'openassessmentblock/staff_area/oa_staff_grade_learners_count.html'
+            path = 'legacy/staff_area/oa_staff_grade_learners_count.html'
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
@@ -478,7 +513,7 @@ class StaffAreaMixin:
                     # A student outside of the course will not exist and is valid
                     pass
 
-        path = 'openassessmentblock/staff_area/oa_student_info.html'
+        path = 'legacy/staff_area/oa_student_info.html'
         return path, context
 
     def add_submission_context(self, submission_uuid, context):
@@ -517,7 +552,11 @@ class StaffAreaMixin:
             peer_assessments = peer_api.get_assessments(submission_uuid)
             submitted_assessments = peer_api.get_submitted_assessments(submission_uuid)
             if grade_exists:
-                peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
+                peer_api.get_score(
+                    submission_uuid,
+                    self.workflow_requirements()["peer"],
+                    self.get_course_workflow_settings()
+                )
                 peer_assessments_grade_context = [
                     self._assessment_grade_context(peer_assessment)
                     for peer_assessment in peer_assessments
@@ -597,6 +636,7 @@ class StaffAreaMixin:
                     clear_state=True
                 )
 
+    # pylint: disable=too-many-positional-arguments
     def clear_team_state(self, user_id, course_id, item_id, requesting_user_id, submissions):
         """
         This is called from clear_student_state (which is called from the LMS runtime) when the xblock is a team
@@ -697,6 +737,7 @@ class StaffAreaMixin:
         from openassessment.workflow import api as workflow_api
         try:
             assessment_requirements = self.workflow_requirements()
+            course_settings = self.get_course_workflow_settings()
             if requesting_user_id is None:
                 # The student_id is actually the bound user, which is the staff user in this context.
                 requesting_user_id = self.get_student_item_dict()["student_id"]
@@ -704,7 +745,8 @@ class StaffAreaMixin:
             workflow_api.cancel_workflow(
                 submission_uuid=submission_uuid, comments=comments,
                 cancelled_by_id=requesting_user_id,
-                assessment_requirements=assessment_requirements
+                assessment_requirements=assessment_requirements,
+                course_settings=course_settings,
             )
             return {
                 "success": True,

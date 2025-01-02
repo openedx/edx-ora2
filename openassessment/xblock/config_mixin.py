@@ -2,12 +2,10 @@
 Mixin for determining configuration and feature-toggle state relevant to an ORA block.
 """
 
-
-from edx_django_utils.monitoring import set_custom_attribute
-from edx_toggles.toggles import WaffleSwitch
-
 from django.conf import settings
 from django.utils.functional import cached_property
+from edx_toggles.toggles import WaffleSwitch
+from openassessment.runtime_imports.classes import import_course_waffle_flag, import_waffle_flag
 
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
@@ -16,42 +14,20 @@ TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 RUBRIC_REUSE = 'rubric_reuse'
 ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
+MFE_VIEWS = 'mfe_views'
+SELECTABLE_LEARNER_WAITING_REVIEW = 'selectable_learner_waiting_review'
+ENABLE_PEER_CONFIGURABLE_GRADING = 'peer_configurable_grading'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
+    MFE_VIEWS: 'ENABLE_ORA_MFE_VIEWS',
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
-    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER'
+    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER',
+    SELECTABLE_LEARNER_WAITING_REVIEW: 'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW',
+    ENABLE_PEER_CONFIGURABLE_GRADING: 'ENABLE_ORA_PEER_CONFIGURABLE_GRADING',
 }
-
-
-def import_waffle_switch():
-    """
-    Helper method that imports WaffleSwitch from edx-platform at runtime.
-    WARNING: This method is now deprecated and should not be relied upon.
-    """
-    set_custom_attribute("deprecated_edx_ora2", "import_waffle_switch")
-    return WaffleSwitch
-
-
-def import_course_waffle_flag():
-    """
-    Helper method that imports CourseWaffleFlag from edx-platform at runtime.
-    https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/waffle_utils/__init__.py#L345
-    """
-    # pylint: disable=import-error
-    from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag
-    return CourseWaffleFlag
-
-
-def import_waffle_flag():
-    """
-    Helper method that imports WaffleFlag from edx_toggles at runtime.
-    """
-    # pylint: disable=import-error
-    from edx_toggles.toggles import WaffleFlag
-    return WaffleFlag
 
 
 class ConfigMixin:
@@ -75,7 +51,7 @@ class ConfigMixin:
         """
         CourseWaffleFlag = import_course_waffle_flag()  # pylint: disable=invalid-name
         # pylint: disable=toggle-missing-annotation
-        return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name, module_name=__name__)
+        return CourseWaffleFlag(f"{WAFFLE_NAMESPACE}.{flag_name}", module_name=__name__)
 
     @staticmethod
     def _waffle_flag(flag_name):
@@ -120,6 +96,13 @@ class ConfigMixin:
         return False
 
     @cached_property
+    def mfe_views_enabled(self):
+        """
+        Returns a boolean specifying if mfe views are enabled.
+        """
+        return self.is_feature_enabled(MFE_VIEWS)
+
+    @cached_property
     def team_submissions_enabled(self):
         """
         Returns a boolean specifying if the team submission is enabled.
@@ -152,7 +135,7 @@ class ConfigMixin:
         #     in mobile apps.
         # .. toggle_use_cases: open_edx
         # .. toggle_creation_date: 2020-10-14
-        # .. toggle_tickets: https://github.com/edx/edx-ora2/pull/1445
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/1445
         return settings.FEATURES.get('ENABLE_ORA_MOBILE_SUPPORT', False)
 
     @cached_property
@@ -183,3 +166,33 @@ class ConfigMixin:
         # .. toggle_creation_date: 2021-08-29
         # .. toggle_tickets: https://openedx.atlassian.net/browse/AU-50
         return self.is_feature_enabled(ENHANCED_STAFF_GRADER)
+
+    @cached_property
+    def is_selectable_learner_waiting_review_enabled(self):
+        """
+        Return a boolean indicating the selectable learner waiting review is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW']
+        # .. toggle_implementation: SettingToggle
+        # .. toggle_default: False
+        # .. toggle_description: Enable selectable learner in the waiting step list ORA2.
+        #     When enabled, it shows a checkbox to select a learner, and when a learner is chosen,
+        #     it shows a review button to see the details of a submission.
+        # .. toggle_use_cases: open_edx
+        # .. toggle_creation_date: 2024-02-09
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2025
+        return self.is_feature_enabled(SELECTABLE_LEARNER_WAITING_REVIEW)
+
+    @cached_property
+    def enable_peer_configurable_grading(self):
+        """
+        Return a boolean indicating the peer configurable grading feature is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_PEER_CONFIGURABLE_GRADING']
+        # .. toggle_implementation: SettingToggle
+        # .. toggle_default: False
+        # .. toggle_description: Enable configurable grading for peer review.
+        # .. toggle_use_cases: open_edx
+        # .. toggle_creation_date: 2024-03-25
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/2196
+        return self.is_feature_enabled(ENABLE_PEER_CONFIGURABLE_GRADING)

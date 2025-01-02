@@ -1,10 +1,10 @@
 """
 Handle OpenAssessment XBlock requests to the Workflow API.
 """
-
 from xblock.core import XBlock
 from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 
+from openassessment.assessment.api.peer import PeerGradingStrategy
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
 
@@ -71,7 +71,8 @@ class WorkflowMixin:
             requirements["peer"] = {
                 "must_grade": peer_assessment_module["must_grade"],
                 "must_be_graded_by": peer_assessment_module["must_be_graded_by"],
-                "enable_flexible_grading": peer_assessment_module.get("enable_flexible_grading", False)
+                "enable_flexible_grading": peer_assessment_module.get("enable_flexible_grading", False),
+                "grading_strategy": peer_assessment_module.get("grading_strategy", PeerGradingStrategy.MEDIAN),
             }
 
         training_module = self.get_assessment_module('student-training')
@@ -87,6 +88,23 @@ class WorkflowMixin:
             }
 
         return requirements
+
+    def get_course_workflow_settings(self):
+        """
+        Retrieve any course-level information that may be needed for workflow updates
+
+        Returns:
+        {
+            'force_on_flexible_peer_openassessments': (bool) the value of the field of the same name on the course
+        }
+        """
+        course_settings = {}
+        peer_assessment_module = self.get_assessment_module('peer-assessment')
+        if peer_assessment_module and self.course is not None:
+            course_settings['force_on_flexible_peer_openassessments'] = \
+                self.course.force_on_flexible_peer_openassessments
+
+        return course_settings
 
     def update_workflow_status(self, submission_uuid=None):
         """
@@ -109,7 +127,8 @@ class WorkflowMixin:
 
         if submission_uuid is not None:
             requirements = self.workflow_requirements()
-            workflow_api.update_from_assessments(submission_uuid, requirements)
+            course_settings = self.get_course_workflow_settings()
+            workflow_api.update_from_assessments(submission_uuid, requirements, course_settings)
 
     def get_workflow_info(self, submission_uuid=None):
         """
@@ -138,8 +157,11 @@ class WorkflowMixin:
 
         if submission_uuid is None:
             return {}
+
         return workflow_api.get_workflow_for_submission(
-            submission_uuid, self.workflow_requirements()
+            submission_uuid,
+            self.workflow_requirements(),
+            self.get_course_workflow_settings()
         )
 
     def get_submission_uuid(self):

@@ -2,28 +2,36 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import OrderedDict, defaultdict, namedtuple
+import csv
 from io import StringIO
+from itertools import chain
+import json
+import logging
+import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
-from itertools import chain
-import csv
-import json
-import os
-import logging
-import requests
+from typing import List, Set
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import CharField, F, OuterRef, Subquery
+from django.db.models import CharField, F, OuterRef, Subquery, QuerySet
 from django.db.models.functions import Coalesce
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+import requests
 
+from submissions.models import Submission
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.assessment.score_type_constants import score_type_to_string
+from openassessment.fileupload.exceptions import FileUploadInternalError
+from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
+from openassessment.runtime_imports.functions import get_course_blocks, modulestore
+from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
+
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +61,7 @@ def _use_read_replica(queryset):
     )
 
 
-def _get_course_blocks(course_id):
+def _get_course_blocks(course_id):  # pragma: no cover
     """
     Returns untransformed block structure for a given course key.
 
@@ -62,17 +70,81 @@ def _get_course_blocks(course_id):
     Returns:
         BlockStructureBlockData instance
     """
-
-    from lms.djangoapps.course_blocks.api import get_course_blocks  # pylint: disable=import-error
-    # pylint: disable=import-error
-    from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-    from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
-
+    BlockStructureTransformers = import_block_structure_transformers()
     store = modulestore()
     course_usage_key = store.make_course_usage_key(course_id)
 
     # Passing an empty block structure transformer here to avoid user access checks
     return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+
+
+def map_anonymized_ids_to_usernames(anonymized_ids):
+    """
+    Args:
+        anonymized_ids - list of anonymized user ids.
+    Returns:
+        dictionary, that contains mapping between anonymized user ids and
+        actual usernames.
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+        .values("username", "anonymous_id")
+    )
+
+    anonymous_id_to_username_mapping = {
+        user["anonymous_id"]: user["username"] for user in users
+    }
+
+    return anonymous_id_to_username_mapping
+
+
+def map_anonymized_ids_to_user_data(anonymized_ids: Set[str]) -> dict:
+    """
+    Map anonymized user IDs to user data.
+
+    Retrieves user data such as email, username, and fullname associated
+    with the provided anonymized user IDs.
+
+    Args:
+        anonymized_ids (Set[str]): Set of anonymized user ids.
+
+    Returns:
+        dict: A dictionary mapping anonymized user IDs to user data.
+            Each key is an anonymized user ID, and its corresponding
+            value is a dictionary containing:
+
+            - email (str): The email address of the user.
+            - username (str): The username of the user.
+            - fullname (str): The full name of the user.
+
+    Example:
+        {
+           "<anonymous_user_id>" : {
+               "email": "john@doe.com"
+               "username": "johndoe"
+               "fullname": "John Doe"
+            }
+        }
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .select_related("profile")
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+    ).values("username", "email", "profile__name", "anonymous_id")
+
+    anonymous_id_to_user_info_mapping = {
+        user["anonymous_id"]: {
+            "username": user["username"],
+            "email": user["email"],
+            "fullname": user["profile__name"]
+        } for user in users
+    }
+    return anonymous_id_to_user_info_mapping
 
 
 class CsvWriter:
@@ -171,7 +243,7 @@ class CsvWriter:
         """
         self._write_csv_headers()
 
-        rubric_points_cache = dict()
+        rubric_points_cache = {}
         feedback_option_set = set()
         for submission_uuid in self._submission_uuids(course_id):
             self._write_submission_to_csv(submission_uuid)
@@ -192,8 +264,9 @@ class CsvWriter:
             )
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
+                # pylint: disable=unnecessary-comprehension
                 feedback_option_set.update({
-                    option for option in assessment_feedback.options.all()  # pylint: disable=unnecessary-comprehension
+                    option for option in assessment_feedback.options.all()
                 })
 
             if self._progress_callback is not None:
@@ -391,30 +464,7 @@ class OraAggregateData:
     """
 
     @classmethod
-    def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
-        """
-        Args:
-            anonymized_ids - list of anonymized user ids.
-        Returns:
-            dictionary, that contains mapping between anonymized user ids and
-            actual usernames.
-        """
-        User = get_user_model()
-
-        users = _use_read_replica(
-            User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
-            .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
-            .values("username", "anonymous_id")
-        )
-
-        anonymous_id_to_username_mapping = {
-            user["anonymous_id"]: user["username"] for user in users
-        }
-
-        return anonymous_id_to_username_mapping
-
-    @classmethod
-    def _map_sudents_and_scorers_ids_to_usernames(cls, all_submission_information):
+    def _map_students_and_scorers_ids_to_usernames(cls, all_submission_information):
         """
         Args:
             all_submission_information - list of tuples with submission data,
@@ -438,7 +488,7 @@ class OraAggregateData:
             )
         )
 
-        return cls._map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
+        return map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
 
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):
@@ -466,7 +516,7 @@ class OraAggregateData:
         return block_display_name_map
 
     @classmethod
-    def _build_assessments_cell(cls, assessments, usernames_map):
+    def _build_assessments_cell(cls, assessments, usernames_map, scored_peer_assessment_ids=None):
         """
         Args:
             assessments (QuerySet) - assessments that we would like to collate into one column.
@@ -474,11 +524,14 @@ class OraAggregateData:
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
+        scored_peer_assessment_ids = scored_peer_assessment_ids or set()
         returned_string = ""
         for assessment in assessments:
             returned_string += f"Assessment #{assessment.id}\n"
             returned_string += f"-- scored_at: {assessment.scored_at}\n"
             returned_string += f"-- type: {assessment.score_type}\n"
+            if assessment.score_type == peer_api.PEER_TYPE:
+                returned_string += f'-- used to calculate peer grade: {assessment.id in scored_peer_assessment_ids}\n'
             if _usernames_enabled():
                 returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
@@ -528,7 +581,7 @@ class OraAggregateData:
                 option_label = part.option.label
                 option_points = part.option.points
 
-            criterion_col_label = _(u'Criterion {number}: {label}').format(number=number, label=part.criterion.label)
+            criterion_col_label = _('Criterion {number}: {label}').format(number=number, label=part.criterion.label)
             parts[criterion_col_label] = option_label or ''
             parts[_('Points {number}').format(number=number)] = option_points or 0
             parts[_('Median Score {number}').format(number=number)] = median_scores.get(part.criterion.name)
@@ -576,16 +629,12 @@ class OraAggregateData:
             string that contains newline-separated URLs to each of the files uploaded for this submission.
         """
         file_links = ''
-        sep = "\n"
         base_url = getattr(settings, 'LMS_ROOT_URL', '')
 
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
-        for url, _description, _filename, _show_delete in file_downloads:
-            if file_links:
-                file_links += sep
-            file_links += urljoin(base_url, url)
-        return file_links
+        file_links = [urljoin(base_url, file_download.get('download_url')) for file_download in file_downloads]
+        return "\n".join(file_links)
 
     @classmethod
     def collect_ora2_data(cls, course_id):
@@ -607,11 +656,16 @@ class OraAggregateData:
         usernames_enabled = _usernames_enabled()
 
         usernames_map = (
-            cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
+            cls._map_students_and_scorers_ids_to_usernames(all_submission_information)
             if usernames_enabled
             else {}
         )
         block_display_names_map = cls._map_block_usage_keys_to_display_names(course_id)
+
+        all_submission_uuids = [submission['uuid'] for _, submission, _ in all_submission_information]
+        all_scored_peer_assessment_ids = {
+            assessment.id for assessment in peer_api.get_bulk_scored_assessments(all_submission_uuids)
+        }
 
         rows = []
         for student_item, submission, score in all_submission_information:
@@ -622,7 +676,8 @@ class OraAggregateData:
                     submission_uuid=submission['uuid']
                 )
             )
-            assessments_cell = cls._build_assessments_cell(assessments, usernames_map)
+
+            assessments_cell = cls._build_assessments_cell(assessments, usernames_map, all_scored_peer_assessment_ids)
             assessments_parts_cell = cls._build_assessments_parts_cell(assessments)
             feedback_options_cell = cls._build_feedback_options_cell(assessments)
             feedback_cell = cls._build_feedback_cell(submission['uuid'])
@@ -783,13 +838,13 @@ class OraAggregateData:
             ]
             rows.append(row)
 
-        steps_headers = list(chain.from_iterable((
+        steps_headers = list(chain.from_iterable(
             (
-                "is_{}_complete".format(step),
-                "is_{}_graded".format(step),
+                f"is_{step}_complete",
+                f"is_{step}_graded",
             )
             for step in steps
-        )))
+        ))
 
         header = [
             'block_name',
@@ -964,14 +1019,15 @@ class OraDownloadData:
         where key is a string representation of ORA's usage key, and value is a dictionary with
         all information needed to build the submission file path.
         """
-
         blocks = _get_course_blocks(course_id)
+        logger.info("[%s] _get_course_blocks returned %d blocks", course_id, len(blocks))
 
         path_info = {}
 
         def children(usage_key, condition=None):
             # pylint: disable=filter-builtin-not-iterating
-            filtered = filter(condition, blocks.get_xblock_field(usage_key, 'children') or [])
+            child_blocks = blocks.get_children(usage_key)
+            filtered = filter(condition, child_blocks)
             for index, child in enumerate(filtered, 1):
                 yield index, blocks.get_xblock_field(child, 'display_name'), child
 
@@ -982,7 +1038,7 @@ class OraDownloadData:
             for sub_section_index, sub_section_name, sub_section in children(section):
                 for unit_index, unit_name, unit in children(sub_section):
                     for block_index, block_name, block in children(unit, only_ora_blocks):
-                        path_info[str(block)] = {
+                        ora_block_path_info = {
                             "section_index": section_index,
                             "section_name": section_name,
                             "sub_section_index": sub_section_index,
@@ -992,6 +1048,7 @@ class OraDownloadData:
                             "ora_index": block_index,
                             "ora_name": block_name,
                         }
+                        path_info[str(block)] = ora_block_path_info
 
         return path_info
 
@@ -1006,19 +1063,12 @@ class OraDownloadData:
         - edX username, if external ID is absent.
         - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
         """
-        # pylint: disable=import-error
-        from openedx.core.djangoapps.external_user_ids.models import ExternalId
-
-        # TODO: (AU-24) This seems like it should be used. Should this be in the filter?
-        # pylint: disable=unused-variable
         student_ids = [item[0]["student_id"] for item in all_submission_information]
         if not student_ids:
             return {}
-        course_id = all_submission_information[0][0]['course_id']
-        logger.info("[%s] Getting user model", course_id)
         User = get_user_model()
+        ExternalId = import_external_id()
 
-        logger.info("[%s] Loading users", course_id)
         users = _use_read_replica(
             User.objects.filter(
                 anonymoususerid__anonymous_user_id__in=student_ids,
@@ -1042,11 +1092,10 @@ class OraDownloadData:
             .values("student_id", "path_id")
         )
 
-        logger.info("[%s] Loaded %d users", course_id, users.count())
         return {user["student_id"]: user["path_id"] for user in users}
 
     @classmethod
-    def _submission_directory_name(
+    def _submission_directory_name(  # pylint: disable=too-many-positional-arguments
         cls,
         section_index,
         section_name,
@@ -1141,7 +1190,6 @@ class OraDownloadData:
             original_filename
         )
 
-        logger.info("Successfully loaded submission filepath for %s", student_id)
         return os.path.join(directory_name, submission_filename)
 
     @classmethod
@@ -1176,28 +1224,11 @@ class OraDownloadData:
         csvwriter = csv.DictWriter(csv_output_buffer, cls.SUBMISSIONS_CSV_HEADER, extrasaction='ignore')
         csvwriter.writeheader()
 
-        logger.info("Beginning writing to ZIP file")
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                file_info_string = (
-                    "Course Id: {course_id} | "
-                    "Block Id: {block_id} | "
-                    "Student Id: {student_id} | "
-                    "Key: {file_key} | "
-                    "Name: {file_name} | "
-                    "Type: {file_type}"
-                ).format(
-                    course_id=file_data['course_id'],
-                    block_id=file_data['block_id'],
-                    student_id=file_data['student_id'],
-                    file_key=file_data['key'],
-                    file_name=file_data['name'],
-                    file_type=file_data['type'],
-                )
-
-                logger.info("Processing file %s", file_info_string)
                 key = file_data['key']
                 file_path = file_data['file_path']
+                file_found = False
                 try:
                     file_content = (
                         cls._download_file_by_key(key)
@@ -1205,16 +1236,29 @@ class OraDownloadData:
                         else file_data['content']
                     )
                 except FileMissingException:
-                    file_found = False
                     # added a header to csv file to indicate that the file was found or not.
                     # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt
                     # to indicate the file error more clearly?
+                    file_info_string = (
+                        "Course Id: {course_id} | "
+                        "Block Id: {block_id} | "
+                        "Student Id: {student_id} | "
+                        "Key: {file_key} | "
+                        "Name: {file_name} | "
+                        "Type: {file_type}"
+                    ).format(
+                        course_id=file_data['course_id'],
+                        block_id=file_data['block_id'],
+                        student_id=file_data['student_id'],
+                        file_key=file_data['key'],
+                        file_name=file_data['name'],
+                        file_type=file_data['type'],
+                    )
                     logger.warning(
                         'File for submission could not be downloaded for ORA submission archive. %s',
                         file_info_string
                     )
                 else:
-                    logger.info("File found. Writing to zip file. %s", file_info_string)
                     file_found = True
                     zip_file.writestr(file_path, file_content)
                 finally:
@@ -1226,7 +1270,6 @@ class OraDownloadData:
             )
 
         file.seek(0)
-        logger.info("Completed writing zip file.")
         return True
 
     @classmethod
@@ -1235,7 +1278,6 @@ class OraDownloadData:
         Generator, that yields dictionaries with information about submission
         attachment or answer text.
         """
-        logger.info("[%s] collect_ora2_submission_files", course_id)
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
         logger.info(
             "[%s] Submission information loaded from submission API (len=%d)",
@@ -1259,37 +1301,9 @@ class OraDownloadData:
                 )
                 continue
 
-            logger.info(
-                "[%s] Collecting files for %s, submission %s ",
-                course_id,
-                student['student_id'],
-                submission.get('uuid')
-            )
-            raw_answer = submission.get('answer', dict())
-            logger.info(
-                "[%s] Parsing submission for %s, submission %s ",
-                course_id,
-                student['student_id'],
-                submission.get('uuid')
-            )
+            raw_answer = submission.get('answer', {})
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
-            logger.info(
-                "[%s] Successfully parsed submission for %s, submission %s. (Text responses = %d, file uploads = %d)",
-                course_id,
-                student['student_id'],
-                submission.get('uuid'),
-                len(answer.get_text_responses()),
-                len(answer.get_file_uploads()),
-            )
             for index, uploaded_file in enumerate(answer.get_file_uploads()):
-                logger.info(
-                    "[%s] %s, %s, file %d",
-                    course_id,
-                    student['student_id'],
-                    submission.get('uuid'),
-                    index,
-                )
-
                 yield {
                     'type': cls.ATTACHMENT,
                     'course_id': course_id,
@@ -1308,13 +1322,6 @@ class OraDownloadData:
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
-                logger.info(
-                    "[%s] %s, %s, text prompt %d",
-                    course_id,
-                    student['student_id'],
-                    submission.get('uuid'),
-                    index,
-                )
                 file_name = f'prompt_{index}.txt'
 
                 yield {
@@ -1359,11 +1366,13 @@ class SubmissionFileUpload:
 
     DEFAULT_DESCRIPTION = _("No description provided.")
 
-    def __init__(self, key, name=None, description=None, size=0):
+    # pylint: disable=too-many-positional-arguments
+    def __init__(self, key, name=None, description=None, size=0, url=None):
         self.key = key
         self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
         self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
         self.size = size
+        self.url = url
 
     @staticmethod
     def generate_name_from_key(key):
@@ -1411,7 +1420,7 @@ class OraSubmissionAnswer:
         """
         raise NotImplementedError()
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Get the list of FileUploads for this submission
         """
@@ -1437,7 +1446,7 @@ class TextOnlySubmissionAnswer(OraSubmissionAnswer):
             self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
         return self.text_responses
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         return []
 
 
@@ -1554,7 +1563,20 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         except IndexError:
             return default
 
-    def get_file_uploads(self, missing_blank=False):
+    def _safe_get_download_url(self, key):
+        """ Helper to get a download URL """
+        try:
+            return get_download_url(key)
+        except FileUploadInternalError as exc:
+            logger.exception(
+                "FileUploadError: Download url for file key %s failed with error %s",
+                key,
+                exc,
+                exc_info=True
+            )
+            return None
+
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Parse and cache file upload responses from the raw_answer
         """
@@ -1574,8 +1596,121 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
                 name = self._index_safe_get(i, file_names, default_missing_value)
                 description = self._index_safe_get(i, file_descriptions, default_missing_value)
                 size = self._index_safe_get(i, file_sizes, 0)
-
-                file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
+                url = None if not generate_urls else self._safe_get_download_url(key)
+                file_upload = SubmissionFileUpload(
+                    key,
+                    name=name,
+                    description=description,
+                    size=size,
+                    url=url
+                )
                 files.append(file_upload)
             self.file_uploads = files
         return self.file_uploads
+
+
+def parts_summary(assessment: Assessment) -> List[dict]:
+    """
+    Retrieves a summary of the parts from a given assessment object.
+
+    Args:
+        assessment (Asessment): Assessment object.
+
+    Returns:
+        List[dict]: A list containing assessment parts summary data dictionaries.
+    """
+    return [
+        {
+            "criterion_name": part.criterion.name,
+            "score_earned": part.points_earned,
+            "score_type": part.option.name if part.option else _("None"),
+        }
+        for part in assessment.parts.all()
+    ]
+
+
+def generate_assessment_data(assessments: QuerySet[Assessment]) -> List[dict]:
+    """
+    Creates the list of Assessment's data dictionaries.
+
+    Args:
+        assessments (QuerySet[Assessment]): Assessment objects queryset.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    # Fetch the user data we need in a single query
+    user_data_mapping = map_anonymized_ids_to_user_data(
+        {assessment.scorer_id for assessment in assessments}
+    )
+
+    # Prefetch the related data needed to generate this report
+    assessments = assessments.prefetch_related("parts").prefetch_related("rubric")
+
+    assessment_data_list = []
+    for assessment in assessments:
+
+        scorer = user_data_mapping.get(assessment.scorer_id, {})
+
+        assessment_data_list.append({
+            "assessment_id": str(assessment.pk),
+            "scorer_name": scorer.get("fullname") or "",
+            "scorer_username": scorer.get("username") or "",
+            "scorer_email": scorer.get("email") or "",
+            "assessment_date": str(assessment.scored_at),
+            "assessment_scores": parts_summary(assessment),
+            "problem_step": score_type_to_string(assessment.score_type),
+            "feedback": assessment.feedback or ""
+        })
+    return assessment_data_list
+
+
+def generate_assessment_from_data(submission_uuid: str) -> List[dict]:
+    """
+    Generates a list of assessments received by a user based
+    on the submission UUID in an ORA assignment.
+
+    Args:
+        submission_uuid (str): The UUID of the submission.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    assessments = _use_read_replica(
+        Assessment.objects.filter(submission_uuid=submission_uuid)
+    )
+    return generate_assessment_data(assessments)
+
+
+def generate_assessment_to_data(item_id: str, submission_uuid: str) -> List[dict]:
+    """
+    Generates a list of assessments given by a user based
+    on the item ID and submission UUID in an ORA assignment.
+
+    Args:
+        item_id (str): The ID of the item (block id)
+        submission_uuid (str): The UUID of the submission.
+
+    Returns:
+        List[dict]: A list containing assessment data dictionaries.
+    """
+    scorer_submission = sub_api.get_submission_and_student(submission_uuid)
+    if not scorer_submission:
+        return []
+
+    scorer_id = scorer_submission["student_item"]["student_id"]
+
+    submissions = _use_read_replica(
+        Submission.objects.filter(student_item__item_id=item_id).values("uuid")
+    )
+
+    if not submissions:
+        return []
+
+    submission_uuids = [sub["uuid"] for sub in submissions]
+
+    assessments_made_by_student = _use_read_replica(
+        Assessment.objects.filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
+    )
+
+    return generate_assessment_data(assessments_made_by_student)

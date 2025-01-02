@@ -1,0 +1,191 @@
+{% load i18n %}
+<ul id="oa_basic_settings_editor" class="list-input settings-list">
+    <li id="openassessment_title_editor_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_title_editor" class="setting-label">{% trans "Display Name "%}</label>
+            <input type="text" id="openassessment_title_editor" class="input setting-input" value="{{ title }}">
+        </div>
+        <p class="setting-help">{% trans "The display name for this component." %}</p>
+    </li>
+    <li id="openassessment_submission_text_response_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_submission_text_response" class="setting-label">{% trans "Text Response"%}</label>
+            <select id="openassessment_submission_text_response" class="input setting-input" name="text response">
+                {% for option_key, option_name in necessity_options.items %}
+                <option value="{{ option_key }}" {% if option_key == text_response %} selected="true" {% endif %}>{{ option_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Specify whether learners must include a text based response to this problem's prompt." %}
+        </p>
+    </li>
+    <li id="openassessment_submission_text_response_editor_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_submission_text_response_editor" class="setting-label">{% trans "Response Editor"%}</label>
+            <select id="openassessment_submission_text_response_editor" class="input setting-input" name="text response">
+                {% for option_key, option_name in available_editor_options.items %}
+                <option value="{{ option_key }}" {% if option_key == text_response_editor %} selected="true" {% endif %}>{{ option_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Select which editor learners will use to include a text based response to this problem's prompt." %}
+        </p>
+    </li>
+    <li id="openassessment_submission_file_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_submission_file_upload_response" class="setting-label">{% trans "File Uploads Response"%}</label>
+            <select id="openassessment_submission_file_upload_response" class="input setting-input" name="text response">
+                {% for option_key, option_name in necessity_options.items %}
+                <option value="{{ option_key }}" {% if option_key == file_upload_response %} selected="true" {% endif %}>{{ option_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Specify whether learners are able to upload files as a part of their response." %}
+        </p>
+        <div id="openassessment_submission_file_upload_type_wrapper" class="{% if not file_upload_response %}is--hidden{% endif %}">
+            <div class="wrapper-comp-setting">
+                <label for="openassessment_submission_nfile_editor" class="setting-label">{% trans "Allow Multiple Files"%}</label>
+                <select id="openassessment_submission_nfile_editor" class="input setting-input" name="multiple files submission" {% if teams_enabled %}disabled{% endif %} >
+                    <option value="0">{% trans "False"%}</option>
+                    <option value="1" {% if allow_multiple_files %} selected="true" {% endif %}>{% trans "True"%}</option>
+                </select>
+            </div>
+            <p class="setting-help">{% trans "Specify whether learners can upload more than one file. This has no effect if File Uploads Response is set to None. This is automatically set to True for Team Assignments. "%}</p>
+            <div class="wrapper-comp-setting">
+                <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "File Upload Types"%}</label>
+                <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
+                    <option value="pdf-and-image" {% if file_upload_type == "pdf-and-image" %} selected="true" {% endif %}>{% trans "PDF or Image Files"%}</option>
+                    <option value="image" {% if file_upload_type == "image" %} selected="true" {% endif %}>{% trans "Image Files"%}</option>
+                    <option value="custom" {% if file_upload_type == "custom" %} selected="true" {% endif %}>{% trans "Custom File Types"%}</option>
+                </select>
+            </div>
+            <p class="setting-help">
+                {% trans "Specify whether learners can submit files along with their text responses." %}
+            </p>
+            <div id="openassessment_submission_white_listed_file_types_wrapper">
+                <div class="wrapper-comp-setting">
+                    <label for="openassessment_submission_white_listed_file_types" class="setting-label">{% trans "File Types" %}</label>
+                    <input id="openassessment_submission_white_listed_file_types"
+                           class="input setting-input"
+                           type="text"
+                           value="{{ white_listed_file_types }}"
+                           {% if file_upload_type != "custom" %}disabled{% endif %}
+                            />
+                </div>
+                <p class="setting-help">
+                    {% trans "Enter the file extensions, separated by commas, that you want learners to be able to upload. For example: pdf,doc,docx." %}
+                </p>&nbsp;
+                <p class="setting-help message-status error is--hidden"></p>
+                <br />
+                <p class="setting-help warning-banner extension-warning {% if file_upload_type == "custom" %}is--hidden{% endif %}">
+                    {% trans "To add more file extensions, select Custom File Types and enter the full list of acceptable file extensions to be included." %}
+                </p>
+            </div>
+        </div>
+    </li>
+    <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_submission_latex_editor" class="setting-label">{% trans "Allow LaTeX Responses"%}</label>
+            <select id="openassessment_submission_latex_editor" class="input setting-input" name="latex submission">
+                <option value="0">{% trans "False"%}</option>
+                <option value="1" {% if allow_latex %} selected="true" {% endif %}>{% trans "True"%}</option>
+            </select>
+        </div>
+        <p class="setting-help">{% trans "Specify whether learners can write LaTeX formatted strings"%}</p>
+    </li>
+    <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
+      <div class="wrapper-comp-setting teams-enabled">
+        <label for="openassessment_leaderboard_editor" class="setting-label">
+          {% trans "Top Responses" %}
+          <span class="disabled-label {% if teams_enabled %}is--hidden{% endif %}">
+            {% trans " (Disabled)" %}
+          </span>
+        </label>
+        <input
+          id="openassessment_leaderboard_editor"
+          class="input setting-input"
+          type="number"
+          value="{{ leaderboard_show }}"
+          min="0" max="99"
+          {% if teams_enabled %}disabled{% endif %}
+        />
+      </div>
+      <p class="setting-help">
+        {% trans "Specify the number of top scoring responses to display after the learner has submitted a response. Valid numbers are 0 to 99. If the number is 0, the Top Responses section does not appear to learners." %}
+      </p>
+      <br />
+      <p class="setting-help warning-banner teams-warning {% if teams_enabled %}is--hidden{% endif %}">
+        <span class="icon fa fa-exclamation-circle" area-hidden="false"></span>
+        {% trans "When Teams Enabled is set to true, Top Responses will be disabled." %}
+      </p>
+    </li>
+    {% if teams_feature_enabled %}
+        <li id="openassessment_team_settings_wrapper" class="field comp-setting-entry">
+
+            <div class="wrapper-comp-setting">
+                <label for="" class="setting-label">{% trans "Teams Enabled"%}</label>
+                <select id="openassessment_team_enabled_selector" class="input setting-input" name="teams enabled">
+                    <option value="0">{% trans "False"%}</option>
+                    <option value="1" {% if teams_enabled %} selected="true" {% endif %}>{% trans "True"%}</option>
+                </select>
+            </div>
+            <p class="setting-help">
+                {% trans "Specify whether team submissions are allowed for this response." %}
+            </p>
+
+            <div id="openassessment_teamset_selection_wrapper" class="{% if not teams_enabled %}is--hidden{% endif %}">
+                <div class="wrapper-comp-setting">
+                    <label for="openassessment_teamset_selector" class="setting-label">{% trans "Select Team-Set"%}</label>
+                    <select id="openassessment_teamset_selector" class="input setting-input" name="teamset selection">
+                        {% for teamset in teamsets %}
+                            <option value='{{teamset.teamset_id}}' {% if selected_teamset_id == teamset.teamset_id %} selected="true" {% endif %}>{{teamset.name}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+        </li>
+    {% endif %}
+    <li id="openassessment_show_rubric_during_response_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_show_rubric_during_response_selector" class="setting-label">{% trans "Show Rubric During Response"%}</label>
+            <select id="openassessment_show_rubric_during_response_selector" class="input setting-input" name="show rubric during response">
+                <option value="0">{% trans "False"%}</option>
+                <option value="1" {% if show_rubric_during_response %} selected="true" {% endif %}>{% trans "True"%}</option>
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Specify whether learners can see the rubric while they are working on their response." %}
+        </p>
+    </li>
+    <li id="openassessment_allow_learner_resubmissions_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_allow_learner_resubmissions_selector" class="setting-label">{% trans "Allow Learner Resubmissions"%}</label>
+            <select id="openassessment_allow_learner_resubmissions_selector" class="input setting-input" name="allow learner resubmissions">
+                <option value="0">{% trans "False"%}</option>
+                <option value="1" {% if allow_learner_resubmissions %} selected="true" {% endif %}>{% trans "True"%}</option>
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Set to TRUE to allow learners to resubmit ungraded work. Set to FALSE if resubmissions are not allowed." %}
+        </p>
+        <div id="openassessment_resubmissions_grace_period_wrapper" class="{% if not allow_learner_resubmissions %}is--hidden{% endif %}">
+            <div class="wrapper-comp-setting">
+                <label for="openassessment_resubmissions_grace_period" class="setting-label">{% trans "Resubmission Grace Period" %}</label>
+                <input
+                    type="text"
+                    id="openassessment_resubmissions_grace_period"
+                    class="input setting-input"
+                    placeholder="dd:hh:mm"
+                    value="{{ resubmissions_grace_period }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "Specify the maximum period during which resubmissions are allowed. If left blank, learners will be able to reset their submission as long as it has not been graded. The grace period starts once the learner has submitted their response." %}</p>
+            <p class="setting-help message-status error is--hidden"></p>
+        </div>
+    </li>
+</ul>

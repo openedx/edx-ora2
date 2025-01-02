@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
-
+import os
+import re
 import os.path
 from io import open as open_as_of_py3
+import os.path
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 README = open_as_of_py3(
     os.path.join(os.path.dirname(__file__), 'README.rst')
@@ -34,28 +36,43 @@ def load_requirements(*requirements_paths):
     return list(requirements)
 
 
+def get_version(*file_paths):
+    """
+    Extract the version string from the file at the given relative path fragments.
+    """
+    filename = os.path.join(os.path.dirname(__file__), *file_paths)
+    version_file = open(filename).read()
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
+
+VERSION = get_version("openassessment", "__init__.py")
+
+
 setup(
     name='ora2',
-    version='3.6.22',
+    version=VERSION,
     author='edX',
     author_email='oscm@edx.org',
-    url='http://github.com/edx/edx-ora2',
+    url='http://github.com/openedx/edx-ora2',
     description='edx-ora2',
     license='AGPL',
     long_description=README,
     long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Framework :: Django :: 2.2',
+        'Framework :: Django :: 4.2',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     packages=find_packages(include=['openassessment*'], exclude=['*.test', '*.tests']),
     include_package_data=True,
-    # Todo - this should be loading 'requirements/base.in' but Tox is having an issue with it
     install_requires=load_requirements('requirements/base.in'),
     tests_require=load_requirements('requirements/test.in'),
     entry_points={

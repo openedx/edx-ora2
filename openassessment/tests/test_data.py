@@ -9,20 +9,22 @@ from io import StringIO, BytesIO, TextIOWrapper
 import json
 import os.path
 import zipfile
-from unittest.mock import call, Mock, patch
+from typing import List
+from unittest.mock import call, Mock, patch, MagicMock
 
 import ddt
 from freezegun import freeze_time
 
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
 from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
-    TextOnlySubmissionAnswer, FileMissingException
+    TextOnlySubmissionAnswer, FileMissingException, map_anonymized_ids_to_usernames, map_anonymized_ids_to_user_data,
+    generate_assessment_to_data, generate_assessment_from_data, generate_assessment_data, parts_summary,
 )
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
@@ -35,21 +37,41 @@ STUDENT_ID = "Student"
 
 STUDENT_USERNAME = "Student Username"
 
+STUDENT_EMAIL = "Student Email"
+
+STUDENT_FULL_NAME = "Student Full Name"
+
 PRE_FILE_SIZE_STUDENT_ID = "Pre_FileSize_Student"
 
 PRE_FILE_SIZE_STUDENT_USERNAME = 'Pre_FileSize_Student_Username'
+
+PRE_FILE_SIZE_STUDENT_EMAIL = 'Pre_FileSize_Student_Email'
+
+PRE_FILE_SIZE_STUDENT_FULL_NAME = 'Pre_FileSize_Student_Full_Name'
 
 PRE_FILE_NAME_STUDENT_ID = "Pre_FileName_Student"
 
 PRE_FILE_NAME_STUDENT_USERNAME = 'Pre_FileName_Student_Username'
 
+PRE_FILE_NAME_STUDENT_EMAIL = 'Pre_FileName_Student_Email'
+
+PRE_FILE_NAME_STUDENT_FULL_NAME = 'Pre_FileName_Student_Full_Name'
+
 SCORER_ID = "Scorer"
 
 SCORER_USERNAME = "Scorer Username"
 
+SCORER_EMAIL = "Scorer Email"
+
+SCORER_FULL_NAME = "Scorer Full Name"
+
 TEST_SCORER_ID = "Test Scorer"
 
 TEST_SCORER_USERNAME = "Test Scorer Username"
+
+TEST_SCORER_EMAIL = "Test Scorer Email"
+
+TEST_SCORER_FULL_NAME = "Test Scorer Full Name"
 
 USERNAME_MAPPING = {
     STUDENT_ID: STUDENT_USERNAME,
@@ -57,6 +79,22 @@ USERNAME_MAPPING = {
     TEST_SCORER_ID: TEST_SCORER_USERNAME,
     PRE_FILE_SIZE_STUDENT_ID: PRE_FILE_SIZE_STUDENT_USERNAME,
     PRE_FILE_NAME_STUDENT_ID: PRE_FILE_NAME_STUDENT_USERNAME,
+}
+
+USER_DATA_MAPPING = {
+    STUDENT_ID: {"username": STUDENT_USERNAME, "email": STUDENT_EMAIL, "fullname": STUDENT_FULL_NAME},
+    SCORER_ID: {"username": SCORER_USERNAME, "email": SCORER_EMAIL, "fullname": SCORER_FULL_NAME},
+    TEST_SCORER_ID: {"username": TEST_SCORER_USERNAME, "email": TEST_SCORER_EMAIL, "fullname": TEST_SCORER_FULL_NAME},
+    PRE_FILE_SIZE_STUDENT_ID: {
+        "username": PRE_FILE_SIZE_STUDENT_USERNAME,
+        "email": PRE_FILE_SIZE_STUDENT_EMAIL,
+        "fullname": PRE_FILE_SIZE_STUDENT_FULL_NAME,
+    },
+    PRE_FILE_NAME_STUDENT_ID: {
+        "username": PRE_FILE_NAME_STUDENT_USERNAME,
+        "email": PRE_FILE_NAME_STUDENT_EMAIL,
+        "fullname": PRE_FILE_NAME_STUDENT_FULL_NAME,
+    },
 }
 
 ITEM_ID = "item"
@@ -74,33 +112,33 @@ ITEM_PATH_INFO = {
     "ora_name": ITEM_DISPLAY_NAME,
 }
 
-STUDENT_ITEM = dict(
-    student_id=STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+STUDENT_ITEM = {
+    "student_id": STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-PRE_FILE_SIZE_STUDENT_ITEM = dict(
-    student_id=PRE_FILE_SIZE_STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+PRE_FILE_SIZE_STUDENT_ITEM = {
+    "student_id": PRE_FILE_SIZE_STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-PRE_FILE_NAME_STUDENT_ITEM = dict(
-    student_id=PRE_FILE_NAME_STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+PRE_FILE_NAME_STUDENT_ITEM = {
+    "student_id": PRE_FILE_NAME_STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-SCORER_ITEM = dict(
-    student_id=SCORER_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+SCORER_ITEM = {
+    "student_id": SCORER_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
 ITEM_DISPLAY_NAMES_MAPPING = {
     SCORER_ITEM['item_id']: ITEM_DISPLAY_NAME,
@@ -160,6 +198,10 @@ STEP_REQUIREMENTS = {
         "must_grade": 0,
         "must_be_graded_by": 1
     }
+}
+
+COURSE_SETTINGS = {
+    "force_on_flexible_peer_openassessments": False
 }
 
 
@@ -276,7 +318,7 @@ class CsvWriterTest(TransactionCacheResetTest):
             dict: map of output names to StringIO objects.
 
         """
-        output_streams = dict()
+        output_streams = {}
 
         for output_name in names:
             output_buffer = StringIO()
@@ -327,7 +369,11 @@ class TestOraAggregateData(TransactionCacheResetTest):
                 criterion_options.append(CriterionOptionFactory(criterion=criterion))
 
         assessment_options = assessment_options or {'scorer_id': TEST_SCORER_ID}
-        assessment_data = dict(rubric=rubric, feedback=feedback, **assessment_options)
+        assessment_data = {
+            "rubric": rubric,
+            "feedback": feedback,
+            **assessment_options
+        }
         assessment = AssessmentFactory(**assessment_data)
         for criterion, option in zip(criteria, criterion_options):
             AssessmentPartFactory(assessment=assessment, criterion=criterion, option=option, feedback=feedback)
@@ -335,21 +381,22 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
     def _assessment_cell(self, assessment, feedback=""):
         """ Build a string for the given assessment information. """
-        cell = "Assessment #{id}\n" \
-               "-- scored_at: {scored_at}\n" \
-               "-- type: {type}\n" \
-               "-- scorer_username: {scorer_username}\n" \
-               "-- scorer_id: {scorer_id}\n"\
-            .format(
-                id=assessment.id,
-                scored_at=assessment.scored_at,
-                type=assessment.score_type,
-                scorer_username=USERNAME_MAPPING[assessment.scorer_id],
-                scorer_id=assessment.scorer_id,
-            )
+        cell = [
+            f"Assessment #{assessment.id}",
+            f"-- scored_at: {assessment.scored_at}",
+            f"-- type: {assessment.score_type}",
+        ]
+        if assessment.score_type == peer_api.PEER_TYPE:
+            cell.append("-- used to calculate peer grade: False")
+
+        cell += [
+            f"-- scorer_username: {USERNAME_MAPPING[assessment.scorer_id]}",
+            f"-- scorer_id: {assessment.scorer_id}"
+        ]
         if feedback:
-            cell += f"-- overall_feedback: {feedback}\n"
-        return cell
+            cell.append(f"-- overall_feedback: {feedback}")
+
+        return "\n".join(cell) + "\n"
 
     def test_map_anonymized_ids_to_usernames(self):
         with patch('openassessment.data.get_user_model') as get_user_model_mock:
@@ -362,7 +409,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
             ]
 
             # pylint: disable=protected-access
-            mapping = OraAggregateData._map_anonymized_ids_to_usernames(
+            mapping = map_anonymized_ids_to_usernames(
                 [
                     STUDENT_ID,
                     PRE_FILE_SIZE_STUDENT_ID,
@@ -374,33 +421,82 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         self.assertEqual(mapping, USERNAME_MAPPING)
 
-    def test_map_sudents_and_scorers_ids_to_usernames(self):
+    def test_map_anonymized_ids_to_user_data(self):
+        with patch('openassessment.data.get_user_model') as get_user_model_mock:
+            get_user_model_mock.return_value.objects.filter.return_value \
+                .select_related.return_value.annotate.return_value.values.return_value = [
+                    {
+                        'anonymous_id': STUDENT_ID,
+                        'username': STUDENT_USERNAME,
+                        'email': STUDENT_EMAIL,
+                        'profile__name': STUDENT_FULL_NAME,
+                    },
+                    {
+                        'anonymous_id': PRE_FILE_SIZE_STUDENT_ID,
+                        'username': PRE_FILE_SIZE_STUDENT_USERNAME,
+                        'email': PRE_FILE_SIZE_STUDENT_EMAIL,
+                        'profile__name': PRE_FILE_SIZE_STUDENT_FULL_NAME,
+                    },
+                    {
+                        'anonymous_id': PRE_FILE_NAME_STUDENT_ID,
+                        'username': PRE_FILE_NAME_STUDENT_USERNAME,
+                        'email': PRE_FILE_NAME_STUDENT_EMAIL,
+                        'profile__name': PRE_FILE_NAME_STUDENT_FULL_NAME,
+                    },
+                    {
+                        'anonymous_id': SCORER_ID,
+                        'username': SCORER_USERNAME,
+                        'email': SCORER_EMAIL,
+                        'profile__name': SCORER_FULL_NAME,
+                    },
+                    {
+                        'anonymous_id': TEST_SCORER_ID,
+                        'username': TEST_SCORER_USERNAME,
+                        'email': TEST_SCORER_EMAIL,
+                        'profile__name': TEST_SCORER_FULL_NAME,
+                    },
+                ]
+
+            # pylint: disable=protected-access
+            mapping = map_anonymized_ids_to_user_data(
+                [
+                    STUDENT_ID,
+                    PRE_FILE_SIZE_STUDENT_ID,
+                    PRE_FILE_NAME_STUDENT_ID,
+                    SCORER_ID,
+                    TEST_SCORER_ID,
+                ]
+            )
+
+        self.assertEqual(mapping, USER_DATA_MAPPING)
+
+    def test_map_students_and_scorers_ids_to_usernames(self):
         test_submission_information = [
             (
-                dict(
-                    student_id=STUDENT_ID,
-                    course_id=COURSE_ID,
-                    item_id="some_id",
-                    item_type="openassessment",
-                ),
+                {
+                    "student_id": STUDENT_ID,
+                    "course_id": COURSE_ID,
+                    "item_id": "some_id",
+                    "item_type": "openassessment",
+                },
                 sub_api.create_submission(STUDENT_ITEM, ANSWER),
                 (),
             ),
             (
-                dict(
-                    student_id=SCORER_ID,
-                    course_id=COURSE_ID,
-                    item_id="some_id",
-                    item_type="openassessment",
-                ),
+                {
+                    "student_id": SCORER_ID,
+                    "course_id": COURSE_ID,
+                    "item_id": "some_id",
+                    "item_type": "openassessment",
+                },
                 sub_api.create_submission(SCORER_ITEM, ANSWER),
                 (),
             ),
         ]
 
-        with patch("openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames") as map_mock:
+        with patch("openassessment.data.map_anonymized_ids_to_usernames") as map_mock:
             # pylint: disable=protected-access
-            OraAggregateData._map_sudents_and_scorers_ids_to_usernames(
+            OraAggregateData._map_students_and_scorers_ids_to_usernames(
                 test_submission_information
             )
             map_mock.assert_called_once_with([STUDENT_ID, SCORER_ID])
@@ -424,6 +520,34 @@ class TestOraAggregateData(TransactionCacheResetTest):
         a2_cell = self._assessment_cell(assessment2, feedback="Test feedback")
 
         self.assertEqual(assessment_cell, a1_cell + a2_cell)
+
+    @ddt.data(True, False)
+    def test_build_assessments_cell__scored_peer_assessment(self, scored):
+        assessment1 = self.build_criteria_and_assessment_parts()
+        assessment2 = self.build_criteria_and_assessment_parts()
+        assert assessment1.score_type == peer_api.PEER_TYPE
+        assert assessment2.score_type == peer_api.PEER_TYPE
+
+        scored_peer_assessment_ids = {assessment1.id}
+        if scored:
+            scored_peer_assessment_ids.add(assessment2.id)
+
+        # pylint: disable=protected-access
+        assessment_cell = OraAggregateData._build_assessments_cell(
+            [assessment2],
+            USERNAME_MAPPING,
+            scored_peer_assessment_ids
+        )
+        assert f"used to calculate peer grade: {scored}" in assessment_cell
+
+    def test_build_assessments_cell__non_peer_assessment(self):
+        assessment = self.build_criteria_and_assessment_parts()
+        assessment.score_type = "XX"
+        assessment.save()
+
+        # pylint: disable=protected-access
+        assessment_cell = OraAggregateData._build_assessments_cell([assessment], USERNAME_MAPPING)
+        assert "used to calculate peer grade" not in assessment_cell
 
     def _assessment_part_cell(self, assessment_part, feedback=""):
         """ Build the string representing an assessment part. """
@@ -499,6 +623,26 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         self.assertEqual(feedback_cell, "")
 
+    @override_settings(LMS_ROOT_URL="https://example.com")
+    @patch('openassessment.xblock.openassessmentblock.OpenAssessmentBlock.get_download_urls_from_submission')
+    def test_build_response_file_links(self, mock_method):
+        """
+        Test _build_response_file_links method.
+
+        Ensures that the method returns the expected file links based on the given submission.
+        """
+        expected_result = "https://example.com/file1.pdf\nhttps://example.com/file2.png\nhttps://example.com/file3.jpeg"
+        file_downloads = [
+            {'download_url': '/file1.pdf'},
+            {'download_url': '/file2.png'},
+            {'download_url': '/file3.jpeg'},
+        ]
+        mock_method.return_value = file_downloads
+        # pylint: disable=protected-access
+        result = OraAggregateData._build_response_file_links('test submission')
+
+        self.assertEqual(result, expected_result)
+
 
 @ddt.ddt
 @patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
@@ -524,7 +668,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertEqual(self.assessment['parts'][0]['criterion']['label'], "criterion_1")
 
         sub_api.set_score(self.submission['uuid'], self.earned_points, self.possible_points)
-        peer_api.get_score(self.submission['uuid'], STEP_REQUIREMENTS['peer'])
+        peer_api.get_score(self.submission['uuid'], STEP_REQUIREMENTS['peer'], COURSE_SETTINGS)
         self._create_assessment_feedback(self.submission['uuid'])
 
     def _create_submission(self, student_item_dict, steps=None):
@@ -537,6 +681,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
+    # pylint: disable=too-many-positional-arguments
     def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids):
         """
         Create a team submission and initialize a team workflow
@@ -573,7 +718,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         feedback_dict = FEEDBACK_OPTIONS.copy()
         feedback_dict['submission_uuid'] = submission_uuid
         peer_api.set_assessment_feedback(feedback_dict)
-        workflow_api.update_from_assessments(submission_uuid, STEP_REQUIREMENTS)
+        workflow_api.update_from_assessments(submission_uuid, STEP_REQUIREMENTS, COURSE_SETTINGS)
         self.score = sub_api.get_score(STUDENT_ITEM)
 
     def _other_student(self, no_of_student):
@@ -589,9 +734,11 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         return ITEM_ID + '_' + str(no_of_student)
 
     def test_collect_ora2_data(self):
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
-            map_mock.return_value = USERNAME_MAPPING
-            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments') as mock_get_scored_assessments:
+                map_mock.return_value = USERNAME_MAPPING
+                mock_get_scored_assessments.return_value = {Mock(id=self.assessment['id'])}
+                headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [
             'Submission ID',
@@ -636,14 +783,14 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             STUDENT_ID,
             self.submission['submitted_at'],
             json.dumps(self.submission['answer']),
-            "Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
-                id=self.assessment['id'],
-                scored_at=self.assessment['scored_at'],
-            ) + "-- scorer_username: {scorer_username}\n".format(
-                scorer_username=USERNAME_MAPPING[self.assessment['scorer_id']]
-            ) + "-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
-                scorer_id=self.assessment['scorer_id'],
-                feedback=self.assessment['feedback']
+            (
+                f"Assessment #{self.assessment['id']}\n"
+                f"-- scored_at: {self.assessment['scored_at']}\n"
+                "-- type: PE\n"
+                "-- used to calculate peer grade: True\n"
+                f"-- scorer_username: {USERNAME_MAPPING[self.assessment['scorer_id']]}\n"
+                f"-- scorer_id: {self.assessment['scorer_id']}\n"
+                f"-- overall_feedback: {self.assessment['feedback']}\n"
             ),
             "Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
@@ -671,7 +818,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         """
 
         with patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False}):
-            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments', return_value=set()):
+                headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [
             'Submission ID',
@@ -713,12 +861,13 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             STUDENT_ID,
             self.submission['submitted_at'],
             json.dumps(self.submission['answer']),
-            "Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
-                id=self.assessment['id'],
-                scored_at=self.assessment['scored_at'],
-            ) + "-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
-                scorer_id=self.assessment['scorer_id'],
-                feedback=self.assessment['feedback']
+            (
+                f"Assessment #{self.assessment['id']}\n"
+                f"-- scored_at: {self.assessment['scored_at']}\n"
+                "-- type: PE\n"
+                "-- used to calculate peer grade: False\n"
+                f"-- scorer_id: {self.assessment['scorer_id']}\n"
+                f"-- overall_feedback: {self.assessment['feedback']}\n"
             ),
             "Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
@@ -756,9 +905,10 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = answer
         submission.save()
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
-            map_mock.return_value = USERNAME_MAPPING
-            _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments', return_value=set()):
+                map_mock.return_value = USERNAME_MAPPING
+                _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
 
     def test_collect_ora2_summary(self):
@@ -793,18 +943,18 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'peer',
             0,
             0,
-            u'',
-            u'',
+            '',
+            '',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             1,
             0,
             0,
             0,
-            u'',
-            u'',
+            '',
+            '',
         ])
 
         self.assertEqual(data[1], [
@@ -813,12 +963,12 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'done',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             0,
             1,
             0,
@@ -843,37 +993,37 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         student_model_1 = UserFactory.create()
         student_model_2 = UserFactory.create()
 
-        self._create_submission(dict(
-            student_id=STUDENT_ID,
-            course_id=COURSE_ID,
-            item_id=item_id2,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(
-            student_id=student_id2,
-            course_id=COURSE_ID,
-            item_id=item_id2,
-            item_type="openassessment"
-        ), STEPS)
+        self._create_submission({
+            "student_id": STUDENT_ID,
+            "course_id": COURSE_ID,
+            "item_id": item_id2,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id2,
+            "course_id": COURSE_ID,
+            "item_id": item_id2,
+            "item_type": "openassessment"
+        }, STEPS)
 
-        self._create_submission(dict(
-            student_id=STUDENT_ID,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(
-            student_id=student_id2,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(
-            student_id=student_id3,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), STEPS)
+        self._create_submission({
+            "student_id": STUDENT_ID,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id2,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id3,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, STEPS)
 
         self._create_team_submission(
             COURSE_ID,
@@ -954,8 +1104,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         rubric = RubricFactory()
         criteria = [CriterionFactory(rubric=rubric,
                                      order_num=n + 1,
-                                     name='Criteria {}'.format(n),
-                                     label='label_{}'.format(n))
+                                     name=f'Criteria {n}',
+                                     label=f'label_{n}')
                     for n in range(2)]
 
         assessments = []
@@ -963,22 +1113,22 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             criterion_options = [
                 CriterionOptionFactory(criterion=criterion,
                                        points=index,
-                                       name='Option {}'.format(n),
-                                       label='option_{}'.format(n))
+                                       name=f'Option {n}',
+                                       label=f'option_{n}')
                 for (n, criterion) in enumerate(criteria)
             ]
             assessment = TestOraAggregateData.build_criteria_and_assessment_parts(
                 feedback='feedback for {}'.format(STUDENT_ITEM['student_id']),
                 assessment_options={
                     'submission_uuid': submission_uuid,
-                    'scorer_id': 'test_scorer_{}'.format(index),
+                    'scorer_id': f'test_scorer_{index}',
                 },
                 criterion_options=criterion_options,
             )
             assessments.append(assessment)
 
         sub_api.set_score(submission_uuid, 9, 10)
-        peer_api.get_score(submission_uuid, {'must_be_graded_by': 1, 'must_grade': 0})
+        peer_api.get_score(submission_uuid, {'must_be_graded_by': 1, 'must_grade': 0}, {})
         self._create_assessment_feedback(submission_uuid)
 
         # Generate the assessment report
@@ -1551,7 +1701,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         ),
     )
     @ddt.unpack
-    def test_truncation_of_submission_filepath(
+    def test_truncation_of_submission_filepath(  # pylint: disable=too-many-positional-arguments
         self, section_name, sub_section_name, unit_name, file_name, username, file_path
     ):
         """
@@ -1818,3 +1968,271 @@ class ZippedListSubmissionAnswerTest(TestCase):
                 self.assertEqual(file_upload.name, submission_test_file_names[i])
             self.assertEqual(file_upload.description, submission_test_file_descriptions[i])
             self.assertEqual(file_upload.size, submission_test_file_sizes[i])
+
+
+class ListAssessmentsTest(TestCase):
+    """
+    Unit tests for functions related to `list_assessments_from` and `list_assessments_to` handlers
+    """
+
+    patch_submission_api = patch("openassessment.data.sub_api.get_submission_and_student")
+    patch_submissions = patch("openassessment.data.Submission.objects.filter")
+    patch_assessments = patch("openassessment.data.Assessment.objects.filter")
+    patch_users = patch("openassessment.data.get_user_model")
+
+    def setUp(self) -> None:
+        self.submission_uuid = "test_submission_uuid"
+        self.item_id = "test_item_id"
+        self.student_id = "test_student_id"
+
+    def mock_get_submission_and_student(self) -> dict:
+        """Mock the return value of `sub_api.get_submission_and_student`"""
+        return {"student_item": {"student_id": self.student_id}}
+
+    @staticmethod
+    def mock_submissions() -> List:
+        """Mock the return value of `Submission.objects.filter`"""
+        return [{"uuid": "uuid1"}, {"uuid": "uuid2"}]
+
+    @staticmethod
+    def mock_parts() -> List[Mock]:
+        """Mock the return value of `parts.all`"""
+        part1 = Mock()
+        part1.criterion.name = "Criterion 1"
+        part1.points_earned = 10
+        part1.option.name = "Good"
+
+        part2 = Mock()
+        part2.criterion.name = "Criterion 2"
+        part2.points_earned = 8
+        part2.option.name = "Excellent"
+        return [part1, part2]
+
+    def mock_assessments(self) -> List[Mock]:
+        """Mock the return value of `Assessment.objects.filter`"""
+        first_mock = Mock(
+            pk="assessment_id1",
+            scorer_id="anonymous_id1",
+            scored_at="2022-01-01",
+            score_type="PE",
+            feedback="Good job!",
+            parts=Mock(all=Mock(return_value=self.mock_parts())),
+        )
+        second_mock = Mock(
+            pk="assessment_id2",
+            scorer_id="anonymous_id2",
+            scored_at="2022-01-02",
+            score_type="SE",
+            feedback="",
+            parts=Mock(all=Mock(return_value=self.mock_parts())),
+        )
+        return [first_mock, second_mock]
+
+    @staticmethod
+    def mock_users() -> List[dict]:
+        """Mock the return value of `get_user_model().objects.filter().select_related().annotate().values`"""
+        return [
+            {
+                "username": "username1",
+                "email": "email1",
+                "profile__name": "profile_name1",
+                "anonymous_id": "anonymous_id1"
+            },
+            {
+                "username": "username2",
+                "email": "email2",
+                "profile__name": "profile_name2",
+                "anonymous_id": "anonymous_id2"
+            },
+        ]
+
+    @patch_users
+    @patch_assessments
+    @patch_submissions
+    @patch_submission_api
+    def test_generate_assessment_to_data(
+        self,
+        mock_submissions_api: Mock,
+        mock_submissions: Mock,
+        mock_assessments: Mock,
+        mock_users: Mock,
+    ):
+        """Test that `generate_assessment_to_data` returns the expected data"""
+        mock_submissions_api.return_value = self.mock_get_submission_and_student()
+        mock_submissions.return_value.values.return_value = self.mock_submissions()
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
+        mock_assessments.return_value = assessments
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+
+        results = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submissions_api.assert_called_once_with(self.submission_uuid)
+        mock_submissions.assert_called_once()
+        mock_assessments.assert_called_once()
+        mock_users.assert_called_once()
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 2)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    @patch_submission_api
+    def test_generate_assessment_to_data_no_scorer_submission(
+        self, mock_submission_api: Mock
+    ):
+        """
+        Test that `generate_assessment_to_data` returns an empty list when
+        there is no scorer submission
+        """
+        mock_submission_api.return_value = None
+
+        result = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submission_api.assert_called_once_with(self.submission_uuid)
+        self.assertEqual(result, [])
+
+    @patch_submissions
+    @patch_submission_api
+    def test_generate_assessment_to_data_no_submissions(
+        self, mock_submission_api: Mock, mock_submissions: Mock
+    ):
+        """
+        Test that `generate_assessment_to_data` returns an empty list when
+        there are no submissions
+        """
+        mock_submission_api.return_value = self.mock_get_submission_and_student()
+        mock_submissions.return_value.values.return_value = None
+
+        result = generate_assessment_to_data(self.item_id, self.submission_uuid)
+
+        mock_submission_api.assert_called_once_with(self.submission_uuid)
+        mock_submissions.assert_called_once()
+        self.assertEqual(result, [])
+
+    @patch_users
+    @patch_assessments
+    def test_generate_assessment_from_data(
+        self, mock_assessments: Mock, mock_users: Mock
+    ):
+        """Test that `generate_assessment_from_data` returns the expected data"""
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
+        mock_assessments.return_value = assessments
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+
+        results = generate_assessment_from_data(self.submission_uuid)
+
+        mock_assessments.assert_called_once()
+        mock_users.assert_called_once()
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 2)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    @patch_users
+    @patch_assessments
+    def test_generate_assessment_from_data_no_assessments(
+        self, mock_assessments: Mock, mock_users: Mock
+    ):
+        """
+        Test that `generate_assessment_from_data` returns an empty list when
+        there are no assessments
+        """
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = {}
+        assessments.__iter__.return_value = {}
+        mock_assessments.return_value = assessments
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = {}
+
+        result = generate_assessment_from_data(self.submission_uuid)
+
+        self.assertEqual(result, [])
+
+    @patch_users
+    def test_generate_assessment_data(self, mock_users: Mock):
+        """Test that `generate_assessment_data` returns the expected data"""
+        mock_users.return_value.objects.filter().select_related().annotate().values.return_value = (
+            self.mock_users()
+        )
+        assessments = MagicMock()
+        assessments.prefetch_related().prefetch_related.return_value = self.mock_assessments()
+        assessments.__iter__.return_value = self.mock_assessments()
+
+        results = generate_assessment_data(assessments)
+        self.assertIsInstance(results, list)
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertEqual(
+                set(result.keys()),
+                {
+                    "assessment_id",
+                    "scorer_name",
+                    "scorer_username",
+                    "scorer_email",
+                    "assessment_date",
+                    "assessment_scores",
+                    "problem_step",
+                    "feedback",
+                }
+            )
+
+    def test_parts_summary_with_multiple_parts(self):
+        """Test that `parts_summary` returns the expected data"""
+        assessment = self.mock_assessments()[0]
+        expected_result = [
+            {
+                "criterion_name": "Criterion 1",
+                "score_earned": 10,
+                "score_type": "Good",
+            },
+            {
+                "criterion_name": "Criterion 2",
+                "score_earned": 8,
+                "score_type": "Excellent",
+            },
+        ]
+
+        result = parts_summary(assessment)
+
+        self.assertEqual(result, expected_result)
+
+    def test_parts_summary_empty(self):
+        """Test that `parts_summary` returns an empty list when there are no parts"""
+        assessment = Mock()
+        assessment.parts.all.return_value = []
+
+        result = parts_summary(assessment)
+
+        self.assertEqual(result, [])

@@ -30,6 +30,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -38,6 +39,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "01:12:34",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -91,6 +94,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -99,6 +103,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:00:30",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -148,6 +154,7 @@
         "feedback_default_text": "Ṫëṡẗ ḋëḟäüḷẗ ẗëẍẗ",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "ɯʎ uǝʍ ʇıʇןǝ",
         "text_response": "required",
         "file_upload_response": null,
@@ -156,6 +163,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "02:00:59",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -205,6 +214,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -213,6 +223,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "",
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -274,6 +286,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "text_response": "required",
         "file_upload_response": null,
         "file_upload_type": null,
@@ -281,6 +294,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:10:40",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -331,6 +346,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "text_response": "required",
         "file_upload_response": "optional",
         "file_upload_type": "image",
@@ -338,6 +354,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "03:00:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -388,6 +406,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "text_response": "required",
         "file_upload_response": "optional",
         "file_upload_type": "pdf-and-image",
@@ -395,6 +414,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "01:01:01",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [
@@ -445,6 +466,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "text_response": "required",
         "file_upload_response": "optional",
         "file_upload_type": "custom",
@@ -452,6 +474,8 @@
         "allow_multiple_files": true,
         "show_rubric_during_response": false,
         "allow_latex": false,
+        "allow_learner_resubmissions": true,
+        "resubmissions_grace_period": "00:20:59",
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [

@@ -11,13 +11,21 @@ import pytz
 
 from django.test import TestCase
 
-import lxml.etree as etree
-from openassessment.xblock.data_conversion import create_prompts_list
+from lxml import etree
+from openassessment.xblock.utils.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.xml import (UpdateFromXmlError, _parse_prompts_xml, parse_assessments_xml,
-                                       parse_examples_xml, parse_from_xml_str, parse_rubric_xml,
-                                       serialize_assessments_to_xml_str, serialize_content,
-                                       serialize_examples_to_xml_str, serialize_rubric_to_xml_str)
+from openassessment.xblock.utils.xml import (
+    UpdateFromXmlError,
+    _parse_prompts_xml,
+    parse_assessments_xml,
+    parse_examples_xml,
+    parse_from_xml_str,
+    parse_rubric_xml,
+    serialize_assessments_to_xml_str,
+    serialize_content,
+    serialize_examples_to_xml_str,
+    serialize_rubric_to_xml_str,
+)
 
 
 def _parse_date(value):
@@ -134,6 +142,8 @@ class TestSerializeContent(TestCase):
         self.oa_block.white_listed_file_types = data.get('white_listed_file_types')
         self.oa_block.allow_multiple_files = data.get('allow_multiple_files')
         self.oa_block.allow_latex = data.get('allow_latex')
+        self.oa_block.allow_learner_resubmissions = data.get('allow_learner_resubmissions')
+        self.oa_block.resubmissions_grace_period = data.get('resubmissions_grace_period')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
         self.oa_block.group_access = json.loads(data.get('group_access', "{}"))
 
@@ -334,7 +344,7 @@ class TestSerializeContent(TestCase):
 
                 # Mutation #2: Empty dict
                 print(f"== Emptying dict {key}")
-                yield self._mutate_dict(input_dict, key, dict())
+                yield self._mutate_dict(input_dict, key, {})
 
                 # Mutation #3-5: value mutations
                 yield from self._value_mutations(input_dict, key)
@@ -346,7 +356,7 @@ class TestSerializeContent(TestCase):
             elif isinstance(val, list):
                 # Mutation #2: Empty list
                 print(f"== Emptying list {key}")
-                yield self._mutate_dict(input_dict, key, list())
+                yield self._mutate_dict(input_dict, key, [])
 
                 # Mutation #3-5: value mutations
                 yield from self._value_mutations(input_dict, key)
@@ -376,7 +386,7 @@ class TestSerializeContent(TestCase):
             list
         """
         print("== Emptying list")
-        yield list()
+        yield []
 
         # Mutation #3-5: value mutations
         yield from (None, "\u9731", 0)
@@ -523,6 +533,8 @@ class TestParseFromXml(TestCase):
             'white_listed_file_types',
             'allow_multiple_files',
             'allow_latex',
+            'allow_learner_resubmissions',
+            'resubmissions_grace_period',
             'leaderboard_show'
         ]
         for field_name in expected_fields:

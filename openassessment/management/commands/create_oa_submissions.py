@@ -41,7 +41,7 @@ class Command(BaseCommand):
         self.self_assessment_required = kwargs.get('self_assessment_required', False)
         kwargs = {}
         super().__init__(*args, **kwargs)
-        self._student_items = list()
+        self._student_items = []
 
     def handle(self, *args, **options):
         """
@@ -127,7 +127,7 @@ class Command(BaseCommand):
                     submission_uuid, student_item['student_id'],
                     options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
                 )
-        print("%s assessments being completed for %s submissions" % (assessments_created, num_submissions))
+        print(f"{assessments_created} assessments being completed for {num_submissions} submissions")
 
     @property
     def student_items(self):
@@ -154,7 +154,7 @@ class Command(BaseCommand):
         submission = sub_api.create_submission(student_item, answer)
         workflow_api.create_workflow(submission['uuid'], STEPS)
         workflow_api.update_from_assessments(
-            submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}
+            submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}, {}
         )
         return submission['uuid']
 
@@ -166,8 +166,8 @@ class Command(BaseCommand):
             rubric (dict)
             options_selected (dict)
         """
-        rubric = {'criteria': list()}
-        options_selected = dict()
+        rubric = {'criteria': []}
+        options_selected = {}
         words = loremipsum.Generator().words
 
         for criteria_num in range(self.NUM_CRITERIA):
@@ -175,7 +175,7 @@ class Command(BaseCommand):
                 'name': words[criteria_num],
                 'prompt': "  ".join(loremipsum.get_sentences(2)),
                 'order_num': criteria_num,
-                'options': list()
+                'options': []
             }
 
             for option_num in range(self.NUM_OPTIONS):

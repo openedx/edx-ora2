@@ -42,22 +42,66 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.fileUploader = new FileUploader();
+      this.data = data;
 
-      this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
+      const { ORA_MICROFRONTEND_URL, MFE_VIEW_ENABLED, HOTJAR_SITE_ID } = data.CONTEXT || {};
 
-      this.responseView = new ResponseView(
-        this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
-      );
-      this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.staffView = new StaffView(this.element, this.server, this);
-      this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
+      if (!ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED) {
+        // eslint-disable-next-line no-console
+        console.error('ORA_MICROFRONTEND_URL is not defined. ORA MFE will not be loaded.');
+      }
+      const isMobile = window.navigator.userAgent.includes('org.edx.mobile');
+      if (!isMobile && HOTJAR_SITE_ID) {
+        /*
+        * Hotjar shouuld be rewrite and encapsulated and import on use. Window is being share
+        * globally and it's not a good practice to have this override lms/cms `hotjar`.
+        */
+        /* eslint-disable */
+        (function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid: HOTJAR_SITE_ID,hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        /* eslint-enable */
+      }
+
+      this.show_mfe_views = ORA_MICROFRONTEND_URL && MFE_VIEW_ENABLED && !isMobile;
+
+      const oraMfeView = $('#ora-mfe-view', this.element);
+      const oraLegacyView = $('#ora-legacy-view', this.element);
+
+      if (this.show_mfe_views) {
+        // remove legacy view and show mfe view
+        oraLegacyView.remove();
+        oraMfeView.addClass('is--showing');
+      } else {
+        // remove mfe view and show legacy view
+        oraMfeView.remove();
+        oraLegacyView.addClass('is--showing');
+
+        // Initialize the views with legacy code
+        this.fileUploader = new FileUploader();
+
+        this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
+
+        this.responseView = new ResponseView(
+          this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
+        );
+        this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.staffView = new StaffView(this.element, this.server, this);
+        this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.messageView = new MessageView(this.element, this.server, this);
+      }
+
       this.leaderboardView = new LeaderboardView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.messageView = new MessageView(this.element, this.server, this);
       // Staff-only area with information and tools for managing student submissions
       this.staffAreaView = new StaffAreaView(this.element, this.server, this.responseEditorLoader, data, this);
+
       this.usageID = '';
       this.srStatusUpdates = [];
 
@@ -252,8 +296,62 @@ export class BaseView {
      * Asynchronously load each sub-view into the DOM.
      */
     load() {
-      this.responseView.load();
-      this.loadAssessmentModules();
+      if (this.show_mfe_views) {
+        const { ORA_MICROFRONTEND_URL, IS_STUDIO } = this.data.CONTEXT || {};
+        // When using ORA MFE, we add url to iframe and let it load the view
+        // This is to avoid iframe from loading before we decide to show it
+        // Then add event listener to help resize iframe, and handle modal open/close
+        const xblockId = this.getUsageID();
+        // lms used course-id from element data attribute, cms used global course object
+        const courseId = $(this.element).data('course-id') || window.course?.id;
+
+        const oraMfeIframe = $('#ora-mfe-view>iframe', this.element);
+        const loadingEl = $('#ora-mfe-view .ora-loading', this.element);
+
+        // Currently this seems to be only reasonable way to detect if we are in preview mode.
+        // Other way would be detecting url started with preview. Either way isn't ideal.
+        // The ideal way is to pass the argument from backend like IS_STUDIO. However, it seems
+        // that openassessment.in_studio_preview is not working.
+        const isPreview = $('.wrapper-preview-menu')?.length > 0;
+        let xblockPath = 'xblock';
+        if (IS_STUDIO) {
+          xblockPath = 'xblock_studio';
+        } else if (isPreview) {
+          xblockPath = 'xblock_preview';
+        }
+        oraMfeIframe.attr(
+          'src',
+          `${ORA_MICROFRONTEND_URL}/${xblockPath}/${courseId}/${xblockId}`,
+        );
+        /* eslint-disable-next-line prefer-arrow-callback */
+        oraMfeIframe.on('load', function () {
+          loadingEl.remove();
+          /* eslint-disable-next-line prefer-arrow-callback */
+          window.addEventListener('message', function (event) {
+            if (window.origin !== event.origin) {
+              if (event.data.type === 'plugin.resize') {
+                const { height } = event.data.payload;
+                oraMfeIframe[0].style.height = `${height}px`;
+                // can't propagate to learning mfe with this height because of extra element in between
+                window.parent.postMessage({
+                  type: 'plugin.resize',
+                  payload: {
+                    height: document.body.scrollHeight,
+                  },
+                }, document.referrer);
+              } else if (event.data.type === 'plugin.modal-close') {
+                // Forward this event from learning MFE to child
+                oraMfeIframe[0].contentWindow.postMessage(event.data, '*');
+              } else if (event.data.type === 'plugin.modal' && window.parent.length > 0) {
+                window.parent.postMessage(event.data, document.referrer);
+              }
+            }
+          });
+        });
+      } else {
+        this.responseView.load();
+        this.loadAssessmentModules();
+      }
       this.staffAreaView.load();
     }
 

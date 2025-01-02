@@ -12,7 +12,7 @@ class TestLoadStatic(TestCase):
     default_base_url = '/static/dist/'
 
     def setUp(self):
-        LoadStatic._manifest = dict()   # pylint: disable=protected-access
+        LoadStatic._manifest = {}   # pylint: disable=protected-access
         LoadStatic._is_loaded = False   # pylint: disable=protected-access
         LoadStatic._base_url = ''   # pylint: disable=protected-access
         return super().setUp()
@@ -48,24 +48,41 @@ class TestLoadStatic(TestCase):
         self.assertEqual(LoadStatic.get_url(key_url),
                          urljoin(self.default_base_url, key_url))
 
-    @patch('pkg_resources.resource_string')
-    def test_get_url_file_not_found(self, resource_string):
+    def test_get_url_absolute_base_url(self):
+        # Given my base_url is an absolute URL and is overridden (as in hot-reload
+        # local dev setup)
         key_url = 'some_url.js'
-        resource_string.side_effect = IOError()
+        absolute_base_url = 'foo://bar'
+        loaded_key_url = '/some_url.hashchunk.js'
+
+        # When I get a static URL
+        with patch('json.loads') as jsondata:
+            jsondata.return_value = {
+                'base_url': absolute_base_url,
+                'some_url.js': loaded_key_url,
+            }
+            # Then I use the base URL instead of default LMS URL
+            self.assertEqual(LoadStatic.get_url(key_url), urljoin(
+                absolute_base_url, loaded_key_url))
+
+    @patch('xblock.utils.resources.ResourceLoader.load_unicode')
+    def test_get_url_file_not_found(self, load_unicode):
+        key_url = 'some_url.js'
+        load_unicode.side_effect = IOError()
         self.assertEqual(LoadStatic.get_url(key_url), urljoin(
             self.default_base_url, 'some_url.js'))
 
     @override_settings(LMS_ROOT_URL='localhost/')
-    @patch('pkg_resources.resource_string')
-    def test_get_url_file_not_found_with_root_url(self, resource_string):
+    @patch('xblock.utils.resources.ResourceLoader.load_unicode')
+    def test_get_url_file_not_found_with_root_url(self, load_unicode):
         key_url = 'some_url.js'
-        resource_string.side_effect = IOError()
+        load_unicode.side_effect = IOError()
         self.assertEqual(LoadStatic.get_url(key_url), urljoin(
             'localhost/', self.default_base_url, 'some_url.js'))
 
-    @patch('pkg_resources.resource_string')
-    def test_get_url_with_manifest(self, resource_string):
-        resource_string.return_value = None
+    @patch('xblock.utils.resources.ResourceLoader.load_unicode')
+    def test_get_url_with_manifest(self, load_unicode):
+        load_unicode.return_value = None
         key_url = 'some_url.js'
         with patch('json.loads') as jsondata:
             jsondata.return_value = {
@@ -75,9 +92,9 @@ class TestLoadStatic(TestCase):
                 self.default_base_url, 'some_url.hashchunk.js'))
 
     @override_settings(LMS_ROOT_URL='localhost/')
-    @patch('pkg_resources.resource_string')
-    def test_get_url_with_manifest_and_root_url(self, resource_string):
-        resource_string.return_value = None
+    @patch('xblock.utils.resources.ResourceLoader.load_unicode')
+    def test_get_url_with_manifest_and_root_url(self, load_unicode):
+        load_unicode.return_value = None
         key_url = 'some_url.js'
         with patch('json.loads') as jsondata:
             jsondata.return_value = {

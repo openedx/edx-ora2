@@ -12,6 +12,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -79,6 +80,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
             'debug': DEBUG,
         },
@@ -124,7 +126,7 @@ INSTALLED_APPS = (
     'openassessment.fileupload',
     'openassessment.workflow',
     'openassessment.assessment',
-
+    'openassessment.staffgrader',
 )
 
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }
@@ -141,7 +143,7 @@ CACHES = {
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "conf", "locale")]
 
 FEATURES = {
     # Set to True to enable team-based ORA submissions.
@@ -165,5 +167,16 @@ FEATURES = {
 
     # Set to True to enable copying/reusing rubric data
     # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
-    'ENABLE_ORA_RUBRIC_REUSE': False
+    'ENABLE_ORA_RUBRIC_REUSE': False,
+
+    # Set to True to enable selectable learners in waiting step list
+    # See: https://github.com/openedx/edx-ora2/pull/2025
+    'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW': False,
+
+    # Set to True to enable configurable grading for peer review
+    # See: https://github.com/openedx/edx-ora2/pull/2196
+    'ENABLE_ORA_PEER_CONFIGURABLE_GRADING': False,
 }
+
+# disable indexing on history_date
+SIMPLE_HISTORY_DATE_INDEX = False

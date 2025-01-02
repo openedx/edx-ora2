@@ -1,5 +1,6 @@
 const { createConfig } = require('@edx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
+const presets = require('@edx/frontend-build/lib/presets')
 
 const webpack = require('webpack');
 const path = require('path');
@@ -17,6 +18,23 @@ let config = createConfig('webpack-prod');
 const modifiedCssRule = {
   module: {
     rules: [
+      // This babel-loader config is pulled from frontend-build@13.0.4
+      // When we update frontend-build to above that version, this section
+      // can be removed and we can fallback to the implementation upstream.
+      //
+      // We had to do this because frontend-build is currently too far behind
+      // and can't easily be updated to a newer version without upgrading
+      // webpack and many other libraries.
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules\/(?!@(open)?edx)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            configFile: presets.babel.resolvedFilepath,
+          },
+        },
+      },
       {
         test: /(.scss|.css)$/,
         use: [
@@ -30,10 +48,12 @@ const modifiedCssRule = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [
-                PostCssAutoprefixerPlugin({ grid: true }),
-                CssNano(),
-              ],
+              postcssOptions: {
+                plugins: () => [
+                  PostCssAutoprefixerPlugin({ grid: true }),
+                  CssNano(),
+                ],
+              },
             },
           },
           'resolve-url-loader',
@@ -60,6 +80,7 @@ config = mergeWithRules({
   module: {
     rules: {
       test: 'match',
+      exclude: 'replace',
       use: 'replace',
     },
   },
@@ -77,7 +98,7 @@ Object.assign(config, {
   optimization: {},
   plugins: [
     // Cleans the dist directory before each build
-    ...process.env.npm_config_clean ? [new CleanWebpackPlugin()]: [],
+    new CleanWebpackPlugin(),
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,

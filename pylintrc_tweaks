@@ -14,6 +14,9 @@ disable+ =
     bad-option-value,
     missing-function-docstring,
     missing-class-docstring,
+    import-outside-toplevel,
+    missing-timeout,
+    c-extension-no-member,
     import-outside-toplevel
 
 [BASIC]

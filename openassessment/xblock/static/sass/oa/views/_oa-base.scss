@@ -8,6 +8,34 @@
   position: relative;
 }
 
+// default to hide and show when it is needed
+.openassessment-initial-wrapper {
+  display: none;
+
+  &.is--showing {
+    display: block;
+  }
+
+  .ora-loading {
+    background: $color-unavailable;
+    padding: $baseline-h;
+    text-align: center;
+
+    .wrapper--anim {
+      @include animation(pulse $tmg-s3 ease-in-out infinite);
+    }
+
+    .icon {
+      display: inline-block;
+      color: $copy-color;
+    }
+
+    .copy {
+      color: $copy-color;
+    }
+  }
+}
+
 .openassessment {
   @include direction();
 
@@ -556,8 +584,7 @@
   }
 
   .submission__upload__files__title,
-  .submission__answer__part__tip__title,
-  {
+  .submission__answer__part__tip__title {
     @extend %t-heading;
   }
 
@@ -581,15 +608,13 @@
 
     // response form
     .response__submission {
-      padding: ($baseline-v/2) ($baseline-h/4) $baseline-v ($baseline-h/4);
+      padding: ($baseline-v/2) ($baseline-h/4);
       background: $color-decorative-quaternary;
       border-radius: ($baseline-v/10);
     }
 
     .response__submission__content {
       @extend %action-items;
-
-      margin-bottom: $baseline-v;
 
       label {
         @extend %text-sr;
@@ -616,6 +641,10 @@
           min-height: ($baseline-v*4);
           width: 70%;
         }
+      }
+
+      .submission__team__answer__display__file {
+        margin-bottom: ($baseline-v/2);
       }
 
       .tip {
@@ -845,30 +874,11 @@
     .grade__summary {
       @extend %copy-2;
     }
-
-    .grade__status {
-
-    }
-
-    // CASE: is not started
-    &.is--unstarted {
-
-    }
-
-    // CASE: is incomplete
-    &.is--incomplete {
-
-    }
-
-    // CASE: is closed
-    &.is--closed {
-
-    }
   }
 
 
   // --------------------
-  // UI: submitted repsonse
+  // UI: submitted response
   // --------------------
   .submission__answer__display__title {
     @extend %t-heading;
@@ -1126,7 +1136,7 @@
     @include margin-left(($baseline-h/4));
   }
 
-  .submission__feeedback__content {
+  .submission__feedback__content {
     @extend %ui-subsection-content;
     margin-bottom: $baseline-v;
   }

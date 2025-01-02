@@ -1,0 +1,41 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment_rubric_clone">
+    <h3>{% trans "Clone Rubric" %}<span id="rubric-reuse-collapse-icon"></span></h3>
+    <div>
+        {{ rubric_reuse_data|json_script:"openassessment_rubric_reuse_data" }}
+        <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_description">{% trans "To clone a rubric from an existing published or unpublished draft, you can search by the Block ID. Note that cloning is one-way, meaning changes made after cloning will only affect the rubric being modified, and will not modify any rubric it was cloned from." %}</div>
+        <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_block_id">
+            <span class="no-select"><b>{% trans "Block ID For this ORA:" %}  </b></span>{{ block_location }}
+        </div>
+        <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_form_container">
+            <div id="openassessment_rubric_clone_input_container" class="ui-front">
+                <span class='openassessment-clone-combobox'>
+                    <input 
+                        type="text"
+                        spellcheck="false"
+                        id="openassessment_rubric_clone_input"
+                        {% if rubric_reuse_data %}
+                            placeholder="{% trans 'Block ID'%}"
+                        {% else %}
+                            placeholder="{% trans 'No other Open Response Assessments found in course'%}"
+                            disabled
+                        {% endif %}
+                    >
+                    <button class="openassessment_clone_combobox_toggle"><i class="fa fa-caret-down"></i></button>
+                </span>
+            </div>
+            <div id="openassessment_rubric_clone_button_container">
+                <div id="openassessment_rubric_clone_button" class="openassessment_container_add_button">
+                    <h2>
+                        {% trans "Clone" %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div id="openassessment_rubric_clone_alert" hidden>
+            {% trans "Rubric Successfully Cloned from Block ID: " %} <span id="openassessment_rubric_clone_alert_block_id"></span>
+        </div>
+    </div>
+</div>
+{% endspaceless %}

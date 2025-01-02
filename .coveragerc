@@ -5,3 +5,4 @@ branch = True
 include = openassessment/*
 omit =
     */migrations/*
+    openassessment/runtime_imports/*

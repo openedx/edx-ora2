@@ -16,6 +16,7 @@ from openassessment.xblock.config_mixin import (
     USER_STATE_UPLOAD_DATA,
     RUBRIC_REUSE,
     ENHANCED_STAFF_GRADER,
+    SELECTABLE_LEARNER_WAITING_REVIEW,
 )
 
 
@@ -143,7 +144,24 @@ class ConfigMixinTest(TestCase):
             'is_enhanced_staff_grader_enabled',
         )
 
-    def _run_feature_toggle_test(
+    @ddt.data(
+        *list(itertools.product([True, False, None], repeat=3))
+    )
+    @ddt.unpack
+    def test_selectable_learner_waiting_review_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
+        """
+        The selectable learner waiting review feature is expected to be enabled only if:
+          1) The settings.FEATURES['ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW'] value is True
+        """
+        self._run_feature_toggle_test(
+            SELECTABLE_LEARNER_WAITING_REVIEW,
+            waffle_switch_input,
+            waffle_flag_input,
+            settings_input,
+            'is_selectable_learner_waiting_review_enabled',
+        )
+
+    def _run_feature_toggle_test(  # pylint: disable=too-many-positional-arguments
         self, flag_name, waffle_switch_input, waffle_flag_input, settings_input, feature_property
     ):
         """

@@ -13,6 +13,8 @@ from .training import TrainingExample
 class StudentTrainingWorkflow(models.Model):
     """
     Tracks a student's progress through the student training assessment step.
+
+    .. no_pii:
     """
     # The submission UUID of the student being trained
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
@@ -23,7 +25,7 @@ class StudentTrainingWorkflow(models.Model):
     # Since submissions are immutable, we can do this without
     # jeopardizing data integrity.
     student_id = models.CharField(max_length=40, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)
 
     class Meta:
@@ -183,6 +185,8 @@ class StudentTrainingWorkflowItem(models.Model):
     then the student proceeds to the next example;
     if there are no examples left, the student has
     successfully completed training.
+
+    .. no_pii:
     """
     workflow = models.ForeignKey(StudentTrainingWorkflow, related_name="items", on_delete=models.CASCADE)
     order_num = models.PositiveIntegerField()
@@ -237,7 +241,7 @@ class StudentTrainingWorkflowItem(models.Model):
 
         """
         staff_selected = self.training_example.options_selected_dict
-        corrections = dict()
+        corrections = {}
 
         for criterion_name, option_name in staff_selected.items():
             missing_option = criterion_name not in options_selected

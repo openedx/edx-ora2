@@ -178,9 +178,10 @@ export class StudioView {
 
     if (viewsFailingValidation.length > 0) {
       const tabNames = viewsFailingValidation.map(view => view.getTab().find('a').text());
+      const tabNamesCommaSeparated = tabNames.join(', ');
       this.alert.setMessage(
         gettext('Save Unsuccessful'),
-        gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
+        gettext('Errors detected on the following tabs: ') + tabNamesCommaSeparated,
       ).show();
     } else {
       // At this point, we know that all fields are valid,
@@ -239,6 +240,7 @@ export class StudioView {
       title: this.settingsView.displayName(),
       submissionStart: this.scheduleView.submissionStart(),
       submissionDue: this.scheduleView.submissionDue(),
+      dateConfigType: this.scheduleView.dateConfigType(),
       assessments: this.assessmentsStepsView.assessmentsDescription(),
       textResponse: this.settingsView.textResponseNecessity(),
       textResponseEditor: this.settingsView.textResponseEditor(),
@@ -252,6 +254,8 @@ export class StudioView {
       teamsEnabled,
       selectedTeamsetId: this.settingsView.teamset(),
       showRubricDuringResponse: this.settingsView.showRubricDuringResponse(),
+      allowLearnerResubmissions: this.settingsView.allowLearnerResubmissions(),
+      resubmissionsGracePeriod: this.settingsView.resubmissionsGracePeriod(),
     }).done(
       // Notify the client-side runtime that we finished saving
       // so it can hide the "Saving..." notification.
@@ -314,7 +318,7 @@ export class StudioView {
    *  numErrors - number of errors (only shown in screen reader help-text)
    * */
   markTabAsInvalid(tab, numErrors) {
-    $('.tab-error-count', tab).text(gettext(`has ${numErrors} error(s)`));
+    $('.tab-error-count', tab).text(gettext('error count: ') + numErrors);
     $('.validation-warning', tab).show();
   }
 

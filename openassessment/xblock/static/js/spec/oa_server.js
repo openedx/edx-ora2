@@ -125,6 +125,7 @@ describe("OpenAssessment.Server", function() {
     var TITLE = 'This is the title.';
     var SUBMISSION_START = '2012-10-09T00:00:00';
     var SUBMISSION_DUE = '2015-10-10T00:00:00';
+    var DATE_CONFIG_TYPE = "manual"
 
     beforeEach(function() {
         // Create the server
@@ -320,6 +321,7 @@ describe("OpenAssessment.Server", function() {
             title: TITLE,
             submissionStart: SUBMISSION_START,
             submissionDue: SUBMISSION_DUE,
+            dateConfigType: DATE_CONFIG_TYPE,
             criteria: CRITERIA,
             assessments: ASSESSMENTS,
             editorAssessmentsOrder: EDITOR_ASSESSMENTS_ORDER,
@@ -327,7 +329,9 @@ describe("OpenAssessment.Server", function() {
             fileTypeWhiteList: ['pdf', 'doc'],
             multipleFilesEnabled: true,
             latexEnabled: true,
-            leaderboardNum: 15
+            leaderboardNum: 15,
+            allowLearnerResubmissions: false,
+            resubmissionsGracePeriod: ""
         });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
@@ -338,6 +342,7 @@ describe("OpenAssessment.Server", function() {
                 title: TITLE,
                 submission_start: SUBMISSION_START,
                 submission_due: SUBMISSION_DUE,
+                date_config_type: DATE_CONFIG_TYPE,
                 criteria: CRITERIA,
                 assessments: ASSESSMENTS,
                 editor_assessments_order: EDITOR_ASSESSMENTS_ORDER,
@@ -345,7 +350,9 @@ describe("OpenAssessment.Server", function() {
                 white_listed_file_types: ['pdf', 'doc'],
                 allow_multiple_files: true,
                 allow_latex: true,
-                leaderboard_show: 15
+                leaderboard_show: 15,
+                allow_learner_resubmissions: false,
+                resubmissions_grace_period: ""
             }),
             contentType : jsonContentType
         });
@@ -425,7 +432,7 @@ describe("OpenAssessment.Server", function() {
         stubAjax(false, null);
         var receivedMsg = null;
         server.save("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
-        expect(receivedMsg).toContain('This response could not be saved');
+        expect(receivedMsg).toContain('Please check your internet connection');
     });
 
     it("informs the caller of an AJAX error when sending a self assessment", function() {

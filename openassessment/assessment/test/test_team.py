@@ -42,7 +42,7 @@ class TestTeamApi(CacheResetTest):
         cls.default_assessment = (
             cls.staff_user_id,  # scorer_id
             OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
-            dict(),  # critereon_feedback
+            {},  # critereon_feedback
             '',  # overall_feedback
             RUBRIC  # rubric_dict
         )
@@ -62,7 +62,7 @@ class TestTeamApi(CacheResetTest):
         staff_requirements = None
 
         # When I ask the API if the assessment is finished
-        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements, {})
 
         # Then it returns False
         self.assertFalse(api_response)
@@ -73,7 +73,7 @@ class TestTeamApi(CacheResetTest):
         staff_requirements = {'required': True}
 
         # When I ask the API if the assessment is finished
-        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements, {})
 
         # Then it returns False
         self.assertFalse(api_response)
@@ -85,7 +85,7 @@ class TestTeamApi(CacheResetTest):
         staff_requirements = {'required': True}
 
         # When I ask the API if the assessment is finished
-        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements, {})
 
         # Then it returns True
         self.assertTrue(api_response)
@@ -126,7 +126,7 @@ class TestTeamApi(CacheResetTest):
         staff_requirements = {'required': True}
 
         # When I use the API to get the score
-        score = teams_api.get_score(team_submission_uuid, staff_requirements)
+        score = teams_api.get_score(team_submission_uuid, staff_requirements, {})
 
         # Then None is returned
         self.assertIsNone(score)
@@ -138,7 +138,7 @@ class TestTeamApi(CacheResetTest):
         staff_requirements = {'required': True}
 
         # When I query the API for the score
-        score = teams_api.get_score(team_submission_uuid, staff_requirements)
+        score = teams_api.get_score(team_submission_uuid, staff_requirements, {})
 
         # Then the score is returned (from test constants)
         assessment = assessments[-1]
@@ -280,7 +280,7 @@ class TestTeamApi(CacheResetTest):
         assessments = teams_api.create_assessment(
             team_submission_uuid,
             self.staff_user_id,
-            OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["few"]["options"], {}, "",
             RUBRIC
         )
         return assessments

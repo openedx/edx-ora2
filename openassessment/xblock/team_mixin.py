@@ -13,7 +13,7 @@ from submissions.team_api import (
 )
 from submissions.errors import TeamSubmissionNotFoundError
 
-from openassessment.xblock.data_conversion import list_to_conversational_format
+from openassessment.xblock.utils.data_conversion import list_to_conversational_format
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -51,9 +51,9 @@ class TeamMixin:
     def get_team_for_anonymous_user(self, anonymous_user_id):
         """
         For course_id associated with this ORA block, returns the provided user's
-        CourseTeam, or None if the user is not a member of a team in this course.
+        CourseTeam, or None if the user is not a member of a team in this course or
+        if the teams service is unavailable.
         Raises:
-            - NoSuchServiceError if the teams service is unavailable
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
@@ -61,7 +61,11 @@ class TeamMixin:
         if not user:
             logger.error('%s: User lookup for anonymous_user_id %s failed', self.location, anonymous_user_id)
             raise ObjectDoesNotExist()
-        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+        try:
+            team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+        except NoSuchServiceError:
+            logger.debug("%s %s [AU-660]", self.location, anonymous_user_id)
+            return None
         return team
 
     @cached_property
@@ -70,7 +74,6 @@ class TeamMixin:
         For the user and course_id associated with this ORA block, returns the user's
         CourseTeam, or None if the user is not a member of a team in this course.
         Raises:
-            - NoSuchServiceError if the teams service is unavailable
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
@@ -129,6 +132,7 @@ class TeamMixin:
         """
         if not any((team_submission_uuid, individual_submission_uuid)):
             raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
+        team_submission = None
         if team_submission_uuid:
             team_submission = get_team_submission(team_submission_uuid)
         elif individual_submission_uuid:
@@ -143,7 +147,7 @@ class TeamMixin:
             usernames = list_to_conversational_format(usernames)
         context['team_usernames'] = usernames
 
-    def get_team_info(self):
+    def get_team_info(self, staff_or_preview_data=True):
         """
         Return a dict with team data if the user is on a team, or an
         empty dict otherwise.
@@ -151,7 +155,7 @@ class TeamMixin:
         render the page like a student would see
         """
         if self.in_studio_preview:
-            return self.STAFF_OR_PREVIEW_INFO
+            return self.STAFF_OR_PREVIEW_INFO if staff_or_preview_data else None
         elif self.has_team():
             student_item_dict = self.get_student_item_dict()
             previous_team_name = None
@@ -172,7 +176,7 @@ class TeamMixin:
                 'previous_team_name': previous_team_name,
             }
         elif self.is_course_staff:
-            return self.STAFF_OR_PREVIEW_INFO
+            return self.STAFF_OR_PREVIEW_INFO if staff_or_preview_data else None
         else:
             return {}
 

@@ -10,12 +10,20 @@ import ddt
 
 from openassessment.assessment.api import peer as peer_api
 
-from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_BAD_ASSESSMENT, STAFF_GOOD_ASSESSMENT,
-                   SubmitAssessmentsMixin, XBlockHandlerTestCase, scenario)
+from .base import (
+    PEER_ASSESSMENTS,
+    SELF_ASSESSMENT,
+    STAFF_BAD_ASSESSMENT,
+    STAFF_GOOD_ASSESSMENT,
+    SubmissionTestMixin,
+    SubmitAssessmentsMixin,
+    XBlockHandlerTestCase,
+    scenario
+)
 
 
 @ddt.ddt
-class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin, SubmissionTestMixin):
     """
     View-level tests for the XBlock grade handlers.
     """
@@ -25,7 +33,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT
         )
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
 
         # Verify that feedback from each scorer appears in the view
         self.assertIn('єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
@@ -38,18 +46,18 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # This isn't strictly speaking part of the grade step rendering,
         # but we've already done all the setup to get to this point in the flow,
         # so we might as well verify it here.
-        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_submission', json.dumps({})).decode('utf-8')
         self.assertIn('response', resp.lower())
         self.assertIn('complete', resp.lower())
 
         # Verify that student submission is in the view
         self.assertIn(self.SUBMISSION[1], resp)
 
-        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps({})).decode('utf-8')
         self.assertIn('peer', resp.lower())
         self.assertIn('complete', resp.lower())
 
-        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_self_assessment', json.dumps({})).decode('utf-8')
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
@@ -60,7 +68,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT,
             waiting_for_peer=True
         )
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
 
         # Verify that feedback from each scorer appears in the view
         self.assertIn('ﻉซƈﻉɭɭﻉกՇ', resp.decode('utf-8'))
@@ -70,15 +78,15 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # This isn't strictly speaking part of the grade step rendering,
         # but we've already done all the setup to get to this point in the flow,
         # so we might as well verify it here.
-        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_submission', json.dumps({})).decode('utf-8')
         self.assertIn('response', resp.lower())
         self.assertIn('complete', resp.lower())
 
-        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps({})).decode('utf-8')
         self.assertNotIn('peer', resp.lower())
         self.assertNotIn('complete', resp.lower())
 
-        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_self_assessment', json.dumps({})).decode('utf-8')
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
@@ -104,7 +112,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         )
 
         # Render the grade section
-        resp = self.request(xblock, 'render_grade', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_grade', json.dumps({})).decode('utf-8')
         self.assertIn('your response', resp.lower())
 
         # Verify that feedback from each scorer appears in the view
@@ -173,7 +181,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         )
 
         # Integration test: verify that all of the feedback makes it to the rendered template
-        html = self.request(xblock, 'render_grade', json.dumps(dict())).decode('utf-8')
+        html = self.request(xblock, 'render_grade', json.dumps({})).decode('utf-8')
         for expected_text in [
                 'Staff: ฝﻉɭɭ ɗѻกﻉ!',
                 'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
@@ -207,6 +215,34 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.assertEqual(criteria[1]['assessments'][1]['option']['label'], 'Fair')
         self.assertIsNone(criteria[0]['assessments'][1].get('points', None))
         self.assertIsNone(criteria[1]['assessments'][1].get('points', None))
+
+    @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
+    def test_zero_point_criterion(self, xblock):
+        """ Test behavior when a learner's median score for a criterion is worth zero points"""
+        zero_point_criterion_peer_assessments = [
+            {
+                'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Very Bad', 'Form': 'Good'},
+                'criterion_feedback': {},
+                'overall_feedback': None,
+            },
+            {
+                'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Very Bad', 'Form': 'Fair'},
+                'criterion_feedback': {},
+                'overall_feedback': None,
+            },
+        ]
+        self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, zero_point_criterion_peer_assessments, SELF_ASSESSMENT
+        )
+
+        # Get the grade details
+        _, context = xblock.render_grade_complete(xblock.get_workflow_info())
+        criteria = context['grade_details']['criteria']
+        # Verify that the median peer grades are correct
+        self.assertEqual(criteria[0]['assessments'][0]['option']['label'], 'Very Bad')
+        self.assertEqual(criteria[1]['assessments'][0]['option']['label'], 'Fair / Good')
+        self.assertEqual(criteria[0]['assessments'][0]['points'], 0)
+        self.assertEqual(criteria[1]['assessments'][0]['points'], 3)
 
     @ddt.data(
         (STAFF_GOOD_ASSESSMENT, [4, 3]),
@@ -245,7 +281,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock, student_item=student_item, submission_text=self.SUBMISSION)
 
         # Create submissions from other users
         scorer_subs = self.create_peer_submissions(student_item, self.PEERS, self.SUBMISSION)
@@ -347,7 +383,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT,
             waiting_for_peer=data["waiting_for_peer"]
         )
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
 
         # Verify that we're on the waiting template
         self.assertIn(data["expected_response"], resp.decode('utf-8').lower())
@@ -379,12 +415,12 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         )
 
         # Verify grading page is rendered properly
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
         self.assertIn('not completed', resp.decode('utf-8').lower())
 
         # Verify that response_submitted page is rendered properly. This isn't super tightly connnected
         # to grade rendering, but it seems a shame to do the same setup in 2 different places.
-        submitted_resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        submitted_resp = self.request(xblock, 'render_submission', json.dumps({}))
         decoded_response = submitted_resp.decode('utf-8').lower()
         self.assertIn('steps are complete and your response is fully assessed', decoded_response)
         self.assertIn('you still need to complete', decoded_response)

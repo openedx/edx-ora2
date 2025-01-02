@@ -1,0 +1,588 @@
+# #-#-#-#-#  djangojs.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+# Asghar Feizi <asgharfeizi@yahoo.com>, 2017
+# Bashir Mahmoudi <bashirmahmoudi@gmail.com>, 2015
+# Eisa rezaei <rezaeiphd@gmail.com>, 2016
+# Sajad Sepehri <sajad.ta@iranacademia.education>, 2021
+# SeyedMahdi Saeid <saeid@edspirit.com>, 2023
+# Sina Shirinpour <sshirinpoor@gmail.com>, 2017
+# Somaye Joolaee, 2022
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-14 18:37+0000\n"
+"PO-Revision-Date: 2014-06-11 13:04+0000\n"
+"Last-Translator: SeyedMahdi Saeid <saeid@edspirit.com>, 2023\n"
+"Language-Team: Persian (Iran) (http://app.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:77 xblock/static/js/src/oa_server.js:113
+#: xblock/static/js/src/oa_server.js:137
+msgid "This section could not be loaded."
+msgstr "امکان بارگیری این بخش نیست."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:158
+msgid "The staff assessment form could not be loaded."
+msgstr "امکان بارگذاری فرم ارزیابی کارکنان نیست."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:180
+msgid "The display of ungraded and checked out responses could not be loaded."
+msgstr "امکان بارگذاری نمایش پاسخ های انتخاب نشده و بدون نمره نیست."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:214
+msgid "This response could not be submitted."
+msgstr "این پاسخ ارسال نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:237
+msgid "Please check your internet connection."
+msgstr "لطفا اتصال اینترنت خود را بررسی کنید."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:262
+msgid "This feedback could not be submitted."
+msgstr "این بازخورد ارسال نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:287 xblock/static/js/src/oa_server.js:378
+#: xblock/static/js/src/oa_server.js:401
+msgid "This assessment could not be submitted."
+msgstr "این ارزیابی ارسال نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:424
+msgid "One or more rescheduling tasks failed."
+msgstr "یک وظیفه یا تعداد بیشتری از وظایف انجام نشده است."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:484
+msgid "This problem could not be saved."
+msgstr "این مشکل ذخیره نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:505
+msgid "The server could not be contacted."
+msgstr "ارتباط با سرور برقرار نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:531
+msgid "Could not retrieve upload url."
+msgstr "نشانی اینترنتی بارگذاری بازیابی نشد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:550 xblock/static/js/src/oa_server.js:569
+msgid "Server error."
+msgstr "خطای خدمت‌دهنده."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:589
+msgid "Could not retrieve download url."
+msgstr "امکان بازیابی آدرس اینترنتی بارگیری وجود ندارد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:615
+msgid "The submission could not be removed from the grading pool."
+msgstr "چیزی که تحویل داده شده نمی‌تواند از فهرست نمرات حذف شود."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:671
+msgid "Multiple teams returned for course"
+msgstr "چندین تیم برای دوره آموزشی بازگشتند"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:678
+msgid "Could not load teams information."
+msgstr "اطلاعات تیم‌ها بارگیری نشد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:700
+msgid "User lookup failed"
+msgstr "جستجوی کاربر موفق نبود"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:705
+msgid "Error when looking up username"
+msgstr "خطا هنگام جستجوی نام کاربری"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:8
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:1
+#: xblock/static/js/src/oa_server.js:729
+msgid "Failed to clone rubric"
+msgstr "شبیه‌سازی راهنمای امتیازدهی موفقیت آمیز نبود"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+#: xblock/static/js/src/lms/oa_course_items_listing.js:61
+msgid "View and grade responses"
+msgstr "مشاهده و نمره‌دهی به پاسخ‌ها"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+#: xblock/static/js/src/lms/oa_course_items_listing.js:61
+msgid "Demo the new Grading Experience"
+msgstr "نمایش تجربه نمره‌دهی جدید "
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Unit Name"
+msgstr "نام واحد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Units"
+msgstr "واحدها"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Assessment"
+msgstr "ارزیابی"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Assessments"
+msgstr "ارزیابی‌ها"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Total Responses"
+msgstr "همه پاسخ‌ها"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Training"
+msgstr "آموزش"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Peer"
+msgstr "همتا "
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Self"
+msgstr "خود"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Waiting"
+msgstr "در حال انتظار"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Staff"
+msgstr "کارکنان"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Final Grade Received"
+msgstr "نمره پایانی دریافت شد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Staff Grader"
+msgstr "نمره‌گذار کارکنان"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "List of Open Assessments is unavailable"
+msgstr "فهرست ارزیابی‌های باز در دسترس نیست"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Please wait"
+msgstr "لطفا شکیبا باشید"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Block view is unavailable"
+msgstr " مشاهده بلوک ها امکانپذیر نیست"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:319
+msgid "Back to Full List"
+msgstr "بازگشت به فهرست کامل"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_confirmation_alert.js:5
+msgid "Confirm"
+msgstr "تایید"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_confirmation_alert.js:7
+msgid "Cancel"
+msgstr "لغو"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:253
+msgid ""
+"There is still file upload in progress. Please wait until it is finished."
+msgstr "هنوز آپلود فایل در حال انجام است. لطفا صبر کنید تا تمام شود."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:243
+msgid "Cannot submit empty response even everything is optional."
+msgstr "نمی توان پاسخ خالی ارسال کرد حتی همه چیز اختیاری است."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:235
+msgid "Please upload a file."
+msgstr "لطفا یک فایل آپلود کنید"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:228
+msgid "Please provide a response."
+msgstr "لطفا پاسخ دهید."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:328
+msgid "No files selected for upload."
+msgstr "هیچ فایلی برای آپلود انتخاب نشده است."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:335
+msgid "Please provide a description for each file you are uploading."
+msgstr "لطفاً توضیحی برای هر فایلی که آپلود می کنید ارائه دهید."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:344
+msgid "Your file has been deleted or path has been changed: "
+msgstr "پرونده شما حذف‌شده یا مسیر دستیابی به آن تغییر کرده است:"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:439
+msgid "Saving draft"
+msgstr "ذخیره پیش نویس"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:446
+msgid ""
+"If you leave this page without saving or submitting your response, you will "
+"lose any work you have done on the response."
+msgstr "اگر این صفحه را بدون ذخیره کردن یا ارسال پاسخ ببندید، هر کاری را که برای پاسخ انجام داده اید از دست خواهید داد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:461
+msgid "Saving draft..."
+msgstr "در حال ذخیره پیش نویس..."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:477
+msgid "Draft saved!"
+msgstr "پیش نویس ذخیره شد!"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:490
+msgid "Error"
+msgstr "خطا"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:511
+msgid "Confirm Submit Response"
+msgstr "تایید ارسال پاسخ"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:514
+msgid ""
+"You're about to submit your response for this assignment. After you submit "
+"this response, you can't change it or submit a new response."
+msgstr "شما در حال تحویل جواب خود به این تکلیف هستید. بعد از تحویل جواب، امکان تغییر آن یا ارائه جواب جدید تحویل دهید"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:589
+msgid "Individual file size must be {max_files_mb}MB or less."
+msgstr "اندازه هر پرونده باید {max_files_mb}MB یا کمتر باشد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:603
+msgid ""
+"File upload failed: unsupported file type. Only the supported file types can"
+" be uploaded. If you have questions, please reach out to the course team."
+msgstr "بارگذاری پرونده انجام نشد: نوع پرونده پشتیبانی نشده است. فقط انواع پرونده‌های پشتیبانی‌شده را می‌توان بارگذاری کرد. اگر سوالی دارید، لطفا با تیم دوره آموزشی تماس بگیرید."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:614
+msgid "The maximum number files that can be saved is "
+msgstr "حداکثر تعداد پرونده‌هایی که می‌تواند ذخیره شود"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:682
+#: xblock/static/js/src/lms/oa_response.js:688
+msgid "Describe "
+msgstr "توضیح"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:682
+msgid "(required):"
+msgstr "(الزامی):"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:702
+msgid "Thumbnail view of "
+msgstr "نمایش فشرده"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:779
+msgid "Confirm Delete Uploaded File"
+msgstr "تایید حذف پرونده بارگذاری‌شده"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_response.js:804
+msgid ""
+"Are you sure you want to delete the following file? It cannot be restored.\n"
+"File: "
+msgstr "آیا مطمئن هستید که می‌خواهید این فایل را پاک کنید؟ این کار قابل بازیابی نخواهد بود.\nفایل:"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_self.js:138
+msgid ""
+"If you leave this page without submitting your self assessment, you will "
+"lose any work you have done."
+msgstr "اگر این صفحه را بدون ارسال خودارزیابی خود ترک کنید، هرکاری که  تاکنون انجام داده‌اید را از دست خواهید داد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_staff_area.js:143
+#: xblock/static/js/src/lms/oa_staff_area.js:253
+msgid "Unexpected server error."
+msgstr "خطای ناشناخته در سرور"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_staff_area.js:147
+msgid "You must provide a learner name."
+msgstr "شما باید نام یادگیرنده را ارائه دهید"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_staff_area.js:214
+msgid ""
+"This grade will be applied to all members of the team. Do you want to "
+"continue?"
+msgstr "این نمره به همه اعضای تیم داده خواهد شد. می‌خواهید ادامه دهید؟"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_staff_area.js:218
+msgid "Confirm Grade Team Submission"
+msgstr "تایید ارسال نمره تیم"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_staff_area.js:304
+msgid "Error getting the number of ungraded responses"
+msgstr "خطا در دریافت افراد فاقد نمره"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+msgid ""
+"If you leave this page without submitting your staff assessment, you will "
+"lose any work you have done."
+msgstr "اگر این صفحه را بدون ارسال خودارزیابی خود ترک کنید، هرکاری که تاکنون انجام داده‌اید را از دست خواهید داد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_training.js:130
+msgid "Feedback available for selection."
+msgstr "بازخورد در دسترس، برای این انتخاب"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:377
+#: xblock/static/js/src/lms/oa_peer.js:217
+msgid ""
+"If you leave this page without submitting your peer assessment, you will "
+"lose any work you have done."
+msgstr "اگر این صفحه را بدون ارسال ارزیابی خود ترک کنید، هرکاری که تاکنون انجام داده‌اید را از دست خواهید داد."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Refresh"
+msgstr "بارگیری دوباره"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Username"
+msgstr "نام کاربری"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Peers Assessed"
+msgstr "همتایان ارزیابی شدند"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Peer Responses Received"
+msgstr "پاسخ‌های همتایان دریافت شد"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Time Spent On Current Step"
+msgstr "زمان صرف‌شده در مرحله فعلی"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Staff assessment"
+msgstr "ارزیابی کارکنان"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Grade Status"
+msgstr "وضعیت نمره"
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid ""
+"The \"{name}\" problem is configured to require a minimum of {min_grades} "
+"peer grades, and asks to review {min_graded} peers."
+msgstr "مشکل \"{name}\" به گونه‌ای پیکربندی شده است که به حداقل {min_grades} نمره همتا نیاز دارد، و از شما می‌خواهد {min_graded} همتایان را بررسی کنید."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid ""
+"There are currently {stuck_learners} learners in the waiting state, meaning "
+"they have not yet met all requirements for Peer Assessment. "
+msgstr "اکنون یادگیرندگان {stuck_learners} در حالت انتظار هستند، به این معنی که آنها هنوز تمام شرایط لازم برای ارزیابی همتا را ندارند."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid ""
+"However, {overwritten_count} of these students have received a grade through"
+" the staff grade override tool already."
+msgstr "با این حال، {overwritten_count} از این افراد قبلاً از طریق ابزار لغو نمره کارکنان، نمره خود را دریافت کرده‌اند."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+msgid "Error while fetching student data."
+msgstr "خطا هنگام واکشی داده‌های کاربر."
+
+#: xblock/static/dist/openassessment-lms.b328608c93fb0f4c9b64.js:383
+#: xblock/static/js/src/lms/oa_base.js:424
+msgid "Unable to load"
+msgstr "قادر به بارگذاری نیست."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Paragraph"
+msgstr "بند"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Preformatted"
+msgstr "از پیش قالب‌بندی‌شده"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Heading 3"
+msgstr "سرصفحه 3"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Heading 4"
+msgstr "سرصفحه 4"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Heading 5"
+msgstr "سرصفحه 5"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_tiny_mce.js:66
+msgid "Heading 6"
+msgstr "سرصفحه 6"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_container_item.js:43
+msgid "Unnamed Option"
+msgstr "گزینه بی‌نام"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_container_item.js:53
+msgid "Not Selected"
+msgstr "انتخاب نشده"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_rubric.js:124
+msgid "Problem cloning rubric"
+msgstr "مشکل شبیه‌سازی راهنمای امتیازدهی"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:100
+msgid "Criterion Added"
+msgstr "معیار افزوده شد"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:102
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
+msgstr "شما معیاری افزودید. در مرحله آموزش یادگیرنده باید گزینه‌ای را به‌عنوان معیار انتخاب کنید. برای این کار روی زبانه «مراحل ارزیابی» بزنید."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:150
+#: xblock/static/js/src/studio/oa_edit_listeners.js:186
+msgid "Option Deleted"
+msgstr "این گزینه حذف شد"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:152
+msgid ""
+"You have deleted an option. That option has been removed from its criterion "
+"in the sample responses in the Learner Training step. You might have to "
+"select a new option for the criterion."
+msgstr "شما یک گزینه را حذف کردید. این گزینه از معیار در نمونه پاسخ‌ در مرحله آموزش یادگیرندگان حذف شد. شما ممکن است مجبور به انتخاب یک گزینه جدید برای این معیار شوید."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:188
+msgid ""
+"You have deleted all the options for this criterion. The criterion has been "
+"removed from the sample responses in the Learner Training step."
+msgstr "شما همه گزینه های این معیار را حذف کردید. این معیار از نمونه پاسخ در مراحل آموزش یادگیرنده حذف شد."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:214
+msgid "Criterion Deleted"
+msgstr "معیار حذف شد"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:216
+msgid ""
+"You have deleted a criterion. The criterion has been removed from the "
+"example responses in the Learner Training step."
+msgstr "شما یک معیار را حذف نمودید. این معیار از پاسخ های نمونه در مرحله یادگیری یادگیرنده حذف شد."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:394
+msgid "Warning"
+msgstr "هشدار"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_listeners.js:395
+msgid ""
+"Changes to steps that are not selected as part of the assignment will not be"
+" saved."
+msgstr "تغییرات مراحلی که به‌عنوان بخشی از تکلیف انتخاب نشده‌اند ذخیره نخواهند شد."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_settings.js:91
+msgid "File types can not be empty."
+msgstr "نوع پرونده نباید خالی باشد"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit_settings.js:101
+msgid "The following file types are not allowed: "
+msgstr "این نوع پرونده مجاز نیست."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit.js:183
+msgid "Save Unsuccessful"
+msgstr "ذخیره نشد"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit.js:184
+msgid "Errors detected on the following tabs: "
+msgstr "خطاهای شناسایی شده در زبانه‌های زیر:"
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+msgid ""
+"This ORA has already been released. Changes will only affect learners making"
+" new submissions. Existing submissions will not be modified by this change."
+msgstr "این ORA قبلاً منتشر شده‌است. تغییرات فقط بر یادگیرندگانی تأثیر می‌گذارد که مطالب جدید را ارسال می‌کنند. موارد ارسالی موجود با این تغییر ، بی تغییر خواهند ماند."
+
+#: xblock/static/dist/openassessment-studio.d576fb212cefa2e4b720.js:25
+#: xblock/static/js/src/studio/oa_edit.js:319
+msgid "error count: "
+msgstr "تعداد خطا:"

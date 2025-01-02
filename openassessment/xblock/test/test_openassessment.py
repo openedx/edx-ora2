@@ -5,8 +5,10 @@ from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
+import unittest
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
+from django.test.utils import override_settings
 
 import ddt
 import pytz
@@ -15,16 +17,61 @@ from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
-from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.openassessmentblock import load
+from openassessment.xblock.utils import defaults
+from openassessment.xblock.utils.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.openassesment_template_mixin import UI_MODELS
+from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
 
 from .base import XBlockHandlerTestCase, scenario
 
 
+def assert_is_closed(  # pylint: disable=too-many-positional-arguments
+        xblock,
+        now,
+        step,
+        expected_is_closed,
+        expected_reason,
+        expected_start,
+        expected_due,
+        released=None,
+        course_staff=False,
+):
+    """
+    Assert whether the XBlock step is open/closed.
+
+    Args:
+        xblock (OpenAssessmentBlock): The xblock under test.
+        now (datetime): Time to patch for the xblock's call to datetime.now()
+        step (str): The step in the workflow (e.g. "submission", "self-assessment")
+        expected_is_closed (bool): Do we expect the step to be open or closed?
+        expected_reason (str): Either "start", "due", or None.
+        expected_start (datetime): Expected start date.
+        expected_due (datetime): Expected due date.
+
+    Keyword Arguments:
+        released (bool): If set, check whether the XBlock has been released.
+        course_staff (bool): Whether to treat the user as course staff.
+
+    Raises:
+        AssertionError
+    """
+    with freeze_time(now):
+        is_closed, reason, start, due = xblock.is_closed(step=step, course_staff=course_staff)
+        assert is_closed == expected_is_closed
+        assert reason == expected_reason
+        assert start == expected_start
+        assert due == expected_due
+
+        if released is not None:
+            assert xblock.is_released(step=step) == released
+
+
 @ddt.ddt
 class TestOpenAssessment(XBlockHandlerTestCase):
-    """Test Open Asessessment Xblock functionality"""
+    """Test Open Assessment XBlock functionality"""
 
-    TIME_ZONE_FN_PATH = 'openassessment.xblock.user_data.get_user_preferences'
+    TIME_ZONE_FN_PATH = 'openassessment.xblock.utils.user_data.get_user_preferences'
 
     @scenario('data/basic_scenario.xml')
     def test_load_student_view(self, xblock):
@@ -34,6 +81,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         xblock_fragment = self.runtime.render(xblock, "student_view")
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
@@ -63,6 +114,23 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
         self.assertIn("step--grade", grade_response.body.decode('utf-8'))
+
+    @scenario("data/basic_scenario.xml")
+    def test_load_author_view(self, xblock):
+        """OA XBlock returns some HTML to the author in Studio.
+
+        View basic test for verifying we're returned some HTML about the
+        Open Assessment XBlock for authoring purposes.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Author"
+        )
+        xblock.mfe_views_enabled = True
+        xblock_fragment = self.runtime.render(xblock, "author_view")
+
+        # Validate that the author view renders and contains expected content.
+        self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
+        self.assertIn("IS_STUDIO", xblock_fragment.body_html())
 
     def _staff_assessment_view_helper(self, xblock):
         """
@@ -102,8 +170,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # always include grade and submission.
         # assessments from rubric are loaded into the ui model.
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 4)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
             xblock.rubric_assessments[0],
@@ -120,8 +188,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # peer and self assessment types are not included in VALID_ASSESSMENT_TYPES_FOR_TEAMS
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
 
@@ -131,7 +199,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.leaderboard_show = 10
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 5)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
             xblock.rubric_assessments[0],
@@ -146,16 +213,19 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test__create_ui_models__no_leaderboard_if_teams_enabled(self, xblock):
-        # do not show leaderboard in teams ORAS, even if leaderboard_show is set.
+        # do not show leaderboard in teams ORAs, even if leaderboard_show is set.
         xblock.leaderboard_show = 10
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
 
     @scenario('data/basic_scenario.xml')
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='some_url'
+    )
     @patch(
         'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
         PropertyMock(return_value=False)
@@ -207,6 +277,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(items, defined_ora_items)
 
     @scenario('data/basic_scenario.xml')
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='some_url'
+    )
     @ddt.data(False, True)
     @patch(
         'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
@@ -230,8 +303,37 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_args_el = tree.xpath(xblock_arg_path)
         json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
 
+    @scenario('data/basic_scenario.xml')
+    @ddt.data(False, True)
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_selectable_learner_waiting_review_enabled',
+        new_callable=PropertyMock
+    )
+    def test_ora_waiting_step_details_view_include_esg_flag(
+            self, xblock, esg_flag_input, mock_esg):
+        """
+        Test waiting step details view is selectable learner waiting review enabled.
+        """
+        mock_esg.return_value = esg_flag_input
+        xblock_fragment = self.runtime.render(xblock, "waiting_step_details_view")
+        body_html = xblock_fragment.body_html()
+
+        self.assertIn("WaitingStepDetailsBlock", body_html)
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
+
+        xblock_args_el = tree.xpath(xblock_arg_path)
+        assert json.loads(xblock_args_el[0].text)['CONTEXT']['selectable_learners_enabled'] == esg_flag_input
+
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
@@ -242,6 +344,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
 
         # No submission made, so don't update the workflow
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
@@ -255,12 +361,21 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
             self.runtime.render(xblock, "student_view")
             expected_reqs = {
-                "peer": {"must_grade": 5, "must_be_graded_by": 3, "enable_flexible_grading": False}
+                "peer": {
+                    "must_grade": 5,
+                    "must_be_graded_by": 3,
+                    "enable_flexible_grading": False,
+                    "grading_strategy": "median",
+                }
             }
-            mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs)
+            mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs, {})
 
     @scenario('data/basic_scenario.xml')
     def test_student_view_workflow_error(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
 
         # Simulate an error from updating the workflow
         xblock.submission_uuid = 'test_submission'
@@ -281,10 +396,14 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
-        with patch('openassessment.xblock.user_data.get_user_preferences') as time_zone_fn:
+        with patch('openassessment.xblock.utils.user_data.get_user_preferences') as time_zone_fn:
             time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')
+            xblock.xmodule_runtime = self._create_mock_runtime(
+                xblock.scope_ids.usage_id, False, False, "Bob"
+            )
+            xblock.mfe_views_enabled = True
             xblock_fragment = self.runtime.render(xblock, "student_view")
             self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
@@ -296,7 +415,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     def _set_up_start_date(self, start_date):
         """
-        Helper function to set up start date for xblocks
+        Helper function to set up start date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.start = start_date
@@ -306,17 +425,17 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         """
         Helper function to set up start date early for beta testers
         """
+        xblock.days_early_for_beta = days_early
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
             anonymous_student_id='test_student',
-            days_early_for_beta=days_early,
             user_is_staff=False,
             user_is_beta_tester=True
         )
 
     def _set_up_end_date(self, end_date):
         """
-        Helper function to set up end date for xblocks
+        Helper function to set up end date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.due = end_date
@@ -368,7 +487,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             self._set_up_days_early_for_beta(xblock, 5)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
+            self.assertEqual(xblock.days_early_for_beta, 5)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body.decode('utf-8'))
@@ -385,7 +504,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             xblock.due = dt.datetime(2014, 5, 1)
             self._set_up_days_early_for_beta(xblock, 5)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
+            self.assertEqual(xblock.days_early_for_beta, 5)
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
@@ -442,7 +561,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             self._set_up_days_early_for_beta(xblock, None)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
+            self.assertEqual(xblock.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body.decode('utf-8'))
@@ -458,14 +577,16 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set due dates
             xblock = self._set_up_end_date(dt.datetime(2014, 5, 1))
             self._set_up_days_early_for_beta(xblock, None)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
+            self.assertEqual(xblock.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
-
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Reset all fields in the XBlock to their default values
         for field_name, field in xblock.fields.items():
             setattr(xblock, field_name, field.default)
@@ -496,6 +617,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_ignore_unknown_assessment_types(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # If the XBlock contains an unknown assessment type
         # (perhaps after a roll-back), it should ignore it.
         xblock.rubric_assessments.append({'name': 'unknown'})
@@ -509,6 +634,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff.xml', user_id='Bob')
     def test_assessment_type_with_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
 
@@ -517,6 +646,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_only.xml', user_id='Bob')
     def test_assessment_type_without_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        xblock.mfe_views_enabled = True
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
 
@@ -525,6 +658,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_not_required(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
 
@@ -533,8 +671,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_override(self, xblock):
+        xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Override the staff_assessment_exists function to always return True
-        xblock.staff_assessment_exists = lambda submission_uuid: True
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: True
 
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
@@ -612,6 +754,34 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         """
         self.assertEqual(xblock.white_listed_file_types, ["pdf"])
 
+    @ddt.data(True, False)
+    @scenario('data/simple_self_staff_scenario.xml')
+    def test_mfe_views_supported__teams(self, xblock, mock_teams_assignment):
+        # Given I'm on / not on a team assignment
+        xblock.is_team_assignment = Mock(return_value=mock_teams_assignment)
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for team assignments
+        expected_supported = not mock_teams_assignment
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
+    @ddt.unpack
+    @ddt.data((0, True), (5, False))
+    @patch.object(openassessmentblock.OpenAssessmentBlock, 'leaderboard_show', new_callable=PropertyMock)
+    @scenario('data/simple_self_staff_scenario.xml')
+    def test_mfe_views_supported__leaderboard(self, xblock, mock_value, expected_supported, mock_leaderboard_show):
+        # Given I'm on / not on an ORA with a leaderboard
+        mock_leaderboard_show.return_value = mock_value
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for ORAs with leaderboards
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
+    @scenario('data/assessment_steps_reordered.xml')
+    def test_mfe_views_supported__rearranged_steps(self, xblock):
+        # Given this ORA has rearranged our assessment steps
+        self.assertTrue(xblock.mfe_views_supported)
+
 
 class TestDates(XBlockHandlerTestCase):
     """ Test Assessment Dates. """
@@ -621,28 +791,28 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc)
         xblock.due = dt.datetime(2014, 3, 5).replace(tzinfo=pytz.utc)
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59),
             None, True, "start", xblock.start, xblock.due,
             released=False
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1),
             None, False, None, xblock.start, xblock.due,
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 4, 23, 59, 59),
             None, False, None, xblock.start, xblock.due,
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 5, 1, 1, 1),
             None, True, "due", xblock.start, xblock.due,
@@ -655,7 +825,7 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc).isoformat()
         xblock.due = None
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
             "submission", True, "start",
@@ -664,7 +834,7 @@ class TestDates(XBlockHandlerTestCase):
             released=False
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -673,7 +843,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -682,7 +852,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "submission", True, "due",
@@ -697,7 +867,7 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = None
         xblock.due = None
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "start",
@@ -706,7 +876,7 @@ class TestDates(XBlockHandlerTestCase):
             released=False
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -715,7 +885,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -724,7 +894,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "due",
@@ -739,7 +909,7 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = None
         xblock.due = None
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "self-assessment", True, "start",
@@ -748,7 +918,7 @@ class TestDates(XBlockHandlerTestCase):
             released=False
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
@@ -757,7 +927,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
@@ -766,7 +936,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "self-assessment", True, "due",
@@ -783,7 +953,7 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc).isoformat()
         xblock.due = None
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "start",
@@ -792,7 +962,7 @@ class TestDates(XBlockHandlerTestCase):
             released=False
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -801,7 +971,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 5, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -810,7 +980,7 @@ class TestDates(XBlockHandlerTestCase):
             released=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 5, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "due",
@@ -903,7 +1073,7 @@ class TestDates(XBlockHandlerTestCase):
         # The problem should always be open for course staff
         # The following assertions check before/during/after dates
         # for submission/peer/self
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -911,7 +1081,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -919,7 +1089,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -927,7 +1097,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2014, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "submission", False, None,
@@ -935,7 +1105,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -943,7 +1113,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -951,7 +1121,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -959,7 +1129,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2015, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", False, None,
@@ -967,7 +1137,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
@@ -975,7 +1145,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
@@ -983,7 +1153,7 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
@@ -991,53 +1161,13 @@ class TestDates(XBlockHandlerTestCase):
             course_staff=True
         )
 
-        self.assert_is_closed(
+        assert_is_closed(
             xblock,
             dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "self-assessment", False, None,
             DISTANT_PAST, DISTANT_FUTURE,
             course_staff=True
         )
-
-    def assert_is_closed(
-            self, xblock, now, step, expected_is_closed, expected_reason,
-            expected_start, expected_due, released=None, course_staff=False,
-    ):
-        """
-        Assert whether the XBlock step is open/closed.
-
-        Args:
-            xblock (OpenAssessmentBlock): The xblock under test.
-            now (datetime): Time to patch for the xblock's call to datetime.now()
-            step (str): The step in the workflow (e.g. "submission", "self-assessment")
-            expected_is_closed (bool): Do we expect the step to be open or closed?
-            expected_reason (str): Either "start", "due", or None.
-            expected_start (datetime): Expected start date.
-            expected_due (datetime): Expected due date.
-
-        Keyword Arguments:
-            released (bool): If set, check whether the XBlock has been released.
-            course_staff (bool): Whether to treat the user as course staff.
-
-        Raises:
-            AssertionError
-        """
-        # Need some non-conventional setup to patch datetime because it's a C module.
-        # http://nedbatchelder.com/blog/201209/mocking_datetimetoday.html
-        # Thanks Ned!
-        datetime_patcher = patch.object(openassessmentblock, 'dt', Mock(wraps=dt))
-        mocked_datetime = datetime_patcher.start()
-        self.addCleanup(datetime_patcher.stop)
-        mocked_datetime.datetime.utcnow.return_value = now
-
-        is_closed, reason, start, due = xblock.is_closed(step=step, course_staff=course_staff)
-        self.assertEqual(is_closed, expected_is_closed)
-        self.assertEqual(reason, expected_reason)
-        self.assertEqual(start, expected_start)
-        self.assertEqual(due, expected_due)
-
-        if released is not None:
-            self.assertEqual(xblock.is_released(step=step), released)
 
     @scenario('data/basic_scenario.xml')
     def test_get_username(self, xblock):
@@ -1055,6 +1185,208 @@ class TestDates(XBlockHandlerTestCase):
         xblock.xmodule_runtime.get_real_user.return_value = None
 
         self.assertIsNone(xblock.get_username('unknown_id'))
+
+
+class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
+
+    DEFAULT_COURSE_START = dt.datetime(2023, 5, 1).replace(tzinfo=pytz.utc)
+    DEFAULT_COURSE_END = dt.datetime(2023, 12, 1).replace(tzinfo=pytz.utc)
+    DEFAULT_SUBSECTION_START = dt.datetime(2023, 7, 30).replace(tzinfo=pytz.utc)
+    DEFAULT_SUBSECTION_DUE = dt.datetime(2023, 8, 10).replace(tzinfo=pytz.utc)
+
+    def defined_manual_dates(self, xblock, step):
+        """
+        Helper to get an assessment's start and due dates as datetime object
+        """
+        if step == 'submission':
+            return (
+                dt.datetime.fromisoformat(xblock.submission_start),
+                dt.datetime.fromisoformat(xblock.submission_due)
+            )
+        for assessment in xblock.valid_assessments:
+            if assessment['name'] == step + '-assessment':
+                return (
+                    dt.datetime.fromisoformat(assessment.get('start')),
+                    dt.datetime.fromisoformat(assessment.get('due'))
+                )
+        return None  # pragma: no cover
+
+    def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
+        """
+        Helper to set up course start and end dates and subsection start and due dates
+        """
+        mock_course = Mock()
+        if course_dates is None:
+            course_dates = (
+                self.DEFAULT_COURSE_START,
+                self.DEFAULT_COURSE_END
+            )
+        mock_course.start = course_dates[0]
+        mock_course.end = course_dates[1]
+        xblock.course = mock_course
+
+        if subsection_dates is None:
+            subsection_dates = (
+                self.DEFAULT_SUBSECTION_START,
+                self.DEFAULT_SUBSECTION_DUE
+            )
+        xblock.start = subsection_dates[0]
+        xblock.due = subsection_dates[1]
+
+    @scenario('data/date_config_scenario.xml')
+    def test_course_end(self, xblock):
+        """
+        Test that the date config type field set to course end date
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
+        self.setup_dates(xblock)
+
+        defined_submission_due = self.defined_manual_dates(xblock, 'submission')[1]
+        defined_peer_due = self.defined_manual_dates(xblock, 'peer')[1]
+
+        # The problem should not be closed if now is before course end date
+        assert_is_closed(
+            xblock,
+            defined_peer_due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            defined_submission_due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+
+        # The problem should be closed if now is after course end date
+        assert_is_closed(
+            xblock,
+            xblock.course.end + dt.timedelta(minutes=1),
+            "peer",
+            True,
+            'due',
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.course.end + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.course.start,
+            xblock.course.end
+        )
+
+    @scenario('data/date_config_scenario.xml')
+    def test_subsection(self, xblock):
+        """
+        Test that the date config type field set to submission due date
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
+        self.setup_dates(xblock)
+        defined_submission_due = self.defined_manual_dates(xblock, 'submission')[1]
+        defined_peer_due = self.defined_manual_dates(xblock, 'peer')[1]
+
+        # The problem should not be closed if now is before subsection due date
+        assert_is_closed(
+            xblock,
+            defined_peer_due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.start,
+            xblock.due
+        )
+        assert_is_closed(
+            xblock,
+            defined_submission_due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.start,
+            xblock.due
+        )
+
+        # The problem should be closed if now is after subsection due date
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.start,
+            xblock.due
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.start,
+            xblock.due
+        )
+
+    @scenario('data/date_config_scenario.xml')
+    def test_course_end_no_defined_course_end(self, xblock):
+        """
+        Test behavior for when course dates aren't set
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
+        self.setup_dates(xblock, course_dates=(None, None))
+
+        assert_is_closed(
+            xblock,
+            xblock.due,
+            "submission",
+            False,
+            None,
+            DISTANT_PAST,
+            DISTANT_FUTURE,
+        )
+
+    @scenario('data/date_config_scenario.xml')
+    def test_subsection_none_defined(self, xblock):
+        """
+        Test behavior for when subsection dates aren't defined
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
+        self.setup_dates(xblock, subsection_dates=(None, None))
+
+        assert_is_closed(
+            xblock,
+            self.defined_manual_dates(xblock, 'submission')[1],
+            "submission",
+            False,
+            None,
+            DISTANT_PAST,
+            DISTANT_FUTURE,
+        )
 
 
 class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
@@ -1109,3 +1441,23 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         self.assertEqual(content["display_name"], "Open Response Assessment")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
+
+
+class TestLoadFunction(unittest.TestCase):
+    """Test case for the load function in openassessmentblock.py."""
+
+    @patch("openassessment.xblock.openassessmentblock.resource_loader.load_unicode")
+    def test_load_function(self, mock_load_unicode):
+        """
+        Test that load calls resource_loader.load_unicode with the correct path.
+        """
+        mock_load_unicode.return_value = "Sample content"
+        test_path = "sample/path/to/resource.html"
+
+        result = load(test_path)
+
+        # Check that resource_loader.load_unicode was called with the correct path
+        mock_load_unicode.assert_called_once_with(test_path)
+
+        # Verify that load() returns the expected value
+        self.assertEqual(result, "Sample content")

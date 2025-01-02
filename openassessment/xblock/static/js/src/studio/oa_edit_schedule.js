@@ -1,4 +1,5 @@
-import { DatetimeControl } from './oa_edit_fields';
+import { DatetimeControl, SelectControl } from './oa_edit_fields';
+import Notifier from './oa_edit_notifier';
 /**
 Editing interface for OpenAssessment schedule settings.
 
@@ -13,8 +14,12 @@ export class EditScheduleView {
   constructor(element, assessmentViews) {
     this.element = element;
     this.tabElement = $('#oa_edit_schedule_tab');
-
     this.assessmentViews = assessmentViews;
+
+    this.handleDateTimeConfigChanged = this.handleDateTimeConfigChanged.bind(this);
+    this.showSelectedDateConfigSettings = this.showSelectedDateConfigSettings.bind(this);
+    this.stashManualDates = this.stashManualDates.bind(this);
+    this.popManualDates = this.popManualDates.bind(this);
 
     // Configure the date and time fields
     this.startDatetimeControl = new DatetimeControl(
@@ -27,6 +32,14 @@ export class EditScheduleView {
       this.element,
       '#openassessment_submission_due_date',
       '#openassessment_submission_due_time',
+    ).install();
+
+    this.selectedDateConfigType = $('input[name="date_config_type"][type="radio"]:checked', this.element).val();
+
+    new SelectControl(
+      $('input[name="date_config_type"][type="radio"]', this.element),
+      this.handleDateTimeConfigChanged,
+      new Notifier([]),
     ).install();
   }
 
@@ -65,6 +78,97 @@ export class EditScheduleView {
   }
 
   /**
+   * Handles the date config selection being changed.
+   * "Stashes" the current start and due dates and displays the correct date settings panel.
+   *
+   * @param {string} value The currently selected date config type, one of [ manual, subsection, course_end ]
+   */
+  handleDateTimeConfigChanged(value) {
+    if (value === 'manual') {
+      this.popManualDates();
+    } else {
+      this.stashManualDates();
+    }
+    this.showSelectedDateConfigSettings(value);
+    this.selectedDateConfigType = value;
+  }
+
+  /**
+   * Displays the schedule_setting_list entry for the associated date config type and hides the others
+   *
+   * @param {string} value The currently selected date config type, one of [ manual, subsection, course_end ]
+   */
+  showSelectedDateConfigSettings(value) {
+    $('.schedule_setting_list ', this.element).each((_, el) => {
+      if (el.id !== `${value}_schedule_settings_list`) {
+        $(el).addClass('is--hidden');
+      } else {
+        $(el).removeClass('is--hidden');
+      }
+    });
+  }
+
+  /**
+   * "Stashes" the current values of all manual start and due date settings and replaces the value of the disabled
+   * input elements with default date values.
+   *
+   * Calling this function once will do the stash, and calling it repeatedly after that will have no effect until
+   * `popManualDates` is called
+   *
+   * This allows us to essentially ignore all date validation for non-manual date config on the backend
+   */
+  stashManualDates() {
+    const defaultStartDate = '2001-01-01';
+    const defaultDueDate = '2099-12-31';
+
+    this.startDatetimeControl.stash(defaultStartDate);
+    this.dueDatetimeControl.stash(defaultDueDate);
+
+    const peerStep = this.assessmentViews.oa_peer_assessment_editor;
+    peerStep.startDatetimeControl.stash(defaultStartDate);
+    peerStep.dueDatetimeControl.stash(defaultDueDate);
+
+    const selfStep = this.assessmentViews.oa_self_assessment_editor;
+    selfStep.startDatetimeControl.stash(defaultStartDate);
+    selfStep.dueDatetimeControl.stash(defaultDueDate);
+  }
+
+  /**
+   * "Pops" the stashed values of all manual start and due date settings back into the actual input controls.
+   *
+   * Calling this function once will perform the pop action.
+   * Calling it repeatedly after that will have no effect until`stashManualDates` is called again,
+   * and if `stashManualDates` has never been called, this function will have no effect.
+   */
+
+  popManualDates() {
+    this.startDatetimeControl.pop();
+    this.dueDatetimeControl.pop();
+
+    const peerStep = this.assessmentViews.oa_peer_assessment_editor;
+    peerStep.startDatetimeControl.pop();
+    peerStep.dueDatetimeControl.pop();
+
+    const selfStep = this.assessmentViews.oa_self_assessment_editor;
+    selfStep.startDatetimeControl.pop();
+    selfStep.dueDatetimeControl.pop();
+  }
+
+  /**
+   * Returns the current date config type
+   */
+  dateConfigType() {
+    return this.selectedDateConfigType;
+  }
+
+  /**
+  * Returns true if the current date config type is manual
+  */
+  isManualDateConfig() {
+    return this.dateConfigType() === 'manual';
+  }
+
+  /**
     Mark validation errors.
 
     Returns:
@@ -72,11 +176,17 @@ export class EditScheduleView {
 
     * */
   validate() {
+    // If we are using a non-manual date config type, don't validate
+    // the hidden fields
+    if (!this.isManualDateConfig()) {
+      return true;
+    }
+
     // Validate the start and due datetime controls
     let isValid = true;
 
-    isValid = (this.startDatetimeControl.validate() && isValid);
-    isValid = (this.dueDatetimeControl.validate() && isValid);
+    isValid = this.startDatetimeControl.validate() && isValid;
+    isValid = this.dueDatetimeControl.validate() && isValid;
 
     // Validate assessment dates
     const peerStep = this.assessmentViews.oa_peer_assessment_editor;

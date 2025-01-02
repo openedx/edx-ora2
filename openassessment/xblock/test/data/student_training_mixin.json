@@ -1,6 +1,6 @@
 {
     "simple": {
-        "expected_template": "openassessmentblock/student_training/student_training.html",
+        "expected_template": "legacy/student_training/student_training.html",
         "expected_context": {
             "training_num_completed": 0,
             "training_num_current": 1,

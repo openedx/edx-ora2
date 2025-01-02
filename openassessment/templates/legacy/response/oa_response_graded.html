@@ -1,0 +1,41 @@
+{% extends "legacy/response/oa_response.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li id="openassessment__response__{{ xblock_id }}"
+    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%} is--initially--collapsed"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content" aria-labeledby="oa_step_title_response">
+        <span class="icon fa fa-caret-right" aria-hidden="false"/>
+    </button>
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_response" class="step__status__value">
+    <span class="icon fa fa-check" aria-hidden="true"></span>
+    <span class="copy">{% trans "Complete" %}</span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="ui-slidable__content" aria-labelledby="oa_response_{{ xblock_id }}" id="oa_response_{{ xblock_id }}_content">
+    <div class="wrapper--step__content">
+        <div class="step__content">
+            <article class="submission__answer__display">
+                {% trans "Your response" as translated_label %}
+                {% include "legacy/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
+
+                {% trans "Your Uploaded Files"  as translated_header %}
+                {% include "legacy/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" including_template="response_graded" xblock_id=xblock_id %}
+
+                {% include "legacy/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response_graded" xblock_id=xblock_id %}
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}

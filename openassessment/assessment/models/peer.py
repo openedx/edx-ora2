@@ -13,6 +13,7 @@ from datetime import timedelta
 import logging
 import random
 
+from django.conf import settings
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
@@ -33,6 +34,8 @@ class AssessmentFeedbackOption(models.Model):
     Over time, we may decide to add, delete, or reword assessment feedback options.
     To preserve data integrity, we will always get-or-create `AssessmentFeedbackOption`s
     based on the option text.
+
+    .. no_pii:
     """
     text = models.CharField(max_length=255, unique=True)
 
@@ -52,6 +55,8 @@ class AssessmentFeedback(models.Model):
     ("Please provide any thoughts or comments on the feedback you received from your peers")
     as well as zero or more feedback options
     ("Please select the statements below that reflect what you think of this peer grading experience")
+
+    .. no_pii:
     """
     MAXSIZE = 1024 * 100     # 100KB
 
@@ -106,12 +111,13 @@ class PeerWorkflow(models.Model):
     The student item is the author of the submission.  Peer Workflow Items are
     created for each assessment made by this student.
 
+    .. no_pii:
     """
     # Amount of time before a lease on a submission expires
-    TIME_LIMIT = timedelta(hours=8)
+    TIME_LIMIT = timedelta(hours=getattr(settings, "ORA_PEER_LEASE_EXPIRATION_HOURS", 8))
 
     student_id = models.CharField(max_length=40, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
@@ -275,6 +281,9 @@ class PeerWorkflow(models.Model):
             )
         ).filter(
             graded_by_count__lt=must_be_graded_by
+        ).order_by(
+            'created_at',
+            'id'
         )
 
         return [
@@ -321,7 +330,7 @@ class PeerWorkflow(models.Model):
         # Remove any open items which have a submission which has been completed.
         for item in valid_open_items:
             if (item.started_at < oldest_acceptable) or (item.submission_uuid in completed_sub_uuids):
-                valid_open_items.remove(item)
+                valid_open_items.remove(item)   # pylint: disable=modified-iterating-list
 
         return valid_open_items[0] if valid_open_items else None
 
@@ -510,6 +519,7 @@ class PeerWorkflowItem(models.Model):
     associated workflow represents the scorer of the given submission, and the
     assessment represents the completed assessment for this work item.
 
+    .. no_pii:
     """
     scorer = models.ForeignKey(PeerWorkflow, related_name='graded', on_delete=models.CASCADE)
     author = models.ForeignKey(PeerWorkflow, related_name='graded_by', on_delete=models.CASCADE)
@@ -521,6 +531,16 @@ class PeerWorkflowItem(models.Model):
     scored = models.BooleanField(default=False)
 
     @classmethod
+    def _get_assessments(cls, submission_uuid, scored):
+        return Assessment.objects.filter(
+            pk__in=[
+                item.assessment.pk for item in PeerWorkflowItem.objects.filter(
+                    submission_uuid=submission_uuid, scored=scored, assessment__isnull=False
+                )
+            ]
+        )
+
+    @classmethod
     def get_scored_assessments(cls, submission_uuid):
         """
         Return all scored assessments for a given submission.
@@ -530,15 +550,35 @@ class PeerWorkflowItem(models.Model):
 
         Returns:
             QuerySet of Assessment objects.
+        """
+        return cls._get_assessments(submission_uuid, True)
+
+    @classmethod
+    def get_unscored_assessments(cls, submission_uuid):
+        """
+        Return all unscored assessments for a given submission.
+
+        Args:
+            submission_uuid (str): The UUID of the submission.
+
+        Returns:
+            QuerySet of Assessment objects.
 
         """
-        return Assessment.objects.filter(
-            pk__in=[
-                item.assessment.pk for item in PeerWorkflowItem.objects.filter(
-                    submission_uuid=submission_uuid, scored=True
-                )
-            ]
-        )
+        return cls._get_assessments(submission_uuid, False)
+
+    @classmethod
+    def get_bulk_scored_assessments(cls, submission_uuids):
+        """
+        Do a bulk lookup of scored PeerWorkflowItems by submission uuid,
+        and return the list of "scored" assessments.
+        """
+        item_qs = cls.objects.filter(
+            submission_uuid__in=submission_uuids,
+            assessment__isnull=False,
+            scored=True,
+        ).select_related('assessment')
+        return [item.assessment for item in item_qs]
 
     class Meta:
         ordering = ["started_at", "id"]

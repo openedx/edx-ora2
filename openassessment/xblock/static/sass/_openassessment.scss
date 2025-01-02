@@ -83,7 +83,7 @@
 @import 'oa/views/oa-base';                    // open assessment base view
 @import 'oa/views/oa-course-items-listing';    // open response assessment tab for instructor dashboard
 @import 'oa/views/oa-jquery-ui-rubric-reuse';  // rubric reuse jquery-ui theming mixin
-
+@import 'oa/elements/confirm';                 // custom confirm modal jquery-ui theming mixin
 
 // openassessment: contextual
 @import 'oa/contexts/ie';                      // open assessment-specific Internet Explorer-specific styling
@@ -96,5 +96,5 @@
 // This "namespaces" the paragon classes so that they don't conflict with
 // the version being used in the LMS
 .paragon-styles {
-    @import '@edx/paragon/scss/core/core.scss';
+    @import '@openedx/paragon/scss/core/core.scss';
 }

@@ -1,0 +1,21 @@
+{% spaceless %}
+{% load i18n %}
+{% if allow_latex %}
+    <{{ elem }} class="list--actions__item">
+        <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ id }}" data-input="{{ preview_name }}">
+            {% trans "Preview in LaTeX"%}
+        </button>
+        <div id="response__preview_explanation__{{ id }}" class="response__submission__label">
+            {% trans "Click to preview your submission in LaTeX."%}
+        </div>
+    </{{ elem }}>
+    <{{ elem }} class="submission__preview__item list--actions__item">
+        <article class="submission__answer__display">
+            <h5 class="submission__answer__display__title">{% trans "Preview Response"%}</h5>
+            <div class="submission__answer__display__content">
+                <p class="preview_content" data-preview="{{ preview_name }}"></p>
+            </div>
+        </article>
+    </{{ elem }}>
+{% endif %}
+{% endspaceless %}

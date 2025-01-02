@@ -51,7 +51,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         # Reload the submission UI
         # pylint: disable=protected-access,unnecessary-lambda
         with mock.patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
-            mock_download_url.side_effect = lambda i: "https://img-url/{}".format(i)
+            mock_download_url.side_effect = lambda i: f"https://img-url/{i}"
             resp = self.request(xblock, 'render_submission', json.dumps({}))
 
         self.assertIn(descriptions[0]['description'], resp.decode('utf-8'))
@@ -87,7 +87,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         # Reload the submission UI
         # pylint: disable=protected-access,unnecessary-lambda
         with mock.patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
-            mock_download_url.side_effect = lambda i: "https://img-url/{}".format(i)
+            mock_download_url.side_effect = lambda i: f"https://img-url/{i}"
             resp = self.request(xblock, 'render_submission', json.dumps({}))
 
         self.assertIn(descriptions1[0]['description'], resp.decode('utf-8'))

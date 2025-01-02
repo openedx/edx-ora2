@@ -55,3 +55,7 @@ class AssessmentApiLoadError(AssessmentWorkflowInternalError):
             assessment_name, api_path
         )
         super().__init__(msg)
+
+
+class ItemNotFoundError(Exception):
+    """An item was not found in the modulestore"""

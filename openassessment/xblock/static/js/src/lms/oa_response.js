@@ -1,5 +1,6 @@
 import DateTimeFactory from './oa_datefactory';
-import Rubric from './oa_rubric';
+import ConfirmationAlert from './oa_confirmation_alert';
+import Prompts from './oa_prompts';
 
 /**
  Interface for response (submission) view.
@@ -20,7 +21,7 @@ export class ResponseView {
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
-    AUTO_SAVE_WAIT = 30000;
+    AUTO_SAVE_WAIT = 2000;
 
     // Maximum size (500 * 2^20 bytes, approx. 500MB) of a single uploaded file.
     MAX_FILE_SIZE = 500 * (1024 ** 2);
@@ -29,6 +30,12 @@ export class ResponseView {
     MAX_FILES_MB = 500;
 
     UNSAVED_WARNING_KEY = 'learner-response';
+
+    ICON_SAVED = 'fa-check-circle-o';
+
+    ICON_SAVING = 'fa-refresh';
+
+    ICON_ERROR = 'fa-exclamation-circle';
 
     constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
@@ -52,6 +59,7 @@ export class ResponseView {
       this.announceStatus = false;
       this.isRendering = false;
       this.fileCountBeforeUpload = 0;
+      this.allowLearnerResubmissions = false;
       this.dateFactory = new DateTimeFactory(this.element);
     }
 
@@ -69,6 +77,7 @@ export class ResponseView {
           // Load the HTML and install event handlers
           $(stepID, view.element).replaceWith(html);
           view.server.renderLatex($(stepID, view.element));
+          view.setupPromptDisplays();
           // First load response editor then apply other things
           view.loadResponseEditor().then((editorController) => {
             view.responseEditorController = editorController;
@@ -78,7 +87,6 @@ export class ResponseView {
             view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
             view.announceStatus = false;
             view.dateFactory.apply();
-            view.checkSubmissionAbility();
           });
         },
       ).fail(() => {
@@ -120,13 +128,14 @@ export class ResponseView {
       const submit = $('.step--response__submit', this.element);
       this.textResponse = $(submit).attr('text_response');
       this.fileUploadResponse = $(submit).attr('file_upload_response');
+      this.allowLearnerResubmissions = $(submit).attr('allow_learner_resubmissions');
 
       // Install a click handler for submission
       sel.find('.step--response__submit').click(
         (eventObject) => {
           // Override default form submission
           eventObject.preventDefault();
-          view.submit();
+          view.handleSubmitClicked();
         },
       );
 
@@ -138,6 +147,12 @@ export class ResponseView {
           view.save();
         },
       );
+
+      // Install a click handler for the resubmission button
+      sel.find('.reset__submission').click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleResubmissionClicked();
+      });
 
       // Install click handler for the preview button
       this.baseView.bindLatexPreview(sel);
@@ -155,7 +170,10 @@ export class ResponseView {
       );
 
       // Install click handlers for delete file buttons.
-      sel.find('.delete__uploaded__file').click(this.handleDeleteFileClick());
+      sel.find('.delete__uploaded__file').click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleDeleteFileClick(eventObject.target);
+      });
 
       // Install a click handler to close the text response warning
       sel.find('#team_text_response_warning_closebtn').click(
@@ -164,15 +182,15 @@ export class ResponseView {
           sel.find('#team_text_response_warning').remove();
         },
       );
+      this.confirmationDialog = new ConfirmationAlert(sel.find('.step--response__dialog-confirm'));
     }
 
-    handleDeleteFileClick() {
-      const view = this;
-      return function (eventObject) {
-        eventObject.preventDefault();
-        const filenum = $(eventObject.target).attr('filenum');
-        view.removeUploadedFile(filenum);
-      };
+    /**
+     Set up prompts and attempt to resolve any unresolved Studio URLs
+     * */
+    setupPromptDisplays() {
+      this.prompts = new Prompts(this.element);
+      this.prompts.resolveStaticLinks();
     }
 
     /**
@@ -196,45 +214,57 @@ export class ResponseView {
     }
 
     /**
-     * Check that "submit" button could be enabled (or disabled)
-     *
-     * Args:
-     * filesFiledIsNotBlank (boolean): used to avoid race conditions situations
-     * (if files were successfully uploaded and are not displayed yet but
-     * after upload last file the submit button should be available to push)
-     *
+     * Check if submission is valid before submitting
+     * Returns: boolean
      */
-    checkSubmissionAbility(filesFiledIsNotBlank) {
-      const textFieldsIsNotBlank = !this.response().every((element) => $.trim(element) === '');
-
-      filesFiledIsNotBlank = filesFiledIsNotBlank || false;
+    isValidForSubmit() {
+      const textFieldsIsNotBlank = !this.response().every(
+        (element) => $.trim(element) === '',
+      );
+      let filesFiledIsNotBlank = false;
       $('.submission__answer__file', this.element).each(function () {
-        if (($(this).prop('tagName') === 'IMG') && ($(this).attr('src') !== '')) {
-          filesFiledIsNotBlank = true;
-        }
-        if (($(this).prop('tagName') === 'A') && ($(this).attr('href') !== '')) {
+        if (
+          ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '')
+          || ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
+        ) {
           filesFiledIsNotBlank = true;
         }
       });
-      let readyToSubmit = true;
-
-      if ((this.textResponse === 'required') && !textFieldsIsNotBlank) {
-        readyToSubmit = false;
+      if (this.textResponse === 'required' && !textFieldsIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please provide a response.'),
+        );
+        return false;
       }
-      if ((this.fileUploadResponse === 'required') && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
+      if (this.fileUploadResponse === 'required' && !filesFiledIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please upload a file.'),
+        );
+        return false;
       }
       if ((this.textResponse === 'optional') && (this.fileUploadResponse === 'optional')
             && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
-      }
-      if (this.hasPendingUploadFiles()) {
-        this.collectFilesDescriptions();
-        readyToSubmit = false;
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Cannot submit empty response even everything is optional.'),
+        );
+        return false;
       }
 
-      // if new files are to be uploaded, confirm that they have descriptions
-      this.submitEnabled(readyToSubmit);
+      if (this.hasPendingUploadFiles()) {
+        this.collectFilesDescriptions();
+        this.baseView.toggleActionError(
+          'submit',
+          gettext(
+            'There is still file upload in progress. Please wait until it is finished.',
+          ),
+        );
+        return false;
+      }
+
+      return true;
     }
 
     /**
@@ -267,11 +297,8 @@ export class ResponseView {
     }
 
     /**
-     Enable/disable the save button.
-     Check whether the save button is enabled.
-
-     Also enables/disables a beforeunload handler to warn
-     users about navigating away from the page with unsaved changes.
+     Enable/disable the preview button.
+     Check whether the preview button is enabled.
 
      Args:
      enabled (bool): If specified, set the state of the button.
@@ -280,33 +307,10 @@ export class ResponseView {
      bool: Whether the button is enabled.
 
      Examples:
-     >> view.saveEnabled(true);  // enable the button
-     >> view.saveEnabled();  // check whether the button is enabled
+     >> view.previewEnabled(true);  // enable the button
+     >> view.previewEnabled();  // check whether the button is enabled
      >> true
-     * */
-    saveEnabled(enabled) {
-      return this.baseView.buttonEnabled('.submission__save', enabled);
-    }
-
-    /**
-     * Enable/disable the upload button or check whether the upload button is enabled
-     *
-     * @param {boolean]} enabled - optional param to enable/disable button
-     * @returns {boolean} whether the upload button is enabled or not
-     *
-     * @example
-     *     view.uploadEnabled(true);  // enable the upload button
-     *     view.uploadEnabled();      // check whether the upload button is enabled
-     */
-    uploadEnabled(enabled) {
-      return this.baseView.buttonEnabled('.file__upload', enabled);
-    }
-
-    /**
-     Enable/disable the preview button.
-
-     Works exactly the same way as saveEnabled method.
-     * */
+    */
     previewEnabled(enabled) {
       return this.baseView.buttonEnabled('.submission__preview', enabled);
     }
@@ -326,14 +330,27 @@ export class ResponseView {
      boolean: if we have deleted/moved files or not.
      * */
     hasAllUploadFiles() {
-      for (let i = 0; i < this.files.length; i++) {
+      if (!this.files) {
+        this.baseView.toggleActionError(
+          'upload',
+          gettext('No files selected for upload.'),
+        );
+        return false;
+      }
+      if (!this.collectFilesDescriptions()) {
+        this.baseView.toggleActionError(
+          'upload',
+          gettext('Please provide a description for each file you are uploading.'),
+        );
+        return false;
+      }
+      for (let i = 0; i < this.files?.length; i++) {
         const file = this.files[i];
         if (file.size === 0) {
           this.baseView.toggleActionError(
             'upload',
-            gettext(`Your file ${file.name} has been deleted or path has been changed.`),
+            gettext('Your file has been deleted or path has been changed: ') + file.name,
           );
-          this.submitEnabled(true);
           return false;
         }
       }
@@ -346,20 +363,28 @@ export class ResponseView {
 
      Args:
      msg (string): If specified, the message to display.
+     iconClass (str): If specified, icon to display with save status.
 
      Returns:
      string: The current status message.
      * */
-    /* eslint-disable-next-line consistent-return */
-    saveStatus(msg) {
-      const sel = $('.save__submission__label', this.element);
+    saveStatus(msg, iconClass) {
+      // Create save status text
+      const saveStatusSel = $('.save__submission__label', this.element);
       if (typeof msg === 'undefined') {
-        return sel.text();
+        return saveStatusSel.text();
       }
-      // Setting the HTML will overwrite the screen reader tag,
-      // so prepend it to the message.
-      const label = gettext('Status of Your Response');
-      sel.html(`<span class="sr">${_.escape(label)}:</span>\n${msg}`);
+      saveStatusSel.text(_.escape(msg));
+
+      // Update save status icon, if provided
+      const iconSel = $('.save__submission__icon', this.element);
+      let iconClasses = 'save__submission__icon icon fa ';
+      if (typeof msg === 'string') {
+        iconClasses += _.escape(iconClass);
+      }
+      iconSel.attr('class', iconClasses);
+
+      return saveStatusSel.text();
     }
 
     /**
@@ -401,9 +426,7 @@ export class ResponseView {
       // (1) The response has changed.  We don't need to keep saving the same response.
       // (2) Sufficient time has passed since the user last made a change to the response.
       //      We don't want to save a response while the user is in the middle of typing.
-      // (3) No errors occurred on the last save.  We don't want to keep refreshing
-      //      the error message in the UI.  (The user can still retry the save manually).
-      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
+      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT) {
         this.save();
       }
     }
@@ -413,15 +436,17 @@ export class ResponseView {
      the user has entered a response.
      * */
     handleResponseChanged() {
-      this.checkSubmissionAbility();
-
       // Update the save button, save status, and "unsaved changes" warning
       // only if the response has changed
       if (this.responseChanged()) {
         const saveAbility = this.checkSaveAbility();
-        this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
-        this.saveStatus(gettext('This response has not been saved.'));
+
+        // If there was an error, preserve error status
+        if (!this.errorOnLastSave) {
+          this.saveStatus(gettext('Saving draft'), this.ICON_SAVING);
+        }
+
         this.baseView.unsavedWarningEnabled(
           true,
           this.UNSAVED_WARNING_KEY,
@@ -438,39 +463,41 @@ export class ResponseView {
      Save a response without submitting it.
      * */
     save() {
-      // If there were errors on previous calls to save, forget
-      // about them for now.  If an error occurs on *this* save,
-      // we'll set this back to true in the error handler.
-      this.errorOnLastSave = false;
-
       // Update the save status and error notifications
-      this.saveStatus(gettext('Saving...'));
-      this.baseView.toggleActionError('save', null);
+      // ... unless there was an error, this helps avoid unnecessary UI refreshes.
+      if (!this.errorOnLastSave) {
+        this.saveStatus(gettext('Saving draft...'), this.ICON_SAVING);
+      }
 
       // Disable the "unsaved changes" warning
       this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
 
       const view = this;
       const savedResponse = this.response();
+
       this.server.save(savedResponse).done(() => {
         // Remember which response we saved, once the server confirms that it's been saved...
         view.savedResponse = savedResponse;
 
-        // ... but update the UI based on what the user may have entered
-        // since hitting the save button.
-        view.checkSubmissionAbility();
-
         const currentResponse = view.response();
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
-          view.saveEnabled(false);
-          const msg = gettext('This response has been saved but not submitted.');
-          view.saveStatus(msg);
+          const msg = gettext('Draft saved!');
+          view.saveStatus(msg, this.ICON_SAVED);
           view.baseView.srReadTexts([msg]);
+
+          // Disable error
+          this.baseView.toggleActionError('save', null);
+          view.errorOnLastSave = false;
         }
       }).fail((errMsg) => {
-        view.saveStatus(gettext('Error'));
-        view.baseView.toggleActionError('save', errMsg);
+        // Debounce error banner, this won't capture new errors, but will keep
+        // us from defocusing text area, allowing user to continue to edit their
+        // response.
+        if (!view.errorOnLastSave) {
+          view.saveStatus(gettext('Error'), this.ICON_ERROR);
+          view.baseView.toggleActionError('save', errMsg);
+        }
 
         // Remember that an error occurred
         // so we can disable autosave
@@ -480,21 +507,43 @@ export class ResponseView {
     }
 
     /**
-     Send a response submission to the server and update the view.
+     Handler for the submit button
      * */
-    submit() {
+    handleSubmitClicked() {
+      if (!this.isValidForSubmit()) { return; }
+
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
 
-      // Block submit if a learner has files staged for upload
-      if (this.hasPendingUploadFiles()) { return; }
-
-      // Learner can cancel submission, re-enables submit button
-      if (!this.confirmSubmission()) {
-        this.submitEnabled(true);
-        return;
+      const view = this;
+      const title = gettext('Confirm Submit Response');
+      let msg = '';
+      if (this.allowLearnerResubmissions === 'True') {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you may have a limited '
+          + 'time to resubmit before your submission is graded.',
+        );
+      } else {
+        msg = gettext(
+          'You\'re about to submit your response for this assignment. '
+          + 'After you submit this response, you can\'t change it or '
+          + 'submit a new response.',
+        );
       }
 
+      this.confirmationDialog.confirm(
+        title,
+        msg,
+        () => view.submit(),
+        () => view.submitEnabled(true),
+      );
+    }
+
+    /**
+     Send a response submission to the server and update the view.
+     * */
+    submit() {
       const submission = this.response();
       this.baseView.toggleActionError('response', null);
 
@@ -515,6 +564,41 @@ export class ResponseView {
     }
 
     /**
+     Handler for the resubmission button
+     * */
+    handleResubmissionClicked() {
+      const view = this;
+      const title = gettext('Confirm Reset');
+      const msg = gettext(
+        'You\'re about to reset your response for this assignment. '
+        + 'You will need to submit a new response in order to complete '
+        + 'this step. Are you sure you want to continue?',
+      );
+      this.confirmationDialog.confirm(
+        title,
+        msg,
+        () => view.resetSubmission(),
+        () => {},
+      );
+    }
+
+    /**
+      Reset a response submission to the server and update the view.
+      * */
+    resetSubmission() {
+      this.server
+        .resetSubmission()
+        .done(() => {
+          window.location.reload(true);
+        })
+        .fail((errMsg) => {
+          if (errMsg) {
+            this.baseView.toggleActionError('submit', errMsg);
+          }
+        });
+    }
+
+    /**
      Transition the user to the next step in the workflow.
      * */
     moveToNextStep() {
@@ -530,20 +614,6 @@ export class ResponseView {
       // Disable the "unsaved changes" warning if the user
       // tries to navigate to another page.
       baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
-    }
-
-    /**
-     Make the user confirm before submitting a response.
-
-     Returns:
-     * true if the user confirms the submission
-     * false if the user cancels the submission
-     * */
-    confirmSubmission() {
-      // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-      // eslint-disable-next-line max-len
-      const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
-      return window.confirm(msg);
     }
 
     /**
@@ -596,7 +666,7 @@ export class ResponseView {
       }
 
       if (this.getSavedFileCount(false) + files.length > this.data.MAXIMUM_FILE_UPLOAD_COUNT) {
-        const msg = gettext(`Only ${this.data.MAXIMUM_FILE_UPLOAD_COUNT} files can be saved.`);
+        const msg = gettext('The maximum number files that can be saved is ') + this.data.MAXIMUM_FILE_UPLOAD_COUNT;
         this.baseView.toggleActionError(
           'upload',
           gettext(msg),
@@ -610,10 +680,6 @@ export class ResponseView {
           this.files = files;
         }
         this.updateFilesDescriptionsFields(files, descriptions, uploadType);
-      }
-
-      if (this.files === null) {
-        $(this.element).find('.file__upload').prop('disabled', true);
       }
     }
 
@@ -703,14 +769,7 @@ export class ResponseView {
        divTextarea.appendTo(mainDiv);
 
        mainDiv.appendTo(filesDescriptions);
-       textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
      }
-
-     // We can upload if descriptions exist
-     this.uploadEnabled(descriptionsExists);
-
-     // Submissions should be disabled when missing descriptions
-     this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
    }
 
    /**
@@ -733,8 +792,6 @@ export class ResponseView {
          isError = true;
        }
      });
-
-     this.uploadEnabled(!isError);
 
      if (!isError) {
        this.filesDescriptions = filesDescriptions;
@@ -768,27 +825,40 @@ export class ResponseView {
    }
 
    /**
-     Remove a previously uploaded file.
-
-     */
-   removeUploadedFile(filenum) {
-     if (this.confirmRemoveUploadedFile(filenum)) {
-       this.server.removeUploadedFile(filenum).done(() => {
-         const sel = $('.step--response', this.element);
-         const block = sel.find(`.submission__answer__file__block__${filenum}`);
-         block.html('');
-         block.prop('deleted', true);
-         this.checkSubmissionAbility();
-       }).fail((errMsg) => {
-         this.baseView.toggleActionError('delete', errMsg);
-       });
-     }
+    * Handler for file delete button
+    */
+   handleDeleteFileClick(target) {
+     const view = this;
+     const filenum = $(target).attr('filenum');
+     this.confirmationDialog.confirm(
+       gettext('Confirm Delete Uploaded File'),
+       this.getConfirmRemoveUploadedFileMessage(filenum),
+       () => view.removeUploadedFile(filenum),
+       () => {},
+     );
    }
 
-   confirmRemoveUploadedFile(filenum) {
+   /**
+     Remove a previously uploaded file.
+     */
+   removeUploadedFile(filenum) {
+     this.server.removeUploadedFile(filenum).done(() => {
+       const sel = $('.step--response', this.element);
+       const block = sel.find(`.submission__answer__file__block__${filenum}`);
+       block.html('');
+       block.prop('deleted', true);
+     }).fail((errMsg) => {
+       this.baseView.toggleActionError('delete', errMsg);
+     });
+   }
+
+   /**
+   * Build the confirm delete message for a file
+   */
+   getConfirmRemoveUploadedFileMessage(filenum) {
      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
      msg += this.getFileNameAndDescription(filenum);
-     return window.confirm(msg);
+     return msg;
    }
 
    /**
@@ -826,7 +896,6 @@ export class ResponseView {
        },
      ).fail((errMsg) => {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('.file__upload').prop('disabled', false);
      });
    }
 
@@ -838,8 +907,6 @@ export class ResponseView {
      let promise = null;
      const fileCount = view.files.length;
      const sel = $('.step--response', this.element);
-
-     sel.find('.file__upload').prop('disabled', true);
 
      promise = view.saveFilesDescriptions();
 
@@ -866,7 +933,6 @@ export class ResponseView {
      const sel = $('.step--response', this.element);
      const handleError = function (errMsg) {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('button.file__upload').prop('disabled', false);
        sel.find('input.file--upload').val(null);
      };
 
@@ -883,7 +949,6 @@ export class ResponseView {
              if (finalUpload) {
                sel.find('input[type=file]').val('');
                view.filesUploaded = true;
-               view.checkSubmissionAbility(true);
              }
            }).fail(handleError);
        },
@@ -928,6 +993,10 @@ export class ResponseView {
          img.attr('aria-labelledby', ariaLabelledBy);
          img.attr('src', url);
 
+         // manually trigger resize once the image is loaded
+         // because MutationObserver doesn't trigger the resize for the image
+         img.on('load', () => window.dispatchEvent(new Event('resize')));
+
          div2 = $('<div/>');
          div2.html(img);
          div2.appendTo(fileBlock);
@@ -947,7 +1016,10 @@ export class ResponseView {
        button.text('Delete File');
        button.addClass('delete__uploaded__file');
        button.attr('filenum', filenum);
-       button.click(view.handleDeleteFileClick());
+       button.click((eventObject) => {
+         eventObject.preventDefault();
+         view.handleDeleteFileClick(eventObject.target);
+       });
        button.appendTo(fileBlock);
 
        return url;

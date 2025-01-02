@@ -36,6 +36,12 @@ logger = logging.getLogger("openassessment.assessment.models")  # pylint: disabl
 KEY_SEPARATOR = '/'
 
 
+class PeerGradingStrategy:
+    """Grading strategies for peer assessments."""
+    MEAN = "mean"
+    MEDIAN = "median"
+
+
 class InvalidRubricSelection(Exception):
     """
     The specified criterion/option do not exist in the rubric.
@@ -64,6 +70,8 @@ class Rubric(models.Model):
     once created, they're never updated. When the problem changes, we end up
     creating a new Rubric instead. This makes it easy to cache and do hash-based
     lookups.
+
+    .. no_pii:
     """
     # SHA1 hash, including prompts and explanations
     content_hash = models.CharField(max_length=40, unique=True, db_index=True)
@@ -154,6 +162,8 @@ class Criterion(models.Model):
     and clarity. Each of those would be separate criteria.
 
     All Rubrics have at least one Criterion.
+
+    .. no_pii:
     """
     rubric = models.ForeignKey(Rubric, related_name="criteria", on_delete=models.CASCADE)
 
@@ -193,6 +203,8 @@ class CriterionOption(models.Model):
     Note that this is the representation of the choice itself, *not* a
     representation of a particular assessor's choice for a particular
     Assessment. That state is stored in :class:`AssessmentPart`.
+
+    .. no_pii:
     """
     # All Criteria must have at least one CriterionOption.
     criterion = models.ForeignKey(Criterion, related_name="options", on_delete=models.CASCADE)
@@ -413,6 +425,8 @@ class Assessment(models.Model):
     an assessment of some submission. It is composed of :class:`AssessmentPart`
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
+
+    .. no_pii:
     """
     MAX_FEEDBACK_SIZE = 1024 * 100
 
@@ -454,6 +468,7 @@ class Assessment(models.Model):
         return f"Assessment {self.id}"
 
     @classmethod
+    # pylint: disable=too-many-positional-arguments
     def create(cls, rubric, scorer_id, submission_uuid, score_type, feedback=None, scored_at=None):
         """
         Create a new assessment.
@@ -489,6 +504,27 @@ class Assessment(models.Model):
         return cls.objects.create(**assessment_params)
 
     @classmethod
+    def get_score_dict(cls, scores_dict, grading_strategy):
+        """Determine the score in a dictionary of lists of scores based on the
+        grading strategy calculation configuration.
+
+        Args:
+            scores_dict (dict): A dictionary of lists of int values. These int values
+                are reduced to a single value that represents the median.
+            grading_strategy (str): The type of score to calculate.  Defaults to "median".
+
+        Returns:
+            (dict): A dictionary with criterion name keys and median score
+                values.
+        """
+        assert grading_strategy in [
+            PeerGradingStrategy.MEDIAN,
+            PeerGradingStrategy.MEAN,
+        ], "Invalid grading strategy."
+
+        return getattr(cls, f"get_{grading_strategy}_score_dict")(scores_dict)
+
+    @classmethod
     def get_median_score_dict(cls, scores_dict):
         """Determine the median score in a dictionary of lists of scores
 
@@ -517,6 +553,36 @@ class Assessment(models.Model):
             criterion_score = Assessment.get_median_score(criterion_scores)
             median_scores[criterion] = criterion_score
         return median_scores
+
+    @classmethod
+    def get_mean_score_dict(cls, scores_dict):
+        """Determine the mean score in a dictionary of lists of scores
+
+        For a dictionary of lists, where each list contains a set of scores,
+        determine the mean value in each list.
+
+        Args:
+            scores_dict (dict): A dictionary of lists of int values. These int
+                values are reduced to a single value that represents the mean.
+
+        Returns:
+            (dict): A dictionary with criterion name keys and mean score
+                values.
+
+        Examples:
+            >>> scores = {
+            >>>     "foo": [5, 6, 12, 16, 22, 53],
+            >>>     "bar": [5, 6, 12, 16, 22, 53, 102]
+            >>> }
+            >>> Assessment.get_mean_score_dict(scores)
+            {"foo": 19, "bar": 31}
+
+        """
+        mean_scores = {}
+        for criterion, criterion_scores in scores_dict.items():
+            criterion_score = Assessment.get_mean_score(criterion_scores)
+            mean_scores[criterion] = criterion_score
+        return mean_scores
 
     @staticmethod
     def get_median_score(scores):
@@ -551,6 +617,28 @@ class Assessment(models.Model):
                 )
             )
         return median_score
+
+    @staticmethod
+    def get_mean_score(scores):
+        """Calculate the mean score from a list of scores
+
+        Args:
+            scores (list): A list of int values. These int values
+                are reduced to a single value that represents the mean.
+
+        Returns:
+            (int): The mean score.
+
+        Examples:
+            >>> scores = [5, 6, 12, 16, 22, 53]
+            >>> Assessment.get_mean_score(scores)
+            19
+
+        """
+        total_criterion_scores = len(scores)
+        if total_criterion_scores == 0:
+            return 0
+        return math.ceil(sum(scores) / float(total_criterion_scores))
 
     @classmethod
     def scores_by_criterion(cls, assessments):
@@ -609,6 +697,8 @@ class AssessmentPart(models.Model):
     It's implemented as a foreign key to the `CriterionOption` that was chosen
     by this assessor for this `Criterion`. So basically, think of this class
     as :class:`CriterionOption` + student state.
+
+    .. no_pii:
     """
     MAX_FEEDBACK_SIZE = 1024 * 100
 
@@ -831,6 +921,7 @@ class SharedFileUpload(TimeStampedModel):
     """
     Define a single file uploaded by a student when attached to a team.
 
+    .. no_pii:
     """
     team_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)
