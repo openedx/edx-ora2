@@ -26,12 +26,12 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.2.0
     # via -r requirements/base.txt
-boto3==1.35.92
+boto3==1.36.2
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.35.92
+botocore==1.36.2
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -74,7 +74,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-code-annotations==2.1.0
+code-annotations==2.2.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -164,7 +164,7 @@ edx-toggles==5.2.0
     # via -r requirements/base.txt
 factory-boy==3.3.1
     # via -r requirements/test.in
-faker==33.3.0
+faker==33.3.1
     # via factory-boy
 fastavro==1.10.0
     # via
@@ -248,7 +248,7 @@ mdurl==0.1.2
     # via markdown-it-py
 mock==5.1.0
     # via -r requirements/test.in
-more-itertools==10.5.0
+more-itertools==10.6.0
     # via -r requirements/test.in
 moto==4.2.14
     # via
@@ -258,7 +258,7 @@ newrelic==10.4.0
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
-openedx-events==9.15.0
+openedx-events==9.15.2
     # via -r requirements/base.txt
 openedx-filters==1.12.0
     # via -r requirements/base.txt
@@ -301,7 +301,7 @@ pycparser==2.22
     # via
     #   -r requirements/base.txt
     #   cffi
-pygments==2.18.0
+pygments==2.19.1
     # via rich
 pymongo==4.10.1
     # via
@@ -366,11 +366,11 @@ requests==2.32.3
     #   python-swiftclient
     #   responses
     #   xblock-sdk
-responses==0.25.3
+responses==0.25.6
     # via moto
 rich==13.9.4
     # via cookiecutter
-s3transfer==0.10.4
+s3transfer==0.11.1
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -419,8 +419,9 @@ tzdata==2024.2
     # via
     #   celery
     #   kombu
-urllib3==2.3.0
+urllib3==2.2.3
     # via
+    #   -c requirements/common_constraints.txt
     #   -r requirements/base.txt
     #   botocore
     #   requests
@@ -430,7 +431,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.28.1
+virtualenv==20.29.1
     # via tox
 voluptuous==0.15.2
     # via
