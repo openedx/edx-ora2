@@ -8,7 +8,7 @@ accessible-pygments==0.0.5
     # via pydata-sphinx-theme
 alabaster==1.0.0
     # via sphinx
-anyio==4.7.0
+anyio==4.8.0
     # via
     #   starlette
     #   watchfiles
@@ -47,7 +47,7 @@ packaging==24.2
     # via sphinx
 pydata-sphinx-theme==0.16.1
     # via sphinx-book-theme
-pygments==2.18.0
+pygments==2.19.1
     # via
     #   accessible-pygments
     #   pydata-sphinx-theme
@@ -99,11 +99,13 @@ typing-extensions==4.12.2
     # via
     #   anyio
     #   pydata-sphinx-theme
-urllib3==2.3.0
-    # via requests
+urllib3==2.2.3
+    # via
+    #   -c requirements/common_constraints.txt
+    #   requests
 uvicorn==0.34.0
     # via sphinx-autobuild
-watchfiles==1.0.3
+watchfiles==1.0.4
     # via sphinx-autobuild
 websockets==14.1
     # via sphinx-autobuild
