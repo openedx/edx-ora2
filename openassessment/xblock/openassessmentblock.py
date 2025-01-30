@@ -347,7 +347,9 @@ class OpenAssessmentBlock(
 
     @property
     def course_id(self):
-        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        if hasattr(self, "xmodule_runtime"):
+            return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        return None
 
     @cached_property
     def course(self):
