@@ -4,11 +4,11 @@
 #
 #    make upgrade
 #
-cachetools==5.5.0
+cachetools==5.5.1
     # via
     #   -r requirements/tox.txt
     #   tox
-certifi==2024.12.14
+certifi==2025.1.31
     # via requests
 chardet==5.2.0
     # via
@@ -30,7 +30,7 @@ distlib==0.3.9
     #   virtualenv
 docopt==0.6.2
     # via coveralls
-filelock==3.16.1
+filelock==3.17.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -53,13 +53,13 @@ pluggy==1.5.0
     # via
     #   -r requirements/tox.txt
     #   tox
-pyproject-api==1.8.0
+pyproject-api==1.9.0
     # via
     #   -r requirements/tox.txt
     #   tox
 requests==2.32.3
     # via coveralls
-tox==4.23.2
+tox==4.24.1
     # via -r requirements/tox.txt
 urllib3==2.2.3
     # via
