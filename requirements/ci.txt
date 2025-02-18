@@ -20,7 +20,7 @@ colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.6.10
+coverage[toml]==7.6.12
     # via coveralls
 coveralls==4.0.1
     # via -r requirements/ci.in
@@ -65,7 +65,7 @@ urllib3==2.2.3
     # via
     #   -c requirements/common_constraints.txt
     #   requests
-virtualenv==20.29.1
+virtualenv==20.29.2
     # via
     #   -r requirements/tox.txt
     #   tox
