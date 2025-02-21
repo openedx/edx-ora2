@@ -62,7 +62,7 @@
                                         {% if criterion.feedback == 'required' %}required{% endif %}
                                         >
                                     </textarea>
-                                    {% include "legacy/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num elem="div" preview_name="criteria__" %}
+                                    {% include "legacy/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num preview_name="criteria__"|add:criterion.name elem="div" %}
                                 </div>
                             </div>
                         {% endif %}
