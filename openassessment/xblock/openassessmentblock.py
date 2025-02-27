@@ -347,7 +347,9 @@ class OpenAssessmentBlock(
 
     @property
     def course_id(self):
-        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        if hasattr(self, "xmodule_runtime"):
+            return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        return None
 
     @cached_property
     def course(self):
@@ -917,8 +919,8 @@ class OpenAssessmentBlock(
         Inherited by XBlock core.
 
         """
-        config = parse_from_xml(node)
         block = runtime.construct_xblock_from_class(cls, keys)
+        config = parse_from_xml(node, block)
 
         xblock_validator = validator(block, block._, strict_post_release=False)
         xblock_validator(
