@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-cachetools==5.5.1
+cachetools==5.5.2
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -71,5 +71,5 @@ virtualenv==20.29.2
     #   tox
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==75.8.0
+setuptools==75.8.2
     # via -r requirements/ci.in
