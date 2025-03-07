@@ -70,6 +70,8 @@ class Rubric(models.Model):
     once created, they're never updated. When the problem changes, we end up
     creating a new Rubric instead. This makes it easy to cache and do hash-based
     lookups.
+
+    .. no_pii:
     """
     # SHA1 hash, including prompts and explanations
     content_hash = models.CharField(max_length=40, unique=True, db_index=True)
@@ -160,6 +162,8 @@ class Criterion(models.Model):
     and clarity. Each of those would be separate criteria.
 
     All Rubrics have at least one Criterion.
+
+    .. no_pii:
     """
     rubric = models.ForeignKey(Rubric, related_name="criteria", on_delete=models.CASCADE)
 
@@ -199,6 +203,8 @@ class CriterionOption(models.Model):
     Note that this is the representation of the choice itself, *not* a
     representation of a particular assessor's choice for a particular
     Assessment. That state is stored in :class:`AssessmentPart`.
+
+    .. no_pii:
     """
     # All Criteria must have at least one CriterionOption.
     criterion = models.ForeignKey(Criterion, related_name="options", on_delete=models.CASCADE)
@@ -419,6 +425,8 @@ class Assessment(models.Model):
     an assessment of some submission. It is composed of :class:`AssessmentPart`
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
+
+    .. no_pii:
     """
     MAX_FEEDBACK_SIZE = 1024 * 100
 
@@ -689,6 +697,8 @@ class AssessmentPart(models.Model):
     It's implemented as a foreign key to the `CriterionOption` that was chosen
     by this assessor for this `Criterion`. So basically, think of this class
     as :class:`CriterionOption` + student state.
+
+    .. no_pii:
     """
     MAX_FEEDBACK_SIZE = 1024 * 100
 
@@ -911,6 +921,7 @@ class SharedFileUpload(TimeStampedModel):
     """
     Define a single file uploaded by a student when attached to a team.
 
+    .. no_pii:
     """
     team_id = models.CharField(max_length=255, db_index=True)
     course_id = models.CharField(max_length=255, db_index=True)

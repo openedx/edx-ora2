@@ -2,4 +2,4 @@
 Initialization Information for Open Assessment Module
 """
 
-__version__ = '6.12.4'
+__version__ = '6.14.8'

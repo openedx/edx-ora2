@@ -7,8 +7,8 @@ import json
 import logging
 import re
 
-import pkg_resources
 import pytz
+from xblock.utils.resources import ResourceLoader
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -72,12 +72,12 @@ from openassessment.xblock.apis.assessments.student_training_api import StudentT
 from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+resource_loader = ResourceLoader(__name__)
 
 
 def load(path):
     """Handy helper for getting resources from our kit."""
-    data = pkg_resources.resource_string(__name__, path)
-    return data.decode("utf8")
+    return resource_loader.load_unicode(path)
 
 
 @XBlock.needs("i18n")
@@ -594,7 +594,7 @@ class OpenAssessmentBlock(
             context_dict,
             initialize_js_func='OpenAssessmentBlock',
             additional_js_context={
-                "MFE_VIEW_ENABLED": self.mfe_views_enabled,
+                "MFE_VIEW_ENABLED": self.mfe_views_enabled and self.mfe_views_supported,
                 "ORA_MICROFRONTEND_URL": getattr(settings, 'ORA_MICROFRONTEND_URL', ''),
                 "IS_STUDIO": True,
             }

@@ -194,6 +194,8 @@ export class DatetimeControl {
     this.element = element;
     this.datePicker = datePicker;
     this.timePicker = timePicker;
+    this.stashedDate = null;
+    this.stashedTime = null;
   }
 
   /**
@@ -232,6 +234,30 @@ export class DatetimeControl {
     if (typeof (dateString) !== 'undefined') { datePickerSel.val(dateString); }
     if (typeof (timeString) !== 'undefined') { timePickerSel.val(timeString); }
     return `${datePickerSel.val()}T${timePickerSel.val()}`;
+  }
+
+  hasStash() {
+    return this.stashedDate !== null && this.stashedTime !== null;
+  }
+
+  stash(dateString) {
+    if (this.hasStash()) { return; }
+    const datePickerSel = $(this.datePicker, this.element);
+    const timePickerSel = $(this.timePicker, this.element);
+    this.stashedDate = datePickerSel.val();
+    this.stashedTime = timePickerSel.val();
+    datePickerSel.val(dateString);
+    timePickerSel.val('00:00');
+  }
+
+  pop() {
+    if (!this.hasStash()) { return; }
+    const datePickerSel = $(this.datePicker, this.element);
+    const timePickerSel = $(this.timePicker, this.element);
+    datePickerSel.val(this.stashedDate);
+    timePickerSel.val(this.stashedTime);
+    this.stashedDate = null;
+    this.stashedTime = null;
   }
 
   /**
