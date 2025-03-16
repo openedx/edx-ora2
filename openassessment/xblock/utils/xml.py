@@ -767,7 +767,8 @@ def serialize_content_to_xml(oa_block, root):
 
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
-    title.text = str(oa_block.title)
+    title.text = str(oa_block.display_name)
+    root.set('display_name', str(oa_block.display_name))
 
     # Assessment list
     assessments_root = etree.SubElement(root, 'assessments')
@@ -948,10 +949,10 @@ def parse_from_xml(root, block=None):
 
     # Retrieve the title
     title_el = root.find('title')
-    title = block and block.title
+    title = block and block.display_name
     if title_el is None and not title:
         raise UpdateFromXmlError('Every assessment must contain a "title" element.')
-    if title_el:
+    elif title_el is not None:
         title = _safe_get_text(title_el)
 
     # Retrieve the rubric

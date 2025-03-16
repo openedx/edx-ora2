@@ -935,6 +935,7 @@ class OpenAssessmentBlock(
         block.allow_latex = config['allow_latex']
         block.allow_learner_resubmissions = config['allow_learner_resubmissions']
         block.allow_multiple_files = config['allow_multiple_files']
+        block.display_name = config['title']
         block.file_upload_response = config['file_upload_response']
         block.file_upload_type = config['file_upload_type']
         block.group_access = config['group_access']
@@ -1247,6 +1248,10 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
+        # we only want to check the release status of the block if it is a course block
+        if self.context_key and not self.context_key.is_course:
+            return False
+
         # By default, assume that we're published, in case the runtime doesn't support publish date.
         if hasattr(self.runtime, 'modulestore'):
             is_published = self.runtime.modulestore.has_published_version(self)
