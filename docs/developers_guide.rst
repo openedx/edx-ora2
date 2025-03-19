@@ -129,6 +129,6 @@ For debugging JS in Devstack, first follow the instructions for "Hot Reload JS".
 
 Other Resources
 ---------------
-`ORA user documentation <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
+`ORA user documentation <https://docs.openedx.org/en/latest/educators/concepts/exercise_tools/about_OpenResponseAssessments.html>`_
 
-`ORA analytics documentation <https://edx.readthedocs.io/projects/devdata/en/latest/internal_data_formats/ora2_data.html>`_
+`ORA analytics documentation <https://edx.readthedocs.io/projects/devdata/en/latest/internal_data_formats/ora2_data.html>`_ - note this is specific to the edx.org research data package.
