@@ -3,7 +3,7 @@ Open Response Assessment |build-status| |coverage-status|
 
 This repository defines an Open Response Assessment (ORA) XBlock for use within edx-platform: https://github.com/openedx/edx-platform
 
-`User docs <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
+`User docs <https://docs.openedx.org/en/latest/educators/concepts/exercise_tools/about_OpenResponseAssessments.html>`_
 
 
 Installation, Tests, and other Developer Tasks
