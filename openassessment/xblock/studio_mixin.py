@@ -11,6 +11,7 @@ from voluptuous import MultipleInvalid
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import List, Scope
+from opaque_keys.edx.locator import LibraryLocatorV2
 
 from django.template.loader import get_template
 from django.utils.translation import gettext_lazy
@@ -454,7 +455,7 @@ class StudioMixin:
         """
         Returns base url path for course assets
         """
-        if course_key is None:
+        if (course_key is None) or isinstance(course_key, LibraryLocatorV2):
             return None
 
         placeholder_id = uuid4().hex
@@ -478,6 +479,8 @@ class StudioMixin:
         """
         Wrapper around get_team_configuration that returns team names only for display
         """
+        if isinstance(course_id, LibraryLocatorV2):
+            return None
         team_configuration = self.get_team_configuration(course_id)
         if not team_configuration:
             return None
