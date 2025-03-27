@@ -8,13 +8,13 @@ appdirs==1.4.4
     # via fs
 asgiref==3.8.1
     # via django
-attrs==25.1.0
+attrs==25.3.0
     # via openedx-events
 bleach==6.2.0
     # via -r requirements/base.in
-boto3==1.37.5
+boto3==1.37.14
     # via -r requirements/base.in
-botocore==1.37.5
+botocore==1.37.14
     # via
     #   boto3
     #   s3transfer
@@ -32,7 +32,7 @@ code-annotations==2.2.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==4.2.19
+django==4.2.20
     # via
     #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
@@ -88,7 +88,7 @@ edx-opaque-keys[django]==2.11.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.8.5
+edx-submissions==3.8.6
     # via -r requirements/base.in
 edx-toggles==5.3.0
     # via -r requirements/base.in
@@ -104,7 +104,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==3.1.5
+jinja2==3.1.6
     # via code-annotations
 jmespath==1.0.1
     # via
@@ -135,9 +135,9 @@ markupsafe==3.0.2
     #   jinja2
     #   mako
     #   xblock
-newrelic==10.6.0
+newrelic==10.7.0
     # via edx-django-utils
-openedx-events==9.18.2
+openedx-events==9.20.0
     # via -r requirements/base.in
 openedx-filters==2.0.1
     # via -r requirements/base.in
@@ -156,7 +156,7 @@ psutil==7.0.0
     # via edx-django-utils
 pycparser==2.22
     # via cffi
-pymongo==4.11.2
+pymongo==4.11.3
     # via edx-opaque-keys
 pynacl==1.5.0
     # via edx-django-utils
@@ -185,7 +185,7 @@ pyyaml==6.0.2
     #   xblock
 requests==2.32.3
     # via python-swiftclient
-s3transfer==0.11.3
+s3transfer==0.11.4
     # via boto3
 simplejson==3.20.1
     # via xblock
@@ -229,7 +229,7 @@ xblock==5.1.2
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==75.8.2
+setuptools==76.1.0
     # via
     #   fs
     #   openedx-events

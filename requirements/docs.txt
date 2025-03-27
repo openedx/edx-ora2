@@ -8,7 +8,7 @@ accessible-pygments==0.0.5
     # via pydata-sphinx-theme
 alabaster==1.0.0
     # via sphinx
-anyio==4.8.0
+anyio==4.9.0
     # via
     #   starlette
     #   watchfiles
@@ -39,7 +39,7 @@ idna==2.8
     #   requests
 imagesize==1.4.1
     # via sphinx
-jinja2==3.1.5
+jinja2==3.1.6
     # via sphinx
 markupsafe==3.0.2
     # via jinja2
@@ -97,7 +97,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-starlette==0.46.0
+starlette==0.46.1
     # via sphinx-autobuild
 typing-extensions==4.12.2
     # via
@@ -112,5 +112,5 @@ uvicorn==0.34.0
     # via sphinx-autobuild
 watchfiles==1.0.4
     # via sphinx-autobuild
-websockets==15.0
+websockets==15.0.1
     # via sphinx-autobuild
