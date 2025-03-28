@@ -3,24 +3,28 @@
   "version": "6.14.5",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
-    "@edx/frontend-build": "8.0.6",
-    "@openedx/paragon": "^21.5.7",
+    "@openedx/frontend-build": "14.4.0",
+    "@openedx/paragon": "^22.17.0",
+    "autoprefixer": "^10.4.21",
     "backbone": "1.2.3",
     "backgrid": "~0.3.8",
+    "clean-webpack-plugin": "^4.0.0",
+    "cssnano": "^7.0.6",
     "dotenv-webpack": "^7.0.3",
     "edx-ui-toolkit": "^1.5.4",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-intl": "^5.25.1",
     "requirejs": "^2.3.6",
-    "underscore": "1.13.2"
+    "underscore": "1.13.2",
+    "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/react": "^14.3.1",
     "dotenv-expand": "^5.1.0",
     "dotenvi": "^0.9.1",
     "eslint-config-google": "^0.14.0",
@@ -55,10 +59,5 @@
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
     "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
     "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"
-  },
-  "overrides": {
-    "@edx/frontend-build": {
-      "webpack-cli": "4.10.0"
-    }
   }
 }
