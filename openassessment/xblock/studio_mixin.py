@@ -65,7 +65,7 @@ class StudioMixin:
 
     STUDIO_EDITING_TEMPLATE = 'legacy/edit/oa_edit.html'
 
-    ORA_SETTINGS_DOCUMENT_URL = 'https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/CreateORAAssignment.html#specify-a-name-and-dates'  # noqa: E501 pylint: disable=line-too-long
+    ORA_SETTINGS_DOCUMENT_URL = 'https://docs.openedx.org/en/latest/educators/how-tos/course_development/exercise_tools/CreateORAAssignment.html#step-4-specify-additional-settings'  # noqa: E501 pylint: disable=line-too-long
 
     BASE_EDITOR_ASSESSMENTS_ORDER = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
 
