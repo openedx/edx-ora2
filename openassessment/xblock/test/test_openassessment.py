@@ -1398,7 +1398,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Open Assessment Test")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Open Assessment Test")
         self.assertEqual(
             [key.startswith("prompt") and content[key] != "" for key in content.keys()].count(True), 2
         )
@@ -1409,7 +1409,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Open Assessment Test")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Open Assessment Test")
         self.assertEqual(content["prompt"], "")
 
     @scenario('data/file_upload_missing_scenario.xml')
@@ -1429,16 +1429,15 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Quiz about computers")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Quiz about computers")
         self.assertEqual(content["prompt"], "What is computer? It is a machine")
-
     @scenario('data/assessment_with_multiple_html_prompt.xml')
     def test_ora_indexibility_with_multiple_html_prompt(self, xblock):
         result = xblock.index_dictionary()
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Quiz about computers")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Quiz about computers")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
 
