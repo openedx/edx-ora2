@@ -34,7 +34,7 @@ def send_staff_notification(course_id, problem_id, ora_name, group_by_id=''):
                 'course_name': course.display_name,
                 'group_by_id': group_by_id
             },
-            notification_type='ora_staff_notification',
+            notification_type='ora_staff_notifications',
             content_url=f"{getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')}/{problem_id}",
             app_name="grading",
             audience_filters=audience_filters,
