@@ -99,7 +99,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 starlette==0.46.1
     # via sphinx-autobuild
-typing-extensions==4.12.2
+typing-extensions==4.13.1
     # via
     #   anyio
     #   beautifulsoup4
