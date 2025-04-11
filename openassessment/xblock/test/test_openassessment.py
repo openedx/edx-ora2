@@ -132,6 +132,20 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
         self.assertIn("IS_STUDIO", xblock_fragment.body_html())
 
+    @scenario("data/basic_scenario.xml")
+    def test_library_mfe_view(self, xblock):
+        """OA XBlock returns some HTML to the author in Studio.
+
+        View basic test for verifying we're returned some HTML about the
+        Open Assessment XBlock for  library authoring purposes.
+        """
+        xblock.mfe_views_enabled = True
+        xblock_fragment = self.runtime.render(xblock, "author_view")
+
+        # Validate that the author view renders and contains expected content.
+        self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
+        self.assertIn("IS_STUDIO", xblock_fragment.body_html())
+
     def _staff_assessment_view_helper(self, xblock):
         """
         Helper for "staff_assessment_view" tests
@@ -1431,6 +1445,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         self.assertEqual(content["title"], "Quiz about computers")
         self.assertEqual(content["display_name"], "Quiz about computers")
         self.assertEqual(content["prompt"], "What is computer? It is a machine")
+
     @scenario('data/assessment_with_multiple_html_prompt.xml')
     def test_ora_indexibility_with_multiple_html_prompt(self, xblock):
         result = xblock.index_dictionary()
