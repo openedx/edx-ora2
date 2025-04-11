@@ -276,7 +276,7 @@ def _parse_prompts_xml(root):
                 raise UpdateFromXmlError('Every "prompt" element must contain a "description" element.')
 
             prompts_list.append(prompt_dict)
-    else:
+    elif root.find('rubric'):
         # For backwards compatibility. Initially a single prompt element was added in
         # the rubric element.
         rubric_el = root.find('rubric')
@@ -288,6 +288,12 @@ def _parse_prompts_xml(root):
         prompts_list.append(
             {
                 'description': prompt_description,
+            }
+        )
+    else:
+        prompts_list.append(
+            {
+                'description': '',
             }
         )
 
@@ -761,7 +767,8 @@ def serialize_content_to_xml(oa_block, root):
 
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
-    title.text = str(oa_block.title)
+    title.text = str(oa_block.display_name)
+    root.set('display_name', str(oa_block.display_name))
 
     # Assessment list
     assessments_root = etree.SubElement(root, 'assessments')
@@ -859,7 +866,7 @@ def serialize_assessments_to_xml_str(oa_block):
     return etree.tostring(assessments_root, pretty_print=True, encoding='unicode')
 
 
-def parse_from_xml(root):
+def parse_from_xml(root, block=None):
     """
     Update the OpenAssessment XBlock's content from an XML definition.
 
@@ -942,15 +949,23 @@ def parse_from_xml(root):
 
     # Retrieve the title
     title_el = root.find('title')
-    if title_el is None:
+    title = block and block.display_name
+    if title_el is None and not title:
         raise UpdateFromXmlError('Every assessment must contain a "title" element.')
-    title = _safe_get_text(title_el)
+    if title_el is not None:
+        title = _safe_get_text(title_el)
 
     # Retrieve the rubric
     rubric_el = root.find('rubric')
-    if rubric_el is None:
+    rubric = block and {
+        'criteria': block.rubric_criteria,
+        'feedbackprompt': block.rubric_feedback_prompt,
+        'feedback_default_text': block.rubric_feedback_default_text,
+    }
+    if rubric_el is None and rubric is None:
         raise UpdateFromXmlError('Every assessment must contain a "rubric" element.')
-    rubric = parse_rubric_xml(rubric_el)
+    if rubric_el:
+        rubric = parse_rubric_xml(rubric_el)
 
     # Retrieve the prompts
     prompts = _parse_prompts_xml(root)
@@ -977,9 +992,11 @@ def parse_from_xml(root):
 
     # Retrieve the assessments
     assessments_el = root.find('assessments')
-    if assessments_el is None:
+    assessments = block and block.valid_assessments
+    if assessments_el is None and block is None:
         raise UpdateFromXmlError('Every assessment must contain an "assessments" element.')
-    assessments = parse_assessments_xml(assessments_el)
+    if assessments_el:
+        assessments = parse_assessments_xml(assessments_el)
 
     return {
         'title': title,
