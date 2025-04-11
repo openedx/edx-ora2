@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
 
 import ddt
+from opaque_keys.edx.locator import LibraryLocatorV2
 import pytz
 
 from freezegun import freeze_time
@@ -140,11 +141,16 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock for  library authoring purposes.
         """
         xblock.mfe_views_enabled = True
-        xblock_fragment = self.runtime.render(xblock, "author_view")
+        xblock.location = Mock(html_id=Mock(return_value='course-v1:edX+Demo+2020'))
+        xblock.location.course_key = Mock(spec=LibraryLocatorV2)
+        xblock.due = dt.datetime.utcnow()
+        xblock.graceperiod = dt.timedelta(seconds=0)
+        xblock.category = 'chapter'
+        # hack to skip the workbench from setting the location to a course
+        xblock_fragment = super(self.runtime.__class__, self.runtime).render(xblock, "studio_view")
 
-        # Validate that the author view renders and contains expected content.
-        self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
-        self.assertIn("IS_STUDIO", xblock_fragment.body_html())
+        # Validate that the edit view renders and contains expected content.
+        self.assertIn("OpenAssessmentEditor", xblock_fragment.body_html())
 
     def _staff_assessment_view_helper(self, xblock):
         """

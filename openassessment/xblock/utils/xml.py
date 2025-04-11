@@ -952,7 +952,7 @@ def parse_from_xml(root, block=None):
     title = block and block.display_name
     if title_el is None and not title:
         raise UpdateFromXmlError('Every assessment must contain a "title" element.')
-    elif title_el is not None:
+    if title_el is not None:
         title = _safe_get_text(title_el)
 
     # Retrieve the rubric
