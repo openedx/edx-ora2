@@ -11,6 +11,7 @@ Xblock
 edx-opaque-keys
 openedx-filters
 openedx-events
+openedx-learning
 
 django
 django-simple-history
