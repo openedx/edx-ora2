@@ -135,6 +135,18 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIn("IS_STUDIO", xblock_fragment.body_html())
 
     @scenario("data/basic_scenario.xml")
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_rubric_reuse_enabled',
+        PropertyMock(return_value=False)
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.enable_peer_configurable_grading',
+        PropertyMock(return_value=False)
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.team_submissions_enabled',
+        PropertyMock(return_value=False)
+    )
     def test_library_mfe_view(self, xblock):
         """OA XBlock returns some HTML to the author in Studio.
 
