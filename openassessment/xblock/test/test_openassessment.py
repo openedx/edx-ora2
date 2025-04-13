@@ -161,11 +161,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.category = 'chapter'
         # hack to skip the workbench from setting the location to a course
         with patch.object(type(xblock), 'context_key', new_callable=PropertyMock) as mock_context_key:
-            mock_context_key.return_value.is_course = False
-            xblock_fragment = Runtime.render(self.runtime, xblock, "studio_view")
+                xblock.xmodule_runtime = None
+                mock_context_key.return_value.is_course = False
+                xblock_fragment = Runtime.render(self.runtime, xblock, "studio_view")
 
-            # Validate that the edit view renders and contains expected content.
-            self.assertIn("OpenAssessmentEditor", xblock_fragment.body_html())
+                # Validate that the edit view renders and contains expected content.
+                self.assertIn("OpenAssessmentEditor", xblock_fragment.body_html())
 
     def _staff_assessment_view_helper(self, xblock):
         """
