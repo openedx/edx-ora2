@@ -64,10 +64,10 @@ def get_content_metadata(request):
     """
 
     metadata = {
-        "Content-Type": request.META["CONTENT_TYPE"],
+        "Content-Type": request.headers["content-type"],
         "Date": str(timezone.now()),
         "Content-MD5": hashlib.md5(request.body).hexdigest(),
-        "Content-Length": request.META["CONTENT_LENGTH"],
+        "Content-Length": request.headers["content-length"],
     }
     return request.body, metadata
 
