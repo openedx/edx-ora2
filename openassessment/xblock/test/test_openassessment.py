@@ -11,10 +11,12 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.test.utils import override_settings
 
 import ddt
+from opaque_keys.edx.locator import LibraryLocatorV2
 import pytz
 
 from freezegun import freeze_time
 from lxml import etree
+from xblock.runtime import Runtime
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.openassessmentblock import load
@@ -131,6 +133,47 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Validate that the author view renders and contains expected content.
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
         self.assertIn("IS_STUDIO", xblock_fragment.body_html())
+
+    @scenario("data/basic_scenario.xml")
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_rubric_reuse_enabled',
+        PropertyMock(return_value=False)
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.enable_peer_configurable_grading',
+        PropertyMock(return_value=False)
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.team_submissions_enabled',
+        PropertyMock(return_value=False)
+    )
+    def test_library_mfe_view(self, xblock):
+        """OA XBlock returns some HTML to the author in Studio.
+
+        View basic test for verifying we're returned some HTML about the
+        Open Assessment XBlock for  library authoring purposes.
+        """
+        xblock.mfe_views_enabled = True
+        xblock.location = Mock(html_id=Mock(return_value='course-v1:edX+Demo+2020'))
+        xblock.location.course_key = Mock(spec=LibraryLocatorV2)
+        xblock.due = dt.datetime.utcnow()
+        xblock.graceperiod = dt.timedelta(seconds=0)
+        xblock.category = 'chapter'
+        # hack to skip the workbench from setting the location to a course
+        with patch.object(type(xblock), 'context_key', new_callable=PropertyMock) as mock_context_key:
+            mock_context_key.return_value.is_course = False
+            xblock_fragment = Runtime.render(self.runtime, xblock, "studio_view")
+
+            # Validate that the edit view renders and contains expected content.
+            self.assertIn("OpenAssessmentEditor", xblock_fragment.body_html())
+
+            # validate that it doesn't fail when course id is not present.
+            self.assertIsNone(xblock.course_id)
+
+            # validate that it returns the course id normally
+            xblock.xmodule_runtime = Mock()
+            xblock.xmodule_runtime.course_id = 1
+            self.assertEqual(xblock.course_id, '1')
 
     def _staff_assessment_view_helper(self, xblock):
         """
@@ -1398,7 +1441,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Open Assessment Test")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Open Assessment Test")
         self.assertEqual(
             [key.startswith("prompt") and content[key] != "" for key in content.keys()].count(True), 2
         )
@@ -1409,7 +1452,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Open Assessment Test")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Open Assessment Test")
         self.assertEqual(content["prompt"], "")
 
     @scenario('data/file_upload_missing_scenario.xml')
@@ -1429,7 +1472,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Quiz about computers")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Quiz about computers")
         self.assertEqual(content["prompt"], "What is computer? It is a machine")
 
     @scenario('data/assessment_with_multiple_html_prompt.xml')
@@ -1438,7 +1481,7 @@ class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
         content, content_type = result["content"], result["content_type"]
         self.assertEqual(content_type, "ORA")
         self.assertEqual(content["title"], "Quiz about computers")
-        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["display_name"], "Quiz about computers")
         self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
         self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")
 
