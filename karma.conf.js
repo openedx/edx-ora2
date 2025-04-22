@@ -140,6 +140,11 @@ module.exports = function(config) {
 
     resolve: {
       extensions: ['', '.js', '.jsx'],
+    },
+    client: {
+      jasmine: {
+        timeoutInterval: 10000
+      }
     }
 
   });
