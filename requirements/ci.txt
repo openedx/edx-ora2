@@ -8,13 +8,13 @@ cachetools==5.5.2
     # via
     #   -r requirements/tox.txt
     #   tox
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 chardet==5.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-charset-normalizer==3.4.1
+charset-normalizer==3.4.2
     # via requests
 colorama==0.4.6
     # via
@@ -39,7 +39,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-packaging==24.2
+packaging==25.0
     # via
     #   -r requirements/tox.txt
     #   pyproject-api
@@ -71,5 +71,5 @@ virtualenv==20.30.0
     #   tox
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==78.1.0
+setuptools==80.3.0
     # via -r requirements/ci.in

@@ -12,5 +12,5 @@ pip==24.2
     # via
     #   -c /home/runner/work/edx-ora2/edx-ora2/requirements/common_constraints.txt
     #   -r requirements/pip.in
-setuptools==78.1.0
+setuptools==80.3.0
     # via -r requirements/pip.in
