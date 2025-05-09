@@ -24,7 +24,7 @@
     "dotenv-expand": "^5.1.0",
     "dotenvi": "^0.9.1",
     "eslint-config-google": "^0.14.0",
-    "fetch-mock": "^9.11.0",
+    "fetch-mock": "^12.2.0",
     "jasmine": "4.6.0",
     "jasmine-core": "4.6.0",
     "jshint": "^2.13.1",
