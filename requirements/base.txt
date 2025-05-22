@@ -11,10 +11,10 @@ asgiref==3.8.1
 attrs==25.3.0
     # via openedx-events
 bleach==6.2.0
-    # via -r base.in
-boto3==1.38.8
-    # via -r base.in
-botocore==1.38.8
+    # via -r requirements/base.in
+boto3==1.38.18
+    # via -r requirements/base.in
+botocore==1.38.18
     # via
     #   boto3
     #   s3transfer
@@ -24,19 +24,19 @@ cffi==1.17.1
     # via pynacl
 charset-normalizer==3.4.2
     # via requests
-click==8.1.8
+click==8.2.0
     # via
     #   code-annotations
     #   edx-django-utils
 code-annotations==2.3.0
     # via edx-toggles
 defusedxml==0.7.1
-    # via -r base.in
+    # via -r requirements/base.in
 django==4.2.21
     # via
-    #   -c common_constraints.txt
-    #   -c constraints.txt
-    #   -r base.in
+    #   -c requirements/common_constraints.txt
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
     #   django-crum
     #   django-model-utils
     #   django-waffle
@@ -55,19 +55,19 @@ django-crum==0.7.9
     #   edx-toggles
 django-model-utils==5.0.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-submissions
 django-simple-history==3.1.1
     # via
-    #   -c constraints.txt
-    #   -r base.in
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
 django-waffle==4.2.0
     # via
     #   edx-django-utils
     #   edx-toggles
 djangorestframework==3.16.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-submissions
 dnspython==2.7.0
     # via pymongo
@@ -77,32 +77,32 @@ edx-django-release-util==1.5.0
     # via edx-submissions
 edx-django-utils==7.4.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-toggles
     #   openedx-events
 edx-i18n-tools==1.9.0
-    # via -r base.in
+    # via -r requirements/base.in
 edx-opaque-keys[django]==3.0.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.10.0
-    # via -r base.in
+edx-submissions==3.10.1
+    # via -r requirements/base.in
 edx-toggles==5.3.0
-    # via -r base.in
-fastavro==1.10.0
+    # via -r requirements/base.in
+fastavro==1.11.1
     # via openedx-events
 fs==2.0.18
     # via
-    #   -c constraints.txt
+    #   -c requirements/constraints.txt
     #   xblock
 html5lib==1.1
-    # via -r base.in
+    # via -r requirements/base.in
 idna==2.8
     # via
-    #   -c constraints.txt
+    #   -c requirements/constraints.txt
     #   requests
 jinja2==3.1.6
     # via code-annotations
@@ -112,17 +112,17 @@ jmespath==1.0.1
     #   botocore
 jsonfield==3.1.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-submissions
 lazy==1.6
-    # via -r base.in
+    # via -r requirements/base.in
 loremipsum==1.0.5
     # via
-    #   -c constraints.txt
-    #   -r base.in
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
 lxml[html-clean]==5.4.0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-i18n-tools
     #   lxml-html-clean
     #   xblock
@@ -135,19 +135,19 @@ markupsafe==3.0.2
     #   jinja2
     #   mako
     #   xblock
-newrelic==10.11.0
+newrelic==10.12.0
     # via edx-django-utils
-openedx-events==10.1.0
-    # via -r base.in
+openedx-events==10.2.1
+    # via -r requirements/base.in
 openedx-filters==2.1.0
-    # via -r base.in
+    # via -r requirements/base.in
 path==13.1.0
     # via
-    #   -c constraints.txt
+    #   -c requirements/constraints.txt
     #   edx-i18n-tools
     #   path-py
 path-py==12.5.0
-    # via -r base.in
+    # via -r requirements/base.in
 pbr==6.1.1
     # via stevedore
 polib==1.2.0
@@ -156,24 +156,24 @@ psutil==7.0.0
     # via edx-django-utils
 pycparser==2.22
     # via cffi
-pymongo==4.12.1
+pymongo==4.13.0
     # via edx-opaque-keys
 pynacl==1.5.0
     # via edx-django-utils
 python-dateutil==2.9.0.post0
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   botocore
     #   xblock
 python-slugify==8.0.4
     # via code-annotations
 python-swiftclient==3.13.1
     # via
-    #   -c constraints.txt
-    #   -r base.in
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
 pytz==2025.2
     # via
-    #   -r base.in
+    #   -r requirements/base.in
     #   edx-submissions
     #   fs
     #   xblock
@@ -210,14 +210,14 @@ typing-extensions==4.13.2
     # via edx-opaque-keys
 urllib3==2.2.3
     # via
-    #   -c common_constraints.txt
+    #   -c requirements/common_constraints.txt
     #   botocore
     #   requests
 voluptuous==0.15.2
     # via
-    #   -c constraints.txt
-    #   -r base.in
-web-fragments==3.0.0
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
+web-fragments==3.1.0
     # via xblock
 webencodings==0.5.1
     # via
@@ -226,10 +226,10 @@ webencodings==0.5.1
 webob==1.8.9
     # via xblock
 xblock==5.2.0
-    # via -r base.in
+    # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==80.3.0
+setuptools==80.7.1
     # via
     #   fs
     #   openedx-events
