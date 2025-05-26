@@ -7,7 +7,8 @@ import logging
 import os
 
 from opaque_keys.edx.keys import CourseKey
-from submissions.api import Submission, SubmissionError, SubmissionRequestError
+from submissions.api import Submission, SubmissionRequestError
+from submissions.errors import SubmissionError
 
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
