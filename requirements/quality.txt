@@ -38,12 +38,12 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach==6.2.0
     # via -r requirements/test.txt
-boto3==1.38.18
+boto3==1.38.22
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
     #   moto
-botocore==1.38.18
+botocore==1.38.22
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -73,7 +73,7 @@ charset-normalizer==3.4.2
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.2.0
+click==8.2.1
     # via
     #   -r requirements/test.txt
     #   celery
@@ -112,7 +112,7 @@ cookiecutter==2.6.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-coverage[toml]==7.8.0
+coverage[toml]==7.8.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -139,6 +139,7 @@ django==4.2.21
     #   -r requirements/test.txt
     #   django-crum
     #   django-model-utils
+    #   django-simple-history
     #   django-waffle
     #   djangorestframework
     #   edx-django-release-util
@@ -159,7 +160,7 @@ django-model-utils==5.0.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-django-simple-history==3.1.1
+django-simple-history==3.8.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -184,7 +185,7 @@ edx-django-release-util==1.5.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-edx-django-utils==7.4.0
+edx-django-utils==8.0.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -199,7 +200,7 @@ edx-opaque-keys[django]==3.0.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.10.1
+edx-submissions==3.11.0
     # via -r requirements/test.txt
 edx-toggles==5.3.0
     # via -r requirements/test.txt
@@ -311,10 +312,6 @@ moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-newrelic==10.12.0
-    # via
-    #   -r requirements/test.txt
-    #   edx-django-utils
 openedx-events==10.2.1
     # via -r requirements/test.txt
 openedx-filters==2.1.0
@@ -458,7 +455,7 @@ rich==14.0.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-s3transfer==0.12.0
+s3transfer==0.13.0
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -568,7 +565,7 @@ xmltodict==0.14.2
     #   moto
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==80.7.1
+setuptools==80.8.0
     # via
     #   fs
     #   openedx-events

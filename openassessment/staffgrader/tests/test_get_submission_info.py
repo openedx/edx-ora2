@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from uuid import uuid4
 
 from mock import patch, Mock
-from submissions import api as sub_api
+from submissions import errors as sub_api
 
 from openassessment.xblock.test.base import scenario
 from openassessment.data import VersionNotFoundException
