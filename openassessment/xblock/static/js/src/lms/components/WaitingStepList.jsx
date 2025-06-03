@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -16,6 +17,7 @@ const WaitingStepList = ({
     created_at: getReadableTime(item.created_at),
   }));
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const RefreshAction = () => (
     <Button onClick={() => refreshData()}>{gettext('Refresh')}</Button>
   );
@@ -36,7 +38,7 @@ const WaitingStepList = ({
             {
               id: 'action',
               Header: gettext('Action'),
-              // eslint-disable-next-line react/prop-types
+              // eslint-disable-next-line react/prop-types,react/no-unstable-nested-components
               Cell: ({ row: { isSelected, original: { username: learnerUsername } } }) => (isSelected ? (
                 <Button
                   variant="link"
