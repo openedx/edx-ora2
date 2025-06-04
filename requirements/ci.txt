@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-cachetools==5.5.2
+cachetools==6.0.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -20,7 +20,7 @@ colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.8.0
+coverage[toml]==7.8.2
     # via coveralls
 coveralls==4.0.1
     # via -r requirements/ci.in
@@ -71,5 +71,5 @@ virtualenv==20.31.2
     #   tox
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==80.7.1
+setuptools==80.9.0
     # via -r requirements/ci.in
