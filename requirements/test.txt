@@ -26,20 +26,20 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach==6.2.0
     # via -r requirements/base.txt
-boto3==1.38.18
+boto3==1.38.29
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.38.18
+botocore==1.38.29
     # via
     #   -r requirements/base.txt
     #   boto3
     #   moto
     #   s3transfer
-cachetools==5.5.2
+cachetools==6.0.0
     # via tox
-celery==5.5.2
+celery==5.5.3
     # via -r requirements/test.in
 certifi==2025.4.26
     # via
@@ -58,7 +58,7 @@ charset-normalizer==3.4.2
     # via
     #   -r requirements/base.txt
     #   requests
-click==8.2.0
+click==8.2.1
     # via
     #   -r requirements/base.txt
     #   celery
@@ -82,11 +82,11 @@ colorama==0.4.6
     # via tox
 cookiecutter==2.6.0
     # via xblock-sdk
-coverage[toml]==7.8.0
+coverage[toml]==7.8.2
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==45.0.2
+cryptography==45.0.3
     # via moto
 ddt==1.0.0
     # via
@@ -146,7 +146,7 @@ edx-django-release-util==1.5.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-edx-django-utils==7.4.0
+edx-django-utils==8.0.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -159,7 +159,7 @@ edx-opaque-keys[django]==3.0.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.10.1
+edx-submissions==3.11.1
     # via -r requirements/base.txt
 edx-toggles==5.3.0
     # via -r requirements/base.txt
@@ -213,7 +213,7 @@ jsonfield==3.1.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-kombu==5.5.3
+kombu==5.5.4
     # via celery
 lazy==1.6
     # via -r requirements/base.txt
@@ -255,16 +255,13 @@ moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-newrelic==10.12.0
-    # via
-    #   -r requirements/base.txt
-    #   edx-django-utils
 openedx-events==10.2.1
     # via -r requirements/base.txt
 openedx-filters==2.1.0
     # via -r requirements/base.txt
 packaging==25.0
     # via
+    #   kombu
     #   pyproject-api
     #   pytest
     #   tox
@@ -303,7 +300,9 @@ pycparser==2.22
     #   -r requirements/base.txt
     #   cffi
 pygments==2.19.1
-    # via rich
+    # via
+    #   pytest
+    #   rich
 pymongo==4.13.0
     # via
     #   -r requirements/base.txt
@@ -316,7 +315,7 @@ pypng==0.20220715.0
     # via xblock-sdk
 pyproject-api==1.9.1
     # via tox
-pytest==8.3.5
+pytest==8.4.0
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -370,7 +369,7 @@ responses==0.25.7
     # via moto
 rich==14.0.0
     # via cookiecutter
-s3transfer==0.12.0
+s3transfer==0.13.0
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -410,7 +409,7 @@ tox==4.26.0
     # via -r requirements/test.in
 types-python-dateutil==2.9.0.20250516
     # via arrow
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via
     #   -r requirements/base.txt
     #   edx-opaque-keys

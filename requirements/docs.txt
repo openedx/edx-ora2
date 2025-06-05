@@ -22,7 +22,7 @@ certifi==2025.4.26
     # via requests
 charset-normalizer==3.4.2
     # via requests
-click==8.2.0
+click==8.2.1
     # via uvicorn
 colorama==0.4.6
     # via sphinx-autobuild
@@ -97,9 +97,9 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-starlette==0.46.2
+starlette==0.47.0
     # via sphinx-autobuild
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via
     #   anyio
     #   beautifulsoup4
@@ -108,7 +108,7 @@ urllib3==2.2.3
     # via
     #   -c requirements/common_constraints.txt
     #   requests
-uvicorn==0.34.2
+uvicorn==0.34.3
     # via sphinx-autobuild
 watchfiles==1.0.5
     # via sphinx-autobuild
