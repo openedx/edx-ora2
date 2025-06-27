@@ -157,14 +157,25 @@ export class ResponseView {
       // Install click handler for the preview button
       this.baseView.bindLatexPreview(sel);
 
+      const uploadButton = sel.find('.file__upload');
+      const spinner = sel.find('.fa-spinner');
       // Install a click handler for the save button
-      sel.find('.file__upload').click(
+      uploadButton.click(
         (eventObject) => {
           // Override default form submission
           eventObject.preventDefault();
           $('.submission__answer__display__file', view.element).removeClass('is--hidden');
+          uploadButton.prop('disabled', true);
+          spinner.removeClass('is--hidden');
           if (view.hasAllUploadFiles()) {
-            view.uploadFiles();
+            const promise = view.uploadFiles();
+            promise.then(() => {
+              uploadButton.prop('disabled', false);
+              spinner.addClass('is--hidden');
+            });
+          } else {
+            uploadButton.prop('disabled', false);
+            spinner.addClass('is--hidden');
           }
         },
       );
