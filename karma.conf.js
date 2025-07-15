@@ -30,7 +30,7 @@ module.exports = function(config) {
       'js/lib/jquery.min.js',
       'js/lib/codemirror.js',
       'js/lib/jquery.timepicker.min.js',
-      'js/lib/jquery-ui-1.10.4.min.js',
+      'js/lib/jquery-ui-1.14.1.min.js',
       'js/lib/underscore-min.js',
       '../../../node_modules/@babel/polyfill/dist/polyfill.js',
       '../../../node_modules/backbone/backbone.js',
