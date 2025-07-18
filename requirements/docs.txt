@@ -18,7 +18,7 @@ babel==2.17.0
     #   sphinx
 beautifulsoup4==4.13.4
     # via pydata-sphinx-theme
-certifi==2025.6.15
+certifi==2025.7.14
     # via requests
 charset-normalizer==3.4.2
     # via requests
@@ -49,7 +49,7 @@ packaging==25.0
     #   sphinx
 pydata-sphinx-theme==0.15.4
     # via sphinx-book-theme
-pygments==2.19.1
+pygments==2.19.2
     # via
     #   accessible-pygments
     #   pydata-sphinx-theme
@@ -97,18 +97,19 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-starlette==0.47.0
+starlette==0.47.1
     # via sphinx-autobuild
-typing-extensions==4.14.0
+typing-extensions==4.14.1
     # via
     #   anyio
     #   beautifulsoup4
     #   pydata-sphinx-theme
+    #   starlette
 urllib3==2.2.3
     # via
     #   -c requirements/common_constraints.txt
     #   requests
-uvicorn==0.34.3
+uvicorn==0.35.0
     # via sphinx-autobuild
 watchfiles==1.1.0
     # via sphinx-autobuild
