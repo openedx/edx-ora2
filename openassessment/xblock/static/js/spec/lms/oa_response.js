@@ -152,6 +152,17 @@ describe("OpenAssessment.ResponseView", function() {
         stubConfirm = didConfirm;
     };
 
+    /**
+    Helper function to assert response buttons are all consistent and in an expected state
+    (disabled or enabled).
+    **/
+    var expectResponseFieldsEnabled = function(view, expectedEnabled) {
+      expect(view.baseView.buttonEnabled('.step--response__submit')).toBe(expectedEnabled);
+      expect(view.baseView.buttonEnabled('.step--response .file__upload')).toBe(expectedEnabled);
+      expect(view.baseView.buttonEnabled('.step--response .delete__uploaded__file')).toBe(expectedEnabled);
+      expect(view.baseView.buttonEnabled('.step--response .submission__answer__upload')).toBe(expectedEnabled);
+    };
+
     // Store window URL object for replacing after tests;
     const windowURL = window.URL;
     const mockURL = {
@@ -239,21 +250,21 @@ describe("OpenAssessment.ResponseView", function() {
             // response is blank
             view.response(['', '']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
             expect(view.saveStatus()).toContain('This response has not been saved');
 
             // response is whitespace
             view.response(['               \n      \n      ', ' ']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
             expect(view.saveStatus()).toContain('This response has not been saved');
 
             // response is not blank
             view.response(['Test response 1', ' ']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(true);
             expect(view.saveStatus()).toContain('Saving draft');
         });
@@ -262,14 +273,14 @@ describe("OpenAssessment.ResponseView", function() {
             view.textResponse = 'optional';
             view.fileUploadResponse = 'required';
 
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
 
             var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
             view.prepareUpload(files, 'pdf-and-image', ['test description']);
             view.uploadFiles();
 
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(true);
         });
 
@@ -336,7 +347,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(server.submit).not.toHaveBeenCalled();
     });
 
-    it("disables the submit button on submission", function() {
+    it("disables the response buttons on submission", function() {
         // Prevent the server's response from resolving,
         // so we can see what happens before view gets re-rendered.
         spyOn(server, 'submit').and.callFake(function() {
@@ -345,10 +356,10 @@ describe("OpenAssessment.ResponseView", function() {
 
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
-        expect(view.submitEnabled()).toBe(false);
+        expectResponseFieldsEnabled(view, false);
     });
 
-    it("re-enables the submit button on submission error", function() {
+    it("re-enables the response buttons on submission error", function() {
         // Simulate a server error
         spyOn(server, 'submit').and.callFake(function() {
             return $.Deferred(function(defer) {
@@ -359,11 +370,11 @@ describe("OpenAssessment.ResponseView", function() {
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
 
-        // Expect the submit button to have been re-enabled
-        expect(view.submitEnabled()).toBe(true);
+        // Expect the response buttons to have been re-enabled
+        expectResponseFieldsEnabled(view, true);
     });
 
-    it("re-enables the submit button after cancelling", function() {
+    it("re-enables the response buttons after cancelling", function() {
         // Simulate the user cancelling the submission
         setStubConfirm(false);
         spyOn(server, 'submit').and.callThrough();
@@ -372,8 +383,8 @@ describe("OpenAssessment.ResponseView", function() {
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
 
-        // Expect the submit button to be re-enabled
-        expect(view.submitEnabled()).toBe(true);
+        // Expect the response buttons to be re-enabled
+        expectResponseFieldsEnabled(view, true);
     });
 
     it("moves to the next step on duplicate submission error", function() {
@@ -620,7 +631,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
         expect(view.isValidForSubmit()).toBe(true);
-        expect(view.submitEnabled()).toBe(true);
+        expectResponseFieldsEnabled(view, true);
         expect(view.files.length).toEqual(2);
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
@@ -641,7 +652,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.prepareUpload(files, 'image', ['i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',
         'i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',]);
         expect(view.isValidForSubmit()).toBe(false);
-        expect(view.submitEnabled()).toBe(true);
+        expectResponseFieldsEnabled(view, true);
         expect(view.getSavedFileCount()).toEqual(20);
         var files2 = [];
         for(i=0; i<2;i++) {
