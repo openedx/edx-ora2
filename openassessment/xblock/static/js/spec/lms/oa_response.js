@@ -356,11 +356,55 @@ describe("OpenAssessment.ResponseView", function() {
 
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
-        expect(view.baseView.buttonEnabled('.step--response__submit')).toBe(false);
-        expect(view.baseView.buttonEnabled('.step--response .file__upload')).toBe(false);
-        expect(view.baseView.buttonEnabled('.step--response .delete__uploaded__file')).toBe(false);
-        expect(view.baseView.buttonEnabled('.step--response .submission__answer__upload')).toBe(false);
         expectResponseFieldsEnabled(view, false);
+    });
+
+    it("disables the submit button on submission", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'submit').and.callFake(function() {
+            return $.Deferred(function() {}).promise();
+        });
+
+        view.response(['Test response 1', 'Test response 2']);
+        view.handleSubmitClicked();
+        expect(view.baseView.buttonEnabled('.step--response__submit')).toBe(false);
+    });
+
+    it("disables the file upload button on submission", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'submit').and.callFake(function() {
+            return $.Deferred(function() {}).promise();
+        });
+
+        view.response(['Test response 1', 'Test response 2']);
+        view.handleSubmitClicked();
+        expect(view.baseView.buttonEnabled('.step--response .file__upload')).toBe(false);
+    });
+
+    it("disables the delete uploaded file buttons on submission", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'submit').and.callFake(function() {
+            return $.Deferred(function() {}).promise();
+        });
+
+        view.response(['Test response 1', 'Test response 2']);
+        view.handleSubmitClicked();
+        expect(view.baseView.buttonEnabled('.step--response .delete__uploaded__file')).toBe(false);
+    });
+
+    it("disables the upload file button on submission", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'submit').and.callFake(function() {
+            return $.Deferred(function() {}).promise();
+        });
+
+        view.response(['Test response 1', 'Test response 2']);
+        view.handleSubmitClicked();
+        expect(view.baseView.buttonEnabled('.step--response .submission__answer__upload')).toBe(false);
     });
 
     it("re-enables the response buttons on submission error", function() {
