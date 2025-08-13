@@ -356,6 +356,10 @@ describe("OpenAssessment.ResponseView", function() {
 
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
+        expect(view.baseView.buttonEnabled('.step--response__submit')).toBe(false);
+        expect(view.baseView.buttonEnabled('.step--response .file__upload')).toBe(false);
+        expect(view.baseView.buttonEnabled('.step--response .delete__uploaded__file')).toBe(false);
+        expect(view.baseView.buttonEnabled('.step--response .submission__answer__upload')).toBe(false);
         expectResponseFieldsEnabled(view, false);
     });
 
