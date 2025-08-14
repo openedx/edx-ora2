@@ -667,6 +667,40 @@ describe("OpenAssessment.ResponseView", function() {
             'upload', 'The maximum number files that can be saved is ' + view.data.MAXIMUM_FILE_UPLOAD_COUNT);
     });
 
+    it("tests that form fields are disabled while file is uploading", async function() {
+      spyOn(view, 'enableFields').and.callThrough();
+
+      view.textResponse = 'optional';
+      view.fileUploadResponse = 'required';
+
+      // Simulate the user accepting confirmation dialogs
+      setStubConfirm(true);
+
+      expect(view.isValidForSubmit()).toBe(false);
+      expectResponseFieldsEnabled(view, true);
+
+      // Upload files
+      var files = [
+        { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+        { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i1', 'i2']);
+      $('.file__description').text('custom description text');
+      expect(view.enableFields).not.toHaveBeenCalled();
+      $('.file__upload.action--upload').first().click();
+      // wait for the files to be uploaded
+      // TODO: use some kind of wait-for-event instead of a timeout
+      await new Promise(r => setTimeout(r, 1000));
+      // assert fields were disabled then enabled again
+      expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+      expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+      expect(view.enableFields).toHaveBeenCalledTimes(2);
+
+      // asserts fields are really enabled and the form is valid for submitted
+      expectResponseFieldsEnabled(view, true);
+      expect(view.isValidForSubmit()).toBe(true);
+    });
+
     it("tests that file upload works after file delete", function() {
       view.textResponse = 'optional';
       view.fileUploadResponse = 'required';
