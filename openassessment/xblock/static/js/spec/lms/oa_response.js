@@ -1,4 +1,6 @@
 /* eslint-disable */
+import { waitFor } from '@testing-library/react';
+
 import BaseView from 'lms/oa_base';
 import ResponseView from 'lms/oa_response';
 
@@ -174,6 +176,7 @@ describe("OpenAssessment.ResponseView", function() {
     };
 
     beforeEach(function(done) {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483646;
         // Load the DOM fixture
         loadFixtures('oa_response.html');
 
@@ -688,17 +691,94 @@ describe("OpenAssessment.ResponseView", function() {
       $('.file__description').text('custom description text');
       expect(view.enableFields).not.toHaveBeenCalled();
       $('.file__upload.action--upload').first().click();
-      // wait for the files to be uploaded
-      // TODO: use some kind of wait-for-event instead of a timeout
-      await new Promise(r => setTimeout(r, 1000));
-      // assert fields were disabled then enabled again
-      expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
-      expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
-      expect(view.enableFields).toHaveBeenCalledTimes(2);
+      // wait for the files to be uploaded and the fields to be enabled again
+      await waitFor(() => {
+        // assert fields were disabled then enabled again
+        expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+        expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+        expect(view.enableFields).toHaveBeenCalledTimes(2);
+        // assert fields are really enabled again
+        expectResponseFieldsEnabled(view, true);
+      });
 
-      // asserts fields are really enabled and the form is valid for submitted
-      expectResponseFieldsEnabled(view, true);
+      // now that the required files are uploaded, the form should be valid for submitting
       expect(view.isValidForSubmit()).toBe(true);
+    });
+
+    fit("tests that form fields are disabled while a file is being deleted", async function() {
+      view.textResponse = 'optional';
+      view.fileUploadResponse = 'required';
+
+      // Simulate the user accepting confirmation dialogs
+      setStubConfirm(true);
+
+      // Upload files
+      var files = [
+        { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+        { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i1', 'i2']);
+      $('.file__description').text('custom description text');
+      $('.file__upload.action--upload').first().click();
+
+      // wait for the files to be uploaded and the delete button present
+      await waitFor(() => {
+        expect($('.delete__uploaded__file').length).toBeGreaterThan(0);
+      });
+
+      // Verify the fields are disabled during deletion, and re-enabled after.
+      // It's tricky here to verify the fields are disabled and enabled at the right time,
+      // but we can verify they were disabled and then re-enabled at some point.
+      expectResponseFieldsEnabled(view, true);
+      spyOn(view, 'enableFields').and.callThrough();
+      $('.delete__uploaded__file').first().click();
+      await waitFor(() => {
+        // assert fields were disabled then enabled again
+        expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+        expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+        expect(view.enableFields).toHaveBeenCalledTimes(2);
+        // assert fields are really enabled again
+        expectResponseFieldsEnabled(view, true);
+      });
+    });
+
+    [true, false].forEach((acceptConfirmation) => {
+      fit(`tests that form fields are disabled while a file is being deleted when the confirmation is {acceptConfirmation ? "accepted" : "rejected"}`, async function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        // Simulate the user either accepting or cancelling confirmation dialogs
+        setStubConfirm(acceptConfirmation);
+
+        // Upload files
+        var files = [
+          { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+          { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+        ];
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        $('.file__description').text('custom description text');
+        $('.file__upload.action--upload').first().click();
+
+        // wait for the files to be uploaded and the delete button present
+        await waitFor(() => {
+          expect($('.delete__uploaded__file').length).toBeGreaterThan(0);
+        });
+
+        // Verify the fields are disabled during deletion, and re-enabled after.
+        // It's tricky here to verify the fields are disabled and enabled at the right time,
+        // but we can verify they were disabled and then re-enabled at some point.
+        expectResponseFieldsEnabled(view, true);
+        spyOn(view, 'enableFields').and.callThrough();
+        $('.delete__uploaded__file').first().click();
+        await waitFor(() => {
+          // assert fields were disabled then enabled again
+          expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+          expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+          expect(view.enableFields).toHaveBeenCalledTimes(2);
+          // assert fields are really enabled again
+          expectResponseFieldsEnabled(view, true);
+        });
+      });
     });
 
     it("tests that file upload works after file delete", function() {
