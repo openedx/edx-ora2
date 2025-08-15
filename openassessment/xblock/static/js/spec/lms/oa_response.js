@@ -705,7 +705,7 @@ describe("OpenAssessment.ResponseView", function() {
       expect(view.isValidForSubmit()).toBe(true);
     });
 
-    fit("tests that form fields are disabled while a file is being deleted", async function() {
+    it("tests that form fields are disabled while a file is being deleted", async function() {
       view.textResponse = 'optional';
       view.fileUploadResponse = 'required';
 
@@ -743,7 +743,7 @@ describe("OpenAssessment.ResponseView", function() {
     });
 
     [true, false].forEach((acceptConfirmation) => {
-      fit(`tests that form fields are disabled while a file is being deleted when the confirmation is {acceptConfirmation ? "accepted" : "rejected"}`, async function() {
+      it(`tests that form fields are disabled while a file is being deleted when the confirmation is {acceptConfirmation ? "accepted" : "rejected"}`, async function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
