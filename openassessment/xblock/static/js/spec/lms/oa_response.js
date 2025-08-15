@@ -1,4 +1,6 @@
 /* eslint-disable */
+import { waitFor } from '@testing-library/react';
+
 import BaseView from 'lms/oa_base';
 import ResponseView from 'lms/oa_response';
 
@@ -152,6 +154,21 @@ describe("OpenAssessment.ResponseView", function() {
         stubConfirm = didConfirm;
     };
 
+    /**
+    Helper function to assert response buttons are all consistent and in an expected state
+    (disabled or enabled).
+    **/
+    var expectResponseFieldsEnabled = function(view, expectedEnabled) {
+      expect(view.baseView.buttonEnabled('.step--response__submit')).toBe(expectedEnabled);
+      expect(view.baseView.buttonEnabled('.step--response .file__upload')).toBe(expectedEnabled);
+      expect(view.baseView.buttonEnabled('.step--response .submission__answer__upload')).toBe(expectedEnabled);
+
+      // only check enabled status of delete image buttons if there are any present
+      if ($('.step--response .delete__uploaded__file').length > 0) {
+        expect(view.baseView.buttonEnabled('.step--response .delete__uploaded__file')).toBe(expectedEnabled);
+      }
+    };
+
     // Store window URL object for replacing after tests;
     const windowURL = window.URL;
     const mockURL = {
@@ -159,6 +176,7 @@ describe("OpenAssessment.ResponseView", function() {
     };
 
     beforeEach(function(done) {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483646;
         // Load the DOM fixture
         loadFixtures('oa_response.html');
 
@@ -239,21 +257,21 @@ describe("OpenAssessment.ResponseView", function() {
             // response is blank
             view.response(['', '']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
             expect(view.saveStatus()).toContain('This response has not been saved');
 
             // response is whitespace
             view.response(['               \n      \n      ', ' ']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
             expect(view.saveStatus()).toContain('This response has not been saved');
 
             // response is not blank
             view.response(['Test response 1', ' ']);
             view.handleResponseChanged();
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(true);
             expect(view.saveStatus()).toContain('Saving draft');
         });
@@ -262,14 +280,14 @@ describe("OpenAssessment.ResponseView", function() {
             view.textResponse = 'optional';
             view.fileUploadResponse = 'required';
 
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(false);
 
             var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
             view.prepareUpload(files, 'pdf-and-image', ['test description']);
             view.uploadFiles();
 
-            expect(view.submitEnabled()).toBe(true);
+            expectResponseFieldsEnabled(view, true);
             expect(view.isValidForSubmit()).toBe(true);
         });
 
@@ -336,7 +354,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(server.submit).not.toHaveBeenCalled();
     });
 
-    it("disables the submit button on submission", function() {
+    it("disables the response buttons on submission", function() {
         // Prevent the server's response from resolving,
         // so we can see what happens before view gets re-rendered.
         spyOn(server, 'submit').and.callFake(function() {
@@ -345,10 +363,10 @@ describe("OpenAssessment.ResponseView", function() {
 
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
-        expect(view.submitEnabled()).toBe(false);
+        expectResponseFieldsEnabled(view, false);
     });
 
-    it("re-enables the submit button on submission error", function() {
+    it("re-enables the response buttons on submission error", function() {
         // Simulate a server error
         spyOn(server, 'submit').and.callFake(function() {
             return $.Deferred(function(defer) {
@@ -359,11 +377,11 @@ describe("OpenAssessment.ResponseView", function() {
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
 
-        // Expect the submit button to have been re-enabled
-        expect(view.submitEnabled()).toBe(true);
+        // Expect the response buttons to have been re-enabled
+        expectResponseFieldsEnabled(view, true);
     });
 
-    it("re-enables the submit button after cancelling", function() {
+    it("re-enables the response buttons after cancelling", function() {
         // Simulate the user cancelling the submission
         setStubConfirm(false);
         spyOn(server, 'submit').and.callThrough();
@@ -372,8 +390,8 @@ describe("OpenAssessment.ResponseView", function() {
         view.response(['Test response 1', 'Test response 2']);
         view.handleSubmitClicked();
 
-        // Expect the submit button to be re-enabled
-        expect(view.submitEnabled()).toBe(true);
+        // Expect the response buttons to be re-enabled
+        expectResponseFieldsEnabled(view, true);
     });
 
     it("moves to the next step on duplicate submission error", function() {
@@ -620,7 +638,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
         expect(view.isValidForSubmit()).toBe(true);
-        expect(view.submitEnabled()).toBe(true);
+        expectResponseFieldsEnabled(view, true);
         expect(view.files.length).toEqual(2);
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
@@ -641,7 +659,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.prepareUpload(files, 'image', ['i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',
         'i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',]);
         expect(view.isValidForSubmit()).toBe(false);
-        expect(view.submitEnabled()).toBe(true);
+        expectResponseFieldsEnabled(view, true);
         expect(view.getSavedFileCount()).toEqual(20);
         var files2 = [];
         for(i=0; i<2;i++) {
@@ -650,6 +668,117 @@ describe("OpenAssessment.ResponseView", function() {
         view.prepareUpload(files2, 'image', ['i1', 'i2']);
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
             'upload', 'The maximum number files that can be saved is ' + view.data.MAXIMUM_FILE_UPLOAD_COUNT);
+    });
+
+    it("tests that form fields are disabled while file is uploading", async function() {
+      spyOn(view, 'enableFields').and.callThrough();
+
+      view.textResponse = 'optional';
+      view.fileUploadResponse = 'required';
+
+      // Simulate the user accepting confirmation dialogs
+      setStubConfirm(true);
+
+      expect(view.isValidForSubmit()).toBe(false);
+      expectResponseFieldsEnabled(view, true);
+
+      // Upload files
+      var files = [
+        { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+        { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i1', 'i2']);
+      $('.file__description').text('custom description text');
+      expect(view.enableFields).not.toHaveBeenCalled();
+      $('.file__upload.action--upload').first().click();
+      // wait for the files to be uploaded and the fields to be enabled again
+      await waitFor(() => {
+        // assert fields were disabled then enabled again
+        expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+        expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+        expect(view.enableFields).toHaveBeenCalledTimes(2);
+        // assert fields are really enabled again
+        expectResponseFieldsEnabled(view, true);
+      });
+
+      // now that the required files are uploaded, the form should be valid for submitting
+      expect(view.isValidForSubmit()).toBe(true);
+    });
+
+    it("tests that form fields are disabled while a file is being deleted", async function() {
+      view.textResponse = 'optional';
+      view.fileUploadResponse = 'required';
+
+      // Simulate the user accepting confirmation dialogs
+      setStubConfirm(true);
+
+      // Upload files
+      var files = [
+        { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+        { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i1', 'i2']);
+      $('.file__description').text('custom description text');
+      $('.file__upload.action--upload').first().click();
+
+      // wait for the files to be uploaded and the delete button present
+      await waitFor(() => {
+        expect($('.delete__uploaded__file').length).toBeGreaterThan(0);
+      });
+
+      // Verify the fields are disabled during deletion, and re-enabled after.
+      // It's tricky here to verify the fields are disabled and enabled at the right time,
+      // but we can verify they were disabled and then re-enabled at some point.
+      expectResponseFieldsEnabled(view, true);
+      spyOn(view, 'enableFields').and.callThrough();
+      $('.delete__uploaded__file').first().click();
+      await waitFor(() => {
+        // assert fields were disabled then enabled again
+        expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+        expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+        expect(view.enableFields).toHaveBeenCalledTimes(2);
+        // assert fields are really enabled again
+        expectResponseFieldsEnabled(view, true);
+      });
+    });
+
+    [true, false].forEach((acceptConfirmation) => {
+      it(`tests that form fields are disabled while a file is being deleted when the confirmation is {acceptConfirmation ? "accepted" : "rejected"}`, async function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        // Simulate the user either accepting or cancelling confirmation dialogs
+        setStubConfirm(acceptConfirmation);
+
+        // Upload files
+        var files = [
+          { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+          { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+        ];
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        $('.file__description').text('custom description text');
+        $('.file__upload.action--upload').first().click();
+
+        // wait for the files to be uploaded and the delete button present
+        await waitFor(() => {
+          expect($('.delete__uploaded__file').length).toBeGreaterThan(0);
+        });
+
+        // Verify the fields are disabled during deletion, and re-enabled after.
+        // It's tricky here to verify the fields are disabled and enabled at the right time,
+        // but we can verify they were disabled and then re-enabled at some point.
+        expectResponseFieldsEnabled(view, true);
+        spyOn(view, 'enableFields').and.callThrough();
+        $('.delete__uploaded__file').first().click();
+        await waitFor(() => {
+          // assert fields were disabled then enabled again
+          expect(view.enableFields.calls.argsFor(0)).toEqual([false]);
+          expect(view.enableFields.calls.argsFor(1)).toEqual([true]);
+          expect(view.enableFields).toHaveBeenCalledTimes(2);
+          // assert fields are really enabled again
+          expectResponseFieldsEnabled(view, true);
+        });
+      });
     });
 
     it("tests that file upload works after file delete", function() {

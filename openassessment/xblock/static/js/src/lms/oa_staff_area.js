@@ -472,8 +472,8 @@ export class StaffAreaView {
      *   bool: Whether the button is enabled.
      *
      * Examples:
-     * >> view.submitEnabled(true);  // enable the button
-     * >> view.submitEnabled();  // check whether the button is enabled
+     * >> view.cancelSubmissionEnabled(true);  // enable the button
+     * >> view.cancelSubmissionEnabled();  // check whether the button is enabled
      * >> true
      */
     cancelSubmissionEnabled(enabled) {
