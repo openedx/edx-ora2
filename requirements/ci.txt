@@ -14,13 +14,13 @@ chardet==5.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-charset-normalizer==3.4.2
+charset-normalizer==3.4.3
     # via requests
 colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.10.2
+coverage[toml]==7.10.4
     # via coveralls
 coveralls==4.0.1
     # via -r requirements/ci.in
@@ -30,7 +30,7 @@ distlib==0.4.0
     #   virtualenv
 docopt==0.6.2
     # via coveralls
-filelock==3.18.0
+filelock==3.19.1
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -63,7 +63,7 @@ tox==4.28.4
     # via -r requirements/tox.txt
 urllib3==2.5.0
     # via requests
-virtualenv==20.33.0
+virtualenv==20.34.0
     # via
     #   -r requirements/tox.txt
     #   tox
