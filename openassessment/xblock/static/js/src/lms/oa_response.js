@@ -159,22 +159,26 @@ export class ResponseView {
 
       const uploadButton = sel.find('.file__upload');
       const spinner = sel.find('.fa-spinner');
+
       // Install a click handler for the save button
       uploadButton.click(
         (eventObject) => {
           // Override default form submission
           eventObject.preventDefault();
           $('.submission__answer__display__file', view.element).removeClass('is--hidden');
-          uploadButton.prop('disabled', true);
+          view.enableFields(false);
           spinner.removeClass('is--hidden');
           if (view.hasAllUploadFiles()) {
             const promise = view.uploadFiles();
             promise.then(() => {
-              uploadButton.prop('disabled', false);
+              view.enableFields(true);
               spinner.addClass('is--hidden');
+              // Reset the internal files state once upload is complete,
+              // to avoid the files being processed again if the user clicks upload again.
+              this.files = null;
             });
           } else {
-            uploadButton.prop('disabled', false);
+            view.enableFields(true);
             spinner.addClass('is--hidden');
           }
         },
@@ -289,22 +293,19 @@ export class ResponseView {
     }
 
     /**
-     Enable/disable the submit button.
-     Check that whether the submit button is enabled.
+     Enable or disable the response fields.
+     Disable the fields to avoid any changes while an action is processing.
+     For example, use this when beginning a file upload, or submitting the response.
+     Then enable them again when the action is complete.
 
      Args:
-     enabled (bool): If specified, set the state of the button.
-
-     Returns:
-     bool: Whether the button is enabled.
-
-     Examples:
-     >> view.submitEnabled(true);  // enable the button
-     >> view.submitEnabled();  // check whether the button is enabled
-     >> true
-     * */
-    submitEnabled(enabled) {
-      return this.baseView.buttonEnabled('.step--response__submit', enabled);
+     enabled (bool): set the state of the fields.
+     */
+    enableFields(enabled) {
+      this.baseView.buttonEnabled('.step--response__submit', enabled);
+      this.baseView.buttonEnabled('.step--response .file__upload', enabled);
+      this.baseView.buttonEnabled('.step--response .delete__uploaded__file', enabled);
+      this.baseView.buttonEnabled('.step--response .submission__answer__upload', enabled);
     }
 
     /**
@@ -523,8 +524,9 @@ export class ResponseView {
     handleSubmitClicked() {
       if (!this.isValidForSubmit()) { return; }
 
-      // Immediately disable the submit button to prevent multiple submission
-      this.submitEnabled(false);
+      // Immediately disable the submit button to prevent multiple submission,
+      // and other form fields to avoid race conditions if anything changes.
+      this.enableFields(false);
 
       const view = this;
       const title = gettext('Confirm Submit Response');
@@ -547,7 +549,7 @@ export class ResponseView {
         title,
         msg,
         () => view.submit(),
-        () => view.submitEnabled(true),
+        () => view.enableFields(true),
       );
     }
 
@@ -568,8 +570,8 @@ export class ResponseView {
             // If there is an error message, display it
             if (errMsg) { this.baseView.toggleActionError('submit', errMsg); }
 
-            // Re-enable the submit button so the user can retry
-            this.submitEnabled(true);
+            // Re-enable the submit button and the rest of the form so the user can retry
+            this.enableFields(true);
           }
         });
     }
@@ -840,20 +842,23 @@ export class ResponseView {
     */
    handleDeleteFileClick(target) {
      const view = this;
+     this.enableFields(false);
      const filenum = $(target).attr('filenum');
      this.confirmationDialog.confirm(
        gettext('Confirm Delete Uploaded File'),
        this.getConfirmRemoveUploadedFileMessage(filenum),
-       () => view.removeUploadedFile(filenum),
-       () => {},
+       () => view.removeUploadedFile(filenum).always(() => view.enableFields(true)),
+       () => view.enableFields(true),
      );
    }
 
    /**
      Remove a previously uploaded file.
+
+     Returns a jQuery promise that resolves once the process is complete.
      */
    removeUploadedFile(filenum) {
-     this.server.removeUploadedFile(filenum).done(() => {
+     return this.server.removeUploadedFile(filenum).done(() => {
        const sel = $('.step--response', this.element);
        const block = sel.find(`.submission__answer__file__block__${filenum}`);
        block.html('');
