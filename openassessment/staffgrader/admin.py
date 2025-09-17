@@ -6,6 +6,7 @@ from django.contrib import admin
 from openassessment.staffgrader.models import SubmissionGradingLock
 
 
+@admin.register(SubmissionGradingLock)
 class SubmissionGradingLockAdmin(admin.ModelAdmin):
     """
     Django admin model for SubmissionGradingLock.
@@ -15,9 +16,8 @@ class SubmissionGradingLockAdmin(admin.ModelAdmin):
     search_fields = ('submission_uuid',)
 
     # This allows us to have the nice boolean check/x icons in the list rather than "True"/"False"
+    @admin.display(
+        boolean=True
+    )
     def is_active(self, lock):
         return lock.is_active
-    is_active.boolean = True
-
-
-admin.site.register(SubmissionGradingLock, SubmissionGradingLockAdmin)

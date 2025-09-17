@@ -177,6 +177,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
     @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
     @scenario("data/basic_scenario.xml", user_id="Bob")
+    # pylint: disable=too-many-positional-arguments
     def test_reset_submission(
         self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
@@ -225,6 +226,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     @patch("openassessment.xblock.openassessmentblock.reset_student_attempts")
     @patch("openassessment.xblock.openassessmentblock.get_user_by_username_or_email")
     @scenario("data/basic_scenario.xml", user_id="Bob")
+    # pylint: disable=too-many-positional-arguments
     def test_reset_submission_submission_not_found_error(
         self, xblock, mock_user: Mock, mock_reset: Mock, mock_student_module: Mock, mock_allow_resubmission: Mock
     ):
@@ -1994,7 +1996,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             }
         )
 
-    def _create_team_submission_and_workflow(
+    def _create_team_submission_and_workflow(  # pylint: disable=too-many-positional-arguments
         self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
     ):
         """ Create a team submission and team workflow with the given info """

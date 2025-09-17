@@ -1388,6 +1388,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @patch('openassessment.xblock.config_mixin.ConfigMixin.is_fetch_all_urls_waffle_enabled')
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
+    # pylint: disable=too-many-positional-arguments
     def test_staff_area_student_all_uploads(self, xblock, user_state_waffle, all_files_waffle, download_url, logger):
         """
         Verify the all files urls are obtained for a user in a given ORA block when staff is
@@ -1464,6 +1465,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         workflow_api.create_workflow(submission["uuid"], types)
         return submission
 
+    # pylint: disable=too-many-positional-arguments
     def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids, answer):
         """
         Create a team submission and initialize a team workflow

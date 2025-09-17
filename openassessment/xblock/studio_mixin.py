@@ -11,6 +11,7 @@ from voluptuous import MultipleInvalid
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import List, Scope
+from opaque_keys.edx.locator import LibraryLocatorV2
 
 from django.template.loader import get_template
 from django.utils.translation import gettext_lazy
@@ -64,7 +65,7 @@ class StudioMixin:
 
     STUDIO_EDITING_TEMPLATE = 'legacy/edit/oa_edit.html'
 
-    ORA_SETTINGS_DOCUMENT_URL = 'https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/CreateORAAssignment.html#specify-a-name-and-dates'  # noqa: E501 pylint: disable=line-too-long
+    ORA_SETTINGS_DOCUMENT_URL = 'https://docs.openedx.org/en/latest/educators/how-tos/course_development/exercise_tools/CreateORAAssignment.html#step-4-specify-additional-settings'  # noqa: E501 pylint: disable=line-too-long
 
     BASE_EDITOR_ASSESSMENTS_ORDER = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
 
@@ -454,7 +455,7 @@ class StudioMixin:
         """
         Returns base url path for course assets
         """
-        if course_key is None:
+        if (course_key is None) or isinstance(course_key, LibraryLocatorV2):
             return None
 
         placeholder_id = uuid4().hex
@@ -478,6 +479,8 @@ class StudioMixin:
         """
         Wrapper around get_team_configuration that returns team names only for display
         """
+        if isinstance(course_id, LibraryLocatorV2):
+            return None
         team_configuration = self.get_team_configuration(course_id)
         if not team_configuration:
             return None

@@ -393,6 +393,7 @@ def _get_course_settings_and_assessment_requirements(peer_workflows, submission_
     return None
 
 
+# pylint: disable=too-many-positional-arguments
 def _add_data(workflow_update_data, course_id, item_id, submission_uuid, course_settings, assessment_requirements):
     """
     Adds provided data to the data cache dictionary.

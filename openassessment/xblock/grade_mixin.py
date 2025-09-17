@@ -232,7 +232,7 @@ class GradeMixin:
             )
             return {'success': True, 'msg': self._("Feedback saved.")}
 
-    def grade_details(
+    def grade_details(  # pylint: disable=too-many-positional-arguments
             self, submission_uuid, peer_assessments, self_assessment, staff_assessment,
             is_staff=False
     ):
@@ -344,7 +344,7 @@ class GradeMixin:
             ),
         }
 
-    def _graded_assessments(
+    def _graded_assessments(  # pylint: disable=too-many-positional-arguments
             self, submission_uuid, criterion, assessment_steps, staff_assessment, peer_assessments,
             self_assessment, is_staff=False
     ):

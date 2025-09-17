@@ -6,6 +6,7 @@ Models for managing staff assessments.
 from datetime import timedelta
 import logging
 
+from django.conf import settings
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
@@ -26,9 +27,10 @@ class StaffWorkflow(models.Model):
     3) Does this staff member already have a submission open for assessment?
     4) Close open assessments when completed.
 
+    .. no_pii:
     """
     # Amount of time before a lease on a submission expires
-    TIME_LIMIT = timedelta(hours=8)
+    TIME_LIMIT = timedelta(hours=getattr(settings, "ORA_STAFF_LEASE_EXPIRATION_HOURS", 8))
 
     scorer_id = models.CharField(max_length=40, db_index=True, blank=True)
     course_id = models.CharField(max_length=255, db_index=True)
@@ -213,6 +215,8 @@ class StaffWorkflow(models.Model):
 class TeamStaffWorkflow(StaffWorkflow):
     """
     Extends the StafWorkflow to be used for team based assessments.
+
+    .. no_pii:
     """
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 

@@ -636,6 +636,7 @@ class StaffAreaMixin:
                     clear_state=True
                 )
 
+    # pylint: disable=too-many-positional-arguments
     def clear_team_state(self, user_id, course_id, item_id, requesting_user_id, submissions):
         """
         This is called from clear_student_state (which is called from the LMS runtime) when the xblock is a team

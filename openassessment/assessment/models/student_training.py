@@ -13,6 +13,8 @@ from .training import TrainingExample
 class StudentTrainingWorkflow(models.Model):
     """
     Tracks a student's progress through the student training assessment step.
+
+    .. no_pii:
     """
     # The submission UUID of the student being trained
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
@@ -183,6 +185,8 @@ class StudentTrainingWorkflowItem(models.Model):
     then the student proceeds to the next example;
     if there are no examples left, the student has
     successfully completed training.
+
+    .. no_pii:
     """
     workflow = models.ForeignKey(StudentTrainingWorkflow, related_name="items", on_delete=models.CASCADE)
     order_num = models.PositiveIntegerField()

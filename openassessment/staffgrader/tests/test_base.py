@@ -87,7 +87,7 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
         workflow_api.create_workflow(submission["uuid"], ['staff'])
         return submission, new_student_item
 
-    def submit_staff_assessment(
+    def submit_staff_assessment(  # pylint: disable=too-many-positional-arguments
         self, xblock, submission_uuid, grader, option, option_2=None, criterion_feedback=None, overall_feedback=None
     ):
         """

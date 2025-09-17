@@ -123,6 +123,7 @@ class TestSerializeContent(TestCase):
     def _configure_xblock(self, data):
         """ Helper method of xblock configuration for tests. """
         self.oa_block.title = data.get('title', '')
+        self.oa_block.display_name = data.get('title', '')
         self.oa_block.text_response = data.get('text_response', '')
         self.oa_block.text_response_editor = data.get('text_response_editor', 'text')
         self.oa_block.file_upload_response = data.get('file_upload_response', None)

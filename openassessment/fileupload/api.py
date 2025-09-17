@@ -133,6 +133,7 @@ class FileUpload:
     A layer of abstraction over the various components of file
     data stored as ORA XBlock user-scoped fields.
     """
+    # pylint: disable=too-many-positional-arguments
     def __init__(self, name=None, description=None, size=None, index=0, descriptionless=False, **student_item_dict):
         """
         Args:

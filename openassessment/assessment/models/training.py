@@ -15,6 +15,8 @@ from .base import CriterionOption, Rubric
 class TrainingExample(models.Model):
     """
     An example assessment used to train students (before peer assessment) or AI.
+
+    .. no_pii:
     """
     # The answer (JSON-serialized)
     raw_answer = models.TextField(blank=True)

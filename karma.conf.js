@@ -17,7 +17,8 @@ module.exports = function(config) {
       'karma-sinon',
       'karma-jasmine-html-reporter',
       'karma-spec-reporter',
-      'karma-webpack'
+      'karma-webpack',
+      require("karma-firefox-launcher")
     ],
 
     // frameworks to use
@@ -107,7 +108,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['HeadlessChrome'],
+
+    browsers: [
+      'HeadlessChrome'
+      // 'HeadlessFirefox'
+    ],
+    // If chrome headless is not working, try swapping out which line is commented above
+    // to use firefox for local dev
     customLaunchers: {
         HeadlessChrome: {
             base: 'ChromeHeadless',
@@ -118,7 +125,13 @@ module.exports = function(config) {
                 '--disable-translate',
                 '--disable-extensions'
             ]
-        }
+        },
+        HeadlessFirefox: {
+            base: 'Firefox',
+            flags: [
+                '--headless',
+            ]
+        },
     },
 
     // Continuous Integration mode

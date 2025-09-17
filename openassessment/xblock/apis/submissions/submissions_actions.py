@@ -168,10 +168,15 @@ def create_submission(
             course_id = block_config_data.course.id
         else:
             course_id = CourseKey.from_string(student_item_dict.get("course_id"))
+
+        usage_id = block_config_data._block.scope_ids.usage_id  # pylint: disable=protected-access
+        group_by_id = getattr(usage_id, "block_id", '')
+
         send_staff_notification(
             course_id,
             student_item_dict.get("item_id"),
-            block_config_data._block.display_name  # pylint: disable=protected-access
+            block_config_data._block.display_name,  # pylint: disable=protected-access
+            group_by_id
         )
 
     # Emit analytics event...

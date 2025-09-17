@@ -42,7 +42,7 @@ class TestSendStaffNotification(unittest.TestCase):
         # Check if CourseNotificationData is properly initialized
         self.assertEqual(notification_data.course_key, course_id)
         self.assertEqual(notification_data.content_context['ora_name'], ora_name)
-        self.assertEqual(notification_data.notification_type, 'ora_staff_notification')
+        self.assertEqual(notification_data.notification_type, 'ora_staff_notifications')
         self.assertEqual(notification_data.content_url, f"/{problem_id}")
         self.assertEqual(notification_data.app_name, "grading")
         self.assertEqual(notification_data.audience_filters['course_roles'], ['staff', 'instructor'])
@@ -88,6 +88,7 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.modulestore')
     @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
+    # pylint: disable=too-many-positional-arguments
     def test_send_notification_success(self, mock_map_to_username, mock_send_event, mock_modulestore, mock_from_string,
                                        mock_get_user):
         """
@@ -116,6 +117,7 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.logger.error')
     @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
+    # pylint: disable=too-many-positional-arguments
     def test_invalid_key_error_logging(self, mock_map_to_username, mock_send_event, mock_logger_error,
                                        mock_from_string, mock_get_user):
         """
@@ -140,6 +142,7 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
     @patch('openassessment.xblock.utils.notifications.logger.error')
     @patch('openassessment.xblock.utils.notifications.USER_NOTIFICATION_REQUESTED.send_event')
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
+    # pylint: disable=too-many-positional-arguments
     def test_item_not_found_error_logging(self, mock_map_to_username, mock_send_event, mock_logger_error,
                                           mock_modulestore, mock_from_string, mock_get_user):
         """

@@ -77,7 +77,7 @@ class SelfAssessmentAPI(StepDataAPI):
         return self.config_data.rubric_criteria
 
 
-def self_assess(
+def self_assess(  # pylint: disable=too-many-positional-arguments
     options_selected,
     criterion_feedback,
     overall_feedback,

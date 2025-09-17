@@ -7,8 +7,8 @@ import json
 import logging
 import re
 
-import pkg_resources
 import pytz
+from xblock.utils.resources import ResourceLoader
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -72,12 +72,12 @@ from openassessment.xblock.apis.assessments.student_training_api import StudentT
 from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+resource_loader = ResourceLoader(__name__)
 
 
 def load(path):
     """Handy helper for getting resources from our kit."""
-    data = pkg_resources.resource_string(__name__, path)
-    return data.decode("utf8")
+    return resource_loader.load_unicode(path)
 
 
 @XBlock.needs("i18n")
@@ -347,7 +347,9 @@ class OpenAssessmentBlock(
 
     @property
     def course_id(self):
-        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        if hasattr(self, "xmodule_runtime"):
+            return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        return None
 
     @cached_property
     def course(self):
@@ -594,7 +596,7 @@ class OpenAssessmentBlock(
             context_dict,
             initialize_js_func='OpenAssessmentBlock',
             additional_js_context={
-                "MFE_VIEW_ENABLED": self.mfe_views_enabled,
+                "MFE_VIEW_ENABLED": self.mfe_views_enabled and self.mfe_views_supported,
                 "ORA_MICROFRONTEND_URL": getattr(settings, 'ORA_MICROFRONTEND_URL', ''),
                 "IS_STUDIO": True,
             }
@@ -921,8 +923,8 @@ class OpenAssessmentBlock(
         Inherited by XBlock core.
 
         """
-        config = parse_from_xml(node)
         block = runtime.construct_xblock_from_class(cls, keys)
+        config = parse_from_xml(node, block)
 
         xblock_validator = validator(block, block._, strict_post_release=False)
         xblock_validator(
@@ -937,6 +939,7 @@ class OpenAssessmentBlock(
         block.allow_latex = config['allow_latex']
         block.allow_learner_resubmissions = config['allow_learner_resubmissions']
         block.allow_multiple_files = config['allow_multiple_files']
+        block.display_name = config['title']
         block.file_upload_response = config['file_upload_response']
         block.file_upload_type = config['file_upload_type']
         block.group_access = config['group_access']
@@ -1249,6 +1252,10 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
+        # we only want to check the release status of the block if it is a course block
+        if self.context_key and not self.context_key.is_course:
+            return False
+
         # By default, assume that we're published, in case the runtime doesn't support publish date.
         if hasattr(self.runtime, 'modulestore'):
             is_published = self.runtime.modulestore.has_published_version(self)

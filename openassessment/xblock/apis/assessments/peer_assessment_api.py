@@ -183,7 +183,7 @@ class PeerAssessmentAPI(StepDataAPI):
             raise ServerClientUUIDMismatchException()
 
 
-def peer_assess(
+def peer_assess(  # pylint: disable=too-many-positional-arguments
     options_selected,
     overall_feedback,
     criterion_feedback,

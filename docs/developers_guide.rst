@@ -42,6 +42,13 @@ This must be done from inside either lms or studio docker container.
 In order to simulate a given tox environment (django18, django111, quality, js), run tox -e <env> for the env in question (after re-activating your edx-ora2 virtual environment).
 Usually, you can just run the underlying make commands for quicker tests, as requirements aren't re-installed.
 
+Enabling/disabling features
+---------------------------------------
+ORA code observes several feature toggles for enabling/disabling functionality. For 
+development purposes, these can be enabled locally in your ``edx-platform`` instance 
+or in ``/settings/base.py``. See ``settings/base.py`` for ORA-specific toggles and 
+linked documentation.
+
 Working with submission dependencies
 ------------------------------------
 ORA code also depends on edx-submissions. As a result, anytime a new version of edx-submissions is released, ORA code must be updated as follows.
@@ -122,6 +129,6 @@ For debugging JS in Devstack, first follow the instructions for "Hot Reload JS".
 
 Other Resources
 ---------------
-`ORA user documentation <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
+`ORA user documentation <https://docs.openedx.org/en/latest/educators/concepts/exercise_tools/about_OpenResponseAssessments.html>`_
 
-`ORA analytics documentation <https://edx.readthedocs.io/projects/devdata/en/latest/internal_data_formats/ora2_data.html>`_
+`ORA analytics documentation <https://edx.readthedocs.io/projects/devdata/en/latest/internal_data_formats/ora2_data.html>`_ - note this is specific to the edx.org research data package.

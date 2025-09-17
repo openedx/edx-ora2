@@ -446,6 +446,7 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         )
         return mock_runtime
 
+    # pylint: disable=too-many-positional-arguments
     def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids, answer):
         """
         Create a team submission and initialize a team workflow

@@ -51,7 +51,7 @@ class StaffAssessmentAPI(StepDataAPI):
         return staff_api.get_latest_staff_assessment(submission_uuid) is not None
 
 
-def staff_assess(
+def staff_assess(  # pylint: disable=too-many-positional-arguments
     submission_uuid,
     options_selected,
     criterion_feedback,
@@ -78,7 +78,7 @@ def staff_assess(
     )
 
 
-def do_staff_assessment(
+def do_staff_assessment(  # pylint: disable=too-many-positional-arguments
     submission_uuid,
     options_selected,
     criterion_feedback,
@@ -115,7 +115,7 @@ def do_staff_assessment(
 
 
 # TODO: do_team_staff_assessment_from_individual vs _from_team
-def do_team_staff_assessment(
+def do_team_staff_assessment(  # pylint: disable=too-many-positional-arguments
     individual_submission_uuid,
     options_selected,
     criterion_feedback,

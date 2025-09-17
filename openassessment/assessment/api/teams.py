@@ -299,7 +299,7 @@ def get_staff_grading_statistics(course_id, item_id):
     return TeamStaffWorkflow.get_workflow_statistics(course_id, item_id)
 
 
-def create_assessment(
+def create_assessment(  # pylint: disable=too-many-positional-arguments
         team_submission_uuid,
         scorer_id,
         options_selected,

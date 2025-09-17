@@ -681,6 +681,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
+    # pylint: disable=too-many-positional-arguments
     def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids):
         """
         Create a team submission and initialize a team workflow
@@ -1700,7 +1701,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         ),
     )
     @ddt.unpack
-    def test_truncation_of_submission_filepath(
+    def test_truncation_of_submission_filepath(  # pylint: disable=too-many-positional-arguments
         self, section_name, sub_section_name, unit_name, file_name, username, file_path
     ):
         """
