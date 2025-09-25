@@ -42,7 +42,7 @@
     "phantomjs-prebuilt": "^2.1.14",
     "postcss-loader": "4.2.0",
     "sinon": "^7.5.0",
-    "webpack": "^4.46.0",
+    "webpack": "^5.97.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.15.1",
     "webpack-manifest-plugin": "^4.0.2"
