@@ -16,15 +16,15 @@ arrow==1.3.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-asgiref==3.9.1
+asgiref==3.10.0
     # via
     #   -r requirements/test.txt
     #   django
-attrs==25.3.0
+attrs==25.4.0
     # via
     #   -r requirements/test.txt
     #   openedx-events
-billiard==4.2.1
+billiard==4.2.2
     # via
     #   -r requirements/test.txt
     #   celery
@@ -34,28 +34,28 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach==6.2.0
     # via -r requirements/test.txt
-boto3==1.40.11
+boto3==1.40.55
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
     #   moto
-botocore==1.40.11
+botocore==1.40.55
     # via
     #   -r requirements/test.txt
     #   boto3
     #   moto
     #   s3transfer
-cachetools==6.1.0
+cachetools==6.2.1
     # via
     #   -r requirements/test.txt
     #   tox
 celery==5.5.3
     # via -r requirements/test.txt
-certifi==2025.8.3
+certifi==2025.10.5
     # via
     #   -r requirements/test.txt
     #   requests
-cffi==1.17.1
+cffi==2.0.0
     # via
     #   -r requirements/test.txt
     #   cryptography
@@ -65,11 +65,11 @@ chardet==5.2.0
     #   -r requirements/test.txt
     #   binaryornot
     #   tox
-charset-normalizer==3.4.3
+charset-normalizer==3.4.4
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.2.1
+click==8.3.0
     # via
     #   -r requirements/test.txt
     #   celery
@@ -103,11 +103,11 @@ cookiecutter==2.6.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-coverage[toml]==7.10.4
+coverage[toml]==7.11.0
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==45.0.6
+cryptography==46.0.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -122,7 +122,7 @@ distlib==0.4.0
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==4.2.23
+django==4.2.25
     # via
     #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
@@ -162,7 +162,7 @@ djangorestframework==3.16.1
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-dnspython==2.7.0
+dnspython==2.8.0
     # via
     #   -r requirements/test.txt
     #   pymongo
@@ -174,7 +174,7 @@ edx-django-release-util==1.5.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-edx-django-utils==8.0.0
+edx-django-utils==8.0.1
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -187,21 +187,21 @@ edx-opaque-keys[django]==3.0.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.11.1
+edx-submissions==3.12.0
     # via -r requirements/test.txt
 edx-toggles==5.4.1
     # via -r requirements/test.txt
 factory-boy==3.3.3
     # via -r requirements/test.txt
-faker==37.5.3
+faker==37.11.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
-fastavro==1.12.0
+fastavro==1.12.1
     # via
     #   -r requirements/test.txt
     #   openedx-events
-filelock==3.19.1
+filelock==3.20.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -257,14 +257,14 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml[html-clean]==6.0.0
+lxml[html-clean]==6.0.2
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
     #   lxml-html-clean
     #   xblock
     #   xblock-sdk
-lxml-html-clean==0.4.2
+lxml-html-clean==0.4.3
     # via
     #   -r requirements/test.txt
     #   lxml
@@ -276,7 +276,7 @@ markdown-it-py==4.0.0
     # via
     #   -r requirements/test.txt
     #   rich
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via
     #   -r requirements/test.txt
     #   jinja2
@@ -289,13 +289,13 @@ mdurl==0.1.2
     #   markdown-it-py
 mock==5.2.0
     # via -r requirements/test.txt
-more-itertools==10.7.0
+more-itertools==10.8.0
     # via -r requirements/test.txt
 moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-openedx-events==10.4.0
+openedx-events==10.5.0
     # via -r requirements/test.txt
 openedx-filters==2.1.0
     # via -r requirements/test.txt
@@ -314,11 +314,7 @@ path==13.1.0
     #   path-py
 path-py==12.5.0
     # via -r requirements/test.txt
-pbr==7.0.0
-    # via
-    #   -r requirements/test.txt
-    #   stevedore
-platformdirs==4.3.8
+platformdirs==4.5.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -333,15 +329,15 @@ polib==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
-prompt-toolkit==3.0.51
+prompt-toolkit==3.0.52
     # via
     #   -r requirements/test.txt
     #   click-repl
-psutil==7.0.0
+psutil==7.1.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-pycparser==2.22
+pycparser==2.23
     # via
     #   -r requirements/test.txt
     #   cffi
@@ -352,11 +348,11 @@ pygments==2.19.2
     #   rich
 pyinstrument==5.1.1
     # via -r requirements/test-acceptance.in
-pymongo==4.14.0
+pymongo==4.15.3
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
-pynacl==1.5.0
+pynacl==1.6.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
@@ -364,17 +360,17 @@ pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-pyproject-api==1.9.1
+pyproject-api==1.10.0
     # via
     #   -r requirements/test.txt
     #   tox
-pytest==8.4.1
+pytest==8.4.2
     # via
     #   -r requirements/test-acceptance.in
     #   -r requirements/test.txt
     #   pytest-cov
     #   pytest-django
-pytest-cov==6.2.1
+pytest-cov==7.0.0
     # via -r requirements/test.txt
 pytest-django==4.11.1
     # via -r requirements/test.txt
@@ -402,7 +398,7 @@ pytz==2025.2
     #   edx-submissions
     #   fs
     #   xblock
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -411,7 +407,7 @@ pyyaml==6.0.2
     #   edx-i18n-tools
     #   responses
     #   xblock
-requests==2.32.4
+requests==2.32.5
     # via
     #   -r requirements/test.txt
     #   cookiecutter
@@ -423,15 +419,15 @@ responses==0.25.8
     # via
     #   -r requirements/test.txt
     #   moto
-rich==14.1.0
+rich==14.2.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-s3transfer==0.13.1
+s3transfer==0.14.0
     # via
     #   -r requirements/test.txt
     #   boto3
-simplejson==3.20.1
+simplejson==3.20.2
     # via
     #   -r requirements/test.txt
     #   xblock
@@ -451,25 +447,25 @@ sqlparse==0.5.3
     # via
     #   -r requirements/test.txt
     #   django
-stevedore==5.4.1
+stevedore==5.5.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-testfixtures==9.1.0
+testfixtures==9.2.0
     # via -r requirements/test.txt
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
     #   python-slugify
-tox==4.28.4
+tox==4.31.0
     # via -r requirements/test.txt
-types-python-dateutil==2.9.0.20250809
+types-python-dateutil==2.9.0.20251008
     # via
     #   -r requirements/test.txt
     #   arrow
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
@@ -490,7 +486,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.34.0
+virtualenv==20.35.3
     # via
     #   -r requirements/test.txt
     #   tox
@@ -498,7 +494,7 @@ voluptuous==0.15.2
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-wcwidth==0.2.13
+wcwidth==0.2.14
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
@@ -527,7 +523,7 @@ xblock==5.2.0
     #   xblock-sdk
 xblock-sdk==0.13.0
     # via -r requirements/test.txt
-xmltodict==0.14.2
+xmltodict==1.0.2
     # via
     #   -r requirements/test.txt
     #   moto
