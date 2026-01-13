@@ -6,68 +6,68 @@
 #
 cachetools==6.1.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 certifi==2025.8.3
     # via requests
 chardet==5.2.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 charset-normalizer==3.4.3
     # via requests
 colorama==0.4.6
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 coverage[toml]==7.10.4
     # via coveralls
 coveralls==4.0.1
-    # via -r requirements/ci.in
+    # via -r ci.in
 distlib==0.4.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   virtualenv
 docopt==0.6.2
     # via coveralls
-filelock==3.19.1
+filelock==3.20.3
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
     #   virtualenv
 idna==2.8
     # via
-    #   -c requirements/constraints.txt
+    #   -c constraints.txt
     #   requests
 packaging==25.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   pyproject-api
     #   tox
 platformdirs==4.3.8
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
     #   virtualenv
 pluggy==1.6.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 pyproject-api==1.9.1
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 requests==2.32.4
     # via coveralls
 tox==4.28.4
-    # via -r requirements/tox.txt
+    # via -r tox.txt
 urllib3==2.5.0
     # via requests
 virtualenv==20.34.0
     # via
-    #   -r requirements/tox.txt
+    #   -r tox.txt
     #   tox
 
 # The following packages are considered to be unsafe in a requirements file:
 setuptools==80.9.0
-    # via -r requirements/ci.in
+    # via -r ci.in
