@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@edx/eslint-config": "^4.3.0",
     "@openedx/frontend-build": "14.3.3",
     "@testing-library/react": "14.0.0",
     "dotenv-expand": "^5.1.0",
