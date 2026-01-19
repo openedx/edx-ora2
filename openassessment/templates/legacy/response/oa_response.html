@@ -281,6 +281,7 @@
                                 </div>
                                 <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
                                 <button type="submit" class="file__upload action action--upload">
+                                  <span class="icon fa fa-spinner fa-spin is--hidden" aria-hidden="true"></span>
                                   {% if allow_multiple_files %}
                                       {% trans "Upload files" %}
                                   {% else %}

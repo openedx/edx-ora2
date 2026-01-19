@@ -1,6 +1,6 @@
 {
   "name": "edx-ora2",
-  "version": "6.16.3",
+  "version": "6.17.0",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
     "@openedx/paragon": "^22.16.0",
