@@ -1,15 +1,15 @@
-const { createConfig } = require('@edx/frontend-build');
+const { createConfig } = require('@openedx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
-const presets = require('@edx/frontend-build/lib/presets')
+const presets = require('@openedx/frontend-build/lib/presets')
 
 const webpack = require('webpack');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PostCssAutoprefixerPlugin = require('autoprefixer');
-const CssNano = require('cssnano');
+const PostCssAutoprefixerPlugin = require('@openedx/frontend-build/node_modules/autoprefixer');
+const CssNano = require('@openedx/frontend-build/node_modules/cssnano');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('@openedx/frontend-build/node_modules/clean-webpack-plugin');
 
 // Get base config from edx-platform
 let config = createConfig('webpack-prod');

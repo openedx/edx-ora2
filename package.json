@@ -3,8 +3,7 @@
   "version": "6.16.3",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
-    "@edx/frontend-build": "8.0.6",
-    "@openedx/paragon": "^21.5.7",
+    "@openedx/paragon": "^22.16.0",
     "backbone": "1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
@@ -12,15 +11,16 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-intl": "^5.25.1",
     "requirejs": "^2.3.6",
     "underscore": "1.13.2"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@testing-library/react": "^12.1.2",
+    "@openedx/frontend-build": "14.3.3",
+    "@testing-library/react": "14.0.0",
     "dotenv-expand": "^5.1.0",
     "dotenvi": "^0.9.1",
     "eslint-config-google": "^0.14.0",
@@ -38,11 +38,11 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.5",
     "karma-spec-reporter": "^0.0.31",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.1",
     "phantomjs-prebuilt": "^2.1.14",
     "postcss-loader": "4.2.0",
     "sinon": "^7.5.0",
-    "webpack": "^4.46.0",
+    "webpack": "^5.99.9",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.15.1",
     "webpack-manifest-plugin": "^4.0.2"
@@ -55,10 +55,5 @@
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
     "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
     "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"
-  },
-  "overrides": {
-    "@edx/frontend-build": {
-      "webpack-cli": "4.10.0"
-    }
   }
 }
