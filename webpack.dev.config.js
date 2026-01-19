@@ -1,6 +1,6 @@
-const { createConfig } = require('@edx/frontend-build');
+const { createConfig } = require('@openedx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
-const presets = require('@edx/frontend-build/lib/presets')
+const presets = require('@edopenedxx/frontend-build/lib/presets')
 
 const webpack = require('webpack');
 const path = require('path');
