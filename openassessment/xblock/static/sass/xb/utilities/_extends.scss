@@ -121,7 +121,7 @@
 // --------------------
 %state-hidden {
   @extend %state-disabled;
-  display: none;
+  display: none !important;
   visibility: hidden;
 }
 
