@@ -1,5 +1,5 @@
 // Karma configuration
-const webpackConfig = require('./webpack.prod.config.js');
+const webpackConfig = require('./webpack.dev.config.js');
 
 module.exports = function(config) {
   config.set({
