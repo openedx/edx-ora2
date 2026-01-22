@@ -1,5 +1,7 @@
 // Karma configuration
-const webpackConfig = require('./webpack.test.config.js');
+process.env.NODE_ENV = 'dev';
+
+const webpackConfig = require('./webpack.prod.config.js');
 
 module.exports = function(config) {
   config.set({
