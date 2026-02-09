@@ -8,11 +8,11 @@ from uuid import uuid4
 
 from django.core.management.base import BaseCommand, CommandError
 
-import loremipsum
 from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
+from . import loremipsum
 
 STEPS = ['peer', 'self']
 
@@ -168,7 +168,7 @@ class Command(BaseCommand):
         """
         rubric = {'criteria': []}
         options_selected = {}
-        words = loremipsum.Generator().words
+        words = loremipsum.get_words(10)
 
         for criteria_num in range(self.NUM_CRITERIA):
             criterion = {

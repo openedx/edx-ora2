@@ -253,10 +253,6 @@ kombu==5.5.4
     #   celery
 lazy==1.6
     # via -r requirements/test.txt
-loremipsum==1.0.5
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/test.txt
 lxml[html-clean]==6.0.0
     # via
     #   -r requirements/test.txt
