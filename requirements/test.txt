@@ -220,7 +220,7 @@ lazy==1.6
 loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
-    #   -r requirements/base.txt
+    #   -r requirements/test.in
 lxml[html-clean]==6.0.0
     # via
     #   -r requirements/base.txt

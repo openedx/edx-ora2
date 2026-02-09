@@ -116,10 +116,6 @@ jsonfield==3.2.0
     #   edx-submissions
 lazy==1.6
     # via -r requirements/base.in
-loremipsum==1.0.5
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
 lxml[html-clean]==6.0.0
     # via
     #   -r requirements/base.in
