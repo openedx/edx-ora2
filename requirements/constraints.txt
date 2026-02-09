@@ -5,7 +5,6 @@
 # Base dependencies
 Django<4.3                         # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
-loremipsum<2.0.0
 
 python-swiftclient<4.0.0
 voluptuous<1.0.0
