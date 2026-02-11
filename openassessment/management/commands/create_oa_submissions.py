@@ -43,6 +43,28 @@ class Command(BaseCommand):
         super().__init__(*args, **kwargs)
         self._student_items = []
 
+    def add_arguments(self, parser) -> None:
+        parser.add_argument(
+            'COURSE_ID',
+            type=str,
+            help='The ID of the course to create submissions for.',
+        )
+        parser.add_argument(
+            'ITEM_ID',
+            type=str,
+            help='The ID of the item in the course to create submissions for.',
+        )
+        parser.add_argument(
+            'NUM_SUBMISSIONS',
+            type=int,
+            help='Number of submissions to create',
+        )
+        parser.add_argument(
+            'PERCENTAGE',
+            type=float,
+            help='Percentage for assessments to be made against submissions',
+        )
+
     def handle(self, *args, **options):
         """
         Execute the command.
@@ -53,19 +75,19 @@ class Command(BaseCommand):
             num_submissions (int): Number of submissions to create.
             percentage (int or float): Percentage for assessments to be made against submissions.
         """
-        if len(args) < 4:
+        if len(options) < 4:
             raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>')
 
-        course_id = str(args[0])
-        item_id = str(args[1])
+        course_id = str(options['COURSE_ID'])
+        item_id = str(options['ITEM_ID'])
 
         try:
-            num_submissions = int(args[2])
+            num_submissions = int(options['NUM_SUBMISSIONS'])
         except ValueError as ex:
             raise CommandError('Number of submissions must be an integer') from ex
 
         try:
-            percentage = float(args[3])
+            percentage = float(options['PERCENTAGE'])
             assessments_to_create = (percentage / 100) * num_submissions
         except ValueError as ex:
             raise CommandError('Percentage for completed submissions must be an integer or float') from ex
