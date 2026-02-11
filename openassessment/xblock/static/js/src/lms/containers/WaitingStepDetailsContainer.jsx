@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IntlProvider } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -21,7 +21,7 @@ const WaitingStepDetailsContainer = ({
     student_data: [],
   });
 
-  const updateData = async () => {
+  const updateData = useCallback(async () => {
     // Clear error and display loading component
     setLoading(true);
     setError(false);
@@ -43,7 +43,7 @@ const WaitingStepDetailsContainer = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [waitingStepDataUrl]);
 
   const getUsernameSelected = (username) => {
     const button = document.querySelector('.button-staff-tools');
@@ -75,7 +75,7 @@ const WaitingStepDetailsContainer = ({
 
     // Fetch waiting step data from API
     updateData();
-  }, []);
+  }, [onMount, updateData]);
 
   return (
     // Using en locale for now until we have translations. This is a temporary solution
