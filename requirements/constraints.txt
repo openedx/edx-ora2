@@ -2,28 +2,12 @@
 
 -c common_constraints.txt
 
-# Base dependencies
-Django<4.3                         # Stay on the latest LTS release of Django
-fs<=2.0.18                         # Constrained by edx-platform
-
-python-swiftclient<4.0.0
-voluptuous<1.0.0
-
 # Test dependencies
 ddt==1.0.0                          # Test failures at versions > 1.0.0
-idna<2.9.0                          # moto version moto==1.3.14 requires idna<2.9.0
-fs-s3fs==0.1.8                      # Constrained by edx-platform
-wrapt==1.11.*                       # Constrained by astroid
 freezegun<=0.3.14                   # Test failures on 0.3.15
-# Networkx 2.5 drops support for python 3.5
-networkx<2.5
+pylint-django<2.6.0                 # Quality fails with infinite recursion errors
 # Moto latest version has breaking changes. Needs the tests to be fixed.
 moto<5.0
-# path 13.2.0 drops support for Python 3.5
-path<13.2.0
-
-# incremental upgrade plan.
-django-simple-history<=3.1.1
 
 # backports.zoneinfo is only needed for Python < 3.9
 backports.zoneinfo; python_version<'3.9'
