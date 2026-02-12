@@ -17,7 +17,3 @@ tox
 more-itertools
 xblock-sdk
 celery                              # Celery task queue framework
-
-# NOTE: This package is super old and unmaintained. It no longer works with the latest
-# version of setuptools (v82). It should be replaced ASAP in order to keep ora2 CI working.
-loremipsum
