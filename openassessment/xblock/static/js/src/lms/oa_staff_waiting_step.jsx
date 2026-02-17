@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import WaitingStepDetailsContainer from './containers/WaitingStepDetailsContainer';
 
 /**
@@ -34,13 +34,13 @@ export function renderWaitingStepDetailsView(baseView, data) {
   };
 
   // Render react
-  ReactDOM.render(
+  const root = createRoot(reactElement);
+  root.render(
     <WaitingStepDetailsContainer
       waitingStepDataUrl={waitingStepDataUrl}
       onMount={loadStaffArea}
       selectableLearnersEnabled={waitingStepSelectableLearners}
     />,
-    reactElement,
   );
 }
 

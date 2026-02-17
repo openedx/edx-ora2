@@ -12,13 +12,7 @@ const WaitingStepContent = ({
   const oraDescriptionText = gettext(
     'The "{name}" problem is configured to require a minimum of {min_grades} '
     + 'peer grades, and asks to review {min_graded} peers.',
-  ).replace(
-    '{name}', waitingStepDetails.display_name,
-  ).replace(
-    '{min_grades}', waitingStepDetails.must_be_graded_by,
-  ).replace(
-    '{min_graded}', waitingStepDetails.must_grade,
-  );
+  ).replace('{name}', waitingStepDetails.display_name).replace('{min_grades}', waitingStepDetails.must_be_graded_by).replace('{min_graded}', waitingStepDetails.must_grade);
 
   const stuckLearnersText = gettext(
     'There are currently {stuck_learners} learners in the waiting state, '
