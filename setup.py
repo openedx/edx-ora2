@@ -69,7 +69,6 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
     packages=find_packages(include=['openassessment*'], exclude=['*.test', '*.tests']),
