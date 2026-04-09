@@ -1,10 +1,14 @@
 """
-Celery task wrappers to execute batch ORA workflow update
+Celery task wrappers to execute batch ORA workflow update and reminder sweeping.
 """
 
 from celery import shared_task
 
 from edx_django_utils.monitoring import set_code_owner_attribute
+
+# Import sweep_ora_reminders so Celery autodiscovery registers it.
+# The task lives in ora_reminders.py to keep sweeper logic self-contained.
+from openassessment.xblock.utils.ora_reminders import sweep_ora_reminders  # noqa: F401
 
 
 @shared_task(bind=True,

@@ -1091,3 +1091,53 @@ class AssessmentWorkflowCancellation(models.Model):
         """
         workflow_cancellations = cls.objects.filter(workflow__submission_uuid=submission_uuid).order_by("-created_at")
         return workflow_cancellations[0] if workflow_cancellations.exists() else None
+
+
+class ORAReminder(TimeStampedModel):
+    """
+    Persists ORA reminder schedules for learners who need to complete peer/self reviews.
+
+    Each row represents a pending (or completed) reminder chain for one user +
+    one ORA submission.  A single platform-wide sweeper Celery task periodically
+    queries rows with ``is_active=True AND next_reminder_at <= now()`` and
+    processes them — sending the reminder notification and advancing the
+    schedule or deactivating the row.
+
+    Deadlines (``ora_due_date``, ``course_end_date``) are cached at creation
+    time so the sweeper never needs to hit the modulestore.
+
+    .. no_pii:
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="ora_reminders", on_delete=models.CASCADE)
+    course_id = models.CharField(max_length=255, db_index=True)
+    ora_usage_key = models.CharField(max_length=255)
+    ora_name = models.CharField(max_length=255, default='')
+    submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
+    submission_time = models.DateTimeField()
+    content_url = models.TextField(blank=True, default='')
+
+    # Cached deadline fields — populated at submission time to avoid
+    # expensive modulestore / CourseOverview lookups during sweep.
+    ora_due_date = models.DateTimeField(null=True, blank=True)
+    course_end_date = models.DateTimeField(null=True, blank=True)
+
+    # Reminder state
+    reminder_sent_count = models.PositiveIntegerField(default=0)
+    next_reminder_at = models.DateTimeField(db_index=True)
+    is_active = models.BooleanField(default=True, db_index=True)
+
+    class Meta:
+        app_label = "workflow"
+        indexes = [
+            models.Index(
+                fields=['is_active', 'next_reminder_at'],
+                name='ora_reminder_sweep_idx',
+            ),
+        ]
+
+    def __str__(self):
+        return (
+            f'ORAReminder(user={self.user_id}, ora={self.ora_usage_key}, '
+            f'sent={self.reminder_sent_count}, active={self.is_active})'
+        )
+

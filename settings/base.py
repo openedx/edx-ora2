@@ -175,7 +175,37 @@ FEATURES = {
     # Set to True to enable configurable grading for peer review
     # See: https://github.com/openedx/edx-ora2/pull/2196
     'ENABLE_ORA_PEER_CONFIGURABLE_GRADING': False,
+
+    # Set to True to enable scheduled ORA reminder notifications
+    # for learners who need to complete peer/self reviews.
+    # See: docs/ora_reminders.rst for full configuration reference.
+    'ENABLE_ORA_REMINDERS': False,
 }
+
+# ---------------------------------------------------------------------------
+# ORA Reminder Notification Settings
+# ---------------------------------------------------------------------------
+# Maximum number of reminders sent per learner per ORA submission.
+ORA_REMINDER_MAX_COUNT = 3
+
+# Hours between consecutive reminder notifications.
+ORA_REMINDER_INTERVAL_HOURS = 48
+
+# Hours after submission before the first reminder is sent.
+# Allows learners time to complete reviews before being nudged.
+ORA_REMINDER_INITIAL_DELAY_HOURS = 24
+
+# How often (in seconds) the sweeper Celery task re-schedules itself.
+# Each run picks up all ORAReminder rows whose next_reminder_at has passed.
+ORA_REMINDER_SWEEP_INTERVAL_SECONDS = 1800
+
+# Maximum rows processed per sweep cycle.
+# Remaining due rows are picked up on the next sweep.
+ORA_REMINDER_SWEEP_BATCH_SIZE = 1000
+
+# Hours to wait before re-checking when no peer submissions are available yet.
+# Prevents sending reminders to early submitters who have no work to review.
+ORA_REMINDER_CHECK_AGAIN_HOURS = 12
 
 # disable indexing on history_date
 SIMPLE_HISTORY_DATE_INDEX = False
