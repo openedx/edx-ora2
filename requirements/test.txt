@@ -16,30 +16,30 @@ asgiref==3.11.1
     # via
     #   -r requirements/base.txt
     #   django
-attrs==25.4.0
+attrs==26.1.0
     # via
     #   -r requirements/base.txt
     #   openedx-events
 billiard==4.2.4
     # via celery
-binaryornot==0.4.4
+binaryornot==0.6.0
     # via cookiecutter
 bleach==6.3.0
     # via -r requirements/base.txt
-boto3==1.42.62
+boto3==1.42.86
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
     #   moto
-botocore==1.42.62
+botocore==1.42.86
     # via
     #   -r requirements/base.txt
     #   boto3
     #   moto
     #   s3transfer
-cachetools==7.0.3
+cachetools==7.0.5
     # via tox
-celery==5.6.2
+celery==5.6.3
     # via -r requirements/test.in
 certifi==2026.2.25
     # via
@@ -50,13 +50,11 @@ cffi==2.0.0
     #   -r requirements/base.txt
     #   cryptography
     #   pynacl
-chardet==7.0.1
-    # via binaryornot
-charset-normalizer==3.4.5
+charset-normalizer==3.4.7
     # via
     #   -r requirements/base.txt
     #   requests
-click==8.3.1
+click==8.3.2
     # via
     #   -r requirements/base.txt
     #   celery
@@ -72,7 +70,7 @@ click-plugins==1.1.1.2
     # via celery
 click-repl==0.3.0
     # via celery
-code-annotations==2.3.2
+code-annotations==3.0.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -80,11 +78,11 @@ colorama==0.4.6
     # via tox
 cookiecutter==2.7.1
     # via xblock-sdk
-coverage[toml]==7.13.4
+coverage[toml]==7.13.5
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==46.0.5
+cryptography==46.0.7
     # via moto
 ddt==1.0.0
     # via
@@ -147,27 +145,27 @@ edx-django-utils==8.0.1
     #   -r requirements/base.txt
     #   edx-toggles
     #   openedx-events
-edx-i18n-tools==1.9.0
+edx-i18n-tools==2.0.0
     # via -r requirements/base.txt
-edx-opaque-keys[django]==3.1.0
+edx-opaque-keys[django]==4.0.0
     # via
     #   -r requirements/base.txt
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.12.2
+edx-submissions==4.0.0
     # via -r requirements/base.txt
-edx-toggles==5.4.1
+edx-toggles==6.0.0
     # via -r requirements/base.txt
 factory-boy==3.3.3
     # via -r requirements/test.in
-faker==40.8.0
+faker==40.13.0
     # via factory-boy
 fastavro==1.12.1
     # via
     #   -r requirements/base.txt
     #   openedx-events
-filelock==3.25.0
+filelock==3.25.2
     # via
     #   python-discovery
     #   tox
@@ -210,7 +208,7 @@ kombu==5.6.2
     # via celery
 lazy==1.6
     # via -r requirements/base.txt
-lxml[html-clean]==6.0.2
+lxml[html-clean]==6.0.3
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
@@ -238,15 +236,15 @@ mdurl==0.1.2
     # via markdown-it-py
 mock==5.2.0
     # via -r requirements/test.in
-more-itertools==10.8.0
+more-itertools==11.0.2
     # via -r requirements/test.in
 moto==4.2.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-openedx-events==10.5.0
+openedx-events==11.1.1
     # via -r requirements/base.txt
-openedx-filters==2.1.0
+openedx-filters==3.1.0
     # via -r requirements/base.txt
 packaging==26.0
     # via
@@ -261,7 +259,7 @@ path==16.16.0
     #   path-py
 path-py==12.5.0
     # via -r requirements/base.txt
-platformdirs==4.9.4
+platformdirs==4.9.6
     # via
     #   python-discovery
     #   tox
@@ -285,7 +283,7 @@ pycparser==3.0
     # via
     #   -r requirements/base.txt
     #   cffi
-pygments==2.19.2
+pygments==2.20.0
     # via
     #   pytest
     #   rich
@@ -301,12 +299,12 @@ pypng==0.20220715.0
     # via xblock-sdk
 pyproject-api==1.10.0
     # via tox
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   -r requirements/test.in
     #   pytest-cov
     #   pytest-django
-pytest-cov==7.0.0
+pytest-cov==7.1.0
     # via -r requirements/test.in
 pytest-django==4.12.0
     # via -r requirements/test.in
@@ -319,8 +317,10 @@ python-dateutil==2.9.0.post0
     #   freezegun
     #   moto
     #   xblock
-python-discovery==1.1.0
-    # via virtualenv
+python-discovery==1.2.2
+    # via
+    #   tox
+    #   virtualenv
 python-slugify==8.0.4
     # via
     #   -r requirements/base.txt
@@ -342,7 +342,7 @@ pyyaml==6.0.3
     #   edx-i18n-tools
     #   responses
     #   xblock
-requests==2.32.5
+requests==2.33.1
     # via
     #   -r requirements/base.txt
     #   cookiecutter
@@ -383,7 +383,7 @@ stevedore==5.7.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-testfixtures==10.0.0
+testfixtures==11.0.0
     # via -r requirements/test.in
 text-unidecode==1.3
     # via
@@ -391,13 +391,13 @@ text-unidecode==1.3
     #   python-slugify
 tomli-w==1.2.0
     # via tox
-tox==4.49.0
+tox==4.52.1
     # via -r requirements/test.in
 typing-extensions==4.15.0
     # via
     #   -r requirements/base.txt
     #   edx-opaque-keys
-tzdata==2025.3
+tzdata==2026.1
     # via
     #   arrow
     #   kombu
@@ -414,13 +414,13 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==21.1.0
+virtualenv==21.2.0
     # via tox
 voluptuous==0.16.0
     # via -r requirements/base.txt
 wcwidth==0.6.0
     # via prompt-toolkit
-web-fragments==3.1.0
+web-fragments==4.0.0
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -435,13 +435,13 @@ webob==1.8.9
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-werkzeug==3.1.6
+werkzeug==3.1.8
     # via moto
-xblock==5.3.0
+xblock==6.0.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
-xblock-sdk==0.13.0
+xblock-sdk==0.14.0
     # via -r requirements/test.in
 xmltodict==1.0.4
     # via moto
