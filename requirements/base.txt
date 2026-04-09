@@ -8,13 +8,13 @@ appdirs==1.4.4
     # via fs
 asgiref==3.11.1
     # via django
-attrs==25.4.0
+attrs==26.1.0
     # via openedx-events
 bleach==6.3.0
     # via -r requirements/base.in
-boto3==1.42.62
+boto3==1.42.86
     # via -r requirements/base.in
-botocore==1.42.62
+botocore==1.42.86
     # via
     #   boto3
     #   s3transfer
@@ -22,17 +22,17 @@ certifi==2026.2.25
     # via requests
 cffi==2.0.0
     # via pynacl
-charset-normalizer==3.4.5
+charset-normalizer==3.4.7
     # via requests
-click==8.3.1
+click==8.3.2
     # via
     #   code-annotations
     #   edx-django-utils
-code-annotations==2.3.2
+code-annotations==3.0.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==5.2.12
+django==5.2.13
     # via
     #   -c requirements/common_constraints.txt
     #   -r requirements/base.in
@@ -63,7 +63,7 @@ django-waffle==5.0.0
     # via
     #   edx-django-utils
     #   edx-toggles
-djangorestframework==3.16.1
+djangorestframework==3.17.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
@@ -78,17 +78,17 @@ edx-django-utils==8.0.1
     #   -r requirements/base.in
     #   edx-toggles
     #   openedx-events
-edx-i18n-tools==1.9.0
+edx-i18n-tools==2.0.0
     # via -r requirements/base.in
-edx-opaque-keys[django]==3.1.0
+edx-opaque-keys[django]==4.0.0
     # via
     #   -r requirements/base.in
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
-edx-submissions==3.12.2
+edx-submissions==4.0.0
     # via -r requirements/base.in
-edx-toggles==5.4.1
+edx-toggles==6.0.0
     # via -r requirements/base.in
 fastavro==1.12.1
     # via openedx-events
@@ -110,7 +110,7 @@ jsonfield==3.2.0
     #   edx-submissions
 lazy==1.6
     # via -r requirements/base.in
-lxml[html-clean]==6.0.2
+lxml[html-clean]==6.0.3
     # via
     #   -r requirements/base.in
     #   edx-i18n-tools
@@ -125,9 +125,9 @@ markupsafe==3.0.3
     #   jinja2
     #   mako
     #   xblock
-openedx-events==10.5.0
+openedx-events==11.1.1
     # via -r requirements/base.in
-openedx-filters==2.1.0
+openedx-filters==3.1.0
     # via -r requirements/base.in
 path==16.16.0
     # via
@@ -165,7 +165,7 @@ pyyaml==6.0.3
     #   edx-django-release-util
     #   edx-i18n-tools
     #   xblock
-requests==2.32.5
+requests==2.33.1
     # via python-swiftclient
 s3transfer==0.16.0
     # via boto3
@@ -195,7 +195,7 @@ urllib3==2.6.3
     #   requests
 voluptuous==0.16.0
     # via -r requirements/base.in
-web-fragments==3.1.0
+web-fragments==4.0.0
     # via xblock
 webencodings==0.5.1
     # via
@@ -203,11 +203,11 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.9
     # via xblock
-xblock==5.3.0
+xblock==6.0.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==82.0.0
+setuptools==82.0.1
     # via
     #   fs
     #   openedx-events
