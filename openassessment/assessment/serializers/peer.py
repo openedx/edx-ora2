@@ -25,8 +25,8 @@ class AssessmentFeedbackSerializer(serializers.ModelSerializer):
     """
     Serialize feedback in response to an assessment.
     """
-    assessments = AssessmentSerializer(many=True, default=None, required=False)
-    options = AssessmentFeedbackOptionSerializer(many=True, default=None, required=False)
+    assessments = AssessmentSerializer(many=True, required=False)
+    options = AssessmentFeedbackOptionSerializer(many=True, required=False)
 
     class Meta:
         model = AssessmentFeedback
