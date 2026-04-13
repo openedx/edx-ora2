@@ -19,6 +19,7 @@ from unittest.mock import MagicMock, patch
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
+from opaque_keys.edx.keys import CourseKey
 
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow.models import ORAReminder, AssessmentWorkflow
@@ -757,3 +758,462 @@ class TestDoSweep(CacheResetTest):
         processed_ids = [call.args[0].id for call in mock_process.call_args_list]
         self.assertIn(due.id, processed_ids)
         self.assertEqual(len(processed_ids), 1)
+
+
+# ---------------------------------------------------------------------------
+# ORAReminder model
+# ---------------------------------------------------------------------------
+class TestORAReminderModel(CacheResetTest):
+    """Tests for ORAReminder model methods."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='model_user', password='pass')
+
+    def test_str_representation(self):
+        reminder = _make_reminder(self.user)
+        result = str(reminder)
+        self.assertIn(str(self.user.id), result)
+        self.assertIn(ORA_USAGE_KEY_STR, result)
+        self.assertIn('active=True', result)
+
+    def test_str_inactive(self):
+        reminder = _make_reminder(self.user, is_active=False)
+        result = str(reminder)
+        self.assertIn('active=False', result)
+
+
+# ---------------------------------------------------------------------------
+# create_ora_reminder — uncovered branches
+# ---------------------------------------------------------------------------
+@override_settings(
+    ENABLE_ORA_REMINDERS=True,
+    ORA_REMINDER_INITIAL_DELAY_HOURS=INITIAL_DELAY,
+)
+class TestCreateOraReminderEdgeCases(CacheResetTest):
+    """Cover branches missed by TestCreateOraReminder."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='naive_user', password='pass')
+
+    def test_naive_datetime_gets_utc(self):
+        """A submission_time_iso without tz info should be treated as UTC."""
+        from openassessment.xblock.utils.ora_reminders import create_ora_reminder
+
+        naive_iso = '2026-04-07T10:00:00'  # no +00:00 suffix
+        create_ora_reminder(
+            user_id=self.user.id,
+            course_key_str=COURSE_KEY_STR,
+            ora_usage_key_str=ORA_USAGE_KEY_STR,
+            ora_name=ORA_NAME,
+            submission_uuid='naive-sub-001',
+            submission_time_iso=naive_iso,
+            content_url=CONTENT_URL,
+        )
+        reminder = ORAReminder.objects.get(submission_uuid='naive-sub-001')
+        self.assertIsNotNone(reminder.submission_time.tzinfo)
+
+
+# ---------------------------------------------------------------------------
+# ensure_sweep_chain_running — uncovered branches
+# ---------------------------------------------------------------------------
+@override_settings(ENABLE_ORA_REMINDERS=True, ORA_REMINDER_SWEEP_INTERVAL_SECONDS=600)
+class TestEnsureSweepChainEdgeCases(CacheResetTest):
+
+    @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders')
+    def test_invalid_heartbeat_iso_is_ignored(self, mock_task):
+        """A corrupt heartbeat value should not prevent chain restart."""
+        from django.core.cache import cache
+        from openassessment.xblock.utils.ora_reminders import (
+            ensure_sweep_chain_running, SWEEP_LOCK_KEY, SWEEP_HEARTBEAT_KEY,
+        )
+        cache.set(SWEEP_LOCK_KEY, 'running', timeout=9999)
+        cache.set(SWEEP_HEARTBEAT_KEY, 'not-a-valid-iso', timeout=9999)
+        ensure_sweep_chain_running()
+        # Lock was held, heartbeat parse failed → lock NOT cleared → no start
+        mock_task.apply_async.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# sweep_ora_reminders — uncovered branches
+# ---------------------------------------------------------------------------
+@override_settings(
+    ENABLE_ORA_REMINDERS=True,
+    CELERY_ALWAYS_EAGER=False,
+    ORA_REMINDER_SWEEP_INTERVAL_SECONDS=600,
+)
+class TestSweepOraRemindersEdgeCases(CacheResetTest):
+
+    @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders.apply_async')
+    @patch('openassessment.xblock.utils.ora_reminders._do_sweep', side_effect=Exception('boom'))
+    def test_rechain_even_on_sweep_error(self, _mock_sweep, mock_async):
+        """The finally block should re-chain even when _do_sweep raises."""
+        from openassessment.xblock.utils.ora_reminders import sweep_ora_reminders
+        sweep_ora_reminders()
+        mock_async.assert_called_once()
+
+    @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders.apply_async')
+    @patch('openassessment.xblock.utils.ora_reminders._do_sweep')
+    def test_no_rechain_when_lock_already_held(self, _mock_sweep, mock_async):
+        """When another chain already re-acquired the lock, skip re-chaining."""
+        from django.core.cache import cache
+        from openassessment.xblock.utils.ora_reminders import sweep_ora_reminders, SWEEP_LOCK_KEY
+
+        # Pre-fill the lock so the cache.add in finally returns False
+        # We need to patch cache.delete to be a no-op so the lock stays
+        original_delete = cache.delete
+
+        def selective_delete(key, *args, **kwargs):
+            if key == SWEEP_LOCK_KEY:
+                return  # keep the lock so cache.add fails
+            return original_delete(key, *args, **kwargs)
+
+        with patch.object(cache, 'delete', side_effect=selective_delete):
+            cache.set(SWEEP_LOCK_KEY, 'running', timeout=9999)
+            sweep_ora_reminders()
+
+        mock_async.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# _do_sweep — uncovered branches
+# ---------------------------------------------------------------------------
+@override_settings(
+    ENABLE_ORA_REMINDERS=True,
+    ORA_REMINDER_INITIAL_DELAY_HOURS=INITIAL_DELAY,
+    ORA_REMINDER_INTERVAL_HOURS=INTERVAL,
+    ORA_REMINDER_MAX_COUNT=MAX_COUNT,
+    ORA_REMINDER_SWEEP_BATCH_SIZE=100,
+)
+class TestDoSweepEdgeCases(CacheResetTest):
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='sweep_edge_user', password='pass')
+
+    @patch(
+        'openassessment.xblock.utils.ora_reminders._process_single_reminder',
+        side_effect=Exception('processing error'),
+    )
+    def test_continues_after_single_reminder_error(self, _mock_process):
+        """An exception in _process_single_reminder should not abort the sweep."""
+        from openassessment.xblock.utils.ora_reminders import _do_sweep
+
+        _make_reminder(self.user, next_reminder_at=NOW - timedelta(hours=1))
+
+        with patch('openassessment.xblock.utils.ora_reminders.datetime') as mock_dt:
+            mock_dt.now.return_value = NOW
+            mock_dt.side_effect = lambda *a, **kw: datetime(*a, **kw)
+            # Should not raise despite _process_single_reminder throwing
+            _do_sweep()
+
+
+# ---------------------------------------------------------------------------
+# _get_step_due_date (submissions_actions)
+# ---------------------------------------------------------------------------
+class TestGetStepDueDate(unittest.TestCase):
+    """Tests for submissions_actions._get_step_due_date."""
+
+    def test_returns_due_date(self):
+        from openassessment.xblock.apis.submissions.submissions_actions import _get_step_due_date
+
+        due = datetime(2026, 5, 1, tzinfo=timezone.utc)
+        block = MagicMock()
+        block.is_closed.return_value = (False, False, False, due)
+        result = _get_step_due_date(block, 'peer-assessment')
+        self.assertEqual(result, due)
+        block.is_closed.assert_called_once_with(step='peer-assessment')
+
+    def test_returns_none_when_due_is_none(self):
+        from openassessment.xblock.apis.submissions.submissions_actions import _get_step_due_date
+
+        block = MagicMock()
+        block.is_closed.return_value = (False, False, False, None)
+        result = _get_step_due_date(block, 'self-assessment')
+        self.assertIsNone(result)
+
+    def test_adds_utc_to_naive_due(self):
+        from openassessment.xblock.apis.submissions.submissions_actions import _get_step_due_date
+
+        naive_due = datetime(2026, 5, 1)  # no tzinfo
+        block = MagicMock()
+        block.is_closed.return_value = (False, False, False, naive_due)
+        result = _get_step_due_date(block, 'peer-assessment')
+        self.assertEqual(result.tzinfo, timezone.utc)
+
+    def test_returns_none_on_exception(self):
+        from openassessment.xblock.apis.submissions.submissions_actions import _get_step_due_date
+
+        block = MagicMock()
+        block.is_closed.side_effect = Exception('broken')
+        result = _get_step_due_date(block, 'peer-assessment')
+        self.assertIsNone(result)
+
+
+# ---------------------------------------------------------------------------
+# _handle_post_submission_notifications (submissions_actions)
+# ---------------------------------------------------------------------------
+@override_settings(ENABLE_ORA_REMINDERS=True, LMS_ROOT_URL='http://lms.example.com')
+class TestHandlePostSubmissionNotifications(CacheResetTest):
+    """Tests for submissions_actions._handle_post_submission_notifications."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='submit_user', password='pass')
+
+        self.submission = {
+            'uuid': 'test-sub-uuid',
+            'submitted_at': SUBMISSION_TIME,
+        }
+        self.student_item_dict = {
+            'student_id': 'anon-id-123',
+            'course_id': COURSE_KEY_STR,
+            'item_id': ORA_USAGE_KEY_STR,
+        }
+
+        # Mock block_config_data
+        self.mock_block = MagicMock()
+        self.mock_block.display_name = ORA_NAME
+        self.mock_block.due = None
+        self.mock_block.is_closed.return_value = (False, False, False, None)
+
+        self.mock_course = MagicMock()
+        self.mock_course.id = CourseKey.from_string(COURSE_KEY_STR)
+        self.mock_course.end = None
+
+        self.block_config_data = MagicMock()
+        self.block_config_data._block = self.mock_block
+        self.block_config_data.course = self.mock_course
+
+        # Mock block_workflow_data
+        self.block_workflow_data = MagicMock()
+        self.block_workflow_data.assessment_steps = ['peer-assessment', 'self-assessment']
+
+    def _call(self):
+        from openassessment.xblock.apis.submissions.submissions_actions import (
+            _handle_post_submission_notifications,
+        )
+        _handle_post_submission_notifications(
+            self.submission, self.student_item_dict,
+            self.block_config_data, self.block_workflow_data,
+        )
+
+    def test_skips_when_no_peer_or_self_steps(self):
+        """Should return early if assessment_steps has neither peer nor self."""
+        self.block_workflow_data.assessment_steps = ['staff-assessment']
+        with patch(
+            'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+        ) as mock_create:
+            self._call()
+        mock_create.assert_not_called()
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_skips_when_workflow_not_found(self, mock_wf_objects):
+        """Should return early when no workflow exists for the submission."""
+        mock_wf_objects.get.side_effect = AssessmentWorkflow.DoesNotExist
+        with patch(
+            'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+        ) as mock_create:
+            self._call()
+        mock_create.assert_not_called()
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_skips_when_initial_step_is_training(self, mock_wf_objects):
+        """Should not create reminder when initial step is 'training'."""
+        mock_wf = MagicMock(status='training')
+        mock_wf_objects.get.return_value = mock_wf
+        with patch(
+            'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+        ) as mock_create:
+            self._call()
+        mock_create.assert_not_called()
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_creates_reminder_for_peer_step(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """Happy path: creates reminder when initial step is 'peer'."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+
+        self._call()
+
+        mock_create.assert_called_once()
+        call_kwargs = mock_create.call_args[1]
+        self.assertEqual(call_kwargs['user_id'], self.user.id)
+        self.assertEqual(call_kwargs['submission_uuid'], 'test-sub-uuid')
+        self.assertEqual(call_kwargs['ora_name'], ORA_NAME)
+        mock_ensure.assert_called_once()
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_creates_reminder_for_self_step(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """Creates reminder when initial step is 'self'."""
+        mock_wf = MagicMock(status='self')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+
+        self._call()
+
+        mock_create.assert_called_once()
+        mock_ensure.assert_called_once()
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_skips_when_username_not_found(self, mock_wf_objects, mock_map, mock_create):
+        """Should return early when anonymized ID cannot be resolved to username."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': None}
+
+        self._call()
+        mock_create.assert_not_called()
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_uses_course_id_from_student_item_when_no_course(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """Falls back to student_item_dict course_id when block_config_data.course is None."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+        self.block_config_data.course = None
+
+        self._call()
+
+        call_kwargs = mock_create.call_args[1]
+        self.assertEqual(call_kwargs['course_key_str'], COURSE_KEY_STR)
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames',
+        side_effect=Exception('lookup failed'),
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_exception_does_not_propagate(self, mock_wf_objects, _mock_map, mock_create):
+        """Exceptions in the try block should be caught and logged, not raised."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+
+        # Should not raise
+        self._call()
+        mock_create.assert_not_called()
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_submission_time_from_created_at(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """Falls back to created_at when submitted_at is not present."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+
+        self.submission = {
+            'uuid': 'test-sub-uuid',
+            'created_at': SUBMISSION_TIME,
+        }
+        self._call()
+
+        call_kwargs = mock_create.call_args[1]
+        self.assertEqual(call_kwargs['submission_time_iso'], SUBMISSION_TIME.isoformat())
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_submission_time_string_fallback(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """When submitted_at is a plain string (not datetime), uses str directly."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+
+        self.submission = {
+            'uuid': 'test-sub-uuid',
+            'submitted_at': '2026-04-07T10:00:00+00:00',
+        }
+        self._call()
+
+        call_kwargs = mock_create.call_args[1]
+        self.assertEqual(call_kwargs['submission_time_iso'], '2026-04-07T10:00:00+00:00')
+
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.ensure_sweep_chain_running'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.create_ora_reminder'
+    )
+    @patch(
+        'openassessment.xblock.apis.submissions.submissions_actions.map_anonymized_ids_to_usernames'
+    )
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_naive_course_end_and_ora_due_get_utc(
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+    ):
+        """Naive course_end_date and ora_due_date should get UTC tzinfo."""
+        mock_wf = MagicMock(status='peer')
+        mock_wf_objects.get.return_value = mock_wf
+        mock_map.return_value = {'anon-id-123': self.user.username}
+
+        # Set naive datetimes on the mock block/course
+        self.mock_course.end = datetime(2026, 8, 1)  # naive
+        self.mock_block.due = datetime(2026, 6, 1)  # naive
+
+        self._call()
+
+        call_kwargs = mock_create.call_args[1]
+        self.assertEqual(call_kwargs['course_end_date'], datetime(2026, 8, 1, tzinfo=timezone.utc))
+        self.assertEqual(call_kwargs['ora_due_date'], datetime(2026, 6, 1, tzinfo=timezone.utc))

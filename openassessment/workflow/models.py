@@ -1144,4 +1144,3 @@ class ORAReminder(TimeStampedModel):
             f'ORAReminder(user={self.user_id}, ora={self.ora_usage_key}, '
             f'active={self.is_active})'
         )
-
