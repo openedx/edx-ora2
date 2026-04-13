@@ -52,7 +52,7 @@ SWEEP_HEARTBEAT_KEY = 'ora_reminder_sweep_heartbeat'
 SWEEP_LOCK_TIMEOUT_MULTIPLIER = 3
 
 
-def create_ora_reminder(
+def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         user_id,
         course_key_str,
         ora_usage_key_str,

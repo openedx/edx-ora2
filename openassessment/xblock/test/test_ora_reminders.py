@@ -16,9 +16,8 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock, patch
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import override_settings
 from opaque_keys.edx.keys import CourseKey
 
 from openassessment.test_utils import CacheResetTest
@@ -48,21 +47,21 @@ WINDOW = INITIAL_DELAY + MAX_COUNT * INTERVAL  # 144 h
 
 def _make_reminder(user, **overrides):
     """Create an ORAReminder with sane defaults (submission_time=SUBMISSION_TIME, due in 1 h)."""
-    defaults = dict(
-        user=user,
-        course_id=COURSE_KEY_STR,
-        ora_usage_key=ORA_USAGE_KEY_STR,
-        ora_name=ORA_NAME,
-        submission_uuid=SUBMISSION_UUID,
-        submission_time=SUBMISSION_TIME,
-        content_url=CONTENT_URL,
-        ora_due_date=None,
-        course_end_date=None,
-        peer_assessment_due=None,
-        self_assessment_due=None,
-        next_reminder_at=NOW - timedelta(hours=1),  # already due
-        is_active=True,
-    )
+    defaults = {
+        "user": user,
+        "course_id": COURSE_KEY_STR,
+        "ora_usage_key": ORA_USAGE_KEY_STR,
+        "ora_name": ORA_NAME,
+        "submission_uuid": SUBMISSION_UUID,
+        "submission_time": SUBMISSION_TIME,
+        "content_url": CONTENT_URL,
+        "ora_due_date": None,
+        "course_end_date": None,
+        "peer_assessment_due": None,
+        "self_assessment_due": None,
+        "next_reminder_at": NOW - timedelta(hours=1),  # already due
+        "is_active": True,
+    }
     defaults.update(overrides)
     return ORAReminder.objects.create(**defaults)
 
@@ -265,7 +264,7 @@ class TestEnsureSweepChainRunning(CacheResetTest):
         with patch('openassessment.xblock.utils.ora_reminders.datetime') as mock_dt:
             mock_dt.now.return_value = NOW
             mock_dt.fromisoformat = datetime.fromisoformat
-            mock_dt.side_effect = lambda *a, **kw: datetime(*a, **kw)
+            mock_dt.side_effect = datetime
             ensure_sweep_chain_running()
 
         mock_task.apply_async.assert_called_once()
@@ -285,7 +284,7 @@ class TestEnsureSweepChainRunning(CacheResetTest):
         with patch('openassessment.xblock.utils.ora_reminders.datetime') as mock_dt:
             mock_dt.now.return_value = NOW
             mock_dt.fromisoformat = datetime.fromisoformat
-            mock_dt.side_effect = lambda *a, **kw: datetime(*a, **kw)
+            mock_dt.side_effect = datetime
             ensure_sweep_chain_running()
 
         mock_task.apply_async.assert_not_called()
@@ -669,7 +668,7 @@ class TestProcessSingleReminder(CacheResetTest):
     @patch('openassessment.xblock.utils.ora_reminders._send_reminder_notification')
     @patch('openassessment.xblock.utils.ora_reminders._check_peer_submissions_available', return_value=True)
     @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
-    def test_custom_interval_hours(self, _step, _avail, mock_send):
+    def test_custom_interval_hours(self, _step, _avail, _send):
         """next_reminder_at should advance by the custom interval."""
         from openassessment.xblock.utils.ora_reminders import _process_single_reminder
 
@@ -747,12 +746,10 @@ class TestDoSweep(CacheResetTest):
             next_reminder_at=NOW + timedelta(hours=10),
         )
 
-        _do_sweep.__wrapped__(NOW) if hasattr(_do_sweep, '__wrapped__') else None
         with patch('openassessment.xblock.utils.ora_reminders.datetime') as mock_dt:
             mock_dt.now.return_value = NOW
-            mock_dt.side_effect = lambda *a, **kw: datetime(*a, **kw)
-            from openassessment.xblock.utils.ora_reminders import _do_sweep as real_sweep
-            real_sweep()
+            mock_dt.side_effect = datetime
+            _do_sweep()
 
         # Only the due reminder should be processed
         processed_ids = [call.args[0].id for call in mock_process.call_args_list]
@@ -866,7 +863,7 @@ class TestSweepOraRemindersEdgeCases(CacheResetTest):
 
         def selective_delete(key, *args, **kwargs):
             if key == SWEEP_LOCK_KEY:
-                return  # keep the lock so cache.add fails
+                return None  # keep the lock so cache.add fails
             return original_delete(key, *args, **kwargs)
 
         with patch.object(cache, 'delete', side_effect=selective_delete):
@@ -904,7 +901,7 @@ class TestDoSweepEdgeCases(CacheResetTest):
 
         with patch('openassessment.xblock.utils.ora_reminders.datetime') as mock_dt:
             mock_dt.now.return_value = NOW
-            mock_dt.side_effect = lambda *a, **kw: datetime(*a, **kw)
+            mock_dt.side_effect = datetime
             # Should not raise despite _process_single_reminder throwing
             _do_sweep()
 
@@ -983,7 +980,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
         self.mock_course.end = None
 
         self.block_config_data = MagicMock()
-        self.block_config_data._block = self.mock_block
+        self.block_config_data._block = self.mock_block  # pylint: disable=protected-access
         self.block_config_data.course = self.mock_course
 
         # Mock block_workflow_data
@@ -1040,7 +1037,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_creates_reminder_for_peer_step(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure  # pylint: disable=unused-argument
     ):
         """Happy path: creates reminder when initial step is 'peer'."""
         mock_wf = MagicMock(status='peer')
@@ -1067,7 +1064,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_creates_reminder_for_self_step(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, mock_ensure  # pylint: disable=unused-argument
     ):
         """Creates reminder when initial step is 'self'."""
         mock_wf = MagicMock(status='self')
@@ -1106,7 +1103,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_uses_course_id_from_student_item_when_no_course(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, _mock_ensure
     ):
         """Falls back to student_item_dict course_id when block_config_data.course is None."""
         mock_wf = MagicMock(status='peer')
@@ -1147,7 +1144,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_submission_time_from_created_at(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, _mock_ensure
     ):
         """Falls back to created_at when submitted_at is not present."""
         mock_wf = MagicMock(status='peer')
@@ -1174,7 +1171,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_submission_time_string_fallback(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, _mock_ensure
     ):
         """When submitted_at is a plain string (not datetime), uses str directly."""
         mock_wf = MagicMock(status='peer')
@@ -1201,7 +1198,7 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
     )
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
     def test_naive_course_end_and_ora_due_get_utc(
-        self, mock_wf_objects, mock_map, mock_create, mock_ensure
+        self, mock_wf_objects, mock_map, mock_create, _mock_ensure
     ):
         """Naive course_end_date and ora_due_date should get UTC tzinfo."""
         mock_wf = MagicMock(status='peer')

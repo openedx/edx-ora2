@@ -8,9 +8,11 @@ import os
 from datetime import timezone
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from opaque_keys.edx.keys import CourseKey
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 
+from openassessment.data import map_anonymized_ids_to_usernames
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.submissions.errors import (
@@ -26,9 +28,6 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmitInternalError,
     UnsupportedFileTypeException
 )
-from django.contrib.auth import get_user_model
-
-from openassessment.data import map_anonymized_ids_to_usernames
 from openassessment.xblock.utils.notifications import send_staff_notification
 from openassessment.xblock.utils.ora_reminders import create_ora_reminder, ensure_sweep_chain_running
 from openassessment.xblock.utils.validation import validate_submission
