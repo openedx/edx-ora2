@@ -11,14 +11,11 @@ configurable interval, finds due reminder rows in the database, and fires
 Enabling
 --------
 
-Set ``ENABLE_ORA_REMINDERS`` to ``True`` in your Django ``FEATURES`` dict:
+Set ``ENABLE_ORA_REMINDERS`` to ``True`` in your Django settings:
 
 .. code-block:: python
 
-    FEATURES = {
-        ...
-        'ENABLE_ORA_REMINDERS': True,
-    }
+    ENABLE_ORA_REMINDERS = True
 
 The notification type ``ora_reminder`` must also be registered in edx-platform's
 ``openedx.core.djangoapps.notifications.base_notification`` (already included
@@ -83,12 +80,15 @@ How It Works
 
 3. For each due row, guards are checked in order:
 
-   - **Deadline passed** — ORA due date or course end date has passed →
-     row deactivated, no notification sent.
-   - **Max count reached** — ``reminder_sent_count ≥ ORA_REMINDER_MAX_COUNT``
-     → row deactivated.
+   - **Time window elapsed** — hours since submission exceed
+     ``INITIAL_DELAY + MAX_COUNT × INTERVAL`` → row deactivated.
+     This is equivalent to "all X reminders have been sent" without
+     tracking a count.
    - **Step completed** — workflow is no longer on a peer/self step (learner
      finished their reviews) → row deactivated.
+   - **Deadline passed** — the current step's due date (or ORA-level due
+     date as fallback) or course end date has passed → row deactivated,
+     no notification sent.
    - **No peers available** (peer step only) — no submissions exist yet for
      the learner to review → ``next_reminder_at`` advanced by
      ``ORA_REMINDER_CHECK_AGAIN_HOURS``, no notification sent.

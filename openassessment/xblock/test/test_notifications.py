@@ -8,10 +8,7 @@ from opaque_keys import InvalidKeyError
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import FieldError
-from openassessment.xblock.utils.notifications import (
-    send_staff_notification,
-    send_grade_assigned_notification,
-)
+from openassessment.xblock.utils.notifications import send_staff_notification, send_grade_assigned_notification
 from openassessment.workflow.errors import ItemNotFoundError
 
 User = get_user_model()
@@ -196,7 +193,3 @@ class TestSendGradeAssignedNotification(unittest.TestCase):
         mock_logger_error.assert_called_once_with('Error while getting user name for the user id anon_user_1: '
                                                   'FieldError: Cannot resolve keyword \'anonymoususerid\'')
         mock_send_event.assert_not_called()
-
-
-
-

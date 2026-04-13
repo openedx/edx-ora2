@@ -1103,8 +1103,11 @@ class ORAReminder(TimeStampedModel):
     processes them — sending the reminder notification and advancing the
     schedule or deactivating the row.
 
-    Deadlines (``ora_due_date``, ``course_end_date``) are cached at creation
-    time so the sweeper never needs to hit the modulestore.
+    All deadline fields are cached at creation time so the sweeper never needs
+    to hit the modulestore or CourseOverview.
+
+    Termination uses a time-based condition (spec §3): the sweeper stops sending
+    when ``now >= submission_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS``.
 
     .. no_pii:
     """
@@ -1120,10 +1123,11 @@ class ORAReminder(TimeStampedModel):
     # expensive modulestore / CourseOverview lookups during sweep.
     ora_due_date = models.DateTimeField(null=True, blank=True)
     course_end_date = models.DateTimeField(null=True, blank=True)
+    peer_assessment_due = models.DateTimeField(null=True, blank=True)
+    self_assessment_due = models.DateTimeField(null=True, blank=True)
 
-    # Reminder state
-    reminder_sent_count = models.PositiveIntegerField(default=0)
-    next_reminder_at = models.DateTimeField(db_index=True)
+    # Reminder state — next_reminder_at is NULL when the row is inactive.
+    next_reminder_at = models.DateTimeField(db_index=True, null=True, blank=True)
     is_active = models.BooleanField(default=True, db_index=True)
 
     class Meta:
@@ -1138,6 +1142,6 @@ class ORAReminder(TimeStampedModel):
     def __str__(self):
         return (
             f'ORAReminder(user={self.user_id}, ora={self.ora_usage_key}, '
-            f'sent={self.reminder_sent_count}, active={self.is_active})'
+            f'active={self.is_active})'
         )
 

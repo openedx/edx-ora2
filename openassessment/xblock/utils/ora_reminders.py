@@ -5,7 +5,7 @@ Instead of one Celery chain per user, a **single** Celery task
 (``sweep_ora_reminders``) runs periodically, queries the pending peer/self review
 submissions for users whose reminder is due, and sends reminder notifications.
 
-Feature is enabled via ``FEATURES['ENABLE_ORA_REMINDERS'] = True`` in Django settings.
+Feature is enabled via ``ENABLE_ORA_REMINDERS = True`` in Django settings.
 See ``docs/ora_reminders.rst`` for full configuration reference.
 
 This module is responsible for:
@@ -13,6 +13,10 @@ This module is responsible for:
 - Ensuring the sweeper chain is running
 - The sweeper logic that processes reminders
 
+Termination condition (per spec):
+  A reminder row is deactivated once:
+    now >= submission_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS
+  This is equivalent to "all X reminders have been sent" without tracking count.
 """
 import logging
 import random
@@ -32,7 +36,6 @@ from openassessment.workflow.models import ORAReminder, AssessmentWorkflow
 logger = logging.getLogger(__name__)
 
 # ORA workflow steps that should trigger reminders.
-# When a user submits and has peer or self review as next step, they get reminders
 PENDING_REMINDER_STEPS = {'peer', 'self'}
 
 STEP_DISPLAY_NAMES = {
@@ -59,15 +62,17 @@ def create_ora_reminder(
         content_url,
         course_end_date=None,
         ora_due_date=None,
+        peer_assessment_due=None,
+        self_assessment_due=None,
 ):
     """
     Persist an ``ORAReminder`` row so the sweeper can pick it up later.
 
     Called from submissions_actions._handle_post_submission_notifications when a
-    learner submits an ORA that has peer or self review as the next step.
+    learner submits an ORA whose immediate next workflow step is peer or self review.
 
-    Deadlines are passed in by the caller (which has xblock context) and cached
-    on the row, so the sweeper never needs to touch the modulestore or CourseOverview.
+    All deadline fields are passed in by the caller (which has xblock context)
+    and cached on the row so the sweeper never needs to touch the modulestore.
 
     Args:
         user_id (int): The user ID of the submitting learner
@@ -77,10 +82,12 @@ def create_ora_reminder(
         submission_uuid (str): The UUID of the submission
         submission_time_iso (str): The submission timestamp in ISO 8601 format
         content_url (str): The URL to the ORA block
-        course_end_date (datetime, optional): The course end date
-        ora_due_date (datetime, optional): The ORA block's due date
+        course_end_date (datetime, optional): Course end date
+        ora_due_date (datetime, optional): ORA block-level due date
+        peer_assessment_due (datetime, optional): Peer assessment step due date
+        self_assessment_due (datetime, optional): Self assessment step due date
     """
-    if not getattr(settings, 'FEATURES', {}).get('ENABLE_ORA_REMINDERS', False):
+    if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
         logger.debug('ora_reminders: ENABLE_ORA_REMINDERS is disabled, skipping reminder creation')
         return
 
@@ -102,7 +109,8 @@ def create_ora_reminder(
                 'content_url': content_url,
                 'ora_due_date': ora_due_date,
                 'course_end_date': course_end_date,
-                'reminder_sent_count': 0,
+                'peer_assessment_due': peer_assessment_due,
+                'self_assessment_due': self_assessment_due,
                 'next_reminder_at': next_reminder_at,
                 'is_active': True,
             },
@@ -125,13 +133,39 @@ def ensure_sweep_chain_running():
     Uses ``cache.add`` as a distributed lock: only the first caller wins.
     The lock TTL is set to ``SWEEP_LOCK_TIMEOUT_MULTIPLIER * sweep_interval``
     so the lock auto-expires if the chain truly dies.
+
+    If the lock exists but the heartbeat is stale (older than
+    ``2 * sweep_interval``), the chain is assumed dead and the lock is
+    cleared so a new chain can start immediately.
     """
-    if not getattr(settings, 'FEATURES', {}).get('ENABLE_ORA_REMINDERS', False):
+    if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
         logger.debug('ora_reminders: ENABLE_ORA_REMINDERS is disabled, not starting sweeper')
+        return
+
+    if getattr(settings, 'CELERY_ALWAYS_EAGER', False):
+        logger.debug('ora_reminders: CELERY_ALWAYS_EAGER is True, not starting self-chaining sweeper')
         return
 
     sweep_interval = getattr(settings, 'ORA_REMINDER_SWEEP_INTERVAL_SECONDS', 1800)
     lock_timeout = sweep_interval * SWEEP_LOCK_TIMEOUT_MULTIPLIER
+
+    # If the lock exists, check whether the chain is actually alive by
+    # inspecting the heartbeat.  A stale heartbeat means the old chain
+    # died (e.g. worker restart) but the lock hasn't expired yet.
+    if cache.get(SWEEP_LOCK_KEY):
+        heartbeat_iso = cache.get(SWEEP_HEARTBEAT_KEY)
+        if heartbeat_iso:
+            try:
+                last_beat = datetime.fromisoformat(heartbeat_iso)
+                stale_threshold = datetime.now(timezone.utc) - timedelta(seconds=sweep_interval * 2)
+                if last_beat < stale_threshold:
+                    logger.warning(
+                        'ora_reminders: Heartbeat stale (last=%s). Clearing lock to restart chain.',
+                        heartbeat_iso,
+                    )
+                    cache.delete(SWEEP_LOCK_KEY)
+            except (ValueError, TypeError):
+                pass
 
     acquired = cache.add(SWEEP_LOCK_KEY, 'running', timeout=lock_timeout)
     if acquired:
@@ -150,7 +184,7 @@ def sweep_ora_reminders():
 
     1. Query ``ORAReminder`` rows where ``is_active=True`` and
        ``next_reminder_at <= now``.
-    2. For each row, check guards (deadline, workflow step, max count).
+    2. For each row, check guards (deadline, workflow step, time window).
     3. Send notification or deactivate.
     4. Re-chain self with ``countdown=SWEEP_INTERVAL``.
 
@@ -160,10 +194,11 @@ def sweep_ora_reminders():
     """
     sweep_interval = getattr(settings, 'ORA_REMINDER_SWEEP_INTERVAL_SECONDS', 1800)
     lock_timeout = sweep_interval * SWEEP_LOCK_TIMEOUT_MULTIPLIER
-    should_rechain = True
+    # Never self-chain when tasks run eagerly (CELERY_ALWAYS_EAGER=True) — it causes infinite recursion.
+    should_rechain = not getattr(settings, 'CELERY_ALWAYS_EAGER', False)
 
     try:
-        if not getattr(settings, 'FEATURES', {}).get('ENABLE_ORA_REMINDERS', False):
+        if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
             logger.info('ora_reminders: ENABLE_ORA_REMINDERS is disabled. Sweeper stopping.')
             should_rechain = False
             return
@@ -177,9 +212,16 @@ def sweep_ora_reminders():
         logger.exception('ora_reminders: Sweeper encountered an error during sweep.')
     finally:
         if should_rechain:
-            cache.set(SWEEP_LOCK_KEY, 'running', timeout=lock_timeout)
-            sweep_ora_reminders.apply_async(countdown=sweep_interval)
-            logger.debug('ora_reminders: Re-chained sweeper in %s seconds.', sweep_interval)
+            # Delete-then-add ensures only ONE of potentially parallel sweep
+            # tasks wins the right to re-chain.  Parallel chains arise when a
+            # worker restart leaves stale countdown tasks in Redis.
+            cache.delete(SWEEP_LOCK_KEY)
+            acquired = cache.add(SWEEP_LOCK_KEY, 'running', timeout=lock_timeout)
+            if acquired:
+                sweep_ora_reminders.apply_async(countdown=sweep_interval)
+                logger.debug('ora_reminders: Re-chained sweeper in %s seconds.', sweep_interval)
+            else:
+                logger.info('ora_reminders: Another chain already re-acquired the lock; not re-chaining.')
 
 
 def _do_sweep():
@@ -213,41 +255,51 @@ def _do_sweep():
 
 def _process_single_reminder(reminder, now):
     """
-    Process one ``ORAReminder`` row:
+    Process one ``ORAReminder`` row.
 
-    1. Check cached deadlines — deactivate if past.
-    2. Check workflow step — deactivate if no longer peer/self.
-    3. Check max count — deactivate if reached.
-    4. Check if peer submissions are available (for peer step only).
-    5. Send reminder notification & advance schedule.
+    Guard order (spec §3):
+    1. Time window elapsed  — now >= submission_time + Z + X*Y  → deactivate
+    2. Step-level deadline   — current step due date has passed  → deactivate
+    3. Course end date       — course has ended                  → deactivate
+    4. Workflow step         — no longer peer or self            → deactivate
+    5. Peer availability     — no peer submissions yet (peer only) → defer
+    6. Send notification & advance schedule.
     """
     max_count = getattr(settings, 'ORA_REMINDER_MAX_COUNT', 3)
     interval_hours = getattr(settings, 'ORA_REMINDER_INTERVAL_HOURS', 48)
+    initial_delay_hours = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
     check_again_hours = getattr(settings, 'ORA_REMINDER_CHECK_AGAIN_HOURS', 12)
 
-    # ---- Guard: deadline passed (using cached dates) ----
-    if reminder.ora_due_date and reminder.ora_due_date <= now:
-        _deactivate(reminder, 'ORA due date passed')
+    # ---- Guard 1: time-based window (spec: "hours elapsed > X*Y+Z") ----
+    reminder_window_end = reminder.submission_time + timedelta(
+        hours=initial_delay_hours + max_count * interval_hours
+    )
+    if now >= reminder_window_end:
+        _deactivate(reminder, f'Reminder window elapsed (cutoff={reminder_window_end})')
+        return
+
+    # ---- Guard 2 & 3: deadline checks ----
+    # Get current step first so we can use the step-specific due date.
+    current_step = _get_workflow_step(reminder.submission_uuid)
+    if current_step not in PENDING_REMINDER_STEPS:
+        _deactivate(reminder, f'Workflow step is "{current_step}" (not peer/self)')
+        return
+
+    step_due = (
+        reminder.peer_assessment_due if current_step == 'peer'
+        else reminder.self_assessment_due
+    )
+    # Fall back to ORA-level due date when no step-specific date was captured.
+    effective_due = step_due or reminder.ora_due_date
+    if effective_due and effective_due <= now:
+        _deactivate(reminder, f'{current_step} step due date passed ({effective_due})')
         return
 
     if reminder.course_end_date and reminder.course_end_date <= now:
         _deactivate(reminder, 'Course end date passed')
         return
 
-    # ---- Guard: max count reached ----
-    if reminder.reminder_sent_count >= max_count:
-        _deactivate(reminder, f'Max reminder count ({max_count}) reached')
-        return
-
-    # ---- Guard: workflow step no longer peer/self ----
-    current_step = _get_workflow_step(reminder.submission_uuid)
-    if current_step not in PENDING_REMINDER_STEPS:
-        _deactivate(reminder, f'Workflow step is "{current_step}" (not peer/self)')
-        return
-
-    # ---- Guard: Check if peer submissions are available (peer step only) ----
-    # Prevents sending reminders to user
-    # when no other submissions exist for them to review yet.
+    # ---- Guard 4: peer availability ----
     if current_step == 'peer':
         has_available = _check_peer_submissions_available(reminder.submission_uuid)
         if not has_available:
@@ -256,7 +308,7 @@ def _process_single_reminder(reminder, now):
             logger.info(
                 'ora_reminders: No peer submissions available yet for user %s, ORA %s. '
                 'Will check again in %s hours.',
-                reminder.user_id, reminder.ora_usage_key, check_again_hours
+                reminder.user_id, reminder.ora_usage_key, check_again_hours,
             )
             return
 
@@ -271,22 +323,22 @@ def _process_single_reminder(reminder, now):
     )
 
     # ---- Advance schedule ----
-    reminder.reminder_sent_count += 1
-    if reminder.reminder_sent_count >= max_count:
+    next_at = now + timedelta(hours=interval_hours)
+    if next_at >= reminder_window_end:
+        # Final reminder sent — no more will be due within the window.
         reminder.is_active = False
         reminder.next_reminder_at = None
         logger.info(
-            'ora_reminders: Final reminder (%s/%s) sent for user %s, ORA %s.',
-            reminder.reminder_sent_count, max_count, reminder.user_id, reminder.ora_usage_key,
+            'ora_reminders: Final reminder sent for user %s, ORA %s (window closed at %s).',
+            reminder.user_id, reminder.ora_usage_key, reminder_window_end,
         )
     else:
-        reminder.next_reminder_at = now + timedelta(hours=interval_hours)
+        reminder.next_reminder_at = next_at
         logger.info(
-            'ora_reminders: Reminder %s/%s sent for user %s, ORA %s. Next at %s.',
-            reminder.reminder_sent_count, max_count, reminder.user_id,
-            reminder.ora_usage_key, reminder.next_reminder_at,
+            'ora_reminders: Reminder sent for user %s, ORA %s. Next at %s.',
+            reminder.user_id, reminder.ora_usage_key, next_at,
         )
-    reminder.save(update_fields=['reminder_sent_count', 'next_reminder_at', 'is_active', 'modified'])
+    reminder.save(update_fields=['next_reminder_at', 'is_active', 'modified'])
 
 
 def _deactivate(reminder, reason):
@@ -321,10 +373,9 @@ def _send_reminder_notification(user_id, course_key_str, ora_name, pending_step,
         user_id (int): The user ID of the learner who needs to complete their review
         course_key_str (str): The course key string
         ora_name (str): The display name of the ORA block
-        pending_step (str): The human-readable name of the pending step (e.g., "peer reviews")
+        pending_step (str): Human-readable pending step (e.g. "peer reviews")
         content_url (str): The URL to the ORA block
     """
-
     course_key = CourseKey.from_string(course_key_str)
 
     notification_data = UserNotificationData(
@@ -350,27 +401,26 @@ def _check_peer_submissions_available(submission_uuid):
     Check if there are peer submissions available for the user to review.
 
     Prevents sending reminders to users (especially first submitters) when no
-    other submissions exist for them to review yet. Uses the same logic as
-    ORA's UI ``waiting_for_submissions_to_assess`` property.
+    other submissions exist for them to review yet.
 
     Args:
         submission_uuid (str): The UUID of the user's submission
 
     Returns:
-        bool: True if peer submissions are available to review, False if waiting for peers
+        bool: True if peer submissions are available, False if waiting for peers
     """
     try:
         peer_submission = peer_api.get_submission_to_assess(
             submission_uuid,
             graded_by=1,
-            peek=True
+            peek=True,
         )
         return peer_submission is not None
 
     except Exception:  # pylint: disable=broad-except
         logger.exception(
             'ora_reminders: Error checking peer submission availability for %s',
-            submission_uuid
+            submission_uuid,
         )
         # Fail open — don't block reminders if the check itself errors
         return True
