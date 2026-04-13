@@ -40,12 +40,30 @@ from openassessment.xblock.utils.data_conversion import (
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
+def _get_step_due_date(block, step_name):
+    """
+    Return the resolved due-datetime for a named assessment step, or None.
+
+    Uses is_closed() which handles all date resolution strategies
+    (manual, subsection, course-end).  Returned datetime is always UTC-aware.
+    """
+    try:
+        _, _, _, due = block.is_closed(step=step_name)
+        if due is not None and due.tzinfo is None:
+            due = due.replace(tzinfo=timezone.utc)
+        return due
+    except Exception:  # pylint: disable=broad-except
+        return None
+
+
 def _handle_post_submission_notifications(submission, student_item_dict, block_config_data, block_workflow_data):
     """
     Handle notifications and reminders after a submission is created.
 
-    Sends immediate submission notification and creates scheduled reminder entries
-    for peer/self review steps.
+    Creates a scheduled ORAReminder entry when the learner's immediate next
+    workflow step is peer review or self review.  If the next step is something
+    else (e.g. student-training) no reminder is created — consistent with the
+    spec requirement "if the required next step is peer review or self review".
 
     Args:
         submission (dict): The submission object from submissions API
@@ -53,9 +71,25 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
         block_config_data: ORAConfigAPI instance
         block_workflow_data: WorkflowAPI instance
     """
-    # Only create reminders when peer or self review is required
+    # Fast path: skip if ORA has no peer/self steps at all.
     assessment_steps = block_workflow_data.assessment_steps
     if 'peer-assessment' not in assessment_steps and 'self-assessment' not in assessment_steps:
+        return
+
+    # Check the ACTUAL initial workflow step after submission.
+    # For ORAs that start with student-training the first step is 'training',
+    # not 'peer'/'self', so no reminder should be created yet.
+    from openassessment.workflow.models import AssessmentWorkflow  # avoid circular at module level
+    try:
+        initial_step = AssessmentWorkflow.objects.get(submission_uuid=submission["uuid"]).status
+    except AssessmentWorkflow.DoesNotExist:
+        logger.warning(
+            "No workflow found for submission %s, skipping reminder creation",
+            submission["uuid"],
+        )
+        return
+
+    if initial_step not in ('peer', 'self'):
         return
 
     # Get submission timestamp
@@ -74,7 +108,7 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
         if not username:
             logger.warning(
                 "Could not find username for anonymized ID %s, skipping reminder creation",
-                anonymized_id
+                anonymized_id,
             )
             return
 
@@ -90,14 +124,19 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
         lms_root_url = getattr(settings, 'LMS_ROOT_URL', '')
         content_url = f"{lms_root_url}/courses/{course_id_str}/jump_to/{item_id}"
 
-        ora_name = block_config_data._block.display_name  # pylint: disable=protected-access
+        block = block_config_data._block  # pylint: disable=protected-access
+        ora_name = block.display_name
         course_end_date = block_config_data.course.end if block_config_data.course else None
-        ora_due_date = getattr(block_config_data._block, 'due', None)  # pylint: disable=protected-access
+        ora_due_date = getattr(block, 'due', None)
 
         if course_end_date is not None and course_end_date.tzinfo is None:
             course_end_date = course_end_date.replace(tzinfo=timezone.utc)
         if ora_due_date is not None and ora_due_date.tzinfo is None:
             ora_due_date = ora_due_date.replace(tzinfo=timezone.utc)
+
+        # Cache step-level due dates so the sweeper never needs the modulestore.
+        peer_assessment_due = _get_step_due_date(block, 'peer-assessment')
+        self_assessment_due = _get_step_due_date(block, 'self-assessment')
 
         # Create reminder DB entry
         create_ora_reminder(
@@ -110,6 +149,8 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
             content_url=content_url,
             course_end_date=course_end_date,
             ora_due_date=ora_due_date,
+            peer_assessment_due=peer_assessment_due,
+            self_assessment_due=self_assessment_due,
         )
 
         # Ensure the sweeper chain is running

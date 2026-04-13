@@ -176,15 +176,16 @@ FEATURES = {
     # See: https://github.com/openedx/edx-ora2/pull/2196
     'ENABLE_ORA_PEER_CONFIGURABLE_GRADING': False,
 
-    # Set to True to enable scheduled ORA reminder notifications
-    # for learners who need to complete peer/self reviews.
-    # See: docs/ora_reminders.rst for full configuration reference.
-    'ENABLE_ORA_REMINDERS': False,
 }
 
 # ---------------------------------------------------------------------------
 # ORA Reminder Notification Settings
 # ---------------------------------------------------------------------------
+# Set False to disable scheduled ORA reminder notifications
+# for learners who need to complete peer/self reviews.
+# See: docs/ora_reminders.rst for full configuration reference.
+ENABLE_ORA_REMINDERS = True
+
 # Maximum number of reminders sent per learner per ORA submission.
 ORA_REMINDER_MAX_COUNT = 3
 
