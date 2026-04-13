@@ -5,7 +5,9 @@ Base stateless API actions for acting upon learner submissions
 import json
 import logging
 import os
+from datetime import timezone
 
+from django.conf import settings
 from opaque_keys.edx.keys import CourseKey
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 
@@ -24,8 +26,11 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmitInternalError,
     UnsupportedFileTypeException
 )
-from openassessment.xblock.utils.notifications import send_staff_notification
+from django.contrib.auth import get_user_model
 
+from openassessment.data import map_anonymized_ids_to_usernames
+from openassessment.xblock.utils.notifications import send_staff_notification
+from openassessment.xblock.utils.ora_reminders import create_ora_reminder, ensure_sweep_chain_running
 from openassessment.xblock.utils.validation import validate_submission
 from openassessment.xblock.utils.data_conversion import (
     format_files_for_submission,
@@ -33,6 +38,127 @@ from openassessment.xblock.utils.data_conversion import (
 )
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+def _get_step_due_date(block, step_name):
+    """
+    Return the resolved due-datetime for a named assessment step, or None.
+
+    Uses is_closed() which handles all date resolution strategies
+    (manual, subsection, course-end).  Returned datetime is always UTC-aware.
+    """
+    try:
+        _, _, _, due = block.is_closed(step=step_name)
+        if due is not None and due.tzinfo is None:
+            due = due.replace(tzinfo=timezone.utc)
+        return due
+    except Exception:  # pylint: disable=broad-except
+        return None
+
+
+def _handle_post_submission_notifications(submission, student_item_dict, block_config_data, block_workflow_data):
+    """
+    Handle notifications and reminders after a submission is created.
+
+    Creates a scheduled ORAReminder entry when the learner's immediate next
+    workflow step is peer review or self review.  If the next step is something
+    else (e.g. student-training) no reminder is created — consistent with the
+    spec requirement "if the required next step is peer review or self review".
+
+    Args:
+        submission (dict): The submission object from submissions API
+        student_item_dict (dict): Student item dictionary
+        block_config_data: ORAConfigAPI instance
+        block_workflow_data: WorkflowAPI instance
+    """
+    # Fast path: skip if ORA has no peer/self steps at all.
+    assessment_steps = block_workflow_data.assessment_steps
+    if 'peer-assessment' not in assessment_steps and 'self-assessment' not in assessment_steps:
+        return
+
+    # Check the ACTUAL initial workflow step after submission.
+    # For ORAs that start with student-training the first step is 'training',
+    # not 'peer'/'self', so no reminder should be created yet.
+    from openassessment.workflow.models import AssessmentWorkflow  # avoid circular at module level
+    try:
+        initial_step = AssessmentWorkflow.objects.get(submission_uuid=submission["uuid"]).status
+    except AssessmentWorkflow.DoesNotExist:
+        logger.warning(
+            "No workflow found for submission %s, skipping reminder creation",
+            submission["uuid"],
+        )
+        return
+
+    if initial_step not in ('peer', 'self'):
+        return
+
+    # Get submission timestamp
+    submitted_at = submission.get("submitted_at") or submission.get("created_at")
+    if hasattr(submitted_at, "isoformat"):
+        submission_time = submitted_at.isoformat()
+    else:
+        submission_time = str(submitted_at) if submitted_at else ""
+
+    try:
+        User = get_user_model()
+        anonymized_id = student_item_dict.get("student_id")
+        username_mapping = map_anonymized_ids_to_usernames([anonymized_id])
+        username = username_mapping.get(anonymized_id)
+
+        if not username:
+            logger.warning(
+                "Could not find username for anonymized ID %s, skipping reminder creation",
+                anonymized_id,
+            )
+            return
+
+        user = User.objects.get(username=username)
+
+        # Construct the content URL to the ORA block
+        if block_config_data.course:
+            course_id_str = str(block_config_data.course.id)
+        else:
+            course_id_str = student_item_dict.get("course_id")
+
+        item_id = student_item_dict.get("item_id")
+        lms_root_url = getattr(settings, 'LMS_ROOT_URL', '')
+        content_url = f"{lms_root_url}/courses/{course_id_str}/jump_to/{item_id}"
+
+        block = block_config_data._block  # pylint: disable=protected-access
+        ora_name = block.display_name
+        course_end_date = block_config_data.course.end if block_config_data.course else None
+        ora_due_date = getattr(block, 'due', None)
+
+        if course_end_date is not None and course_end_date.tzinfo is None:
+            course_end_date = course_end_date.replace(tzinfo=timezone.utc)
+        if ora_due_date is not None and ora_due_date.tzinfo is None:
+            ora_due_date = ora_due_date.replace(tzinfo=timezone.utc)
+
+        # Cache step-level due dates so the sweeper never needs the modulestore.
+        peer_assessment_due = _get_step_due_date(block, 'peer-assessment')
+        self_assessment_due = _get_step_due_date(block, 'self-assessment')
+
+        # Create reminder DB entry
+        create_ora_reminder(
+            user_id=user.id,
+            course_key_str=course_id_str,
+            ora_usage_key_str=item_id,
+            ora_name=ora_name,
+            submission_uuid=submission["uuid"],
+            submission_time_iso=submission_time,
+            content_url=content_url,
+            course_end_date=course_end_date,
+            ora_due_date=ora_due_date,
+            peer_assessment_due=peer_assessment_due,
+            self_assessment_due=self_assessment_due,
+        )
+
+        # Ensure the sweeper chain is running
+        ensure_sweep_chain_running()
+
+    except Exception as exc:  # pylint: disable=broad-except
+        # Log but don't fail submission if reminder creation fails
+        logger.exception("Failed to create ORA reminder for submission %s: %s", submission["uuid"], exc)
 
 
 def submit(text_responses, block_config_data, block_submission_data, block_workflow_data):
@@ -178,6 +304,14 @@ def create_submission(
             block_config_data._block.display_name,  # pylint: disable=protected-access
             group_by_id
         )
+
+    # Handle post-submission notifications and reminders
+    _handle_post_submission_notifications(
+        submission,
+        student_item_dict,
+        block_config_data,
+        block_workflow_data
+    )
 
     # Emit analytics event...
     block_config_data.publish_event(
