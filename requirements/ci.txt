@@ -28,7 +28,7 @@ distlib==0.4.0
     # via
     #   -r requirements/tox.txt
     #   virtualenv
-filelock==3.25.2
+filelock==3.28.0
     # via
     #   -r requirements/tox.txt
     #   python-discovery
@@ -40,7 +40,7 @@ markdown-it-py==4.0.0
     # via rich
 mdurl==0.1.2
     # via markdown-it-py
-packaging==26.0
+packaging==26.1
     # via
     #   -r requirements/tox.txt
     #   pyproject-api
@@ -68,7 +68,7 @@ python-discovery==1.2.2
     #   virtualenv
 requests==2.33.1
     # via coveralls
-rich==14.3.3
+rich==15.0.0
     # via typer
 shellingham==1.5.4
     # via typer
@@ -76,13 +76,13 @@ tomli-w==1.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-tox==4.52.1
+tox==4.53.0
     # via -r requirements/tox.txt
 typer==0.24.1
     # via coveralls
 urllib3==2.6.3
     # via requests
-virtualenv==21.2.0
+virtualenv==21.2.4
     # via
     #   -r requirements/tox.txt
     #   tox
