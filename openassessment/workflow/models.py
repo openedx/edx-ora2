@@ -1130,6 +1130,11 @@ class ORAReminder(TimeStampedModel):
     next_reminder_at = models.DateTimeField(db_index=True, null=True, blank=True)
     is_active = models.BooleanField(default=True, db_index=True)
 
+    # Step tracking — used to detect when the workflow transitions to a new step
+    # (e.g. self → peer) so the reminder window can be reset per-step.
+    last_known_step = models.CharField(max_length=32, null=True, blank=True)
+    step_start_time = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         app_label = "workflow"
         indexes = [

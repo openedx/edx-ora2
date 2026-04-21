@@ -146,6 +146,7 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
             submission_uuid=submission["uuid"],
             submission_time_iso=submission_time,
             content_url=content_url,
+            initial_step=initial_step,
             course_end_date=course_end_date,
             ora_due_date=ora_due_date,
             peer_assessment_due=peer_assessment_due,

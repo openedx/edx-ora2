@@ -12,11 +12,13 @@ This module is responsible for:
 - Creating ORAReminder DB rows when submissions are created
 - Ensuring the sweeper chain is running
 - The sweeper logic that processes reminders
+- Detecting step transitions (self → peer) and resetting the reminder window
 
-Termination condition (per spec):
-  A reminder row is deactivated once:
-    now >= submission_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS
-  This is equivalent to "all X reminders have been sent" without tracking count.
+Termination condition (per step):
+  A reminder window for a step is exhausted once:
+    now >= step_start_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS
+  When the workflow transitions to a new peer/self step, step_start_time resets
+  and the row is reactivated so the new step gets its own full reminder window.
 """
 import logging
 import random
@@ -25,6 +27,8 @@ from datetime import datetime, timedelta, timezone
 from celery import shared_task
 from django.conf import settings
 from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from edx_django_utils.monitoring import set_code_owner_attribute
 from opaque_keys.edx.keys import CourseKey
 from openedx_events.learning.data import UserNotificationData
@@ -60,6 +64,7 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         submission_uuid,
         submission_time_iso,
         content_url,
+        initial_step=None,
         course_end_date=None,
         ora_due_date=None,
         peer_assessment_due=None,
@@ -82,6 +87,7 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         submission_uuid (str): The UUID of the submission
         submission_time_iso (str): The submission timestamp in ISO 8601 format
         content_url (str): The URL to the ORA block
+        initial_step (str, optional): The workflow step at submission time ('peer' or 'self')
         course_end_date (datetime, optional): Course end date
         ora_due_date (datetime, optional): ORA block-level due date
         peer_assessment_due (datetime, optional): Peer assessment step due date
@@ -113,11 +119,13 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
                 'self_assessment_due': self_assessment_due,
                 'next_reminder_at': next_reminder_at,
                 'is_active': True,
+                'last_known_step': initial_step,
+                'step_start_time': submission_time,
             },
         )
         logger.info(
-            'ora_reminders: Created reminder row for user %s, ORA %s (next_at=%s).',
-            user_id, ora_usage_key_str, next_reminder_at,
+            'ora_reminders: Created reminder row for user %s, ORA %s (next_at=%s, step=%s).',
+            user_id, ora_usage_key_str, next_reminder_at, initial_step,
         )
     except Exception:  # pylint: disable=broad-except
         logger.exception(
@@ -174,6 +182,58 @@ def ensure_sweep_chain_running():
         logger.info('ora_reminders: Started sweeper chain (jitter=%ss).', jitter)
     else:
         logger.debug('ora_reminders: Sweeper chain already running; skipping start.')
+
+
+def reset_ora_reminder_for_step(submission_uuid, new_step):
+    """
+    Reactivate and reset an ORAReminder row when the workflow transitions
+    to a new peer/self step (e.g. self → peer after the user completes self review).
+
+    Called by the AssessmentWorkflow post_save signal whenever the workflow
+    status changes to a value in PENDING_REMINDER_STEPS.  This ensures the row
+    gets a fresh reminder window anchored to the step-entry time, even if the
+    previous step's window was already exhausted and the row was deactivated.
+
+    Args:
+        submission_uuid (str): The submission UUID to look up.
+        new_step (str): The new workflow step ('peer' or 'self').
+    """
+    if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
+        return
+    try:
+        reminder = ORAReminder.objects.get(submission_uuid=submission_uuid)
+        if reminder.last_known_step == new_step:
+            return  # Already tracking this step — no-op
+
+        now_utc = datetime.now(timezone.utc)
+        initial_delay = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
+        ORAReminder.objects.filter(submission_uuid=submission_uuid).update(
+            is_active=True,
+            last_known_step=new_step,
+            step_start_time=now_utc,
+            next_reminder_at=now_utc + timedelta(hours=initial_delay),
+        )
+        ensure_sweep_chain_running()
+        logger.info(
+            'ora_reminders: Step transition to "%s" for submission %s — reminder window reset.',
+            new_step, submission_uuid,
+        )
+    except ORAReminder.DoesNotExist:
+        pass  # Row was never created (e.g. ORA started with a training step) — nothing to reset
+
+
+@receiver(post_save, sender=AssessmentWorkflow)
+def on_workflow_status_change(sender, instance, **kwargs):  # pylint: disable=unused-argument
+    """
+    Detect workflow step transitions and reset the ORA reminder window.
+
+    Fires on every AssessmentWorkflow save.  The status guard and the
+    last_known_step comparison inside reset_ora_reminder_for_step make this
+    a no-op for saves that don't represent a transition to a new peer/self step.
+    """
+    if instance.status not in PENDING_REMINDER_STEPS:
+        return
+    reset_ora_reminder_for_step(instance.submission_uuid, instance.status)
 
 
 @shared_task(ignore_result=True)
@@ -257,34 +317,42 @@ def _process_single_reminder(reminder, now):
     """
     Process one ``ORAReminder`` row.
 
-    Guard order (spec §3):
-    1. Time window elapsed  — now >= submission_time + Z + X*Y  → deactivate
-    2. Step-level deadline   — current step due date has passed  → deactivate
-    3. Course end date       — course has ended                  → deactivate
-    4. Workflow step         — no longer peer or self            → deactivate
+    Guard order:
+    1. Time window elapsed  — now >= step_start_time + Z + X*Y  → deactivate
+    2. Workflow step         — no longer peer or self            → deactivate
+    3. Step-level deadline   — current step due date has passed  → deactivate
+    4. Course end date       — course has ended                  → deactivate
     5. Peer availability     — no peer submissions yet (peer only) → defer
     6. Send notification & advance schedule.
+
+    The window in Guard 1 is anchored to ``step_start_time`` (falls back to
+    ``submission_time`` for rows predating the step-tracking migration).  When the
+    workflow transitions to a new step, ``on_workflow_status_change`` resets
+    ``step_start_time`` and reactivates the row, so each step gets its own window.
     """
     max_count = getattr(settings, 'ORA_REMINDER_MAX_COUNT', 3)
     interval_hours = getattr(settings, 'ORA_REMINDER_INTERVAL_HOURS', 48)
     initial_delay_hours = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
     check_again_hours = getattr(settings, 'ORA_REMINDER_CHECK_AGAIN_HOURS', 12)
 
-    # ---- Guard 1: time-based window (spec: "hours elapsed > X*Y+Z") ----
-    reminder_window_end = reminder.submission_time + timedelta(
+    # ---- Guard 1: per-step time window ----
+    # Use step_start_time if available (set on step transitions); fall back to
+    # submission_time for rows created before this field existed.
+    window_base = reminder.step_start_time or reminder.submission_time
+    reminder_window_end = window_base + timedelta(
         hours=initial_delay_hours + max_count * interval_hours
     )
     if now >= reminder_window_end:
         _deactivate(reminder, f'Reminder window elapsed (cutoff={reminder_window_end})')
         return
 
-    # ---- Guard 2 & 3: deadline checks ----
-    # Get current step first so we can use the step-specific due date.
+    # ---- Guard 2: workflow step ----
     current_step = _get_workflow_step(reminder.submission_uuid)
     if current_step not in PENDING_REMINDER_STEPS:
         _deactivate(reminder, f'Workflow step is "{current_step}" (not peer/self)')
         return
 
+    # ---- Guard 3 & 4: deadline checks ----
     step_due = (
         reminder.peer_assessment_due if current_step == 'peer'
         else reminder.self_assessment_due
@@ -299,7 +367,7 @@ def _process_single_reminder(reminder, now):
         _deactivate(reminder, 'Course end date passed')
         return
 
-    # ---- Guard 4: peer availability ----
+    # ---- Guard 5: peer availability ----
     if current_step == 'peer':
         has_available = _check_peer_submissions_available(reminder.submission_uuid)
         if not has_available:
@@ -325,20 +393,23 @@ def _process_single_reminder(reminder, now):
     # ---- Advance schedule ----
     next_at = now + timedelta(hours=interval_hours)
     if next_at >= reminder_window_end:
-        # Final reminder sent — no more will be due within the window.
+        # Final reminder sent for this step — deactivate.
+        # If the user later moves to another peer/self step, the post_save
+        # signal on AssessmentWorkflow will reactivate the row.
         reminder.is_active = False
         reminder.next_reminder_at = None
         logger.info(
-            'ora_reminders: Final reminder sent for user %s, ORA %s (window closed at %s).',
-            reminder.user_id, reminder.ora_usage_key, reminder_window_end,
+            'ora_reminders: Final reminder sent for user %s, ORA %s step=%s (window closed at %s).',
+            reminder.user_id, reminder.ora_usage_key, current_step, reminder_window_end,
         )
     else:
         reminder.next_reminder_at = next_at
         logger.info(
-            'ora_reminders: Reminder sent for user %s, ORA %s. Next at %s.',
-            reminder.user_id, reminder.ora_usage_key, next_at,
+            'ora_reminders: Reminder sent for user %s, ORA %s step=%s. Next at %s.',
+            reminder.user_id, reminder.ora_usage_key, current_step, next_at,
         )
-    reminder.save(update_fields=['next_reminder_at', 'is_active', 'modified'])
+    reminder.last_known_step = current_step
+    reminder.save(update_fields=['next_reminder_at', 'is_active', 'last_known_step', 'modified'])
 
 
 def _deactivate(reminder, reason):
