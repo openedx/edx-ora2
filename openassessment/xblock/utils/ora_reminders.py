@@ -69,6 +69,7 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         ora_due_date=None,
         peer_assessment_due=None,
         self_assessment_due=None,
+        peer_must_be_graded_by=1,
 ):
     """
     Persist an ``ORAReminder`` row so the sweeper can pick it up later.
@@ -92,6 +93,9 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         ora_due_date (datetime, optional): ORA block-level due date
         peer_assessment_due (datetime, optional): Peer assessment step due date
         self_assessment_due (datetime, optional): Self assessment step due date
+        peer_must_be_graded_by (int): The ORA's configured must_be_graded_by value for the
+            peer step. Used by the sweeper's availability check so it matches the same
+            capacity threshold as the ORA UI. Defaults to 1 (safe minimum).
     """
     if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
         logger.debug('ora_reminders: ENABLE_ORA_REMINDERS is disabled, skipping reminder creation')
@@ -121,6 +125,7 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
                 'is_active': True,
                 'last_known_step': initial_step,
                 'step_start_time': submission_time,
+                'peer_must_be_graded_by': peer_must_be_graded_by,
             },
         )
         logger.info(
@@ -369,7 +374,9 @@ def _process_single_reminder(reminder, now):
 
     # ---- Guard 5: peer availability ----
     if current_step == 'peer':
-        has_available = _check_peer_submissions_available(reminder.submission_uuid)
+        has_available = _check_peer_submissions_available(
+            reminder.submission_uuid, reminder.peer_must_be_graded_by
+        )
         if not has_available:
             reminder.next_reminder_at = now + timedelta(hours=check_again_hours)
             reminder.save(update_fields=['next_reminder_at', 'modified'])
@@ -467,7 +474,7 @@ def _send_reminder_notification(user_id, course_key_str, ora_name, pending_step,
     )
 
 
-def _check_peer_submissions_available(submission_uuid):
+def _check_peer_submissions_available(submission_uuid, graded_by):
     """
     Check if there are peer submissions available for the user to review.
 
@@ -476,6 +483,10 @@ def _check_peer_submissions_available(submission_uuid):
 
     Args:
         submission_uuid (str): The UUID of the user's submission
+        graded_by (int): The ORA's must_be_graded_by value — determines how many
+            concurrent reviewers a submission can have before it is excluded from
+            the regular review queue.  Must match the value used by the ORA UI so
+            the availability check agrees with what the learner would actually see.
 
     Returns:
         bool: True if peer submissions are available, False if waiting for peers
@@ -483,7 +494,7 @@ def _check_peer_submissions_available(submission_uuid):
     try:
         peer_submission = peer_api.get_submission_to_assess(
             submission_uuid,
-            graded_by=1,
+            graded_by=graded_by,
             peek=True,
         )
         return peer_submission is not None

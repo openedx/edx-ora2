@@ -137,6 +137,11 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
         peer_assessment_due = _get_step_due_date(block, 'peer-assessment')
         self_assessment_due = _get_step_due_date(block, 'self-assessment')
 
+        # Cache the peer capacity threshold so the sweeper's availability check
+        # uses the same value as the ORA UI.
+        peer_config = block_config_data.get_assessment_module("peer-assessment")
+        peer_must_be_graded_by = peer_config.get("must_be_graded_by", 1) if peer_config else 1
+
         # Create reminder DB entry
         create_ora_reminder(
             user_id=user.id,
@@ -151,6 +156,7 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
             ora_due_date=ora_due_date,
             peer_assessment_due=peer_assessment_due,
             self_assessment_due=self_assessment_due,
+            peer_must_be_graded_by=peer_must_be_graded_by,
         )
 
         # Ensure the sweeper chain is running

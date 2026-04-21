@@ -194,7 +194,7 @@ ORA_REMINDER_INTERVAL_HOURS = 48
 
 # Hours after submission before the first reminder is sent.
 # Allows learners time to complete reviews before being nudged.
-ORA_REMINDER_INITIAL_DELAY_HOURS = 24
+ORA_REMINDER_INITIAL_DELAY_HOURS = 0
 
 # How often (in seconds) the sweeper Celery task re-schedules itself.
 # Each run picks up all ORAReminder rows whose next_reminder_at has passed.

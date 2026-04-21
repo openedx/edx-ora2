@@ -99,7 +99,7 @@ class TestCreateOraReminder(CacheResetTest):
         reminder = ORAReminder.objects.get(submission_uuid=SUBMISSION_UUID)
         self.assertEqual(reminder.user_id, self.user.id)
         self.assertEqual(reminder.course_id, COURSE_KEY_STR)
-        self.assertEqual(reminder.ora_usage_key, ORA_USAGE_KEY_STR)
+        self.assertEqual(str(reminder.ora_usage_key), ORA_USAGE_KEY_STR)
         self.assertEqual(reminder.ora_name, ORA_NAME)
         self.assertTrue(reminder.is_active)
         # With INITIAL_DELAY=0, next_reminder_at == submission_time
@@ -186,6 +186,33 @@ class TestCreateOraReminder(CacheResetTest):
             content_url=CONTENT_URL,
         )
         self.assertFalse(ORAReminder.objects.filter(submission_uuid=SUBMISSION_UUID).exists())
+
+    def test_stores_peer_must_be_graded_by(self):
+        """peer_must_be_graded_by passed by caller should be persisted on the row."""
+        from openassessment.xblock.utils.ora_reminders import create_ora_reminder
+
+        create_ora_reminder(
+            user_id=self.user.id, course_key_str=COURSE_KEY_STR,
+            ora_usage_key_str=ORA_USAGE_KEY_STR, ora_name=ORA_NAME,
+            submission_uuid=SUBMISSION_UUID, submission_time_iso=SUBMISSION_TIME_ISO,
+            content_url=CONTENT_URL,
+            peer_must_be_graded_by=3,
+        )
+        reminder = ORAReminder.objects.get(submission_uuid=SUBMISSION_UUID)
+        self.assertEqual(reminder.peer_must_be_graded_by, 3)
+
+    def test_peer_must_be_graded_by_defaults_to_one(self):
+        """When not supplied, peer_must_be_graded_by should default to 1."""
+        from openassessment.xblock.utils.ora_reminders import create_ora_reminder
+
+        create_ora_reminder(
+            user_id=self.user.id, course_key_str=COURSE_KEY_STR,
+            ora_usage_key_str=ORA_USAGE_KEY_STR, ora_name=ORA_NAME,
+            submission_uuid=SUBMISSION_UUID, submission_time_iso=SUBMISSION_TIME_ISO,
+            content_url=CONTENT_URL,
+        )
+        reminder = ORAReminder.objects.get(submission_uuid=SUBMISSION_UUID)
+        self.assertEqual(reminder.peer_must_be_graded_by, 1)
 
     def test_db_error_does_not_propagate(self):
         """create_ora_reminder should swallow DB errors (logged, not raised)."""
@@ -345,18 +372,26 @@ class TestCheckPeerSubmissionsAvailable(unittest.TestCase):
     def test_returns_true_when_submission_available(self, mock_get):
         from openassessment.xblock.utils.ora_reminders import _check_peer_submissions_available
         mock_get.return_value = {'submission': 'data'}
-        self.assertTrue(_check_peer_submissions_available('sub-uuid'))
+        self.assertTrue(_check_peer_submissions_available('sub-uuid', graded_by=3))
 
     @patch('openassessment.assessment.api.peer.get_submission_to_assess')
     def test_returns_false_when_no_submission(self, mock_get):
         from openassessment.xblock.utils.ora_reminders import _check_peer_submissions_available
         mock_get.return_value = None
-        self.assertFalse(_check_peer_submissions_available('sub-uuid'))
+        self.assertFalse(_check_peer_submissions_available('sub-uuid', graded_by=3))
 
     @patch('openassessment.assessment.api.peer.get_submission_to_assess', side_effect=Exception('err'))
     def test_returns_true_on_error(self, _mock):
         from openassessment.xblock.utils.ora_reminders import _check_peer_submissions_available
-        self.assertTrue(_check_peer_submissions_available('sub-uuid'))
+        self.assertTrue(_check_peer_submissions_available('sub-uuid', graded_by=3))
+
+    @patch('openassessment.assessment.api.peer.get_submission_to_assess')
+    def test_passes_graded_by_to_api(self, mock_get):
+        """graded_by must be forwarded so the check matches the ORA UI's capacity threshold."""
+        from openassessment.xblock.utils.ora_reminders import _check_peer_submissions_available
+        mock_get.return_value = {'submission': 'data'}
+        _check_peer_submissions_available('sub-uuid', graded_by=3)
+        mock_get.assert_called_once_with('sub-uuid', graded_by=3, peek=True)
 
 
 # ---------------------------------------------------------------------------

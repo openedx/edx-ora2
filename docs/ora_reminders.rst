@@ -35,7 +35,7 @@ want non-default behaviour.
      - Default
      - Description
    * - ``ORA_REMINDER_INITIAL_DELAY_HOURS``
-     - ``24``
+     - ``0``
      - Hours after submission before the **first** reminder is sent. Gives
        learners time to complete reviews on their own before being nudged.
    * - ``ORA_REMINDER_INTERVAL_HOURS``
@@ -52,7 +52,9 @@ want non-default behaviour.
    * - ``ORA_REMINDER_SWEEP_BATCH_SIZE``
      - ``1000``
      - Maximum rows processed per sweep cycle. If more rows are due they
-       will be picked up on the next sweep.
+       will be picked up on the next sweep. Rows are ordered oldest-first so
+       no reminder is permanently skipped. Increase this value for deployments
+       with a large number of concurrent active learners.
    * - ``ORA_REMINDER_CHECK_AGAIN_HOURS``
      - ``12``
      - Hours to wait before re-checking when a peer-step reminder is due

@@ -24,6 +24,11 @@ def on_worker_ready(sender, **kwargs):  # pylint: disable=unused-argument
     """
     from django.core.cache import cache
     from openassessment.xblock.utils.ora_reminders import ensure_sweep_chain_running, SWEEP_LOCK_KEY
+    # Delete the lock before attempting to acquire it.  On worker restart the
+    # previous chain's countdown tasks are lost, so the lock may still be set
+    # even though no chain is running.  Clearing it lets ensure_sweep_chain_running
+    # start a fresh chain via cache.add (which is atomic, so in a multi-worker
+    # restart only one worker wins the lock and starts a single chain).
     cache.delete(SWEEP_LOCK_KEY)
     ensure_sweep_chain_running()
 
