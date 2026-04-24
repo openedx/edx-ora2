@@ -15,10 +15,11 @@ This module is responsible for:
 - Detecting step transitions (self → peer) and resetting the reminder window
 
 Termination condition (per step):
-  A reminder window for a step is exhausted once:
-    now >= step_start_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS
-  When the workflow transitions to a new peer/self step, step_start_time resets
-  and the row is reactivated so the new step gets its own full reminder window.
+  A reminder window for a step is exhausted once ``reminder_sent_count`` reaches
+  ``ORA_REMINDER_MAX_COUNT``.  Only actual notification sends increment the counter;
+  peer-unavailable deferrals do not.  When the workflow transitions to a new
+  peer/self step, ``reminder_sent_count`` is reset to zero so the new step gets
+  its own full reminder budget.
 """
 import logging
 import random
@@ -101,7 +102,7 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
         logger.debug('ora_reminders: ENABLE_ORA_REMINDERS is disabled, skipping reminder creation')
         return
 
-    initial_delay_hours = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
+    initial_delay_hours = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 0)
     submission_time = datetime.fromisoformat(submission_time_iso)
     if submission_time.tzinfo is None:
         submission_time = submission_time.replace(tzinfo=timezone.utc)
@@ -211,12 +212,13 @@ def reset_ora_reminder_for_step(submission_uuid, new_step):
             return  # Already tracking this step — no-op
 
         now_utc = datetime.now(timezone.utc)
-        initial_delay = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
+        initial_delay = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 0)
         ORAReminder.objects.filter(submission_uuid=submission_uuid).update(
             is_active=True,
             last_known_step=new_step,
             step_start_time=now_utc,
             next_reminder_at=now_utc + timedelta(hours=initial_delay),
+            reminder_sent_count=0,
         )
         ensure_sweep_chain_running()
         logger.info(
@@ -323,32 +325,20 @@ def _process_single_reminder(reminder, now):
     Process one ``ORAReminder`` row.
 
     Guard order:
-    1. Time window elapsed  — now >= step_start_time + Z + X*Y  → deactivate
+    1. Max count reached    — reminder_sent_count >= X            → deactivate
     2. Workflow step         — no longer peer or self            → deactivate
     3. Step-level deadline   — current step due date has passed  → deactivate
     4. Course end date       — course has ended                  → deactivate
     5. Peer availability     — no peer submissions yet (peer only) → defer
     6. Send notification & advance schedule.
-
-    The window in Guard 1 is anchored to ``step_start_time`` (falls back to
-    ``submission_time`` for rows predating the step-tracking migration).  When the
-    workflow transitions to a new step, ``on_workflow_status_change`` resets
-    ``step_start_time`` and reactivates the row, so each step gets its own window.
     """
     max_count = getattr(settings, 'ORA_REMINDER_MAX_COUNT', 3)
     interval_hours = getattr(settings, 'ORA_REMINDER_INTERVAL_HOURS', 48)
-    initial_delay_hours = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 24)
     check_again_hours = getattr(settings, 'ORA_REMINDER_CHECK_AGAIN_HOURS', 12)
 
-    # ---- Guard 1: per-step time window ----
-    # Use step_start_time if available (set on step transitions); fall back to
-    # submission_time for rows created before this field existed.
-    window_base = reminder.step_start_time or reminder.submission_time
-    reminder_window_end = window_base + timedelta(
-        hours=initial_delay_hours + max_count * interval_hours
-    )
-    if now >= reminder_window_end:
-        _deactivate(reminder, f'Reminder window elapsed (cutoff={reminder_window_end})')
+    # ---- Guard 1: max notification count ----
+    if reminder.reminder_sent_count >= max_count:
+        _deactivate(reminder, f'Max reminder count reached ({reminder.reminder_sent_count}/{max_count})')
         return
 
     # ---- Guard 2: workflow step ----
@@ -398,25 +388,26 @@ def _process_single_reminder(reminder, now):
     )
 
     # ---- Advance schedule ----
-    next_at = now + timedelta(hours=interval_hours)
-    if next_at >= reminder_window_end:
-        # Final reminder sent for this step — deactivate.
-        # If the user later moves to another peer/self step, the post_save
-        # signal on AssessmentWorkflow will reactivate the row.
+    reminder.reminder_sent_count += 1
+    if reminder.reminder_sent_count >= max_count:
         reminder.is_active = False
         reminder.next_reminder_at = None
         logger.info(
-            'ora_reminders: Final reminder sent for user %s, ORA %s step=%s (window closed at %s).',
-            reminder.user_id, reminder.ora_usage_key, current_step, reminder_window_end,
+            'ora_reminders: Final reminder sent for user %s, ORA %s step=%s (%d/%d).',
+            reminder.user_id, reminder.ora_usage_key, current_step,
+            reminder.reminder_sent_count, max_count,
         )
     else:
-        reminder.next_reminder_at = next_at
+        reminder.next_reminder_at = now + timedelta(hours=interval_hours)
         logger.info(
-            'ora_reminders: Reminder sent for user %s, ORA %s step=%s. Next at %s.',
-            reminder.user_id, reminder.ora_usage_key, current_step, next_at,
+            'ora_reminders: Reminder sent for user %s, ORA %s step=%s. Next at %s (%d/%d).',
+            reminder.user_id, reminder.ora_usage_key, current_step, reminder.next_reminder_at,
+            reminder.reminder_sent_count, max_count,
         )
     reminder.last_known_step = current_step
-    reminder.save(update_fields=['next_reminder_at', 'is_active', 'last_known_step', 'modified'])
+    reminder.save(update_fields=[
+        'next_reminder_at', 'is_active', 'last_known_step', 'reminder_sent_count', 'modified',
+    ])
 
 
 def _deactivate(reminder, reason):
@@ -433,14 +424,32 @@ def _deactivate(reminder, reason):
 
 def _get_workflow_step(submission_uuid):
     """
-    Return the current workflow step for the given submission, or None.
+    Return the step the learner still needs to act on, or None.
+
+    ``AssessmentWorkflow.status`` is not used directly because peer's
+    ``can_be_skipped()`` returns True whenever real requirements exist, causing
+    the status to jump to 'self' the first time the ORA page is loaded — even
+    though the learner hasn't graded a single peer yet.  Checking
+    ``AssessmentWorkflowStep.submitter_completed_at`` gives the actual
+    completion state regardless of the status-cache skip mechanism.
     """
     try:
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
     except AssessmentWorkflow.DoesNotExist:
         return None
 
-    return workflow.status
+    # Find the first peer/self step (by configured order) the learner hasn't
+    # finished yet.  submitter_completed_at is set only when the learner has
+    # satisfied their obligations (graded enough peers, submitted self-review);
+    # it stays None even when the step is "skipped" in the status calculation.
+    first_pending = (
+        workflow.steps
+        .filter(name__in=PENDING_REMINDER_STEPS, submitter_completed_at__isnull=True)
+        .order_by('order_num')
+        .values_list('name', flat=True)
+        .first()
+    )
+    return first_pending if first_pending is not None else workflow.status
 
 
 def _send_reminder_notification(user_id, course_key_str, ora_name, pending_step, content_url):

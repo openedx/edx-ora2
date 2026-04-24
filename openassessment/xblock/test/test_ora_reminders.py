@@ -323,16 +323,41 @@ class TestEnsureSweepChainRunning(CacheResetTest):
 class TestGetWorkflowStep(CacheResetTest):
     """Tests for _get_workflow_step helper."""
 
+    def _mock_workflow(self, status, first_pending_step):
+        """Return a mock AssessmentWorkflow whose steps queryset resolves to first_pending_step."""
+        mock_wf = MagicMock(status=status)
+        mock_qs = MagicMock()
+        mock_qs.filter.return_value = mock_qs
+        mock_qs.order_by.return_value = mock_qs
+        mock_qs.values_list.return_value = mock_qs
+        mock_qs.first.return_value = first_pending_step
+        mock_wf.steps = mock_qs
+        return mock_wf
+
     def test_returns_none_for_missing_workflow(self):
         from openassessment.xblock.utils.ora_reminders import _get_workflow_step
         self.assertIsNone(_get_workflow_step('nonexistent-uuid'))
 
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
-    def test_returns_status(self, mock_objects):
+    def test_returns_peer_when_peer_step_incomplete(self, mock_objects):
+        """Peer step with submitter_completed_at=None → 'peer', even if status='self'."""
         from openassessment.xblock.utils.ora_reminders import _get_workflow_step
-        mock_wf = MagicMock(status='peer')
-        mock_objects.get.return_value = mock_wf
+        mock_objects.get.return_value = self._mock_workflow(status='self', first_pending_step='peer')
         self.assertEqual(_get_workflow_step('some-uuid'), 'peer')
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_returns_self_when_peer_done_self_pending(self, mock_objects):
+        """Peer step done, self step pending → 'self'."""
+        from openassessment.xblock.utils.ora_reminders import _get_workflow_step
+        mock_objects.get.return_value = self._mock_workflow(status='self', first_pending_step='self')
+        self.assertEqual(_get_workflow_step('some-uuid'), 'self')
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_falls_back_to_status_when_all_steps_done(self, mock_objects):
+        """Both peer and self done → falls back to workflow.status ('waiting')."""
+        from openassessment.xblock.utils.ora_reminders import _get_workflow_step
+        mock_objects.get.return_value = self._mock_workflow(status='waiting', first_pending_step=None)
+        self.assertEqual(_get_workflow_step('some-uuid'), 'waiting')
 
 
 # ---------------------------------------------------------------------------
@@ -470,18 +495,16 @@ class TestProcessSingleReminder(CacheResetTest):
             mock_avail.assert_not_called()
         mock_send.assert_called_once()
 
-    # --- Time-based termination (spec §3) ---
+    # --- Count-based termination (spec §3) ---
 
     @patch('openassessment.xblock.utils.ora_reminders._send_reminder_notification')
     @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
-    def test_deactivates_when_window_elapsed(self, _step, mock_send):
-        """No notification when now >= submission_time + Z + X*Y."""
+    def test_deactivates_before_send_when_max_count_already_reached(self, _step, mock_send):
+        """Guard 1: deactivate without sending when reminder_sent_count >= max_count."""
         from openassessment.xblock.utils.ora_reminders import _process_single_reminder
 
-        # now = exactly at the window boundary
-        at_cutoff = SUBMISSION_TIME + timedelta(hours=WINDOW)
-        reminder = _make_reminder(self.user, next_reminder_at=at_cutoff)
-        _process_single_reminder(reminder, at_cutoff)
+        reminder = _make_reminder(self.user, reminder_sent_count=MAX_COUNT)
+        _process_single_reminder(reminder, NOW)
 
         reminder.refresh_from_db()
         self.assertFalse(reminder.is_active)
@@ -491,14 +514,11 @@ class TestProcessSingleReminder(CacheResetTest):
     @patch('openassessment.xblock.utils.ora_reminders._check_peer_submissions_available', return_value=True)
     @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
     def test_final_reminder_deactivates_after_send(self, _step, _avail, mock_send):
-        """When next_at after sending would exceed the window, row is deactivated."""
+        """Sending the MAX_COUNT-th notification deactivates the row immediately."""
         from openassessment.xblock.utils.ora_reminders import _process_single_reminder
 
-        # NOW is one interval before the window end, so next_at = NOW + INTERVAL = window end
-        # which triggers deactivation.
-        at_last = SUBMISSION_TIME + timedelta(hours=WINDOW - INTERVAL)
-        reminder = _make_reminder(self.user, next_reminder_at=at_last)
-        _process_single_reminder(reminder, at_last)
+        reminder = _make_reminder(self.user, reminder_sent_count=MAX_COUNT - 1)
+        _process_single_reminder(reminder, NOW)
 
         reminder.refresh_from_db()
         self.assertFalse(reminder.is_active)
@@ -699,6 +719,69 @@ class TestProcessSingleReminder(CacheResetTest):
         self.assertEqual(reminder.next_reminder_at, NOW + timedelta(hours=12))
         mock_send.assert_not_called()
 
+    @patch('openassessment.xblock.utils.ora_reminders._send_reminder_notification')
+    @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
+    def test_user_gets_full_notifications_after_delayed_peer_availability(self, _step, mock_send):
+        """
+        Regression test for the peer-availability window exhaustion bug.
+
+        Scenario: user submits, no peers are available for a long time, peers finally
+        arrive. The user must still receive MAX_COUNT notifications starting from when
+        peers became available — not zero because the time window was consumed by
+        deferral cycles.
+        """
+        from openassessment.xblock.utils.ora_reminders import _process_single_reminder
+
+        reminder = _make_reminder(self.user)
+
+        # Simulate many deferral cycles (no peers available).
+        # Each deferral advances next_reminder_at but must NOT touch reminder_sent_count.
+        now = NOW
+        for _ in range(10):
+            with patch(
+                'openassessment.xblock.utils.ora_reminders._check_peer_submissions_available',
+                return_value=False,
+            ):
+                _process_single_reminder(reminder, now)
+            reminder.refresh_from_db()
+            now = reminder.next_reminder_at  # jump to next scheduled check
+
+        # Peers are now available. All MAX_COUNT notifications should still fire.
+        send_count = 0
+        for _ in range(MAX_COUNT + 1):
+            reminder.refresh_from_db()
+            if not reminder.is_active:
+                break
+            with patch(
+                'openassessment.xblock.utils.ora_reminders._check_peer_submissions_available',
+                return_value=True,
+            ):
+                _process_single_reminder(reminder, now)
+            send_count += 1
+            now = now + timedelta(hours=INTERVAL)
+
+        self.assertEqual(mock_send.call_count, MAX_COUNT)
+        reminder.refresh_from_db()
+        self.assertFalse(reminder.is_active)
+
+    @patch('openassessment.xblock.utils.ora_reminders._send_reminder_notification')
+    @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
+    def test_peer_unavailable_deferral_does_not_consume_notification_budget(self, _step, mock_send):
+        """Peer-unavailable deferrals must NOT increment reminder_sent_count."""
+        from openassessment.xblock.utils.ora_reminders import _process_single_reminder
+
+        reminder = _make_reminder(self.user)
+        with patch(
+            'openassessment.xblock.utils.ora_reminders._check_peer_submissions_available',
+            return_value=False,
+        ):
+            _process_single_reminder(reminder, NOW)
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.reminder_sent_count, 0)
+        self.assertTrue(reminder.is_active)
+        mock_send.assert_not_called()
+
     @override_settings(ORA_REMINDER_INTERVAL_HOURS=24)
     @patch('openassessment.xblock.utils.ora_reminders._send_reminder_notification')
     @patch('openassessment.xblock.utils.ora_reminders._check_peer_submissions_available', return_value=True)
@@ -813,6 +896,11 @@ class TestORAReminderModel(CacheResetTest):
         reminder = _make_reminder(self.user, is_active=False)
         result = str(reminder)
         self.assertIn('active=False', result)
+
+    def test_reminder_sent_count_defaults_to_zero(self):
+        """New ORAReminder rows must start with reminder_sent_count=0."""
+        reminder = _make_reminder(self.user)
+        self.assertEqual(reminder.reminder_sent_count, 0)
 
 
 # ---------------------------------------------------------------------------
@@ -1249,3 +1337,52 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
         call_kwargs = mock_create.call_args[1]
         self.assertEqual(call_kwargs['course_end_date'], datetime(2026, 8, 1, tzinfo=timezone.utc))
         self.assertEqual(call_kwargs['ora_due_date'], datetime(2026, 6, 1, tzinfo=timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# reset_ora_reminder_for_step
+# ---------------------------------------------------------------------------
+@override_settings(
+    ENABLE_ORA_REMINDERS=True,
+    ORA_REMINDER_INITIAL_DELAY_HOURS=INITIAL_DELAY,
+)
+class TestResetOraReminderForStep(CacheResetTest):
+    """Tests for reset_ora_reminder_for_step."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='reset_step_user', password='pass')
+
+    @patch('openassessment.xblock.utils.ora_reminders.ensure_sweep_chain_running')
+    def test_step_transition_resets_reminder_sent_count(self, _chain):
+        """Moving to a new step must zero out reminder_sent_count."""
+        from openassessment.xblock.utils.ora_reminders import reset_ora_reminder_for_step
+
+        reminder = _make_reminder(
+            self.user,
+            last_known_step='peer',
+            reminder_sent_count=2,
+            is_active=False,
+        )
+        reset_ora_reminder_for_step(reminder.submission_uuid, 'self')
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.reminder_sent_count, 0)
+        self.assertEqual(reminder.last_known_step, 'self')
+        self.assertTrue(reminder.is_active)
+
+    @patch('openassessment.xblock.utils.ora_reminders.ensure_sweep_chain_running')
+    def test_same_step_does_not_reset_count(self, _chain):
+        """Transitioning to the same step is a no-op — count must not change."""
+        from openassessment.xblock.utils.ora_reminders import reset_ora_reminder_for_step
+
+        reminder = _make_reminder(
+            self.user,
+            last_known_step='peer',
+            reminder_sent_count=1,
+        )
+        reset_ora_reminder_for_step(reminder.submission_uuid, 'peer')
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.reminder_sent_count, 1)
+        _chain.assert_not_called()

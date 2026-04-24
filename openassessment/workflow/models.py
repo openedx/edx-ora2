@@ -1108,8 +1108,8 @@ class ORAReminder(TimeStampedModel):
     All deadline fields are cached at creation time so the sweeper never needs
     to hit the modulestore or CourseOverview.
 
-    Termination uses a time-based condition (spec §3): the sweeper stops sending
-    when ``now >= submission_time + INITIAL_DELAY_HOURS + MAX_COUNT * INTERVAL_HOURS``.
+    Termination uses a count-based condition: the sweeper stops sending when
+    ``reminder_sent_count`` reaches ``ORA_REMINDER_MAX_COUNT``.
 
     .. no_pii:
     """
@@ -1144,6 +1144,10 @@ class ORAReminder(TimeStampedModel):
     # get_submission_to_assess with the correct capacity threshold without
     # needing the modulestore or xblock context.
     peer_must_be_graded_by = models.SmallIntegerField(default=1)
+
+    # Counts how many notifications have actually been sent for the current step.
+    # Only incremented on a real send — peer-unavailable deferrals do not count.
+    reminder_sent_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         app_label = "workflow"
