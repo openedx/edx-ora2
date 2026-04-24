@@ -24,7 +24,6 @@ defusedxml
 django-model-utils
 jsonfield
 lazy
-loremipsum
 lxml
 openedx-events
 path.py

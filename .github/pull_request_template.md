@@ -24,5 +24,3 @@ Collectively, these should be completed by reviewers of this PR:
 
 - [ ] I've done a visual code review
 - [ ] I've tested the new functionality
-
-FYI: @openedx/content-aurora
