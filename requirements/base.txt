@@ -12,19 +12,19 @@ attrs==26.1.0
     # via openedx-events
 bleach==6.3.0
     # via -r requirements/base.in
-boto3==1.42.91
+boto3==1.43.2
     # via -r requirements/base.in
-botocore==1.42.91
+botocore==1.43.2
     # via
     #   boto3
     #   s3transfer
-certifi==2026.2.25
+certifi==2026.4.22
     # via requests
 cffi==2.0.0
     # via pynacl
 charset-normalizer==3.4.7
     # via requests
-click==8.3.2
+click==8.3.3
     # via
     #   code-annotations
     #   edx-django-utils
@@ -90,13 +90,13 @@ edx-submissions==4.0.0
     # via -r requirements/base.in
 edx-toggles==6.0.0
     # via -r requirements/base.in
-fastavro==1.12.1
+fastavro==1.12.2
     # via openedx-events
 fs==2.4.16
     # via xblock
 html5lib==1.1
     # via -r requirements/base.in
-idna==3.11
+idna==3.13
     # via requests
 jinja2==3.1.6
     # via code-annotations
@@ -118,16 +118,16 @@ lxml[html-clean]==6.1.0
     #   xblock
 lxml-html-clean==0.4.4
     # via lxml
-mako==1.3.11
+mako==1.3.12
     # via xblock
 markupsafe==3.0.3
     # via
     #   jinja2
     #   mako
     #   xblock
-openedx-events==11.1.1
+openedx-events==11.2.0
     # via -r requirements/base.in
-openedx-filters==3.1.0
+openedx-filters==3.3.0
     # via -r requirements/base.in
 path==16.16.0
     # via
@@ -141,7 +141,7 @@ psutil==7.2.2
     # via edx-django-utils
 pycparser==3.0
     # via cffi
-pymongo==4.16.0
+pymongo==4.17.0
     # via edx-opaque-keys
 pynacl==1.6.2
     # via edx-django-utils
@@ -154,7 +154,7 @@ python-slugify==8.0.4
     # via code-annotations
 python-swiftclient==4.10.0
     # via -r requirements/base.in
-pytz==2026.1.post1
+pytz==2026.2
     # via
     #   -r requirements/base.in
     #   edx-submissions
@@ -167,9 +167,9 @@ pyyaml==6.0.3
     #   xblock
 requests==2.33.1
     # via python-swiftclient
-s3transfer==0.16.0
+s3transfer==0.17.0
     # via boto3
-simplejson==3.20.2
+simplejson==4.1.1
     # via xblock
 six==1.17.0
     # via
@@ -203,7 +203,7 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.9
     # via xblock
-xblock==6.0.0
+xblock==6.1.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
