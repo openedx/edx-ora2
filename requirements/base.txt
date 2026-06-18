@@ -10,15 +10,15 @@ asgiref==3.11.1
     # via django
 attrs==26.1.0
     # via openedx-events
-bleach==6.3.0
+bleach==6.4.0
     # via -r requirements/base.in
-boto3==1.43.22
+boto3==1.43.32
     # via -r requirements/base.in
-botocore==1.43.22
+botocore==1.43.32
     # via
     #   boto3
     #   s3transfer
-certifi==2026.5.20
+certifi==2026.6.17
     # via requests
 cffi==2.0.0
     # via pynacl
@@ -86,6 +86,7 @@ edx-opaque-keys[django]==4.0.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
+    #   xblock
 edx-submissions==4.0.0
     # via -r requirements/base.in
 edx-toggles==6.0.0
@@ -127,7 +128,7 @@ markupsafe==3.0.3
     #   xblock
 openedx-events==11.2.0
     # via -r requirements/base.in
-openedx-filters==3.4.1
+openedx-filters==3.5.0
     # via -r requirements/base.in
 path==16.16.0
     # via
@@ -167,7 +168,7 @@ pyyaml==6.0.3
     #   xblock
 requests==2.34.2
     # via python-swiftclient
-s3transfer==0.18.0
+s3transfer==0.19.0
     # via boto3
 simplejson==4.1.1
     # via xblock
@@ -195,15 +196,13 @@ urllib3==2.7.0
     #   requests
 voluptuous==0.16.0
     # via -r requirements/base.in
-web-fragments==4.0.0
-    # via xblock
 webencodings==0.5.1
     # via
     #   bleach
     #   html5lib
 webob==1.8.10
     # via xblock
-xblock==6.1.0
+xblock==6.3.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
