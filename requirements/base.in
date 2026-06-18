@@ -16,7 +16,7 @@ django
 django-simple-history
 
 # Third Party Requirements
-bleach>=6.0.0
+bleach>=6.4.0
 html5lib
 boto3
 python-swiftclient
