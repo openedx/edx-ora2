@@ -26,16 +26,14 @@ export class EditRubricView {
     this.notifier = notifier;
     this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
-    this.criteriaContainer = new Container(
-      RubricCriterion, {
-        containerElement: $('#openassessment_criterion_list', this.element).get(0),
-        templateElement: $('#openassessment_criterion_template', this.element).get(0),
-        addButtonElement: $('#openassessment_rubric_add_criterion', this.element).get(0),
-        removeButtonClass: 'openassessment_criterion_remove_button',
-        containerItemClass: 'openassessment_criterion',
-        notifier,
-      },
-    );
+    this.criteriaContainer = new Container(RubricCriterion, {
+      containerElement: $('#openassessment_criterion_list', this.element).get(0),
+      templateElement: $('#openassessment_criterion_template', this.element).get(0),
+      addButtonElement: $('#openassessment_rubric_add_criterion', this.element).get(0),
+      removeButtonClass: 'openassessment_criterion_remove_button',
+      containerItemClass: 'openassessment_criterion',
+      notifier,
+    });
     this.criteriaContainer.addEventListeners();
     this.setupRubricReuse();
   }

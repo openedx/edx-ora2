@@ -19,17 +19,15 @@ export class EditPromptsView {
 
     this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
 
-    this.promptsContainer = new Container(
-      Prompt, {
-        containerElement: $('#openassessment_prompts_list', this.element).get(0),
-        templateElement: $('#openassessment_prompt_template', this.element).get(0),
-        addButtonElement: $('#openassessment_prompts_add_prompt', this.element).get(0),
-        removeButtonClass: 'openassessment_prompt_remove_button',
-        containerItemClass: 'openassessment_prompt',
-        notifier,
-        addRemoveEnabled: this.addRemoveEnabled,
-      },
-    );
+    this.promptsContainer = new Container(Prompt, {
+      containerElement: $('#openassessment_prompts_list', this.element).get(0),
+      templateElement: $('#openassessment_prompt_template', this.element).get(0),
+      addButtonElement: $('#openassessment_prompts_add_prompt', this.element).get(0),
+      removeButtonClass: 'openassessment_prompt_remove_button',
+      containerItemClass: 'openassessment_prompt',
+      notifier,
+      addRemoveEnabled: this.addRemoveEnabled,
+    });
     this.promptsContainer.addEventListeners();
   }
 

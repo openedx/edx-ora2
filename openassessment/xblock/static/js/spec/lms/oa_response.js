@@ -186,36 +186,51 @@ describe("OpenAssessment.ResponseView", function() {
         var rootElement = $('.step--response').parent().get(0);
         var baseView = new BaseView(runtime, rootElement, server, data);
         view = new ResponseView(rootElement, server, fileUploader, baseView.responseEditorLoader, baseView, data);
-        view.loadResponseEditor().then(editorCtrl => {
-            view.responseEditorController = editorCtrl
-            view.installHandlers()
-
-            // Stub the confirmation step
-            // By default, we simulate the user confirming the submission.
-            // To instead simulate the user cancelling the submission,
-            // set `stubConfirm` to false.
-            setStubConfirm(true);
-            const fakeConfirm = function(_0, _1, confirmCallback, cancelCallback) {
-                if (stubConfirm) {
-                    confirmCallback();
-                } else {
-                    cancelCallback();
+        var mockEditorController = {
+            _response: ['', ''],
+            load: function(elements) {
+                this.elements = elements;
+                return Promise.resolve();
+            },
+            response: function(texts) {
+                if (typeof texts !== 'undefined') {
+                    this._response = texts;
+                    return this._response;
                 }
+                return this._response;
+            },
+            setOnChangeListener: function(callback) {
+                this._changeCallback = callback;
             }
-            spyOn(view.confirmationDialog, 'confirm').and.callFake(fakeConfirm);
-            spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
-                for (var i=0; i < this.filesDescriptions.length; i++) {
-                    this.fileNames.push(this.files[i].name);
-                }
-                return $.Deferred(function(defer) {
-                    view.removeFilesDescriptions();
-                    defer.resolve();
-                });
-            });
-            window.URL = mockURL;
+        };
+        view.responseEditorController = mockEditorController;
+        view.installHandlers();
 
-            done()
-        })
+        // Stub the confirmation step
+        // By default, we simulate the user confirming the submission.
+        // To instead simulate the user cancelling the submission,
+         // set `stubConfirm` to false.
+        setStubConfirm(true);
+        const fakeConfirm = function(_0, _1, confirmCallback, cancelCallback) {
+            if (stubConfirm) {
+                confirmCallback();
+            } else {
+                cancelCallback();
+            }
+        };
+        spyOn(view.confirmationDialog, 'confirm').and.callFake(fakeConfirm);
+        spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
+            for (var i=0; i < this.filesDescriptions.length; i++) {
+                this.fileNames.push(this.files[i].name);
+            }
+            return $.Deferred(function(defer) {
+                view.removeFilesDescriptions();
+                defer.resolve();
+            });
+        });
+        window.URL = mockURL;
+
+        done();
     });
 
     afterEach(function() {
@@ -236,19 +251,17 @@ describe("OpenAssessment.ResponseView", function() {
 
     describe('is valid for submission', function() {
         it('response require text', function() {
-            // response is blank
-            view.response(['', '']);
-            view.handleResponseChanged();
+            // Initial state - response is blank and should not be saved
             expect(view.submitEnabled()).toBe(true);
             expect(view.isValidForSubmit()).toBe(false);
             expect(view.saveStatus()).toContain('This response has not been saved');
 
-            // response is whitespace
+            // response is whitespace - should trigger saving draft but still be invalid
             view.response(['               \n      \n      ', ' ']);
             view.handleResponseChanged();
             expect(view.submitEnabled()).toBe(true);
             expect(view.isValidForSubmit()).toBe(false);
-            expect(view.saveStatus()).toContain('This response has not been saved');
+            expect(view.saveStatus()).toContain('Saving draft');
 
             // response is not blank
             view.response(['Test response 1', ' ']);
