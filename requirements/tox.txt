@@ -4,37 +4,37 @@
 #
 #    make upgrade
 #
-cachetools==7.0.5
+cachetools==7.1.4
     # via tox
 colorama==0.4.6
     # via tox
-distlib==0.4.0
+distlib==0.4.1
     # via virtualenv
-filelock==3.28.0
+filelock==3.29.1
     # via
     #   python-discovery
     #   tox
     #   virtualenv
-packaging==26.1
+packaging==26.2
     # via
     #   pyproject-api
     #   tox
-platformdirs==4.9.6
+platformdirs==4.10.0
     # via
     #   python-discovery
     #   tox
     #   virtualenv
 pluggy==1.6.0
     # via tox
-pyproject-api==1.10.0
+pyproject-api==1.10.1
     # via tox
-python-discovery==1.2.2
+python-discovery==1.4.0
     # via
     #   tox
     #   virtualenv
 tomli-w==1.2.0
     # via tox
-tox==4.53.0
+tox==4.55.1
     # via -r requirements/tox.in
-virtualenv==21.2.4
+virtualenv==21.4.2
     # via tox
