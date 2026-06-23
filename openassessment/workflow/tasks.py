@@ -1,10 +1,38 @@
 """
-Celery task wrappers to execute batch ORA workflow update
+Celery task wrappers to execute batch ORA workflow update and reminder sweeping.
 """
 
 from celery import shared_task
+from celery.signals import worker_ready
 
 from edx_django_utils.monitoring import set_code_owner_attribute
+
+# Import sweep_ora_reminders so Celery autodiscovery registers it.
+# The task lives in ora_reminders.py to keep sweeper logic self-contained.
+from openassessment.xblock.utils.ora_reminders import sweep_ora_reminders  # pylint: disable=unused-import  # noqa: F401
+
+
+@worker_ready.connect
+def on_worker_ready(sender, **kwargs):  # pylint: disable=unused-argument
+    """
+    Start the ORA reminder sweep chain when a Celery worker comes online.
+
+    Delegates entirely to ``ensure_sweep_chain_running``, which acquires the
+    lock atomically with ``cache.add`` and only clears it when the heartbeat is
+    stale (older than ``2 * sweep_interval``).
+
+    We deliberately do NOT ``cache.delete`` the lock here.  LMS in production
+    runs many workers that restart one-at-a-time during a rolling deploy; an
+    unconditional delete on each restart would yank the lock from a chain that
+    is still alive (its next run is a countdown task in the broker, not bound to
+    this worker), letting the restarted worker start a second, parallel chain —
+    duplicate sweeps and duplicate notifications.  The heartbeat-staleness check
+    is the single source of truth for "the previous chain actually died", so a
+    genuinely dead chain still recovers (within ``2 * sweep_interval``) without
+    risking duplicates.
+    """
+    from openassessment.xblock.utils.ora_reminders import ensure_sweep_chain_running
+    ensure_sweep_chain_running()
 
 
 @shared_task(bind=True,
