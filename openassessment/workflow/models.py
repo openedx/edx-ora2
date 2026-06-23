@@ -20,7 +20,7 @@ from django.db import DatabaseError, models, transaction
 from django.dispatch import receiver
 from django.utils.timezone import now
 
-from opaque_keys.edx.django.models import UsageKeyField
+from opaque_keys.edx.django.models import CourseKeyField, UsageKeyField
 
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
@@ -1114,7 +1114,7 @@ class ORAReminder(TimeStampedModel):
     .. no_pii:
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="ora_reminders", on_delete=models.CASCADE)
-    course_id = models.CharField(max_length=255, db_index=True)
+    course_id = CourseKeyField(max_length=255, db_index=True)
     ora_usage_key = UsageKeyField(max_length=255)
     ora_name = models.CharField(max_length=255, default='')
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
@@ -1138,7 +1138,6 @@ class ORAReminder(TimeStampedModel):
     # Step tracking — used to detect when the workflow transitions to a new step
     # (e.g. self → peer) so the reminder window can be reset per-step.
     last_known_step = models.CharField(max_length=32, null=True, blank=True)
-    step_start_time = models.DateTimeField(null=True, blank=True)
 
     # Cached peer config — stored at submission time so the sweeper can call
     # get_submission_to_assess with the correct capacity threshold without

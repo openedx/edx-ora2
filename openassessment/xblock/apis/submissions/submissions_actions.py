@@ -7,8 +7,11 @@ import logging
 import os
 from datetime import timezone
 
+from functools import partial
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from opaque_keys.edx.keys import CourseKey
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 
@@ -142,25 +145,35 @@ def _handle_post_submission_notifications(submission, student_item_dict, block_c
         peer_config = block_config_data.get_assessment_module("peer-assessment")
         peer_must_be_graded_by = peer_config.get("must_be_graded_by", 1) if peer_config else 1
 
-        # Create reminder DB entry
-        create_ora_reminder(
-            user_id=user.id,
-            course_key_str=course_id_str,
-            ora_usage_key_str=item_id,
-            ora_name=ora_name,
-            submission_uuid=submission["uuid"],
-            submission_time_iso=submission_time,
-            content_url=content_url,
-            initial_step=initial_step,
-            course_end_date=course_end_date,
-            ora_due_date=ora_due_date,
-            peer_assessment_due=peer_assessment_due,
-            self_assessment_due=self_assessment_due,
-            peer_must_be_graded_by=peer_must_be_graded_by,
+        # Create the reminder DB entry after the submission transaction commits.
+        # The xblock context above (deadlines, peer config, URL) must be read
+        # in-request, but the row write itself is deferred so it stays off the
+        # submit critical path and is skipped entirely if the submission rolls
+        # back — avoiding orphan reminder rows for submissions that never landed.
+        transaction.on_commit(
+            partial(
+                create_ora_reminder,
+                user_id=user.id,
+                course_key_str=course_id_str,
+                ora_usage_key_str=item_id,
+                ora_name=ora_name,
+                submission_uuid=submission["uuid"],
+                submission_time_iso=submission_time,
+                content_url=content_url,
+                initial_step=initial_step,
+                course_end_date=course_end_date,
+                ora_due_date=ora_due_date,
+                peer_assessment_due=peer_assessment_due,
+                self_assessment_due=self_assessment_due,
+                peer_must_be_graded_by=peer_must_be_graded_by,
+            )
         )
 
-        # Ensure the sweeper chain is running
-        ensure_sweep_chain_running()
+        # Ensure the sweeper chain is running.  Deferred to on_commit (after the
+        # create_ora_reminder above, since on_commit runs callbacks in
+        # registration order) so the cache/broker work stays off the submit
+        # critical path and only fires once the submission has committed.
+        transaction.on_commit(ensure_sweep_chain_running)
 
     except Exception as exc:  # pylint: disable=broad-except
         # Log but don't fail submission if reminder creation fails
@@ -380,6 +393,15 @@ def create_team_submission(
     )
 
     block_workflow_data.create_team_workflow(submission["team_submission_uuid"])
+
+    # NOTE: ORA reminder notifications are intentionally NOT created for team
+    # submissions.  _handle_post_submission_notifications (and the ORAReminder
+    # row it creates) is keyed on an individual submission_uuid and assumes a
+    # single learner per submission, whereas a team submission produces one
+    # shared team_submission_uuid for many learners.  Wiring reminders through
+    # the team flow would require per-member rows and team-aware step
+    # resolution; until that is built, team-based ORAs do not send reminders.
+    # See docs/ora_reminders.rst ("Limitations").
 
     # Emit analytics event...
     block_config_data.publish_event(

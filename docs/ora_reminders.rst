@@ -36,8 +36,11 @@ want non-default behaviour.
      - Description
    * - ``ORA_REMINDER_INITIAL_DELAY_HOURS``
      - ``0``
-     - Hours after submission before the **first** reminder is sent. Gives
-       learners time to complete reviews on their own before being nudged.
+     - Hours after submission before the **first** reminder is sent. Defaults
+       to ``0`` (product decision): the first notification fires immediately
+       after submission as an acknowledgement, and subsequent reminders follow
+       ``ORA_REMINDER_INTERVAL_HOURS``. Raise it if you want to delay the first
+       nudge instead.
    * - ``ORA_REMINDER_INTERVAL_HOURS``
      - ``48``
      - Hours between consecutive reminders after the first one.
@@ -82,10 +85,9 @@ How It Works
 
 3. For each due row, guards are checked in order:
 
-   - **Time window elapsed** — hours since submission exceed
-     ``INITIAL_DELAY + MAX_COUNT × INTERVAL`` → row deactivated.
-     This is equivalent to "all X reminders have been sent" without
-     tracking a count.
+   - **Max reminders sent** — ``reminder_sent_count >= ORA_REMINDER_MAX_COUNT``
+     → row deactivated. Only actual notification sends increment the counter;
+     peer-unavailable deferrals do **not** consume the budget.
    - **Step completed** — workflow is no longer on a peer/self step (learner
      finished their reviews) → row deactivated.
    - **Deadline passed** — the current step's due date (or ORA-level due
@@ -93,10 +95,21 @@ How It Works
      no notification sent.
    - **No peers available** (peer step only) — no submissions exist yet for
      the learner to review → ``next_reminder_at`` advanced by
-     ``ORA_REMINDER_CHECK_AGAIN_HOURS``, no notification sent.
+     ``ORA_REMINDER_CHECK_AGAIN_HOURS``, no notification sent and the
+     reminder count is left unchanged.
 
-4. If all guards pass, an ``ora_reminder`` notification is fired and
-   ``next_reminder_at`` is advanced by ``ORA_REMINDER_INTERVAL_HOURS``.
+4. If all guards pass, an ``ora_reminder`` notification is fired,
+   ``reminder_sent_count`` is incremented, and ``next_reminder_at`` is advanced
+   by ``ORA_REMINDER_INTERVAL_HOURS`` (or the row is deactivated if that send
+   was the last one allowed by ``ORA_REMINDER_MAX_COUNT``).
+
+5. **Step transitions** — when the workflow moves to a new peer/self step
+   (e.g. peer → self), the row is reactivated and ``reminder_sent_count`` is
+   reset to ``0`` so the new step gets its own full reminder budget. The
+   pending step is resolved from ``AssessmentWorkflowStep`` (the actual
+   completion state), not from ``AssessmentWorkflow.status``, because peer's
+   ``can_be_skipped()`` can flip ``status`` to ``self`` before the learner has
+   graded any peers.
 
 Durability
 ----------
@@ -105,11 +118,19 @@ Durability
   A Redis restart loses only the pending sweep task, not the schedule data.
 - The sweep task re-chains itself inside a ``finally`` block, so even an
   unhandled exception will not kill the chain permanently.
-- A cache heartbeat (key ``ora_reminder_sweep_heartbeat``) is written after
-  each successful sweep. An external health-check can detect a dead chain and
-  restart it by calling ``ensure_sweep_chain_running()``.
+- A cache heartbeat (key ``ora_reminder_sweep_heartbeat``) is written when a
+  chain starts and after each successful sweep. ``ensure_sweep_chain_running``
+  treats a chain as dead when the heartbeat is missing or older than
+  ``2 × ORA_REMINDER_SWEEP_INTERVAL_SECONDS`` and only then clears the lock to
+  start a fresh chain.
 - ``cache.add`` is used as a distributed lock to prevent duplicate chains
   from starting simultaneously.
+- Worker startup (``on_worker_ready``) does **not** clear the lock. In a
+  multi-worker fleet a rolling deploy restarts workers one at a time; clearing
+  the lock on each restart would let a restarted worker start a second,
+  parallel chain (duplicate notifications). Recovery is driven solely by the
+  heartbeat-staleness check above, so a genuinely dead chain restarts within
+  ``2 × ORA_REMINDER_SWEEP_INTERVAL_SECONDS`` without risking duplicates.
 
 Reminder Failures
 -----------------
@@ -120,3 +141,13 @@ persisted even if the reminder row cannot be created.
 
 Errors during a sweep cycle are caught per-row; a failure on one reminder
 does not stop processing of the remaining rows.
+
+Limitations
+-----------
+
+- **Team submissions are not supported.** Reminder rows are keyed on an
+  individual ``submission_uuid`` and assume a single learner per submission.
+  Team-based ORAs produce one shared ``team_submission_uuid`` for many
+  learners, so ``create_team_submission`` deliberately does not create reminder
+  rows. Team learners therefore do not receive ORA reminders. Supporting them
+  would require per-member rows and team-aware step resolution.

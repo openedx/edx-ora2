@@ -193,7 +193,9 @@ ORA_REMINDER_MAX_COUNT = 3
 ORA_REMINDER_INTERVAL_HOURS = 48
 
 # Hours after submission before the first reminder is sent.
-# Allows learners time to complete reviews before being nudged.
+# Intentionally 0 (product decision): the first notification fires right after
+# submission as an immediate acknowledgement; subsequent nudges follow
+# ORA_REMINDER_INTERVAL_HOURS.
 ORA_REMINDER_INITIAL_DELAY_HOURS = 0
 
 # How often (in seconds) the sweeper Celery task re-schedules itself.

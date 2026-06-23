@@ -98,7 +98,7 @@ class TestCreateOraReminder(CacheResetTest):
 
         reminder = ORAReminder.objects.get(submission_uuid=SUBMISSION_UUID)
         self.assertEqual(reminder.user_id, self.user.id)
-        self.assertEqual(reminder.course_id, COURSE_KEY_STR)
+        self.assertEqual(str(reminder.course_id), COURSE_KEY_STR)
         self.assertEqual(str(reminder.ora_usage_key), ORA_USAGE_KEY_STR)
         self.assertEqual(reminder.ora_name, ORA_NAME)
         self.assertTrue(reminder.is_active)
@@ -243,11 +243,33 @@ class TestEnsureSweepChainRunning(CacheResetTest):
 
     @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders')
     def test_does_not_start_when_lock_held(self, mock_task):
+        """A lock held by a live chain (fresh heartbeat) must not start a second chain."""
         from django.core.cache import cache
-        from openassessment.xblock.utils.ora_reminders import ensure_sweep_chain_running, SWEEP_LOCK_KEY
+        from openassessment.xblock.utils.ora_reminders import (
+            ensure_sweep_chain_running, SWEEP_LOCK_KEY, SWEEP_HEARTBEAT_KEY,
+        )
         cache.set(SWEEP_LOCK_KEY, 'running', timeout=9999)
+        # A live chain always has a recent heartbeat; without one the lock is
+        # treated as dead and a fresh chain is (correctly) started.
+        cache.set(SWEEP_HEARTBEAT_KEY, datetime.now(timezone.utc).isoformat(), timeout=9999)
         ensure_sweep_chain_running()
         mock_task.apply_async.assert_not_called()
+
+    @override_settings(ORA_REMINDER_SWEEP_INTERVAL_SECONDS=600)
+    @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders')
+    def test_clears_lock_when_heartbeat_missing(self, mock_task):
+        """A lock held with no heartbeat means the chain stopped — restart it."""
+        from django.core.cache import cache
+        from openassessment.xblock.utils.ora_reminders import (
+            ensure_sweep_chain_running, SWEEP_LOCK_KEY, SWEEP_HEARTBEAT_KEY,
+        )
+        cache.set(SWEEP_LOCK_KEY, 'running', timeout=9999)
+        # No heartbeat set (e.g. the feature was disabled and the sweeper
+        # cleared it on its last run).
+        ensure_sweep_chain_running()
+        mock_task.apply_async.assert_called_once()
+        # And the chain wrote a fresh heartbeat on acquire.
+        self.assertIsNotNone(cache.get(SWEEP_HEARTBEAT_KEY))
 
     @override_settings(ENABLE_ORA_REMINDERS=False)
     @patch('openassessment.xblock.utils.ora_reminders.sweep_ora_reminders')
@@ -358,6 +380,24 @@ class TestGetWorkflowStep(CacheResetTest):
         from openassessment.xblock.utils.ora_reminders import _get_workflow_step
         mock_objects.get.return_value = self._mock_workflow(status='waiting', first_pending_step=None)
         self.assertEqual(_get_workflow_step('some-uuid'), 'waiting')
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_cancelled_status_is_authoritative_over_incomplete_step(self, mock_objects):
+        """A cancelled workflow returns 'cancelled' even if a peer step is incomplete.
+
+        Cancellation does not backfill submitter_completed_at, so without this the
+        sweeper would keep nagging the learner about a cancelled submission.
+        """
+        from openassessment.xblock.utils.ora_reminders import _get_workflow_step
+        mock_objects.get.return_value = self._mock_workflow(status='cancelled', first_pending_step='peer')
+        self.assertEqual(_get_workflow_step('some-uuid'), 'cancelled')
+
+    @patch('openassessment.workflow.models.AssessmentWorkflow.objects')
+    def test_done_status_is_authoritative_over_incomplete_step(self, mock_objects):
+        """A workflow scored to 'done' (e.g. staff override) returns 'done' even if a step is incomplete."""
+        from openassessment.xblock.utils.ora_reminders import _get_workflow_step
+        mock_objects.get.return_value = self._mock_workflow(status='done', first_pending_step='peer')
+        self.assertEqual(_get_workflow_step('some-uuid'), 'done')
 
 
 # ---------------------------------------------------------------------------
@@ -1114,10 +1154,14 @@ class TestHandlePostSubmissionNotifications(CacheResetTest):
         from openassessment.xblock.apis.submissions.submissions_actions import (
             _handle_post_submission_notifications,
         )
-        _handle_post_submission_notifications(
-            self.submission, self.student_item_dict,
-            self.block_config_data, self.block_workflow_data,
-        )
+        # The reminder row write and chain start are deferred via
+        # transaction.on_commit, so execute the captured callbacks to observe
+        # their effects (mirrors what happens once the submission commits).
+        with self.captureOnCommitCallbacks(execute=True):
+            _handle_post_submission_notifications(
+                self.submission, self.student_item_dict,
+                self.block_config_data, self.block_workflow_data,
+            )
 
     def test_skips_when_no_peer_or_self_steps(self):
         """Should return early if assessment_steps has neither peer nor self."""
@@ -1386,3 +1430,98 @@ class TestResetOraReminderForStep(CacheResetTest):
         reminder.refresh_from_db()
         self.assertEqual(reminder.reminder_sent_count, 1)
         _chain.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# on_workflow_status_change  (post_save signal receiver)
+# ---------------------------------------------------------------------------
+@override_settings(
+    ENABLE_ORA_REMINDERS=True,
+    ORA_REMINDER_INITIAL_DELAY_HOURS=INITIAL_DELAY,
+)
+class TestOnWorkflowStatusChange(CacheResetTest):
+    """
+    Tests for the AssessmentWorkflow.post_save receiver wiring.
+
+    These exercise the signal connection itself (saving an AssessmentWorkflow
+    must drive the reminder reset), not just reset_ora_reminder_for_step in
+    isolation — so an accidental removal of the @receiver decorator is caught.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user(username='signal_user', password='pass')
+
+    @patch('openassessment.xblock.utils.ora_reminders.ensure_sweep_chain_running')
+    @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='self')
+    def test_workflow_save_triggers_reminder_reset(self, _step, _chain):
+        """Saving an AssessmentWorkflow whose pending step changed resets the reminder."""
+        reminder = _make_reminder(
+            self.user,
+            last_known_step='peer',
+            reminder_sent_count=2,
+            is_active=False,
+        )
+
+        # Saving the workflow must fire on_workflow_status_change, which resolves
+        # the pending step via _get_workflow_step (here mocked to 'self') and
+        # resets the reminder window.
+        AssessmentWorkflow.objects.create(
+            submission_uuid=reminder.submission_uuid,
+            status='self',
+            course_id='test course',
+            item_id='test item',
+        )
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.last_known_step, 'self')
+        self.assertEqual(reminder.reminder_sent_count, 0)
+        self.assertTrue(reminder.is_active)
+
+    @patch('openassessment.xblock.utils.ora_reminders.ensure_sweep_chain_running')
+    @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='waiting')
+    def test_workflow_save_noop_when_step_not_pending(self, _step, _chain):
+        """A save whose pending step is not peer/self must not touch the reminder."""
+        reminder = _make_reminder(
+            self.user,
+            last_known_step='peer',
+            reminder_sent_count=2,
+        )
+
+        AssessmentWorkflow.objects.create(
+            submission_uuid=reminder.submission_uuid,
+            status='waiting',
+            course_id='test course',
+            item_id='test item',
+        )
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.last_known_step, 'peer')
+        self.assertEqual(reminder.reminder_sent_count, 2)
+
+    @patch('openassessment.xblock.utils.ora_reminders.ensure_sweep_chain_running')
+    @patch('openassessment.xblock.utils.ora_reminders._get_workflow_step', return_value='peer')
+    def test_receiver_resolves_step_from_helper_not_status(self, _step, _chain):
+        """
+        The receiver must use _get_workflow_step, not instance.status.
+
+        Here status='self' (as can_be_skipped() would set it) but the real
+        pending step is 'peer'. The reminder must track 'peer'.
+        """
+        reminder = _make_reminder(
+            self.user,
+            last_known_step='self',
+            reminder_sent_count=1,
+            is_active=False,
+        )
+
+        AssessmentWorkflow.objects.create(
+            submission_uuid=reminder.submission_uuid,
+            status='self',  # status says 'self' but _get_workflow_step says 'peer'
+            course_id='test course',
+            item_id='test item',
+        )
+
+        reminder.refresh_from_db()
+        self.assertEqual(reminder.last_known_step, 'peer')
+        self.assertEqual(reminder.reminder_sent_count, 0)

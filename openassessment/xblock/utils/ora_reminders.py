@@ -28,6 +28,7 @@ from datetime import datetime, timedelta, timezone
 from celery import shared_task
 from django.conf import settings
 from django.core.cache import cache
+from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from edx_django_utils.monitoring import set_code_owner_attribute
@@ -125,7 +126,6 @@ def create_ora_reminder(  # pylint: disable=too-many-positional-arguments
                 'next_reminder_at': next_reminder_at,
                 'is_active': True,
                 'last_known_step': initial_step,
-                'step_start_time': submission_time,
                 'peer_must_be_graded_by': peer_must_be_graded_by,
             },
         )
@@ -164,25 +164,43 @@ def ensure_sweep_chain_running():
     lock_timeout = sweep_interval * SWEEP_LOCK_TIMEOUT_MULTIPLIER
 
     # If the lock exists, check whether the chain is actually alive by
-    # inspecting the heartbeat.  A stale heartbeat means the old chain
-    # died (e.g. worker restart) but the lock hasn't expired yet.
+    # inspecting the heartbeat.  The chain is considered dead when the
+    # heartbeat is either missing or stale:
+    #   * missing  — the chain stopped writing heartbeats and cleared it
+    #                (feature disabled, see sweep_ora_reminders), or it expired.
+    #   * stale    — the chain died without cleanup (e.g. all workers crashed)
+    #                but the lock hasn't expired yet.
+    # An initial heartbeat is written below when the chain is (re)acquired, so a
+    # freshly-started chain is never mistaken for a dead one during the window
+    # before its first sweep runs.
     if cache.get(SWEEP_LOCK_KEY):
         heartbeat_iso = cache.get(SWEEP_HEARTBEAT_KEY)
-        if heartbeat_iso:
+        chain_is_dead = False
+        if not heartbeat_iso:
+            chain_is_dead = True
+        else:
             try:
                 last_beat = datetime.fromisoformat(heartbeat_iso)
                 stale_threshold = datetime.now(timezone.utc) - timedelta(seconds=sweep_interval * 2)
-                if last_beat < stale_threshold:
-                    logger.warning(
-                        'ora_reminders: Heartbeat stale (last=%s). Clearing lock to restart chain.',
-                        heartbeat_iso,
-                    )
-                    cache.delete(SWEEP_LOCK_KEY)
+                chain_is_dead = last_beat < stale_threshold
             except (ValueError, TypeError):
-                pass
+                # A corrupt heartbeat value is an anomaly that shouldn't occur;
+                # treat it conservatively as "alive" (do not clear the lock) to
+                # avoid spawning a duplicate chain.  The lock's TTL is the
+                # backstop if the chain really is gone.
+                chain_is_dead = False
+        if chain_is_dead:
+            logger.warning(
+                'ora_reminders: Chain heartbeat missing/stale (last=%s). Clearing lock to restart chain.',
+                heartbeat_iso,
+            )
+            cache.delete(SWEEP_LOCK_KEY)
 
     acquired = cache.add(SWEEP_LOCK_KEY, 'running', timeout=lock_timeout)
     if acquired:
+        # Write an initial heartbeat immediately so this chain is not mistaken
+        # for dead (missing heartbeat) before its first sweep runs.
+        cache.set(SWEEP_HEARTBEAT_KEY, datetime.now(timezone.utc).isoformat(), timeout=lock_timeout)
         jitter = random.randint(0, 60)
         sweep_ora_reminders.apply_async(countdown=jitter)
         logger.info('ora_reminders: Started sweeper chain (jitter=%ss).', jitter)
@@ -213,14 +231,21 @@ def reset_ora_reminder_for_step(submission_uuid, new_step):
 
         now_utc = datetime.now(timezone.utc)
         initial_delay = getattr(settings, 'ORA_REMINDER_INITIAL_DELAY_HOURS', 0)
+        # This DB update stays inside the workflow transaction so it commits or
+        # rolls back together with the status change that triggered it.
         ORAReminder.objects.filter(submission_uuid=submission_uuid).update(
             is_active=True,
             last_known_step=new_step,
-            step_start_time=now_utc,
             next_reminder_at=now_utc + timedelta(hours=initial_delay),
             reminder_sent_count=0,
         )
-        ensure_sweep_chain_running()
+        # Defer the cache/broker side-effects until after the surrounding
+        # workflow transaction commits.  This receiver runs inside the
+        # AssessmentWorkflow.save() that happens on ORA page load; running the
+        # cache + apply_async work synchronously would put a Redis/broker hiccup
+        # on the critical path of update_from_assessments, which only catches
+        # AssessmentWorkflowError — a raw ConnectionError there becomes a 500.
+        transaction.on_commit(ensure_sweep_chain_running)
         logger.info(
             'ora_reminders: Step transition to "%s" for submission %s — reminder window reset.',
             new_step, submission_uuid,
@@ -237,10 +262,24 @@ def on_workflow_status_change(sender, instance, **kwargs):  # pylint: disable=un
     Fires on every AssessmentWorkflow save.  The status guard and the
     last_known_step comparison inside reset_ora_reminder_for_step make this
     a no-op for saves that don't represent a transition to a new peer/self step.
+
+    Note: this resolves the pending step via ``_get_workflow_step`` rather than
+    ``instance.status``.  ``status`` is unreliable here because peer's
+    ``can_be_skipped()`` flips it to 'self' before the learner has graded any
+    peers, while the sweeper anchors on the real, order-based pending step.
+    Using two different definitions of "current step" would let the reminder
+    count reset on every page load (the receiver setting 'self', the sweeper
+    setting 'peer' back), producing unbounded reminders.  Both paths must
+    agree, so the receiver uses the same resolver as the sweeper.
     """
-    if instance.status not in PENDING_REMINDER_STEPS:
+    # Cheap guard first: avoid the _get_workflow_step query on every workflow
+    # save when the feature is off.
+    if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
         return
-    reset_ora_reminder_for_step(instance.submission_uuid, instance.status)
+    step = _get_workflow_step(instance.submission_uuid)
+    if step not in PENDING_REMINDER_STEPS:
+        return
+    reset_ora_reminder_for_step(instance.submission_uuid, step)
 
 
 @shared_task(ignore_result=True)
@@ -268,6 +307,11 @@ def sweep_ora_reminders():
         if not getattr(settings, 'ENABLE_ORA_REMINDERS', False):
             logger.info('ora_reminders: ENABLE_ORA_REMINDERS is disabled. Sweeper stopping.')
             should_rechain = False
+            # Clear the heartbeat so a re-enable recovers immediately: the next
+            # ensure_sweep_chain_running sees the lock with no heartbeat, treats
+            # the chain as dead, clears the lock and starts a fresh chain.
+            # Without this the lock would linger for its full TTL.
+            cache.delete(SWEEP_HEARTBEAT_KEY)
             return
 
         _do_sweep()
@@ -437,6 +481,15 @@ def _get_workflow_step(submission_uuid):
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
     except AssessmentWorkflow.DoesNotExist:
         return None
+
+    # Terminal statuses are authoritative.  A cancelled workflow, or one scored
+    # to "done" via a staff override, has no actionable peer/self step left for
+    # the learner — even though the peer/self step rows can still have
+    # submitter_completed_at = NULL (cancellation/override don't backfill them).
+    # Returning the status here lets the sweeper's guard deactivate the reminder
+    # instead of nagging a learner about a submission that's cancelled or graded.
+    if workflow.status in (AssessmentWorkflow.STATUS.cancelled, AssessmentWorkflow.STATUS.done):
+        return workflow.status
 
     # Find the first peer/self step (by configured order) the learner hasn't
     # finished yet.  submitter_completed_at is set only when the learner has
