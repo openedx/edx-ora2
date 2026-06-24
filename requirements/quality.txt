@@ -36,14 +36,14 @@ binaryornot==0.6.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-bleach==6.3.0
+bleach==6.4.0
     # via -r requirements/test.txt
-boto3==1.43.22
+boto3==1.43.32
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
     #   moto
-botocore==1.43.22
+botocore==1.43.32
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -55,7 +55,7 @@ cachetools==7.1.4
     #   tox
 celery==5.6.3
     # via -r requirements/test.txt
-certifi==2026.5.20
+certifi==2026.6.17
     # via
     #   -r requirements/test.txt
     #   requests
@@ -111,7 +111,7 @@ coverage[toml]==7.14.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==48.0.0
+cryptography==49.0.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -123,7 +123,7 @@ defusedxml==0.7.1
     # via -r requirements/test.txt
 dill==0.4.1
     # via pylint
-distlib==0.4.1
+distlib==0.4.3
     # via
     #   -r requirements/test.txt
     #   virtualenv
@@ -192,13 +192,14 @@ edx-opaque-keys[django]==4.0.0
     #   edx-ccx-keys
     #   openedx-events
     #   openedx-filters
+    #   xblock
 edx-submissions==4.0.0
     # via -r requirements/test.txt
 edx-toggles==6.0.0
     # via -r requirements/test.txt
 factory-boy==3.3.3
     # via -r requirements/test.txt
-faker==40.21.0
+faker==40.23.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -206,7 +207,7 @@ fastavro==1.12.2
     # via
     #   -r requirements/test.txt
     #   openedx-events
-filelock==3.29.1
+filelock==3.29.4
     # via
     #   -r requirements/test.txt
     #   python-discovery
@@ -300,7 +301,7 @@ moto==4.2.14
     #   -r requirements/test.txt
 openedx-events==11.2.0
     # via -r requirements/test.txt
-openedx-filters==3.4.1
+openedx-filters==3.5.0
     # via -r requirements/test.txt
 packaging==26.2
     # via
@@ -384,7 +385,7 @@ pyproject-api==1.10.1
     # via
     #   -r requirements/test.txt
     #   tox
-pytest==9.0.3
+pytest==9.1.0
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -402,7 +403,7 @@ python-dateutil==2.9.0.post0
     #   freezegun
     #   moto
     #   xblock
-python-discovery==1.4.0
+python-discovery==1.4.2
     # via
     #   -r requirements/test.txt
     #   tox
@@ -444,7 +445,7 @@ rich==15.0.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-s3transfer==0.18.0
+s3transfer==0.19.0
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -474,7 +475,7 @@ stevedore==5.8.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-testfixtures==12.0.0
+testfixtures==12.1.0
     # via -r requirements/test.txt
 text-unidecode==1.3
     # via
@@ -494,12 +495,13 @@ typing-extensions==4.15.0
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
+    #   testfixtures
 tzdata==2026.2
     # via
     #   -r requirements/test.txt
     #   arrow
     #   kombu
-tzlocal==5.3.1
+tzlocal==5.4.3
     # via
     #   -r requirements/test.txt
     #   celery
@@ -515,20 +517,19 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==21.4.2
+virtualenv==21.5.1
     # via
     #   -r requirements/test.txt
     #   tox
 voluptuous==0.16.0
     # via -r requirements/test.txt
-wcwidth==0.7.0
+wcwidth==0.8.1
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
 web-fragments==4.0.0
     # via
     #   -r requirements/test.txt
-    #   xblock
     #   xblock-sdk
 webencodings==0.5.1
     # via
@@ -544,7 +545,7 @@ werkzeug==3.1.8
     # via
     #   -r requirements/test.txt
     #   moto
-xblock==6.1.0
+xblock==6.3.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
