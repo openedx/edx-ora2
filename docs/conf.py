@@ -18,7 +18,6 @@ release = "latest"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "sphinxcontrib.contentui",
     "sphinx_copybutton",
     "sphinx.ext.graphviz",
     "sphinxcontrib.mermaid",

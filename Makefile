@@ -62,7 +62,6 @@ compile-requirements: $(COMMON_CONSTRAINTS_TXT)  ## update the requirements/*.tx
 	pip-compile ${COMPILE_OPTS} -o requirements/docs.txt requirements/docs.in
 	# Delete django pin from test requirements to avoid tox version collision
 	sed -i.tmp '/^[d|D]jango==/d' requirements/test.txt
-	sed -i.tmp '/^djangorestframework==/d' requirements/test.txt
 	# Delete extra metadata that causes build to fail
 	sed -i.tmp '/^--index-url/d' requirements/*.txt
 	sed -i.tmp '/^--extra-index-url/d' requirements/*.txt

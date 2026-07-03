@@ -35,6 +35,7 @@
           theme: 'silver',
           skin: 'studio-tmce5',
           content_css: 'studio-tmce5',
+          contextmenu: false,
           height: '300',
           schema: 'html5',
           plugins: 'code image link lists',

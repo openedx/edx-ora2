@@ -13,6 +13,6 @@ metadata:
   annotations:
     openedx.org/arch-interest-groups: ""
 spec:
-  owner: group:2u-aurora
+  owner: group:openedx-unmaintained
   type: 'xblock'
   lifecycle: 'production'
