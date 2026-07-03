@@ -151,6 +151,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.teams_enabled = data.get('teams_enabled', None)
         self.oa_block.selected_teamset_id = data.get('selected_teamset_id', None)
         self.oa_block.show_rubric_during_response = data.get('show_rubric_during_response')
+        self.oa_block.date_config_type = data.get('date_config_type', None)
 
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
@@ -559,3 +560,117 @@ class TestParseFromXml(TestCase):
     def test_parse_from_xml_error(self, data):
         with self.assertRaises(UpdateFromXmlError):
             parse_from_xml_str("".join(data['xml']))
+
+
+class TestDateConfigTypeXml(TestCase):
+    """
+    Regression tests for round-tripping `date_config_type` through XML
+    (course export/import, re-run, and other OLX round-trip flows).
+    """
+    MINIMAL_XML = (
+        '<openassessment{attrs}>'
+        '<title>Foo</title>'
+        '<assessments>'
+        '<assessment name="peer-assessment" start="2014-02-27T09:46:28" due="2014-03-01T00:00:00" '
+        'must_grade="5" must_be_graded_by="3" />'
+        '<assessment name="self-assessment" start="2014-04-01T00:00:00" due="2014-06-01T00:00:00" />'
+        '<assessment name="staff-assessment" required="False" />'
+        '</assessments>'
+        '<rubric>'
+        '<prompt>Test prompt</prompt>'
+        '<criterion>'
+        '<name>Test criterion</name>'
+        '<label>Test criterion label</label>'
+        '<prompt>Test criterion prompt</prompt>'
+        '<option points="0"><name>No</name><label>No label</label><explanation>No explanation</explanation></option>'
+        '<option points="2"><name>Yes</name><label>Yes label</label><explanation>Yes explanation</explanation></option>'
+        '</criterion>'
+        '</rubric>'
+        '</openassessment>'
+    )
+
+    def _xml(self, date_config_type=None):
+        attrs = f' date_config_type="{date_config_type}"' if date_config_type is not None else ''
+        return self.MINIMAL_XML.format(attrs=attrs)
+
+    def test_parse_from_xml_reads_date_config_type(self):
+        config = parse_from_xml_str(self._xml('subsection'))
+        self.assertEqual(config['date_config_type'], 'subsection')
+
+    def test_parse_from_xml_missing_attribute_defaults_to_none(self):
+        # Backwards compatibility: XML exported before this fix (or that never
+        # set the field) has no "date_config_type" attribute at all. This must
+        # not error, and must not silently claim a value was set.
+        config = parse_from_xml_str(self._xml())
+        self.assertIsNone(config['date_config_type'])
+
+    def test_parse_from_xml_invalid_value_raises(self):
+        with self.assertRaises(UpdateFromXmlError):
+            parse_from_xml_str(self._xml('not_a_real_option'))
+
+    def test_serialize_writes_date_config_type(self):
+        oa_block = mock.MagicMock(OpenAssessmentBlock)
+        oa_block.title = 'Foo'
+        oa_block.display_name = 'Foo'
+        oa_block.prompts = create_prompts_list('Test prompt')
+        oa_block.prompts_type = 'text'
+        oa_block.rubric_criteria = TestSerializeContent.BASIC_CRITERIA
+        oa_block.rubric_assessments = TestSerializeContent.BASIC_ASSESSMENTS
+        oa_block.rubric_feedback_prompt = None
+        oa_block.rubric_feedback_default_text = None
+        oa_block.submission_start = None
+        oa_block.submission_due = None
+        oa_block.leaderboard_show = 0
+        oa_block.text_response = ''
+        oa_block.text_response_editor = 'text'
+        oa_block.file_upload_response = None
+        oa_block.file_upload_type = None
+        oa_block.white_listed_file_types = None
+        oa_block.allow_multiple_files = None
+        oa_block.allow_latex = None
+        oa_block.allow_learner_resubmissions = None
+        oa_block.resubmissions_grace_period = None
+        oa_block.group_access = {}
+        oa_block.teams_enabled = None
+        oa_block.selected_teamset_id = None
+        oa_block.show_rubric_during_response = None
+        oa_block.date_config_type = 'subsection'
+
+        xml = serialize_content(oa_block)
+        parsed = etree.fromstring(xml)
+        self.assertEqual(parsed.get('date_config_type'), 'subsection')
+
+    def test_round_trip_preserves_date_config_type(self):
+        config = parse_from_xml_str(self._xml('course_end'))
+        self.assertEqual(config['date_config_type'], 'course_end')
+
+        oa_block = mock.MagicMock(OpenAssessmentBlock)
+        oa_block.title = config['title']
+        oa_block.display_name = config['title']
+        oa_block.prompts = config['prompts']
+        oa_block.prompts_type = config['prompts_type']
+        oa_block.rubric_criteria = config['rubric_criteria']
+        oa_block.rubric_assessments = config['rubric_assessments']
+        oa_block.rubric_feedback_prompt = config['rubric_feedback_prompt']
+        oa_block.rubric_feedback_default_text = config['rubric_feedback_default_text']
+        oa_block.submission_start = config['submission_start']
+        oa_block.submission_due = config['submission_due']
+        oa_block.leaderboard_show = config['leaderboard_show']
+        oa_block.text_response = config['text_response']
+        oa_block.text_response_editor = config['text_response_editor']
+        oa_block.file_upload_response = config['file_upload_response']
+        oa_block.file_upload_type = config['file_upload_type']
+        oa_block.white_listed_file_types = config['white_listed_file_types']
+        oa_block.allow_multiple_files = config['allow_multiple_files']
+        oa_block.allow_latex = config['allow_latex']
+        oa_block.allow_learner_resubmissions = config['allow_learner_resubmissions']
+        oa_block.resubmissions_grace_period = config['resubmissions_grace_period']
+        oa_block.group_access = config['group_access']
+        oa_block.teams_enabled = config['teams_enabled']
+        oa_block.selected_teamset_id = config['selected_teamset_id']
+        oa_block.show_rubric_during_response = config['show_rubric_during_response']
+        oa_block.date_config_type = config['date_config_type']
+
+        reserialized_xml = serialize_content(oa_block)
+        reparsed_config = parse_from_xml_str(reserialized_xml)
+        self.assertEqual(reparsed_config['date_config_type'], 'course_end')
