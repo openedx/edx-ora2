@@ -291,6 +291,8 @@
 
       display: flex;
       justify-content: flex-end;
+      // Leave room for Studio's fullscreen button, which floats over this strip.
+      padding-right: 74px;
 
       .oa_editor_tab {
         padding: 0 10px;
