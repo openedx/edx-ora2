@@ -34,6 +34,7 @@ from openassessment.xblock.apis.submissions.errors import (
     DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
+    MissingFilesError,
     MultipleSubmissionsException,
     OnlyOneFileAllowedException,
     StudioPreviewException,
@@ -152,6 +153,12 @@ class LegacyHandlersMixin:
                 'Please refresh the page and try again.'
             )
             return False, 'EEMPTYSUB', status_text
+        except MissingFilesError as e:
+            status_text = self.config_data.translate(
+                'Some of your files were not uploaded successfully: {file_names}. '
+                'Please remove them, upload them again, and then submit your response.'
+            ).format(file_names=', '.join(e.file_names))
+            return False, 'EMISSINGFILES', status_text
         except SubmitInternalError:
             status_text = self.config_data.translate('API returned unclassified exception.')
             return False, 'EUNKNOWN', status_text

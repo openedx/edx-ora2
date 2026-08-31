@@ -26,6 +26,7 @@ from openassessment.xblock.apis.submissions.errors import (
     DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
+    MissingFilesError,
     MultipleSubmissionsException,
     OnlyOneFileAllowedException,
     StudioPreviewException,
@@ -667,6 +668,13 @@ class SubmissionCreateTest(MFEHandlersTestBase):
         with self._mock_create_submission(side_effect=EmptySubmissionError()):
             resp = self.request_create_submission(xblock)
         assert_error_response(resp, 400, error_codes.EMPTY_ANSWER)
+
+    @scenario("data/basic_scenario.xml")
+    def test_missing_files(self, xblock):
+        error = MissingFilesError(['essay.pdf'])
+        with self._mock_create_submission(side_effect=error):
+            resp = self.request_create_submission(xblock)
+        assert_error_response(resp, 400, error_codes.MISSING_FILES, {'fileNames': ['essay.pdf']})
 
     @scenario("data/basic_scenario.xml")
     def test_internal_error(self, xblock):

@@ -368,6 +368,17 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
                 Body=b"How d'ya do?",
             )
 
+    def _store_uploads(self, *uploads):
+        """Put a real object in the mock bucket for each of the given FileUploads."""
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        for upload in uploads:
+            conn.put_object(
+                Bucket="mybucket",
+                Key=f"submissions_attachments/{upload.key}",
+                Body=b"How d'ya do?",
+            )
+
     def _create_entry(self, description, name, size):
         return {
             'description': description,
@@ -458,6 +469,46 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
                         student_sub_dict['files_sizes'],
                         [meta['fileSize'] for meta in expected_file_metadata]
                     )
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    @scenario('data/file_upload_scenario.xml', user_id='bob')
+    def test_submit_refuses_files_that_were_never_uploaded(self, xblock):
+        """
+        A response whose files are only metadata must not become a submission.
+
+        The learner describes a file and the description is saved, but the
+        upload itself is a separate browser-to-storage request that can fail
+        afterwards. Submitting anyway would bake an unrecoverable key into an
+        immutable submission.
+        """
+        boto3.client("s3").create_bucket(Bucket="mybucket")
+        xblock.xmodule_runtime = Mock(
+            course_id=COURSE_ID,
+            anonymous_student_id='test_student',
+        )
+        xblock.has_team = Mock(return_value=False)
+
+        data = {'fileMetadata': [self._create_entry('File Number 0', 'file_0', 1000)]}
+        resp = self.request(
+            xblock,
+            'save_files_descriptions',
+            json.dumps(data),
+            response_format='json'
+        )
+        self.assertTrue(resp['success'])
+
+        with patch('submissions.api.create_submission') as mocked_submit:
+            resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        mocked_submit.assert_not_called()
+        self.assertFalse(resp[0])
+        self.assertEqual('EMISSINGFILES', resp[1])
+        self.assertIn('file_0', resp[2])
 
     @mock_s3
     @override_settings(
@@ -562,6 +613,12 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         # then the submission returns a failure
         self.assertFalse(response[0])
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
     @scenario('data/basic_scenario.xml', user_id='Red Five')
     def test_team_file_submission(self, xblock):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
@@ -571,29 +628,29 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         xblock.file_upload_type = 'pdf-and-image'
 
-        xblock.file_manager.get_uploads = Mock(side_effect=lambda team_id: [
-            api.FileUpload(
-                description='file-1',
-                name='file-1.pdf',
-                size=100,
-                student_id='Lucy',
-                course_id='edX/Enchantment_101/April_1',
-                item_id='item-a',
-                descriptionless=False,
-            ),
-        ])
+        own_upload = api.FileUpload(
+            description='file-1',
+            name='file-1.pdf',
+            size=100,
+            student_id='Lucy',
+            course_id='edX/Enchantment_101/April_1',
+            item_id='item-a',
+            descriptionless=False,
+        )
+        team_upload = api.FileUpload(
+            description='file-5',
+            name='file-5.pdf',
+            size=500,
+            student_id='Bob',
+            course_id='edX/Enchantment_101/April_1',
+            item_id='item-a',
+            descriptionless=False,
+        )
+        self._store_uploads(own_upload, team_upload)
 
-        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda team_id: [
-            api.FileUpload(
-                description='file-5',
-                name='file-5.pdf',
-                size=500,
-                student_id='Bob',
-                course_id='edX/Enchantment_101/April_1',
-                item_id='item-a',
-                descriptionless=False,
-            ),
-        ])
+        xblock.file_manager.get_uploads = Mock(side_effect=lambda team_id: [own_upload])
+
+        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda team_id: [team_upload])
 
         xblock.get_workflow_info = Mock(return_value=None)
 

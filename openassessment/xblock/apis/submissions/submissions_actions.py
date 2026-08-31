@@ -21,6 +21,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.submissions.errors import (
     DeleteNotAllowed,
     EmptySubmissionError,
+    MissingFilesError,
     NoTeamToCreateSubmissionForError,
     DraftSaveException,
     OnlyOneFileAllowedException,
@@ -267,6 +268,7 @@ def submit(text_responses, block_config_data, block_submission_data, block_workf
             SubmissionError,
             AssessmentWorkflowError,
             NoTeamToCreateSubmissionForError,
+            FileUploadError,
     ) as e:
         msg = (
             "An unknown error occurred while submitting "
@@ -276,6 +278,33 @@ def submit(text_responses, block_config_data, block_submission_data, block_workf
         )
         logger.exception(msg)
         raise SubmitInternalError from e
+
+
+def _verified_uploads_for_submission(block_submission_data):
+    """
+    Return the uploads to attach to a submission, having confirmed that each one
+    is actually present in storage.
+
+    File metadata is saved when the learner describes a file, but the upload
+    itself is a separate browser-to-storage request that can fail afterwards.
+    Attaching an unverified key bakes it into an immutable submission, so the
+    loss is silent and permanent.
+
+    Raises:
+        MissingFilesError: if any declared file is absent from storage.
+        FileUploadError: if storage could not be reached to check.
+    """
+    uploaded_files = block_submission_data.files.get_uploads_for_submission()
+    # An upload that does not `exist` declares no file, so there is nothing to verify.
+    missing = [upload for upload in uploaded_files if upload.exists and not upload.is_stored]
+    if missing:
+        logger.error(
+            "Refusing to create a submission declaring %d file(s) absent from storage: %s",
+            len(missing),
+            [upload.key for upload in missing],
+        )
+        raise MissingFilesError([upload.name or upload.key for upload in missing])
+    return uploaded_files
 
 
 def create_submission(
@@ -293,7 +322,7 @@ def create_submission(
     submission_dict = prepare_submission_for_serialization(submission_data)
 
     # Add files
-    uploaded_files = block_submission_data.files.get_uploads_for_submission()
+    uploaded_files = _verified_uploads_for_submission(block_submission_data)
     submission_dict.update(format_files_for_submission(uploaded_files))
 
     # Validate
@@ -372,7 +401,7 @@ def create_team_submission(
     submission_dict = prepare_submission_for_serialization(submission_data)
 
     # Add files
-    uploaded_files = block_submission_data.files.get_uploads_for_submission()
+    uploaded_files = _verified_uploads_for_submission(block_submission_data)
     submission_dict.update(format_files_for_submission(uploaded_files))
 
     # Validate

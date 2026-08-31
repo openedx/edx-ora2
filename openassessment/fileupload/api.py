@@ -39,6 +39,13 @@ def get_download_url(key):
     return url
 
 
+def file_exists(key):
+    """
+    Returns whether a file is actually stored at the location the key points to.
+    """
+    return backends.get_backend().file_exists(key)
+
+
 def remove_file(key):
     """
     Remove file from the storage
@@ -158,6 +165,18 @@ class FileUpload:
     @property
     def exists(self):
         return (self.description is not None) or self.descriptionless
+
+    @property
+    def is_stored(self):
+        """
+        Whether a file has actually been persisted to the storage backend.
+
+        ``exists`` only reports that the learner supplied metadata for this
+        slot. Because uploads go straight from the browser to the storage
+        backend, an upload can fail after its metadata has been saved, leaving
+        metadata that describes a file which was never stored.
+        """
+        return file_exists(self.key)
 
     @property
     def download_url(self):

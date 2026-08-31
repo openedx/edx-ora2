@@ -55,6 +55,16 @@ class Backend(BaseBackend):
             )
             raise FileUploadInternalError(ex) from ex
 
+    def file_exists(self, key):
+        bucket_name, key_name = self._retrieve_parameters(key)
+        try:
+            return object_exists(_connect_to_s3(), bucket_name, key_name)
+        except Exception as ex:
+            log.exception(
+                "An internal exception occurred while checking whether a file exists."
+            )
+            raise FileUploadInternalError(ex) from ex
+
     def remove_file(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
         conn = _connect_to_s3()
