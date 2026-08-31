@@ -96,8 +96,9 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         "openassessment.xblock.apis.submissions.submissions_api.FileAPI.get_uploads_for_submission"
     )
     @patch("openassessment.data.ZippedListSubmissionAnswer._safe_get_download_url")
+    @patch("openassessment.fileupload.api.file_exists", return_value=True)
     @scenario("data/file_upload_scenario.xml", user_id="Alan")
-    def test_files(self, xblock, mock_get_download_url, mock_get_files):
+    def test_files(self, xblock, _mock_file_exists, mock_get_download_url, mock_get_files):
         # Given we have a response
         submission_text = ["Foo", "Bar"]
         submission = None

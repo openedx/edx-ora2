@@ -37,6 +37,12 @@ class Backend(BaseBackend):
             return urljoin(lms_url, storage_path)
         return None
 
+    def file_exists(self, key):
+        """
+        Return whether a file is stored at the keyed location.
+        """
+        return default_storage.exists(self._get_file_path(key))
+
     def upload_file(self, key, content):
         """
         Upload the given file content to the keyed location.

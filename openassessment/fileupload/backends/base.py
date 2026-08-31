@@ -123,6 +123,27 @@ class BaseBackend(metaclass=abc.ABCMeta):
         """
         raise NotImplementedError
 
+    def file_exists(self, key):
+        """Return whether a file is actually stored at the given key.
+
+        This is distinct from the presence of file metadata. Uploads are
+        performed by the browser directly against the storage backend, so an
+        upload can fail after its metadata has already been saved.
+
+        Args:
+            key (str): A unique identifier used to identify the stored data.
+
+        Returns:
+            True if a file is stored at the given key, False if it is not.
+
+        Raises:
+            FileUploadError: Raised when it could not be determined whether the
+                file exists, for example because the storage backend is
+                unreachable. Callers must not read this as the file being
+                absent.
+        """
+        return bool(self.get_download_url(key))
+
     def _retrieve_parameters(self, key):
         """
         Simple utility function to validate settings and arguments before compiling

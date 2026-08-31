@@ -49,6 +49,12 @@ class Backend(BaseBackend):
             return self._get_url(key)
         return None
 
+    def file_exists(self, key):
+        """
+        Return whether a file is stored at the keyed location.
+        """
+        return self._file_exists(self._get_key_name(key))
+
     def remove_file(self, key):
         from openassessment.fileupload.views_filesystem import get_file_path, safe_remove
         return safe_remove(get_file_path(self._get_key_name(key)))

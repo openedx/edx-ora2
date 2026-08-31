@@ -11,6 +11,18 @@ class EmptySubmissionError(Exception):
     pass
 
 
+class MissingFilesError(Exception):
+    """Raised when a response declares files that are not present in storage."""
+
+    def __init__(self, file_names):
+        self.file_names = file_names
+        super().__init__(
+            "Response declares files that are not present in storage: {}".format(
+                ", ".join(file_names)
+            )
+        )
+
+
 class DraftSaveException(Exception):
     pass
 

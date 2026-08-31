@@ -74,6 +74,45 @@ class TestFileUploadService(TestCase):
         result = api.remove_file("foo")
         self.assertFalse(result)
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
+    )
+    def test_file_exists(self):
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        conn.put_object(
+            Bucket="mybucket",
+            Key="submissions_attachments/foo",
+            Body=b"How d'ya do?"
+        )
+        self.assertTrue(api.file_exists("foo"))
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
+    )
+    def test_file_exists_not_uploaded(self):
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        self.assertFalse(api.file_exists("foo"))
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
+    )
+    @patch.object(boto3, "client")
+    def test_file_exists_error(self, mock_s3):
+        with raises(exceptions.FileUploadInternalError):
+            mock_s3.side_effect = Exception("Oh noes")
+            api.file_exists("foo")
+
     def test_get_upload_url_no_bucket(self):
         with raises(exceptions.FileUploadInternalError):
             api.get_upload_url("foo", "bar")
@@ -243,6 +282,16 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertIn("Date", metadata)
         self.assertIn("Content-MD5", metadata)
         self.assertIn("Content-Length", metadata)
+
+    def test_file_exists(self):
+        self.assertFalse(self.backend.file_exists(self.key))
+
+        upload_url = self.backend.get_upload_url(self.key, self.content_type)
+        self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
+
+        self.assertTrue(self.backend.file_exists(self.key))
 
     def test_upload_download(self):
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
@@ -446,6 +495,22 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         upload_url = self.backend.get_upload_url(self.key, "bar")
         response = self.client.put(upload_url, data={"attachment": self.content})
         self.assertEqual(302, response.status_code)
+
+    @ddt.data("noël.txt", "myfile.txt")
+    def test_file_exists(self, key):
+        """
+        Test that file_exists only reports a file once it has been uploaded.
+        """
+        self.key = key
+        self.assertFalse(self.backend.file_exists(self.key))
+
+        self.client.login(username=self.username, password=self.password)
+        upload_url = self.backend.get_upload_url(self.key, "bar")
+        self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
+
+        self.assertTrue(self.backend.file_exists(self.key))
 
     @ddt.data("noël.txt", "myfile.txt")
     def test_upload_download(self, key):
