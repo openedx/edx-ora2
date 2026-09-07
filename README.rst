@@ -14,7 +14,11 @@ If you'll be modifying ORA code, the `Open edX Developer Stack`_ is a Docker-bas
 edX engineers follow the `guides on our wiki <https://openedx.atlassian.net/wiki/spaces/EDUCATOR/pages/9765004/ORA+Developer+Guide>`_.
 Reading this page before contributing **is highly recommended**.
 
+Additionally, consult the `Repo Docs`_ and `ORA Developer Guide`_ for architectural decisions and other information on how to develop for ORA.
+
 .. _Open edX Developer Stack: https://github.com/openedx/devstack
+.. _Repo Docs: https://github.com/openedx/edx-ora2/tree/master/docs
+.. _ORA Developer Guide: https://github.com/openedx/edx-ora2/tree/master/docs/developers_guide.rst
 
 License
 =======
