@@ -64,11 +64,9 @@ export class ValidationAlert {
     const view = this;
 
     if (this.isVisible()) {
-      $(this.element).animate(
-        { 'background-color': view.ALERT_YELLOW }, 300, 'swing', function () {
-          $(this).animate({ 'background-color': view.DARK_GREY }, 700, 'swing');
-        },
-      );
+      $(this.element).animate({ 'background-color': view.ALERT_YELLOW }, 300, 'swing', function () {
+        $(this).animate({ 'background-color': view.DARK_GREY }, 700, 'swing');
+      });
     } else {
       // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
       // the height of the editing area to be 100% of that element minus those constraints.

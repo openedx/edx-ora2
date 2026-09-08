@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Button, DataTable } from '@openedx/paragon';
 
 const getReadableTime = (timestamp) => moment(timestamp).fromNow(true);
+
+const RefreshAction = ({ refreshData }) => (
+  <Button onClick={() => refreshData()}>{gettext('Refresh')}</Button>
+);
+
+RefreshAction.propTypes = {
+  refreshData: PropTypes.func.isRequired,
+};
+
+const ActionCell = ({ row, reviewLearnerAction }) => {
+  const { isSelected, original: { username: learnerUsername } } = row;
+  return isSelected ? (
+    <Button
+      variant="link"
+      size="sm"
+      data-testid="review-learner-button"
+      onClick={() => reviewLearnerAction(learnerUsername)}
+    >
+      {gettext('Review')}
+    </Button>
+  ) : null;
+};
+
+ActionCell.propTypes = {
+  row: PropTypes.shape({
+    isSelected: PropTypes.bool.isRequired,
+    original: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  reviewLearnerAction: PropTypes.func.isRequired,
+};
 
 const WaitingStepList = ({
   studentList,
@@ -16,13 +48,22 @@ const WaitingStepList = ({
     created_at: getReadableTime(item.created_at),
   }));
 
-  const RefreshAction = () => (
-    <Button onClick={() => refreshData()}>{gettext('Refresh')}</Button>
-  );
-
-  const reviewLearnerAction = (learnerUsername) => {
+  const reviewLearnerAction = useCallback((learnerUsername) => {
     findLearner(learnerUsername);
-  };
+  }, [findLearner]);
+
+  const additionalColumns = useMemo(() => (
+    selectableLearnersEnabled
+      ? [
+        {
+          id: 'action',
+          Header: gettext('Action'),
+          // eslint-disable-next-line react/no-unstable-nested-components
+          Cell: (props) => <ActionCell {...props} reviewLearnerAction={reviewLearnerAction} />,
+        },
+      ]
+      : []
+  ), [selectableLearnersEnabled, reviewLearnerAction]);
 
   return (
     <DataTable
@@ -30,27 +71,7 @@ const WaitingStepList = ({
       data={studentListWithTimeAgo}
       isSelectable={selectableLearnersEnabled}
       maxSelectedRows={1}
-      additionalColumns={
-        selectableLearnersEnabled
-          ? [
-            {
-              id: 'action',
-              Header: gettext('Action'),
-              // eslint-disable-next-line react/prop-types
-              Cell: ({ row: { isSelected, original: { username: learnerUsername } } }) => (isSelected ? (
-                <Button
-                  variant="link"
-                  size="sm"
-                  data-testid="review-learner-button"
-                  onClick={() => reviewLearnerAction(learnerUsername)}
-                >
-                  {gettext('Review')}
-                </Button>
-              ) : null),
-            },
-          ]
-          : []
-      }
+      additionalColumns={additionalColumns}
       columns={[
         {
           Header: gettext('Username'),
@@ -77,7 +98,7 @@ const WaitingStepList = ({
           accessor: 'workflow_status',
         },
       ]}
-      tableActions={[<RefreshAction />]}
+      tableActions={[<RefreshAction refreshData={refreshData} />]}
     >
       <DataTable.TableControlBar />
       <DataTable.Table />

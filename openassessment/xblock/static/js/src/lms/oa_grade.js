@@ -228,9 +228,7 @@ export class GradeView {
 
     // Submit the feedback to the server
     // When the server reports success, update the UI to indicate that we'v submitted.
-    this.server.submitFeedbackOnAssessment(
-      this.feedbackText(), this.feedbackOptions(),
-    ).done(
+    this.server.submitFeedbackOnAssessment(this.feedbackText(), this.feedbackOptions()).done(
       () => { view.feedbackState('submitted'); },
     ).fail((errMsg) => {
       baseView.toggleActionError('feedback_assess', errMsg);

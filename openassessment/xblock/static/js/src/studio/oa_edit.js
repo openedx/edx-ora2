@@ -83,18 +83,12 @@ export class StudioView {
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
 
-    this.assessmentsStepsView = new EditAssessmentsStepsView(
-      $('#oa_assessment_steps_editor_wrapper', this.element).get(0), assessmentLookupDictionary,
-    );
+    this.assessmentsStepsView = new EditAssessmentsStepsView($('#oa_assessment_steps_editor_wrapper', this.element).get(0), assessmentLookupDictionary);
 
-    this.settingsView = new EditSettingsView(
-      $('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data,
-    );
+    this.settingsView = new EditSettingsView($('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data);
 
     // Initialize the schedule tab
-    this.scheduleView = new EditScheduleView(
-      $('#oa_schedule_editor_wrapper', this.element).get(0), assessmentLookupDictionary,
-    );
+    this.scheduleView = new EditScheduleView($('#oa_schedule_editor_wrapper', this.element).get(0), assessmentLookupDictionary);
 
     // list all views in tab order for easy iteration, e.g. validation
     this.views = [
