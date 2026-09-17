@@ -85,10 +85,7 @@ exclude = ["*.tests", "*.tests.*"]
 branch = true
 source_pkgs = ["openassessment"]
 omit = [
-    "*/tests/*",
     "*/migrations/*",
-    "*/__pycache__/*",
-    "*/settings.py",
     "*/runtime_imports/*",
 ]
 
