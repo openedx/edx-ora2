@@ -89,7 +89,7 @@ omit = [
     "*/migrations/*",
     "*/__pycache__/*",
     "*/settings.py",
-    "openassessment/runtime_imports/*",
+    "*/runtime_imports/*",
 ]
 
 [tool.coverage.report]
