@@ -1,11 +1,18 @@
 // Karma configuration
+const path = require('path');
 const webpackConfig = require('./webpack.prod.config.js');
+
+// Use process.cwd() (guaranteed to be project root when `npm test` runs) to compute
+// absolute paths for files outside the basePath (node_modules, require-config.js).
+// This avoids any path traversal issues since basePath (src/openassessment/xblock/static)
+// is 3 levels deep from src/, not the project root.
+const projectRoot = process.cwd();
 
 module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: 'openassessment/xblock/static',
+    basePath: 'src/openassessment/xblock/static',
 
 
     plugins: [
@@ -33,17 +40,19 @@ module.exports = function(config) {
       'js/lib/jquery.timepicker.min.js',
       'js/lib/jquery-ui-1.10.4.min.js',
       'js/lib/underscore-min.js',
-      '../../../node_modules/@babel/polyfill/dist/polyfill.js',
-      '../../../node_modules/backbone/backbone.js',
-      '../../../node_modules/backgrid/lib/backgrid.min.js',
-      '../../../node_modules/requirejs/require.js',
-      '../../../require-config.js',
+      // Use absolute paths from projectRoot for files outside src/openassessment/ (node_modules,
+      // require-config.js) since basePath is 3 levels deep from src/, not the project root.
+      path.resolve(projectRoot, 'node_modules/@babel/polyfill/dist/polyfill.js'),
+      path.resolve(projectRoot, 'node_modules/backbone/backbone.js'),
+      path.resolve(projectRoot, 'node_modules/backgrid/lib/backgrid.min.js'),
+      path.resolve(projectRoot, 'node_modules/requirejs/require.js'),
+      path.resolve(projectRoot, 'require-config.js'),
       {
-        pattern: '../../../node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
+        pattern: path.resolve(projectRoot, 'node_modules/moment-timezone/builds/moment-timezone-with-data.min.js'),
         served: true, included: false
       },
       {
-        pattern: '../../../node_modules/moment/min/moment-with-locales.min.js',
+        pattern: path.resolve(projectRoot, 'node_modules/moment/min/moment-with-locales.min.js'),
         served: true, included: false
       },
       //

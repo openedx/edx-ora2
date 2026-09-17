@@ -2,15 +2,19 @@ name: Python CI
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
   pull_request:
     branches:
       - "**"
+  workflow_call:
 
 jobs:
   run_tests:
-    name: Tests
+    name: ${{ matrix.toxenv }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -20,19 +24,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: setup python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: ${{ matrix.python-version }}
 
-      - name: Install pip
-        run: pip install -r requirements/pip.txt
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          python-version: "${{ matrix.python-version }}"
+          enable-cache: true
 
       - name: Set env variable
         run: export AWS_CONFIG_FILE=/dev/null
 
-      - name: Install Dependencies
-        run: pip install -r requirements/ci.txt
+      - name: Install CI dependencies
+        run: uv sync --group ci
 
       - name: Install GNU gettext
         run: sudo apt-get install gettext
@@ -43,9 +46,7 @@ jobs:
           node-version-file: ".nvmrc"
 
       - name: Run Tests
-        env:
-          TOXENV: ${{ matrix.toxenv }}
-        run: tox
+        run: uv run tox -e ${{ matrix.toxenv }}
 
       - name: Run Coverage
         if: matrix.python-version == '3.12' && matrix.toxenv=='django42'

@@ -88,15 +88,15 @@ config = mergeWithRules({
 
 Object.assign(config, {
   entry: {
-    'openassessment-lms': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms_index.js'),
-    'openassessment-studio': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/studio_index.js'),
-    'openassessment-rtl': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-rtl.scss'),
-    'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
-    'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
-    'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
+    'openassessment-lms': path.resolve(process.cwd(), 'src/openassessment/xblock/static/js/src/lms_index.js'),
+    'openassessment-studio': path.resolve(process.cwd(), 'src/openassessment/xblock/static/js/src/studio_index.js'),
+    'openassessment-rtl': path.resolve(process.cwd(), 'src/openassessment/xblock/static/sass/openassessment-rtl.scss'),
+    'openassessment-ltr': path.resolve(process.cwd(), 'src/openassessment/xblock/static/sass/openassessment-ltr.scss'),
+    'openassessment-editor-textarea': path.resolve(process.cwd(), 'src/openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
+    'openassessment-editor-tinymce': path.resolve(process.cwd(), 'src/openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
   },
   output: {
-    path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
+    path: path.resolve(process.cwd(), 'src/openassessment/xblock/static/dist'),
   },
   optimization: {},
   plugins: [
@@ -110,7 +110,7 @@ Object.assign(config, {
       filename: '[name].css',
     }),
     new webpack.ProvidePlugin({
-      Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
+      Backgrid: path.resolve(path.join(__dirname, 'src/openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
     ...process.env.WEBPACK_SERVE ? [new WebpackManifestPlugin({
       seed: {
@@ -122,6 +122,6 @@ Object.assign(config, {
   ],
 });
 
-config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];
+config.resolve.modules = ['node_modules', path.resolve(__dirname, 'src/openassessment/xblock/static/js/src')];
 
 module.exports = config;

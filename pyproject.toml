@@ -1,0 +1,211 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm>8.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ora2"
+description = "edx-ora2"
+readme = "README.rst"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Open edX Project", email = "oscm@openedx.org" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "bleach>=6.0.0",
+    "boto3",
+    "defusedxml",
+    "django>=4.2",
+    "django-model-utils",
+    "django-simple-history",
+    "djangorestframework",
+    "edx-django-utils",
+    "edx-i18n-tools",
+    "edx-opaque-keys",
+    "edx-submissions",
+    "edx-toggles",
+    "html5lib",
+    "jsonfield",
+    "lazy",
+    "lxml",
+    "openedx-events",
+    "openedx-filters",
+    "path.py",
+    "python-dateutil",
+    "python-swiftclient",
+    "pytz",
+    "voluptuous",
+    "XBlock",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/openedx/edx-ora2"
+
+[project.entry-points."xblock.v1"]
+openassessment = "openassessment.xblock.openassessmentblock:OpenAssessmentBlock"
+
+[tool.setuptools_scm]
+version_scheme = "only-version"
+local_scheme = "no-local-version"
+# Dummy version number for when .git isn't accessible.
+# This happens, for example, when bind-mounting into a Docker image.
+fallback_version = "0.0.0.dev0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["openassessment*"]
+exclude = ["*.tests", "*.tests.*"]
+
+[tool.setuptools.package-data]
+# locale/ is a symlink to conf/locale/ — include the real path instead
+# (setuptools cannot copy symlinked directories into the wheel)
+"openassessment" = [
+    "conf/locale/**",
+    "templates/**",
+    "xblock/static/**",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["tests*", "*.tests*", "spec*", "*.spec*"]
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["openassessment"]
+omit = [
+    "*/migrations/*",
+    "*/runtime_imports/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[dependency-groups]
+# Framework-independent test dependencies
+test-base = [
+    "celery",
+    "coverage",
+    "ddt",
+    "factory-boy",
+    "freezegun",
+    "mock",
+    "more-itertools",
+    "moto",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "testfixtures",
+    "xblock-sdk",
+]
+# Default test env: current supported Django version
+# To add a new Django version: add a group below (e.g. django60), add it to conflicts,
+# and add a tox env + CI matrix entry.
+test = [
+    { include-group = "test-base" },
+    "Django>=5.2,<6.0",
+]
+# Legacy Django 4.2 support
+django42 = [
+    { include-group = "test-base" },
+    "Django>=4.2,<5.0",
+]
+quality = [
+    { include-group = "test" },
+    "edx-lint",
+    "pycodestyle",
+    "pyinstrument",
+]
+doc = [
+    { include-group = "test" },
+    "build",
+    "doc8",
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-book-theme",
+    "sphinx-copybutton",
+    "sphinxcontrib-mermaid",
+    "twine",
+]
+# Minimal group for CI bootstrap — install this, then call uv run tox
+ci = [
+    "tox",
+    "tox-uv>=1",
+]
+dev = [
+    { include-group = "quality" },
+    { include-group = "ci" },
+    { include-group = "doc" },
+    "coveralls",
+]
+
+[tool.uv]
+package = true
+default-groups = []
+# test and django42 both pin a Django version — they can't be resolved together.
+# Install one at a time: uv sync --group test OR uv sync --group django42.
+conflicts = [
+    [
+        { group = "test" },
+        { group = "django42" },
+    ],
+]
+
+#  DO NOT EDIT constraint-dependencies DIRECTLY.
+#  This list is managed by `edx_lint write_uv_constraints`
+#  and will be overwritten the next time `make upgrade` is run.
+#  - GLOBAL constraints: edit edx_lint/files/common_constraints.txt
+#  - REPO-SPECIFIC constraints: edit [tool.edx_lint].uv_constraints in this file
+constraint-dependencies = [
+    "Django<6.0",
+    "elasticsearch<7.14.0",
+    "ddt==1.0.0",
+    "freezegun<=0.3.14",
+    "moto<5.0",
+]
+[tool.edx_lint]
+# Repo-specific version overrides — machine-managed via edx_lint write_uv_constraints.
+# Do not edit [tool.uv].constraint-dependencies directly; edit this list instead.
+uv_constraints = [
+    "ddt==1.0.0",              # Test failures at versions > 1.0.0
+    "freezegun<=0.3.14",       # Test failures on 0.3.15
+    "moto<5.0",                # Moto latest version has breaking changes; tests need fixing
+]
+
+[tool.semantic_release]
+# Version is managed by setuptools-scm via git tags — no static version_toml field.
+# build_command uses python -m build (not uv build) because the PSR action environment
+# does not have uv available.
+build_command = "python -m pip install --upgrade build && SETUPTOOLS_SCM_PRETEND_VERSION=$NEW_VERSION python -m build"
+
+[tool.isort]
+line_length = 120
+known_third_party = ["ddt", "mock"]
+known_django = ["django"]
+known_djangoapp = ["jsonfield", "model_utils"]
+known_edx = []
+known_first_party = ["openassessment"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "DJANGOAPP", "EDX", "FIRSTPARTY", "LOCALFOLDER"]
+force_sort_within_sections = true
