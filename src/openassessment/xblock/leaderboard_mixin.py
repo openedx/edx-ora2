@@ -143,8 +143,8 @@ class LeaderboardMixin:
         except FileUploadError as exc:
             logger.exception(
                 'FileUploadError: URL retrieval failed for key %s with error %s',
-                file_key=file_key,
-                error=exc
+                file_key,
+                exc,
             )
             file_download_url = ''
         return file_download_url

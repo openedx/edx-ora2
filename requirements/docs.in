@@ -1,8 +1,0 @@
-# Requirements to build the documentation.
--c constraints.txt
-
-sphinx
-sphinx-book-theme
-sphinx-copybutton
-sphinx-autobuild
-sphinxcontrib-mermaid

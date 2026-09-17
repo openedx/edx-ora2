@@ -13,6 +13,7 @@ import pytz
 
 from lxml import etree
 from openassessment.xblock.utils.data_conversion import update_assessments_format
+from openassessment.xblock.utils.defaults import DATE_CONFIG_MANUAL, DATE_CONFIG_SUBSECTION, DATE_CONFIG_COURSE_END
 from openassessment.xblock.lms_mixin import GroupAccessDict
 
 log = logging.getLogger(__name__)
@@ -725,6 +726,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.submission_due is not None:
         root.set('submission_due', str(oa_block.submission_due))
 
+    # Set date configuration type
+    if oa_block.date_config_type is not None:
+        root.set('date_config_type', str(oa_block.date_config_type))
+
     # Set leaderboard show
     if oa_block.leaderboard_show:
         root.set('leaderboard_show', str(oa_block.leaderboard_show))
@@ -947,6 +952,15 @@ def parse_from_xml(root, block=None):
     if 'show_rubric_during_response' in root.attrib:
         show_rubric_during_response = _parse_boolean(str(root.attrib['show_rubric_during_response']))
 
+    date_config_type = None
+    if 'date_config_type' in root.attrib:
+        date_config_type = str(root.attrib['date_config_type'])
+        valid_date_config_types = [DATE_CONFIG_MANUAL, DATE_CONFIG_SUBSECTION, DATE_CONFIG_COURSE_END]
+        if date_config_type not in valid_date_config_types:
+            raise UpdateFromXmlError(
+                'The "date_config_type" value must be one of: {}.'.format(", ".join(valid_date_config_types))
+            )
+
     # Retrieve the title
     title_el = root.find('title')
     title = block and block.display_name
@@ -1023,6 +1037,7 @@ def parse_from_xml(root, block=None):
         'show_rubric_during_response': show_rubric_during_response,
         'allow_learner_resubmissions': allow_learner_resubmissions,
         'resubmissions_grace_period': resubmissions_grace_period,
+        'date_config_type': date_config_type,
     }
 
 
