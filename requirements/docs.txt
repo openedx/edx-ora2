@@ -8,7 +8,7 @@ accessible-pygments==0.0.5
     # via pydata-sphinx-theme
 alabaster==1.0.0
     # via sphinx
-anyio==4.13.0
+anyio==4.14.2
     # via
     #   starlette
     #   watchfiles
@@ -65,18 +65,18 @@ soupsieve==2.8.4
     # via beautifulsoup4
 sphinx==9.1.0
     # via
-    #   -r requirements/docs.in
+    #   -r docs.in
     #   pydata-sphinx-theme
     #   sphinx-autobuild
     #   sphinx-book-theme
     #   sphinx-copybutton
     #   sphinxcontrib-mermaid
 sphinx-autobuild==2025.8.25
-    # via -r requirements/docs.in
+    # via -r docs.in
 sphinx-book-theme==1.2.0
-    # via -r requirements/docs.in
+    # via -r docs.in
 sphinx-copybutton==0.5.2
-    # via -r requirements/docs.in
+    # via -r docs.in
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==2.0.0
@@ -86,7 +86,7 @@ sphinxcontrib-htmlhelp==2.1.0
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
 sphinxcontrib-mermaid==2.0.2
-    # via -r requirements/docs.in
+    # via -r docs.in
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
