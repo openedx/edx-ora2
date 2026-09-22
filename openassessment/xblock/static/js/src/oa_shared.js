@@ -28,13 +28,3 @@ if (typeof window.Logger === 'undefined') {
     log() {},
   };
 }
-
-// Stub MathJax is the runtime doesn't provide it
-if (typeof window.MathJax === 'undefined') {
-  window.MathJax = {
-    Hub: {
-      Typeset() {},
-      Queue() {},
-    },
-  };
-}
