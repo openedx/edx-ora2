@@ -12,6 +12,7 @@ import StudentTrainingView from './oa_training';
 import PeerView from './oa_peer';
 import ResponseEditorLoader from './oa_response_editor';
 import renderWaitingStepDetailsView from './oa_staff_waiting_step';
+import { typesetMath } from '../oa_mathjax';
 
 /**
 Interface for student-facing views.
@@ -276,8 +277,7 @@ export class BaseView {
 
           // Render in mathjax
           previewContainer.parent().parent().parent().show();
-          // eslint-disable-next-line new-cap
-          MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
+          typesetMath(previewContainer[0]);
         },
       );
     }
