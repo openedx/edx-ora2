@@ -7,10 +7,10 @@
 packaging==26.2
     # via wheel
 wheel==0.47.0
-    # via -r requirements/pip.in
+    # via -r pip.in
 
 # The following packages are considered to be unsafe in a requirements file:
 pip==26.1.2
-    # via -r requirements/pip.in
-setuptools==82.0.1
-    # via -r requirements/pip.in
+    # via -r pip.in
+setuptools==83.0.0
+    # via -r pip.in
