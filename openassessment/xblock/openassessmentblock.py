@@ -935,6 +935,7 @@ class OpenAssessmentBlock(
         block.allow_latex = config['allow_latex']
         block.allow_learner_resubmissions = config['allow_learner_resubmissions']
         block.allow_multiple_files = config['allow_multiple_files']
+        block.date_config_type = config['date_config_type'] or DATE_CONFIG_MANUAL
         block.display_name = config['title']
         block.file_upload_response = config['file_upload_response']
         block.file_upload_type = config['file_upload_type']
