@@ -4,21 +4,21 @@
 #
 #    make upgrade
 #
-annotated-doc==0.0.4
+annotated-doc==0.0.5
     # via typer
-cachetools==7.1.4
+cachetools==7.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-certifi==2026.6.17
+certifi==2026.7.22
     # via requests
-charset-normalizer==3.4.9
+charset-normalizer==3.5.1
     # via requests
 colorama==0.4.6
     # via
     #   -r requirements/tox.txt
     #   tox
-coverage[toml]==7.15.2
+coverage[toml]==7.16.2
     # via coveralls
 coveralls==4.1.0
     # via -r requirements/ci.in
@@ -26,40 +26,40 @@ distlib==0.4.3
     # via
     #   -r requirements/tox.txt
     #   virtualenv
-filelock==3.31.0
+filelock==4.0.7
     # via
     #   -r requirements/tox.txt
     #   python-discovery
     #   tox
     #   virtualenv
-idna==3.18
+idna==3.20
     # via requests
 markdown-it-py==4.2.0
     # via rich
 mdurl==0.1.2
     # via markdown-it-py
-packaging==26.2
+packaging==26.3
     # via
     #   -r requirements/tox.txt
     #   pyproject-api
     #   tox
-platformdirs==4.10.1
+    #   virtualenv
+platformdirs==4.12.2
     # via
     #   -r requirements/tox.txt
-    #   python-discovery
     #   tox
     #   virtualenv
 pluggy==1.6.0
     # via
     #   -r requirements/tox.txt
     #   tox
-pygments==2.20.0
+pygments==2.21.0
     # via rich
-pyproject-api==1.10.1
+pyproject-api==1.11.2
     # via
     #   -r requirements/tox.txt
     #   tox
-python-discovery==1.4.4
+python-discovery==1.6.1
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -74,17 +74,21 @@ tomli-w==1.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-tox==4.57.0
+tox==4.64.5
     # via -r requirements/tox.txt
-typer==0.27.0
+typer==0.27.2
     # via coveralls
-urllib3==2.7.0
+typing-extensions==4.16.0
+    # via
+    #   -r requirements/tox.txt
+    #   tox
+urllib3==2.8.0
     # via requests
-virtualenv==21.6.1
+virtualenv==21.14.1
     # via
     #   -r requirements/tox.txt
     #   tox
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==83.0.0
+setuptools==84.0.0
     # via -r requirements/ci.in
