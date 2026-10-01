@@ -1,6 +1,7 @@
 /**
  * Encapsulate interactions with OpenAssessment XBlock handlers.
  */
+import { typesetMath } from './oa_mathjax';
 
 const jsonContentType = 'application/json; charset=utf-8';
 
@@ -87,7 +88,7 @@ export class Server {
    */
   renderLatex(element) {
     element.filter('.allow--latex').each(function () {
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
+      typesetMath(this);
     });
   }
 
