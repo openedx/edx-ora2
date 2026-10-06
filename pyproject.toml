@@ -64,22 +64,31 @@ local_scheme = "no-local-version"
 # This happens, for example, when bind-mounting into a Docker image.
 fallback_version = "0.0.0.dev0"
 
+[tool.setuptools]
+# Without this, setuptools-scm's git-tracked-file list makes every file under
+# openassessment/ package data by default, bypassing package-data/exclude-package-data
+# below and crashing the build on the openassessment/locale symlink (can't copy a
+# symlinked directory as a regular file).
+include-package-data = false
+
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["openassessment*"]
-exclude = ["*.tests", "*.tests.*"]
+exclude = ["*.test", "*.test.*", "*.tests", "*.tests.*"]
 
 [tool.setuptools.package-data]
-# locale/ is a symlink to conf/locale/ — include the real path instead
-# (setuptools cannot copy symlinked directories into the wheel)
 "openassessment" = [
-    "conf/locale/**",
-    "templates/**",
-    "xblock/static/**",
+    "locale/**/*.po",
+    "locale/**/*.mo",
+    "templates/**/*.html",
+    "templates/**/*.underscore",
+    "xblock/static/css/lib/backgrid/*.css",
+    "xblock/static/js/lib/backgrid/*.js",
+    "xblock/static/js/src/**/*.js",
+    "xblock/static/dist/manifest.json",
+    "xblock/static/dist/*.js",
+    "xblock/static/dist/*.css",
 ]
-
-[tool.setuptools.exclude-package-data]
-"*" = ["tests*", "*.tests*", "spec*", "*.spec*"]
 
 [tool.coverage.run]
 branch = true
