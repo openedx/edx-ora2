@@ -75,10 +75,10 @@ class CriterionOptionDeserializationTest(CacheResetTest):
         self.assertEqual(
             criteria_exception_message.exception.errors,
             {
-                'criteria': [
-                    {'options': ['This field is required.']},
-                    {}  # No errors in second criterion
-                ]
+                'criteria': {
+                    0: {'options': ['This field is required.']},
+                    # missing dict means no errors in second criterion
+                }
             }
         )
 
