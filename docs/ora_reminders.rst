@@ -17,9 +17,9 @@ Set ``ENABLE_ORA_REMINDERS`` to ``True`` in your Django settings:
 
     ENABLE_ORA_REMINDERS = True
 
-The notification type ``ora_reminder`` must also be registered in edx-platform's
-``openedx.core.djangoapps.notifications.base_notification`` (already included
-in edx-platform ≥ the version that ships this feature).
+The notification type ``ora_reminder`` must also be registered in
+edx-platform's ``openedx.core.djangoapps.notifications.base_notification``
+(already included in edx-platform ≥ the version that ships this feature).
 
 Configuration Settings
 ----------------------
