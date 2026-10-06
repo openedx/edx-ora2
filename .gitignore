@@ -38,6 +38,9 @@ test_ora2db
 test_ora2db-journal
 test/logs/
 
+# Sphinx build output
+docs/_build/
+
 # Mr Developer
 .mr.developer.cfg
 .project
