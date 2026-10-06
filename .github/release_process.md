@@ -4,19 +4,19 @@ Before Merging a pull request:
 
 - [ ] If any user-facing text has changed, run `make check_translations_up_to_date` to recompile translation files
 - [ ] If your changes include JS/CSS changes, run `make static` to rebuild static assets
-- [ ] Get a green Travis build for this PR
+- [ ] Get a green CI build for this PR
 - [ ] Address PR comments
 - [ ] Get approving review from code owner
-- [ ] Bump version number in [openassessment/\_\_init\_\_.py](../openassessment/__init__.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventions
+- [ ] Use a [Conventional Commits](https://www.conventionalcommits.org/) commit message (checked by the `commitlint` workflow) so [python-semantic-release](https://python-semantic-release.readthedocs.io/) can determine the next version automatically — there is no version number to bump by hand
 
 ## Publish to PyPi
 
-When a PR is ready to release, do the following to publish a new version of ORA:
+Publishing happens automatically; there's nothing to do by hand:
 
 - [ ] Merge to `master`
-- [ ] Create a [release tag on GitHub](https://github.com/openedx/edx-ora2/releases) matching version number in `openassessment/__init__.py`/`package.json`
-- [ ] Grab a coffee while our automated process submits the build to PyPi
-- [ ] Confirm new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
+- [ ] The [Semantic Release workflow](workflows/release.yml) re-runs CI, and if it passes, python-semantic-release inspects the commit messages since the last release to compute the next version, creates the git tag and GitHub release, and builds the distributions
+- [ ] The workflow's `publish_to_pypi` job uploads those distributions to PyPI
+- [ ] Confirm the new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
 
 ## Release to Production
 
