@@ -271,7 +271,11 @@
   }
 
   #oa_editor_window_title{
-    @include float(left);
+    flex: 1 0 auto;
+
+    @if $bi-app-direction == rtl {
+      padding-right: 74px;
+    }
   }
 
   input[type="number"]{
@@ -285,18 +289,30 @@
     background-color: #e5e5e5;
     width: 100%;
     top: 0;
-    height: 42px;
+    min-height: 42px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 4px;
 
     .editor_tabs {
-
       display: flex;
+      flex-wrap: wrap;
       justify-content: flex-end;
-      // Leave room for Studio's fullscreen button, which floats over this strip.
-      padding-right: 74px;
+      row-gap: 4px;
+      @include margin-left(auto);
+
+      @if $bi-app-direction == ltr {
+        &::after {
+          content: "";
+          flex: none;
+          width: 74px;
+        }
+      }
 
       .oa_editor_tab {
         padding: 0 10px;
-        margin: 0px 1%;
+        margin: 0 10px;
         height: 35px;
         @include border-radius(5px);
         box-shadow: none;
@@ -412,7 +428,7 @@
   }
 
   .oa_editor_content_wrapper {
-    height: calc(100% - 42px);
+    height: calc(100% - var(--oa-editor-header-height, 42px));
     width: 100%;
     @include border-radius(3px);
     border: 1px solid $edx-gray-d1;

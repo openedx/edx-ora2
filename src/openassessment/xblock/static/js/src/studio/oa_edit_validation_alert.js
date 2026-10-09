@@ -27,7 +27,30 @@ export class ValidationAlert {
         alert.hide();
       },
     );
+    this.trackHeaderHeight();
     return this;
+  }
+
+  /**
+    Keeps the --oa-editor-header-height custom property in step with the editor header.
+    The header wraps onto more lines on narrow screens, and the editing areas below it
+    are sized against that property.
+    * */
+  trackHeaderHeight() {
+    const header = $('#openassessment_editor_header', this.editorElement);
+    if (!header.length) {
+      return;
+    }
+    const update = () => {
+      const height = header.outerHeight();
+      if (height > 0) {
+        this.editorElement[0].style.setProperty('--oa-editor-header-height', `${height}px`);
+      }
+    };
+    update();
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(update).observe(header[0]);
+    }
   }
 
   /**
@@ -37,12 +60,10 @@ export class ValidationAlert {
         OpenAssessment.ValidationAlert
     */
   hide() {
-    // Finds the height of all other elements in the editor_and_tabs (the Header) and sets the height
-    // of the editing area to be 100% of that element minus those constraints.
-    const headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
+    // The editing area takes up the whole editor except the header.
     this.element.addClass('covered');
     const styles = {
-      height: `Calc(100% - ${headerHeight}px)`,
+      height: 'calc(100% - var(--oa-editor-header-height, 42px))',
       'border-top-right-radius': '3px',
       'border-top-left-radius': '3px',
     };
@@ -70,12 +91,10 @@ export class ValidationAlert {
         },
       );
     } else {
-      // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
-      // the height of the editing area to be 100% of that element minus those constraints.
+      // The editing area takes up the whole editor except the header and the alert.
       this.element.removeClass('covered');
       const alertHeight = this.element.outerHeight();
-      const headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
-      const heightString = `Calc(100% - ${alertHeight + headerHeight}px)`;
+      const heightString = `calc(100% - var(--oa-editor-header-height, 42px) - ${alertHeight}px)`;
       const styles = {
         height: heightString,
         'border-top-right-radius': '0px',
