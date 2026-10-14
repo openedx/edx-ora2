@@ -2,9 +2,9 @@
 * Class wrapping a jquery-ui dialog widget to provide a convenient API
 */
 export class ConfirmationAlert {
-  CONFIRM_STR = gettext('Confirm')
+  CONFIRM_STR = gettext('Confirm');
 
-  CANCEL_STR = gettext('Cancel')
+  CANCEL_STR = gettext('Cancel');
 
   constructor(element) {
     this.dialog = element.dialog({

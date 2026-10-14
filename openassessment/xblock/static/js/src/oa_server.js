@@ -177,9 +177,7 @@ export class Server {
       }).done(function (data) {
         defer.resolveWith(this, [data]);
       }).fail(function () {
-        defer.rejectWith(
-          this, [gettext('The display of ungraded and checked out responses could not be loaded.')],
-        );
+        defer.rejectWith(this, [gettext('The display of ungraded and checked out responses could not be loaded.')]);
       });
     }).promise();
   }

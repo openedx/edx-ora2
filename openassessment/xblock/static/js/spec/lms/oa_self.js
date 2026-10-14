@@ -49,11 +49,28 @@ describe("OpenAssessment.SelfView", function() {
                 }
             }
         });
-        view = baseView.selfView
-        view.renderResponseViaEditor().then(() => {
-            view.installHandlers();
-            done()
-        });
+        view = baseView.selfView;
+        var mockEditorController = {
+            _response: [],
+            load: function(elements) {
+                this.elements = elements;
+                return Promise.resolve();
+            },
+            response: function(texts) {
+                if (typeof texts !== 'undefined') {
+                    this._response = texts;
+                    return this._response;
+                }
+                return this._response;
+            },
+            setOnChangeListener: function(callback) {
+                this._changeCallback = callback;
+            }
+        };
+        
+        view.responseEditorController = mockEditorController;
+        view.installHandlers();
+        done();
     });
 
     afterEach(function() {

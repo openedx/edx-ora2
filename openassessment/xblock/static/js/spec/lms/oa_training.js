@@ -43,7 +43,7 @@ describe("OpenAssessment.StudentTrainingView", function() {
 
         // Create a new stub server
         server = new StubServer();
-        server.renderLatex = jasmine.createSpy('renderLatex')
+        server.renderLatex = jasmine.createSpy('renderLatex');
 
         // Create the object under test
         var rootElement = $('.step--student-training').parent().get(0);
@@ -55,11 +55,35 @@ describe("OpenAssessment.StudentTrainingView", function() {
                 }
             }
         });
-        view = baseView.trainingView
+        view = baseView.trainingView;
+        
+        // Create a mock editor controller to avoid RequireJS loading issues in tests
+        var mockEditorController = {
+            _response: ['', ''],
+            load: function(elements) {
+                this.elements = elements;
+                return Promise.resolve();
+            },
+            response: function(texts) {
+                if (typeof texts !== 'undefined') {
+                    this._response = texts;
+                    return this._response;
+                }
+                return this._response;
+            },
+            setOnChangeListener: function(callback) {
+                this._changeCallback = callback;
+            }
+        };
+        
+        // Mock the responseEditorLoader to avoid async loading issues
+        spyOn(view.responseEditorLoader, 'load').and.returnValue(Promise.resolve(mockEditorController));
+        
+        // Now call renderResponseViaEditor and installHandlers
         view.renderResponseViaEditor().then(() => {
             view.installHandlers();
-            done()
-        })
+            done();
+        });
     });
 
     it("submits an assessment for a training example", function() {

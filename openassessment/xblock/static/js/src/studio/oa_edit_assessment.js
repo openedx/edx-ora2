@@ -453,15 +453,13 @@ export class EditStudentTrainingView {
       $('#student_training_settings_editor_details', this.element),
     ).install();
 
-    this.exampleContainer = new Container(
-      TrainingExample, {
-        containerElement: $('#openassessment_training_example_list', this.element).get(0),
-        templateElement: $('#openassessment_training_example_template', this.element).get(0),
-        addButtonElement: $('.openassessment_add_training_example', this.element).get(0),
-        removeButtonClass: 'openassessment_training_example_remove',
-        containerItemClass: 'openassessment_training_example',
-      },
-    );
+    this.exampleContainer = new Container(TrainingExample, {
+      containerElement: $('#openassessment_training_example_list', this.element).get(0),
+      templateElement: $('#openassessment_training_example_template', this.element).get(0),
+      addButtonElement: $('.openassessment_add_training_example', this.element).get(0),
+      removeButtonClass: 'openassessment_training_example_remove',
+      containerItemClass: 'openassessment_training_example',
+    });
 
     this.exampleContainer.addEventListeners();
   }

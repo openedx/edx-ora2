@@ -129,8 +129,10 @@ export class Rubric {
     callback(rubric.canSubmit());
 
     // Install a handler to update on change
-    $(this.element).on('change keyup drop paste',
-      () => { callback(rubric.canSubmit()); });
+    $(this.element).on(
+      'change keyup drop paste',
+      () => { callback(rubric.canSubmit()); },
+    );
   }
 
   /**
@@ -168,8 +170,10 @@ export class Rubric {
     callback(rubric.changesExist());
 
     // Install a handler to update on change
-    $(this.element).on('change keyup drop paste',
-      () => { callback(rubric.changesExist()); });
+    $(this.element).on(
+      'change keyup drop paste',
+      () => { callback(rubric.changesExist()); },
+    );
   }
 
   /**
