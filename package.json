@@ -53,8 +53,8 @@
     "dev": "fedx-scripts webpack --config webpack.dev.config.js",
     "start": "fedx-scripts webpack-dev-server --progress",
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
-    "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
-    "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"
+    "lint": "fedx-scripts eslint --ext .jsx,.js src/openassessment/xblock/static/js/src/",
+    "lint-fix": "fedx-scripts eslint --ext .jsx,.js src/openassessment/xblock/static/js/src/ --fix"
   },
   "overrides": {
     "@edx/frontend-build": {

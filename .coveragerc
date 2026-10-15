@@ -1,8 +1,0 @@
-[run]
-branch = True
-
-[report]
-include = openassessment/*
-omit =
-    */migrations/*
-    openassessment/runtime_imports/*
