@@ -35,8 +35,8 @@ python-discovery==1.6.1
 tomli-w==1.2.0
     # via tox
 tox==4.64.5
-    # via -r requirements/tox.in
+    # via -r tox.in
 typing-extensions==4.16.0
     # via tox
-virtualenv==21.14.1
+virtualenv==21.14.9
     # via tox
