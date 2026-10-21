@@ -51,7 +51,7 @@ cachetools==7.2.0
     #   tox
 celery==5.6.3
     # via -r requirements/test.txt
-certifi==2026.7.22
+certifi==2026.10.19
     # via
     #   -r requirements/test.txt
     #   requests
