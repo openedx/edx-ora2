@@ -91,9 +91,6 @@ Releasing edx-ora2
   python-semantic-release computes and tags the next version and
   publishes it to PyPI automatically -- see the Github Checklist above
 
-- create a corresponding release on GitHub:
-  https://github.com/openedx/edx-ora2/releases
-
 - generate a diff between the new tag and the old one
 
   - e.g. https://github.com/openedx/edx-ora2/compare/0.2.2...0.2.3
