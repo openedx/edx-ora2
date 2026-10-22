@@ -41,4 +41,4 @@ social-auth-core<5.0.0
 # Exceptional conditions for removal:
 # - We stop using pip-tools, OR
 # - We migrate to the proposed `pip-tools[stable]` extra: https://github.com/jazzband/pip-tools/pull/2257
-pip<26.2.1  # Known to work with pip-tools==7.6.1
+pip<=26.2.2  # Known to work with pip-tools==7.6.2
