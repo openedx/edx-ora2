@@ -5,19 +5,6 @@ resolution-markers = [
     "python_full_version >= '3.13'",
     "python_full_version < '3.13'",
 ]
-conflicts = [[
-    { package = "ora2", group = "django42" },
-    { package = "ora2", group = "test" },
-], [
-    { package = "ora2", group = "django42" },
-    { package = "ora2", group = "doc" },
-], [
-    { package = "ora2", group = "django42" },
-    { package = "ora2", group = "quality" },
-], [
-    { package = "ora2", group = "dev" },
-    { package = "ora2", group = "django42" },
-]]
 
 [manifest]
 constraints = [
@@ -257,11 +244,11 @@ wheels = [
 
 [[package]]
 name = "certifi"
-version = "2026.6.17"
+version = "2026.10.19"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c9/c7/424b75da314c1045981bd9777432fad05a9e0c69daa4ed7e308bbaffe405/certifi-2026.6.17.tar.gz", hash = "sha256:024c88eeec92ca068db80f02b8b07c9cef7b9fe261d1d535abfd5abd6f6af432", size = 134594, upload-time = "2026-06-17T10:31:07.894Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/bd/1436c50cc46699de0230fbaacc1d1de7bfec413176099949e9d5112e88f2/certifi-2026.10.19.tar.gz", hash = "sha256:035c1e85572b141bf1c3a3eff0e33a8eb74917522f2559075ff8d2fea780a1ae", size = 137598, upload-time = "2026-10-20T02:24:16.604Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/2f/c5464532e965badff2f4c4c1a3a83f5697f0d7c407ed0cda44aaa99bb451/certifi-2026.6.17-py3-none-any.whl", hash = "sha256:2227dcbaafe0d2f59279d1762ddddc37783ed4354594f194ffc31d20f41fc3db", size = 133289, upload-time = "2026-06-17T10:31:06.348Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/51/29046e48f693c54e5b7412216d447a1d8362c9653148d98c02cdf65fa733/certifi-2026.10.19-py3-none-any.whl", hash = "sha256:42d35340cc5b9ba78e818ddbff0c5b1c2b779de448a340fd1b989f5fa8670e1b", size = 136464, upload-time = "2026-10-20T02:24:15.072Z" },
 ]
 
 [[package]]
@@ -269,7 +256,7 @@ name = "cffi"
 version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/57/5f/ff100cae70ebe9d8df1c01a00e510e45d9adb5c1fdda84791b199141de97/cffi-2.1.0.tar.gz", hash = "sha256:efc1cdd798b1aaf39b4610bba7aad28c9bea9b910f25c784ccf9ec1fa719d1f9", size = 531036, upload-time = "2026-07-06T21:34:30.382Z" }
 wheels = [
@@ -415,7 +402,7 @@ name = "click"
 version = "8.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/d4/81420972a676e8ffea40450d8c8c92943e7218a78fe9b64359836cc9876b/click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6", size = 338000, upload-time = "2026-06-24T17:45:15.148Z" }
 wheels = [
@@ -589,7 +576,7 @@ name = "coveralls"
 version = "4.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "coverage", marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "coverage" },
     { name = "requests" },
     { name = "typer" },
 ]
@@ -603,7 +590,7 @@ name = "cryptography"
 version = "49.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "platform_python_implementation != 'PyPy' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1f/99/d1c90d6041656cc6ee229dc99cd67fd0cd5aec3c5f7d72fffc27cc750054/cryptography-49.0.0.tar.gz", hash = "sha256:f89660a348f4f78a92366240a61404e337586ef7f5909a2fef59ca88ef505493", size = 854345, upload-time = "2026-06-12T20:02:30.512Z" }
 wheels = [
@@ -686,34 +673,12 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "4.2.30"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.13'",
-    "python_full_version < '3.13'",
-]
-dependencies = [
-    { name = "asgiref", marker = "extra == 'group-4-ora2-django42'" },
-    { name = "sqlparse", marker = "extra == 'group-4-ora2-django42'" },
-    { name = "tzdata", marker = "(sys_platform == 'win32' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/11/b5/f1a53dc68da6429d6e0345bb848161e2381a2e9f02700148911e8582c2b3/django-4.2.30.tar.gz", hash = "sha256:4ebc7a434e3819db6cf4b399fb5b3f536310a30e8486f08b66886840be84b37c", size = 10468707, upload-time = "2026-04-07T14:05:45.57Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/b7/a7c96f239cf91313a6589233fed55111c7063b26683b226802732c455dbc/django-4.2.30-py3-none-any.whl", hash = "sha256:4d07aaf1c62f9984842b67c2874ebbf7056a17be253860299b93ae1881faad65", size = 7997231, upload-time = "2026-04-07T14:05:38.241Z" },
-]
-
-[[package]]
-name = "django"
 version = "5.2.16"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.13'",
-    "python_full_version < '3.13'",
-]
 dependencies = [
-    { name = "asgiref", marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
-    { name = "sqlparse", marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
-    { name = "tzdata", marker = "(sys_platform == 'win32' and extra == 'group-4-ora2-dev') or (sys_platform == 'win32' and extra != 'group-4-ora2-django42') or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "asgiref" },
+    { name = "sqlparse" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a9/26/889449d521ae508b26de715954faecd8bcf3f740affb81b2d146a83b42a5/django-5.2.16.tar.gz", hash = "sha256:59ea02020c3136fce14bef0bbece21a10a4febef5eed1c51c22ae468efa22200", size = 10890894, upload-time = "2026-07-07T13:52:17.005Z" }
 wheels = [
@@ -725,8 +690,7 @@ name = "django-crum"
 version = "0.7.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/34/1d/c56588f67130aeef8828e47535e8551337d2ae02f91f1414da61bc5e49fb/django-crum-0.7.9.tar.gz", hash = "sha256:65e9bc0f070a663fafc4d9e357f45fd4e6f01838b20a9e2fb7670f5706754288", size = 5168, upload-time = "2020-11-10T17:15:35.124Z" }
 wheels = [
@@ -738,8 +702,7 @@ name = "django-model-utils"
 version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/81/60/5e232c32a2c977cc1af8c70a38ef436598bc649ad89c2c4568454edde2c9/django_model_utils-5.0.0.tar.gz", hash = "sha256:041cdd6230d2fbf6cd943e1969318bce762272077f4ecd333ab2263924b4e5eb", size = 80559, upload-time = "2024-09-04T11:35:22.858Z" }
 wheels = [
@@ -751,8 +714,7 @@ name = "django-simple-history"
 version = "3.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7d/75/658d2e0ba3f51c0774cc7c71d2879e3260880d441406bba4bab64d70a4de/django_simple_history-3.12.0.tar.gz", hash = "sha256:4cc363c6c806834f32c9d19c9db2d97165f379f41e581c39fb7dbac9e4c20c11", size = 235106, upload-time = "2026-06-22T13:16:23.766Z" }
 wheels = [
@@ -764,8 +726,7 @@ name = "django-waffle"
 version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/22/e1/6f533da0d4ac89f427dfd9410e39bfc14ae3a23335ecd549d76be4b2a834/django_waffle-5.0.0.tar.gz", hash = "sha256:62f9d00eedf68dafb82657beab56e601bddedc1ea1ccfef91d83df8658708509", size = 37761, upload-time = "2025-06-12T07:38:54.895Z" }
 wheels = [
@@ -774,15 +735,14 @@ wheels = [
 
 [[package]]
 name = "djangorestframework"
-version = "3.17.1"
+version = "3.18.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ca/d7/c016e69fac19ff8afdc89db9d31d9ae43ae031e4d1993b20aca179b8301a/djangorestframework-3.17.1.tar.gz", hash = "sha256:a6def5f447fe78ff853bff1d47a3c59bf38f5434b031780b351b0c73a62db1a5", size = 905742, upload-time = "2026-03-24T16:58:33.705Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/2e/b3ce9d449b1ed9f9dd74fb7dfbc5f20860d5f40c2b4b10a2c3eabd8ff579/djangorestframework-3.18.1.tar.gz", hash = "sha256:605d79fa2ec2f02905492e5ea13d903c2d842d0b4c915a57f7bf02ab9f3c91dd", size = 915653, upload-time = "2026-09-07T18:04:08.288Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5a/e1/2c516bdc83652b1a60c6119366ac2c0607b479ed05cd6093f916ca8928f8/djangorestframework-3.17.1-py3-none-any.whl", hash = "sha256:c3c74dd3e83a5a3efc37b3c18d92bd6f86a6791c7b7d4dff62bb068500e76457", size = 898844, upload-time = "2026-03-24T16:58:31.845Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/83/5ed615e47339d8e65f62eb1a8133f8f046492eb3a25ad40d90acb9a208b3/djangorestframework-3.18.1-py3-none-any.whl", hash = "sha256:f1409d698967aaf82d5d98d76b549c8fba8bd92ebd0d83d24454508f72168dc2", size = 901373, upload-time = "2026-09-07T18:04:06.237Z" },
 ]
 
 [[package]]
@@ -836,8 +796,7 @@ name = "edx-django-release-util"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "pyyaml" },
     { name = "six" },
 ]
@@ -852,8 +811,7 @@ version = "8.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "django-crum" },
     { name = "django-waffle" },
     { name = "psutil" },
@@ -870,8 +828,7 @@ name = "edx-i18n-tools"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "lxml", extra = ["html-clean"] },
     { name = "path" },
     { name = "polib" },
@@ -884,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "edx-lint"
-version = "6.1.0"
+version = "6.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -896,9 +853,9 @@ dependencies = [
     { name = "six" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ee/f0/834dcbb9d847d5654c1fc22dad18813eef66046d521e70d3d21be5a8647f/edx_lint-6.1.0.tar.gz", hash = "sha256:f879f55ed0a94222dee69a4361833f7de6b91576256881eeb35afbed2a85dfa2", size = 50843, upload-time = "2026-04-27T14:05:06.491Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/e2/20b4782eba5bbbaeb949877666f871912db05fb22cee2eafdbc83566cffc/edx_lint-6.2.0.tar.gz", hash = "sha256:2ce94b0b1235024e7714792442ea674e1bbe2877e7ca2ca970609e74aa73dfdf", size = 55456, upload-time = "2026-08-18T12:40:35.178Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7a/3c/dd55e7200bab2b60d993f76cf540b4098e02ce9d300367b395d936d48152/edx_lint-6.1.0-py3-none-any.whl", hash = "sha256:937eeee9c440bf4fbcbdee8553ee11d11a6c675e0834fe43f27174457de7c84a", size = 58548, upload-time = "2026-04-27T14:05:05.167Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/f3/72bbb973cb654aa9d8291c438dd02b21ffb3bf2bdc9e653f9ea9048e3b20/edx_lint-6.2.0-py3-none-any.whl", hash = "sha256:0e1491f9a049927e35eb05a0fd33464b4ec912b83e387568e37f4ce5d10acb30", size = 64109, upload-time = "2026-08-18T12:40:34.102Z" },
 ]
 
 [[package]]
@@ -920,8 +877,7 @@ name = "edx-submissions"
 version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "django-model-utils" },
     { name = "djangorestframework" },
     { name = "edx-django-release-util" },
@@ -939,8 +895,7 @@ version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "code-annotations" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "django-crum" },
     { name = "django-waffle" },
     { name = "edx-django-utils" },
@@ -967,7 +922,7 @@ name = "faker"
 version = "40.31.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/74/e1/adf05724d5838fa9fe2ada64bf390bbf37b77e3714189ae9f17a2c6d0470/faker-40.31.0.tar.gz", hash = "sha256:af163a937aec99dca5abaeb94dd5008c51c26c6e9af1a26c8db4b3c4e7ca4403", size = 2024136, upload-time = "2026-07-14T15:33:32.045Z" }
 wheels = [
@@ -1201,8 +1156,7 @@ name = "jsonfield"
 version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fa/e9/537e105246dba81d898853dbbe17eb3edd23d47a35074b99fd4add6f1662/jsonfield-3.2.0.tar.gz", hash = "sha256:ca53871bc3308ae4f4cddc3b4f99ed5c6fc6abb1832fbfb499bc6da566c70e4a", size = 17156, upload-time = "2025-07-04T23:06:24.883Z" }
 wheels = [
@@ -1539,8 +1493,7 @@ version = "11.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "edx-ccx-keys" },
     { name = "edx-django-utils" },
     { name = "edx-opaque-keys" },
@@ -1557,8 +1510,7 @@ name = "openedx-filters"
 version = "3.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "edx-opaque-keys" },
     { name = "setuptools" },
 ]
@@ -1574,8 +1526,7 @@ dependencies = [
     { name = "bleach" },
     { name = "boto3" },
     { name = "defusedxml" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "django-model-utils" },
     { name = "django-simple-history" },
     { name = "djangorestframework" },
@@ -1609,7 +1560,7 @@ dev = [
     { name = "coverage" },
     { name = "coveralls" },
     { name = "ddt" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" } },
+    { name = "django" },
     { name = "doc8" },
     { name = "edx-lint" },
     { name = "factory-boy" },
@@ -1633,28 +1584,12 @@ dev = [
     { name = "twine" },
     { name = "xblock-sdk" },
 ]
-django42 = [
-    { name = "celery" },
-    { name = "coverage" },
-    { name = "ddt" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" } },
-    { name = "factory-boy" },
-    { name = "freezegun" },
-    { name = "mock" },
-    { name = "more-itertools" },
-    { name = "moto" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-django" },
-    { name = "testfixtures" },
-    { name = "xblock-sdk" },
-]
 doc = [
     { name = "build" },
     { name = "celery" },
     { name = "coverage" },
     { name = "ddt" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" } },
+    { name = "django" },
     { name = "doc8" },
     { name = "factory-boy" },
     { name = "freezegun" },
@@ -1677,7 +1612,7 @@ quality = [
     { name = "celery" },
     { name = "coverage" },
     { name = "ddt" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" } },
+    { name = "django" },
     { name = "edx-lint" },
     { name = "factory-boy" },
     { name = "freezegun" },
@@ -1696,7 +1631,7 @@ test = [
     { name = "celery" },
     { name = "coverage" },
     { name = "ddt" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" } },
+    { name = "django" },
     { name = "factory-boy" },
     { name = "freezegun" },
     { name = "mock" },
@@ -1785,22 +1720,6 @@ dev = [
     { name = "tox" },
     { name = "tox-uv", specifier = ">=1" },
     { name = "twine" },
-    { name = "xblock-sdk" },
-]
-django42 = [
-    { name = "celery" },
-    { name = "coverage" },
-    { name = "ddt" },
-    { name = "django", specifier = ">=4.2,<5.0" },
-    { name = "factory-boy" },
-    { name = "freezegun" },
-    { name = "mock" },
-    { name = "more-itertools" },
-    { name = "moto" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-django" },
-    { name = "testfixtures" },
     { name = "xblock-sdk" },
 ]
 doc = [
@@ -2170,7 +2089,7 @@ name = "pynacl"
 version = "1.6.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "platform_python_implementation != 'PyPy' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/d9/9a/4019b524b03a13438637b11538c82781a5eda427394380381af8f04f467a/pynacl-1.6.2.tar.gz", hash = "sha256:018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c", size = 3511692, upload-time = "2026-01-01T17:48:10.851Z" }
 wheels = [
@@ -2235,7 +2154,7 @@ name = "pytest"
 version = "9.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -2780,7 +2699,7 @@ name = "testfixtures"
 version = "12.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/11/4d/b1c5fae372cd46b7bc1ec1dbca6efecaef8fe1e4edad203cc6e36cd5eafd/testfixtures-12.3.0.tar.gz", hash = "sha256:d807ceb9bdd6ea7cc0663370dd5568339056b35dc15c26effd1ae267e323acf1", size = 201458, upload-time = "2026-07-08T21:32:04.42Z" }
 wheels = [
@@ -2918,7 +2837,7 @@ name = "tzlocal"
 version = "5.4.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/81/5b/879b2f932adfa7a053c360d50bc896c977fa6426109185f7c12ebdd0cb9d/tzlocal-5.4.4.tar.gz", hash = "sha256:8dbb8660838688a7b6ba4fed31d18dedf842afb4d47ca050d6d891c2c15f3be4", size = 31170, upload-time = "2026-06-29T08:03:40.026Z" }
 wheels = [
@@ -3124,7 +3043,7 @@ name = "webob"
 version = "1.8.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "legacy-cgi", marker = "python_full_version >= '3.13' or (extra == 'group-4-ora2-dev' and extra == 'group-4-ora2-django42') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "legacy-cgi", marker = "python_full_version >= '3.13'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/f9/974eafebfd0bd442b8848899fe7d30675c93f750c313e1a6fe61acbde1e3/webob-1.8.10.tar.gz", hash = "sha256:1c963a11f307bc3f624fbab9dde737701eae255f32981b7a5486a88db1767c2b", size = 280796, upload-time = "2026-06-02T19:56:47.268Z" }
 wheels = [
@@ -3247,8 +3166,7 @@ version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cookiecutter" },
-    { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-django42'" },
-    { name = "django", version = "5.2.16", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-4-ora2-dev' or extra != 'group-4-ora2-django42' or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-doc') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-quality') or (extra == 'group-4-ora2-django42' and extra == 'group-4-ora2-test')" },
+    { name = "django" },
     { name = "fs-s3fs" },
     { name = "lxml" },
     { name = "pypng" },

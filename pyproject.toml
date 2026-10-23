@@ -136,11 +136,6 @@ test = [
     { include-group = "test-base" },
     "Django>=5.2,<6.0",
 ]
-# Legacy Django 4.2 support
-django42 = [
-    { include-group = "test-base" },
-    "Django>=4.2,<5.0",
-]
 quality = [
     { include-group = "test" },
     "edx-lint",
@@ -173,14 +168,6 @@ dev = [
 [tool.uv]
 package = true
 default-groups = []
-# test and django42 both pin a Django version — they can't be resolved together.
-# Install one at a time: uv sync --group test OR uv sync --group django42.
-conflicts = [
-    [
-        { group = "test" },
-        { group = "django42" },
-    ],
-]
 
 #  DO NOT EDIT constraint-dependencies DIRECTLY.
 #  This list is managed by `edx_lint write_uv_constraints`

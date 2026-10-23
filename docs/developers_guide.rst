@@ -49,8 +49,8 @@ This must be done from inside either lms or studio docker container.
 5. That's it, you're good to go! See Makefile for all the available
    commands, most are fairly self-explanatory.
 
-In order to simulate a given tox environment (django42, django52, quality,
-js), run tox -e <env> for the env in question (after re-activating your
+In order to simulate a given tox environment (django52, quality, js), run
+tox -e <env> for the env in question (after re-activating your
 edx-ora2 virtual environment).
 Usually, you can just run the underlying make commands for quicker tests,
 as requirements aren't re-installed.
