@@ -186,6 +186,9 @@ describe('OpenAssessment.StaffAreaView', function() {
     };
 
     beforeEach(function() {
+        // Karma installs its own window.onbeforeunload, which reads as an unsaved-changes warning.
+        window.onbeforeunload = null;
+
         // Create a new stub server
         server = new StubServer();
         server.renderLatex = jasmine.createSpy('renderLatex');

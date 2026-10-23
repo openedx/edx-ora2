@@ -159,6 +159,9 @@ describe("OpenAssessment.ResponseView", function() {
     };
 
     beforeEach(function(done) {
+        // Karma installs its own window.onbeforeunload, which reads as an unsaved-changes warning.
+        window.onbeforeunload = null;
+
         // Load the DOM fixture
         loadFixtures('oa_response.html');
 
