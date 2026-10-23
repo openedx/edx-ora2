@@ -73,7 +73,7 @@ coverage
 # tim-specific
 ora2db
 storage/*
-openassessment/xblock/static/js/fixtures/*.html
+src/openassessment/xblock/static/js/fixtures/*.html
 
 # logging
 logs/*.log*
@@ -87,4 +87,4 @@ private.py
 # pyenv
 .python-version
 
-!openassessment/xblock/static/dist/
+!src/openassessment/xblock/static/dist/
