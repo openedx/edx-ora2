@@ -37,6 +37,15 @@
         // the Travis server, devstack, and staging/production servers all place the
         // node_module files differently in absolute paths - this is a way to retrieve the
         // path to the Jasmine req's as nicely as possible
+        //
+        // When running under karma (e.g. with uv editable install), require-config.js may
+        // be served via an absolute-path URL (/absolute/...) rather than /base/. In that
+        // case the src-based calculation returns a filesystem path as baseUrl, which causes
+        // RequireJS to make requests to non-existent URLs. Use /base/ directly when running
+        // under karma so RequireJS is configured with the correct URL scheme.
+        if (window.__karma__) {
+            return '/base/';
+        }
         var scripts = document.getElementsByTagName("script");
         var fullTag = $(scripts[scripts.length-1]);
         var baseUrl = fullTag.attr('src').split(['require-config'])[0];

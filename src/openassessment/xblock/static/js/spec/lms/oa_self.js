@@ -32,6 +32,9 @@ describe("OpenAssessment.SelfView", function() {
     var view = null;
 
     beforeEach(function(done) {
+        // Karma installs its own window.onbeforeunload, which reads as an unsaved-changes warning.
+        window.onbeforeunload = null;
+
         // Load the DOM fixture
         loadFixtures('oa_self_assessment.html');
 
