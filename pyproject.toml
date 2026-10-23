@@ -176,6 +176,9 @@ default-groups = []
 constraint-dependencies = [
     "Django<6.0",
     "elasticsearch<7.14.0",
+    "social-auth-app-django<6.0.0",
+    "social-auth-core<5.0.0",
+    "pip<26.2.1",
     "ddt==1.0.0",
     "freezegun<=0.3.14",
     "moto<5.0",
