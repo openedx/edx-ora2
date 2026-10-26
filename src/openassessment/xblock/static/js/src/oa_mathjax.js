@@ -23,7 +23,10 @@ export const typesetMath = (element) => {
     return Promise.resolve();
   }
 
-  if (MathJax.startup && MathJax.startup.promise && typeof MathJax.typesetPromise === 'function') {
+  // v3/v4 only define `typesetPromise` once startup finishes, so wait on the
+  // startup promise rather than requiring it up front. MathJax 4's AsciiMath
+  // input also defines a legacy `MathJax.Hub`, so the v2 check must come second.
+  if (MathJax.startup && MathJax.startup.promise) {
     return MathJax.startup.promise.then(() => MathJax.typesetPromise([element]));
   }
 

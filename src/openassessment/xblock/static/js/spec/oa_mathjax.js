@@ -35,6 +35,28 @@ describe("OpenAssessment.typesetMath", function() {
         });
     });
 
+    // MathJax v4 adds `typesetPromise` only once startup finishes, and its
+    // AsciiMath input defines a legacy `Hub` before then.
+    it("waits for v3/v4 startup instead of falling back to Hub", function(done) {
+        var resolveStartup = null;
+        var typesetPromise = jasmine.createSpy('typesetPromise').and.returnValue(Promise.resolve());
+        var queue = jasmine.createSpy('Queue');
+        window.MathJax = {
+            startup: { promise: new Promise(function(resolve) { resolveStartup = resolve; }) },
+            Hub: { Queue: queue }
+        };
+
+        var result = typesetMath(element);
+        window.MathJax.typesetPromise = typesetPromise;
+        resolveStartup();
+
+        result.then(function() {
+            expect(typesetPromise).toHaveBeenCalledWith([element]);
+            expect(queue).not.toHaveBeenCalled();
+            done();
+        });
+    });
+
     it("typesets through the v2 Hub API when that is all there is", function(done) {
         var queue = jasmine.createSpy('Queue');
         window.MathJax = { Hub: { Queue: queue } };
