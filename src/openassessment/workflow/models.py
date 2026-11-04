@@ -563,7 +563,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         step_for_name = {step.name: step for step in steps}
         staff_step = step_for_name.get(self.STAFF_STEP_NAME)
         if staff_step is not None:
-            get_latest_func = getattr(staff_step.api(), 'get_latest_assessment', None)
+            get_latest_func = getattr(staff_step.api(), 'get_latest_staff_assessment', None)
             if get_latest_func is not None:
                 staff_assessment = get_latest_func(self.submission_uuid)
                 if staff_assessment is not None:
@@ -603,8 +603,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         # Set the points_earned to 0.
         if score is not None:
-            score['points_earned'] = 0
-            self.set_score(score)
+            # Cancellation must also zero staff grades, which set_score protects.
+            sub_api.set_score(self.submission_uuid, 0, score['points_possible'])
 
         # Save status if it is not cancelled.
         if self.status != self.STATUS.cancelled:

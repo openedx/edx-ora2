@@ -7,6 +7,7 @@ from django.test.utils import override_settings
 from pytest import raises
 
 import submissions.api as sub_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 from openassessment.test_utils import CacheResetTest
 import openassessment.workflow.api as workflow_api
@@ -383,6 +384,41 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
         with self.assertRaises(AssessmentWorkflowInternalError):
             workflow_api.create_workflow(submission['uuid'], ['self'])
+
+    @ddt.data(False, True)
+    def test_staff_score_exists(self, has_staff_assessment):
+        """Detect real staff assessments using the installed staff API."""
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
+        workflow_api.create_workflow(submission['uuid'], ['peer'])
+        if has_staff_assessment:
+            staff_api.create_assessment(
+                submission['uuid'], 'staff', {'secret': 'yes'}, {}, '', RUBRIC_DICT
+            )
+        workflow = AssessmentWorkflow.get_by_submission_uuid(submission['uuid'])
+        self.assertEqual(workflow.staff_score_exists(), has_staff_assessment)
+
+    def test_cancel_staff_graded_workflow(self):
+        """Cancellation must zero a staff grade even when normal scoring cannot overwrite it."""
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
+        workflow_api.create_workflow(submission['uuid'], ['staff'])
+        staff_api.create_assessment(
+            submission['uuid'], 'staff', {'secret': 'yes'}, {}, '', RUBRIC_DICT
+        )
+        requirements = {'staff': {'required': True}}
+        workflow_api.update_from_assessments(submission['uuid'], requirements, {})
+        self.assertEqual(sub_api.get_score(ITEM_1)['points_earned'], 1)
+
+        workflow = AssessmentWorkflow.get_by_submission_uuid(submission['uuid'])
+        workflow.set_score({'points_earned': 0, 'points_possible': 1})
+        self.assertEqual(sub_api.get_score(ITEM_1)['points_earned'], 1)
+
+        workflow_api.cancel_workflow(
+            submission_uuid=submission['uuid'], comments='Invalid submission',
+            cancelled_by_id='staff', assessment_requirements=requirements, course_settings={},
+        )
+        self.assertEqual(sub_api.get_score(ITEM_1)['points_earned'], 0)
+        workflow.refresh_from_db()
+        self.assertEqual(workflow.status, 'cancelled')
 
     def test_cancel_the_assessment_workflow(self):
         # Create the submission and assessment workflow.
