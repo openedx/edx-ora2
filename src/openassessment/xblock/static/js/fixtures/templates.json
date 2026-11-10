@@ -881,7 +881,6 @@
     {
         "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
-            "is_enhanced_staff_grader_enabled": false,
             "enhanced_staff_grader_url": null,
             "staff_assessment_required": true,
             "staff_assessment_ungraded": 5,
@@ -917,7 +916,6 @@
     {
         "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
-            "is_enhanced_staff_grader_enabled": true,
             "enhanced_staff_grader_url": "esg_url",
             "staff_assessment_required": true,
             "staff_assessment_ungraded": 5,

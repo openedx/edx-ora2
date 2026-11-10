@@ -297,11 +297,10 @@ describe("OpenAssessment.CourseItemsListingView", function() {
     });
 
 
-    describe('esg enchanced grade flag', function() {
-        describe('is enabled', function() {
+    describe('staff grader column', function() {
+        describe('rendering', function() {
             var data = {
                 CONTEXT: {
-                    ENHANCED_STAFF_GRADER: true,
                     ORA_GRADING_MICROFRONTEND_URL: 'some_url'
                 }
             };
@@ -339,46 +338,6 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
                 var staffGraderSummary = $('.open-response-assessment-summary .staff_grader')
                 expect(staffGraderSummary.length).toEqual(0);
-            });
-        });
-
-        describe('is not enabled', () => {
-
-            var data = {
-                CONTEXT: {
-                    ENHANCED_STAFF_GRADER: false,
-                    ORA_GRADING_MICROFRONTEND_URL: 'demo_url'
-                }
-            };
-
-            beforeEach(function() {
-                view = createCourseItemsListingView('oa_listing_view.html', data);
-                // Add test data
-                view.oraData = testData;
-                view.renderGrids(ora2responses);
-            });
-
-            it ('staff column will be clickable', () => {
-                var staffItems = $('.open-response-assessment-main-table td.renderable.staff');
-
-                staffItems.each((_, item) => {
-                    expect(item.classList).not.toContain('string-cell');
-                    expect(item.classList).toContain('uri-cell');
-                    if (item.children.length)
-                        expect($('a', item).length).toEqual(1);
-                    else
-                        expect(item.innerHTML).toEqual('0');
-                })
-            });
-
-            it('staff grader column should lead to demo of ora-grading', () => {
-                var esgItems = $('.staff-esg-link');
-                expect(esgItems.length).toEqual(1);
-
-                esgItems.each((_, item) => {
-                    expect(item.innerHTML).toEqual("Demo the new Grading Experience")
-                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL)
-                });
             });
         });
     });
