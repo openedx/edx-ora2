@@ -50,7 +50,6 @@ export class CourseItemsListingView {
       },
     });
 
-    const esgEnabled = context.ENHANCED_STAFF_GRADER;
     const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
 
     const ESGCell = Backgrid.UriCell.extend({
@@ -58,7 +57,7 @@ export class CourseItemsListingView {
         this.$el.empty();
         const name = this.column.get('name');
         this.$el.addClass(name);
-        const displayValue = esgEnabled ? gettext('View and grade responses') : gettext('Demo the new Grading Experience');
+        const displayValue = gettext('View and grade responses');
         const id = this.model.get('id');
         const url = `${esgRootUrl}/${id}`;
         const hasAssessmentType = this.model.get('staff_assessment');
@@ -68,7 +67,6 @@ export class CourseItemsListingView {
           href: url,
           class: 'staff-esg-link',
         });
-        // Remove this in AU-617
         const teamAssignment = this.model.get('team_assignment');
         if (hasAssessmentType && !teamAssignment) {
           this.$el.append(link);
@@ -85,9 +83,8 @@ export class CourseItemsListingView {
     const StaffCell = AssessmentCell.extend({
       url: 'url_grade_available_responses',
       type: 'staff_assessment',
-      // Should be removed as a part of AU-617
       shouldShowLink() {
-        return this.model.get('team_assignment') || !esgEnabled;
+        return this.model.get('team_assignment');
       },
     });
 

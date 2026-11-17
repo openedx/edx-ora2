@@ -269,10 +269,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @override_settings(
         ORA_GRADING_MICROFRONTEND_URL='some_url'
     )
-    @patch(
-        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
-        PropertyMock(return_value=False)
-    )
     def test_ora_blocks_listing_view(self, xblock):
         """
         Test view for listing all courses OA blocks.
@@ -323,16 +319,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @override_settings(
         ORA_GRADING_MICROFRONTEND_URL='some_url'
     )
-    @ddt.data(False, True)
-    @patch(
-        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
-        new_callable=PropertyMock
-    )
-    def test_ora_blocks_listing_view_include_esg_flag(self, xblock, esg_flag_input, mock_esg):
+    def test_ora_blocks_listing_view_context(self, xblock):
         """
-        Test view for listing all courses OA blocks.
+        The listing view's JS context carries the grading microfrontend
+        URL and no longer carries the removed ENHANCED_STAFF_GRADER flag.
         """
-        mock_esg.return_value = esg_flag_input
         xblock_fragment = self.runtime.render(xblock, "ora_blocks_listing_view")
         body_html = xblock_fragment.body_html()
 
@@ -344,7 +335,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
 
         xblock_args_el = tree.xpath(xblock_arg_path)
-        json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
+        context = json.loads(xblock_args_el[0].text)['CONTEXT']
+        self.assertNotIn('ENHANCED_STAFF_GRADER', context)
+        self.assertEqual(context['ORA_GRADING_MICROFRONTEND_URL'], 'some_url')
 
     @scenario('data/basic_scenario.xml')
     @ddt.data(False, True)

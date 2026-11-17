@@ -13,7 +13,6 @@ ALL_FILES_URLS = 'all_files_urls'
 TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 RUBRIC_REUSE = 'rubric_reuse'
-ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
 MFE_VIEWS = 'mfe_views'
 SELECTABLE_LEARNER_WAITING_REVIEW = 'selectable_learner_waiting_review'
 ENABLE_PEER_CONFIGURABLE_GRADING = 'peer_configurable_grading'
@@ -24,7 +23,6 @@ FEATURE_TOGGLES_BY_FLAG_NAME = {
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
-    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER',
     SELECTABLE_LEARNER_WAITING_REVIEW: 'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW',
     ENABLE_PEER_CONFIGURABLE_GRADING: 'ENABLE_ORA_PEER_CONFIGURABLE_GRADING',
 }
@@ -152,20 +150,6 @@ class ConfigMixin:
         # .. toggle_creation_date: 2021-05-18
         # .. toggle_tickets:  https://openedx.atlassian.net/browse/EDUCATOR-5751
         return self.is_feature_enabled(RUBRIC_REUSE)
-
-    @cached_property
-    def is_enhanced_staff_grader_enabled(self):
-        """
-        Return a boolean indicating the enhanced staff grader feature is enabled or not.
-        """
-        # .. toggle_name: FEATURES['ENABLE_ENHANCED_STAFF_GRADER']
-        # .. toggle_implementation: WaffleFlag
-        # .. toggle_default: False
-        # .. toggle_description: Set to True to enable the enhanced staff grader feature
-        # .. toggle_use_cases: circuit_breaker
-        # .. toggle_creation_date: 2021-08-29
-        # .. toggle_tickets: https://openedx.atlassian.net/browse/AU-50
-        return self.is_feature_enabled(ENHANCED_STAFF_GRADER)
 
     @cached_property
     def is_selectable_learner_waiting_review_enabled(self):
