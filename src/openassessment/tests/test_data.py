@@ -20,6 +20,7 @@ from django.test import TestCase, override_settings
 
 from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
@@ -910,6 +911,17 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
                 map_mock.return_value = USERNAME_MAPPING
                 _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
+
+    def test_collect_ora2_summary_with_staff_grade(self):
+        """Report staff-graded submissions distinctly from peer-only submissions."""
+        staff_api.create_assessment(
+            self.submission['uuid'], 'staff', ASSESSMENT_DICT['options_selected'],
+            {}, '', RUBRIC_DICT,
+        )
+        headers, data = OraAggregateData.collect_ora2_summary(COURSE_ID)
+        rows = {row['student_id']: row for row in (dict(zip(headers, values)) for values in data)}
+        self.assertEqual(rows[STUDENT_ID]['is_staff_grade_received'], 1)
+        self.assertEqual(rows[SCORER_ID]['is_staff_grade_received'], 0)
 
     def test_collect_ora2_summary(self):
         headers, data = OraAggregateData.collect_ora2_summary(COURSE_ID)
