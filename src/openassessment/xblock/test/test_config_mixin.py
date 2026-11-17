@@ -125,8 +125,6 @@ class ConfigMixinTest(TestCase):
             'is_rubric_reuse_enabled',
         )
 
-
-
     @ddt.data(
         *list(itertools.product([True, False, None], repeat=3))
     )
