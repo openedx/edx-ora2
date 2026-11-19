@@ -7,7 +7,6 @@ from unittest.mock import Mock, patch
 from ddt import ddt, file_data, data, unpack
 import pytz
 
-from django.conf import settings
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
 from django.test.utils import override_settings
@@ -168,11 +167,6 @@ COURSE_SETTINGS = {}
 COURSE_SETTINGS_FLEXIBLE_ON = {
     'force_on_flexible_peer_openassessments': True
 }
-
-FEATURES_WITH_GRADING_STRATEGY_ON = settings.FEATURES.copy()
-FEATURES_WITH_GRADING_STRATEGY_OFF = settings.FEATURES.copy()
-FEATURES_WITH_GRADING_STRATEGY_ON['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = True
-FEATURES_WITH_GRADING_STRATEGY_OFF['ENABLE_ORA_PEER_CONFIGURABLE_GRADING'] = False
 
 
 @ddt
@@ -2241,7 +2235,7 @@ class TestPeerApi(CacheResetTest):
             self.assertTrue(peer_api.flexible_peer_grading_active(alice_sub['uuid'], requirements, COURSE_SETTINGS))
             self._assert_num_scored_items(alice_sub, 4)
 
-    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @override_settings(ENABLE_ORA_PEER_CONFIGURABLE_GRADING=True)
     @patch("openassessment.assessment.api.peer.PeerWorkflow")
     @patch(
         "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
@@ -2282,7 +2276,7 @@ class TestPeerApi(CacheResetTest):
 
         self.assertDictEqual(score_dict, scores_by_criterion)
 
-    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_ON)
+    @override_settings(ENABLE_ORA_PEER_CONFIGURABLE_GRADING=True)
     @patch("openassessment.assessment.api.peer.PeerWorkflow.objects.get")
     @patch("openassessment.assessment.api.peer.Assessment.scores_by_criterion")
     @data("mean", "median")
@@ -2335,7 +2329,7 @@ class TestPeerApi(CacheResetTest):
                 workflow_requirements
             )
 
-    @override_settings(FEATURES=FEATURES_WITH_GRADING_STRATEGY_OFF)
+    @override_settings(ENABLE_ORA_PEER_CONFIGURABLE_GRADING=False)
     @patch(
         "openassessment.assessment.api.peer.Assessment.scores_by_criterion",
         return_value={"criterion_1": [6, 8, 15, 29, 37], "criterion_2": [0, 1, 2, 4, 9]}

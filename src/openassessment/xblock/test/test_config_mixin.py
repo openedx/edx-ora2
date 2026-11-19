@@ -41,7 +41,7 @@ class ConfigMixinTest(TestCase):
         Team submissions are expected to be enabled if at least one of the following conditions holds:
           1) The team_submissions waffle switch is enabled.
           2) The team_submissions course waffle flag is enabled.
-          3) The settings.FEATURES['ENABLE_ORA_TEAM_SUBMISSIONS'] value is True.
+          3) The settings.ENABLE_ORA_TEAM_SUBMISSIONS value is True.
         """
         self._run_feature_toggle_test(
             TEAM_SUBMISSIONS,
@@ -60,7 +60,7 @@ class ConfigMixinTest(TestCase):
         The user state data workaround is expected to be enabled if at least one of the following conditions holds:
           1) The user_state_upload_data waffle switch is enabled.
           2) The user_state_upload_data course waffle flag is enabled.
-          3) The settings.FEATURES['ENABLE_ORA_USER_STATE_UPLOAD_DATA'] value is True.
+          3) The settings.ENABLE_ORA_USER_STATE_UPLOAD_DATA value is True.
         """
         self._run_feature_toggle_test(
             USER_STATE_UPLOAD_DATA,
@@ -79,7 +79,7 @@ class ConfigMixinTest(TestCase):
         The "all file urls" workaround is expected to be enabled if at least one of the following conditions holds:
           1) The all_files_urls waffle switch is enabled.
           2) The all_files_urls course waffle flag is enabled.
-          3) The settings.FEATURES['ENABLE_ORA_ALL_FILE_URLS'] value is True.
+          3) The settings.ENABLE_ORA_ALL_FILE_URLS value is True.
         """
         self._run_feature_toggle_test(
             ALL_FILES_URLS,
@@ -98,12 +98,12 @@ class ConfigMixinTest(TestCase):
     def test_mobile_support_enabled(self, settings_input, expected_output):
         """
         The mobile support is expected to be enabled only if:
-          1) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
+          1) The settings.ENABLE_ORA_MOBILE_SUPPORT value is True.
         """
         my_block = MockBlock()
 
         if settings_input is not None:
-            with self.settings(FEATURES={'ENABLE_ORA_MOBILE_SUPPORT': settings_input}):
+            with self.settings(ENABLE_ORA_MOBILE_SUPPORT=settings_input):
                 self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
         else:
             self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
@@ -116,7 +116,7 @@ class ConfigMixinTest(TestCase):
         """
         The rubric reuse feature is expected to be enabled only if:
           1) The openresponseassessment.rubric_reuse waffle flag is enabled
-          2) The settings.FEATURES['ENABLE_ORA_RUBRIC_REUSE'] value is True
+          2) The settings.ENABLE_ORA_RUBRIC_REUSE value is True
         """
         self._run_feature_toggle_test(
             RUBRIC_REUSE,
@@ -134,7 +134,7 @@ class ConfigMixinTest(TestCase):
         """
         The enhanced staff grader feature is expected to be enabled only if:
           1) The openresponseassessment.enhanced_staff_grader waffle flag is enabled
-          2) The settings.FEATURES['ENABLE_ENHANCED_STAFF_GRADER'] value is True
+          2) The settings.ENABLE_ENHANCED_STAFF_GRADER value is True
         """
         self._run_feature_toggle_test(
             ENHANCED_STAFF_GRADER,
@@ -151,7 +151,7 @@ class ConfigMixinTest(TestCase):
     def test_selectable_learner_waiting_review_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
         """
         The selectable learner waiting review feature is expected to be enabled only if:
-          1) The settings.FEATURES['ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW'] value is True
+          1) The settings.ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW value is True
         """
         self._run_feature_toggle_test(
             SELECTABLE_LEARNER_WAITING_REVIEW,
@@ -169,7 +169,7 @@ class ConfigMixinTest(TestCase):
           1) It's associated waffle switch is enabled.
           2) It's associated course waffle flag is enabled.
           3} It's associated waffle flag is enabled.
-          4) The settings.FEATURES keyed by ``flag_name`` is True.
+          4) The Django setting named for ``flag_name`` is True.
         """
 
         expected_output = True
@@ -186,7 +186,7 @@ class ConfigMixinTest(TestCase):
             ) as mock_course_waffle_flag:
                 MockCourseWaffleFlag = mock_course_waffle_flag.return_value
                 MockCourseWaffleFlag.return_value.is_enabled.return_value = waffle_flag_input
-                with self.settings(FEATURES={settings_feature_key: settings_input}):
+                with self.settings(**{settings_feature_key: settings_input}):
                     self.assertEqual(expected_output, getattr(my_block, feature_property, None))
                 mock_flag_instance = MockCourseWaffleFlag.return_value
                 mock_flag_instance.is_enabled.assert_called_once_with(my_block.location.course_key)
@@ -196,7 +196,7 @@ class ConfigMixinTest(TestCase):
         ) as mock_waffle_flag:
             MockWaffleFlag = mock_waffle_flag.return_value
             MockWaffleFlag.return_value.is_enabled.return_value = waffle_flag_input
-            with self.settings(FEATURES={settings_feature_key: settings_input}):
+            with self.settings(**{settings_feature_key: settings_input}):
                 self.assertEqual(expected_output, getattr(my_block, feature_property, None))
 
         if not waffle_flag_input:

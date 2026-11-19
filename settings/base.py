@@ -144,39 +144,37 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "conf", "locale")]
 
-FEATURES = {
-    # Set to True to enable team-based ORA submissions.
-    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
-    'ENABLE_ORA_TEAM_SUBMISSIONS': False,
+# Set to True to enable team-based ORA submissions.
+# See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+ENABLE_ORA_TEAM_SUBMISSIONS = False
 
-    # A "work-around" feature toggle meant to help in cases where some file uploads are not discoverable.
-    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
-    'ENABLE_ORA_ALL_FILE_URLS': False,
+# A "work-around" feature toggle meant to help in cases where some file uploads are not discoverable.
+# See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+ENABLE_ORA_ALL_FILE_URLS = False
 
-    # A "work-around" feature toggle meant to pull file upload data our of user state, rather than Submission records.
-    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
-    'ENABLE_ORA_USER_STATE_UPLOAD_DATA': False,
+# A "work-around" feature toggle meant to pull file upload data our of user state, rather than Submission records.
+# See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+ENABLE_ORA_USER_STATE_UPLOAD_DATA = False
 
-    # Set to True to add deanonymized usernames to ORA data report
-    # See: https://openedx.atlassian.net/browse/TNL-7273
-    'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False,
+# Set to True to add deanonymized usernames to ORA data report
+# See: https://openedx.atlassian.net/browse/TNL-7273
+ENABLE_ORA_USERNAMES_ON_DATA_EXPORT = False
 
-    # Set to True to enable this Xblock in mobile apps.
-    'ENABLE_ORA_MOBILE_SUPPORT': False,
+# Set to True to enable this Xblock in mobile apps.
+ENABLE_ORA_MOBILE_SUPPORT = False
 
-    # Set to True to enable copying/reusing rubric data
-    # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
-    'ENABLE_ORA_RUBRIC_REUSE': False,
+# Set to True to enable copying/reusing rubric data
+# See: https://openedx.atlassian.net/browse/EDUCATOR-5751
+ENABLE_ORA_RUBRIC_REUSE = False
 
-    # Set to True to enable selectable learners in waiting step list
-    # See: https://github.com/openedx/edx-ora2/pull/2025
-    'ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW': False,
+# Set to True to enable selectable learners in waiting step list
+# See: https://github.com/openedx/edx-ora2/pull/2025
+ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW = False
 
-    # Set to True to enable configurable grading for peer review
-    # See: https://github.com/openedx/edx-ora2/pull/2196
-    'ENABLE_ORA_PEER_CONFIGURABLE_GRADING': False,
+# Set to True to enable configurable grading for peer review
+# See: https://github.com/openedx/edx-ora2/pull/2196
+ENABLE_ORA_PEER_CONFIGURABLE_GRADING = False
 
-}
 
 # ---------------------------------------------------------------------------
 # ORA Reminder Notification Settings

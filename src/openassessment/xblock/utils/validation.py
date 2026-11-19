@@ -168,7 +168,7 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         if names != current_names:
             return False, _("The assessment type cannot be changed after the problem has been released.")
 
-        if settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING"):
+        if getattr(settings, "ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
             grading_strategies = [assessment.get('grading_strategy') for assessment in assessments]
             current_grading_strategies = [assessment.get('grading_strategy') for assessment in current_assessments]
             if grading_strategies != current_grading_strategies:

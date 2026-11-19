@@ -60,7 +60,7 @@ def get_peer_grading_strategy(workflow_requirements):
     """
     # If the feature flag is not enabled, use the median score calculation
     # as the default behavior.
-    if not settings.FEATURES.get("ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
+    if not getattr(settings, "ENABLE_ORA_PEER_CONFIGURABLE_GRADING", False):
         return PeerGradingStrategy.MEDIAN
 
     if "peer" not in workflow_requirements:

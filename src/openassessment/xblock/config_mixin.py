@@ -66,13 +66,12 @@ class ConfigMixin:
     @staticmethod
     def _settings_toggle_enabled(toggle_name):
         """
-        Returns True iff ``toggle_name`` is defined and set to ``True``
-        in Django settings ``FEATURES`` dict.
+        Returns True iff ``toggle_name`` is a Django setting set to ``True``.
         """
         if not toggle_name:
             return False
 
-        toggle_state = settings.FEATURES.get(toggle_name)
+        toggle_state = getattr(settings, toggle_name, None)
         # If the feature toggle is not defined in settings, this will return False
         return toggle_state is True
 
@@ -128,7 +127,7 @@ class ConfigMixin:
         """
         Returns a boolean indicating if the mobile support feature flag is enabled or not.
         """
-        # .. toggle_name: FEATURES['ENABLE_ORA_MOBILE_SUPPORT']
+        # .. toggle_name: ENABLE_ORA_MOBILE_SUPPORT
         # .. toggle_implementation: SettingToggle
         # .. toggle_default: False
         # .. toggle_description: Set to True to enable the ORA2 Xblock to be rendered
@@ -136,7 +135,7 @@ class ConfigMixin:
         # .. toggle_use_cases: open_edx
         # .. toggle_creation_date: 2020-10-14
         # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/1445
-        return settings.FEATURES.get('ENABLE_ORA_MOBILE_SUPPORT', False)
+        return getattr(settings, 'ENABLE_ORA_MOBILE_SUPPORT', False)
 
     @cached_property
     def is_rubric_reuse_enabled(self):
@@ -144,7 +143,7 @@ class ConfigMixin:
         Return a boolean indicating the reuse of rubric feature is enabled or not.
         """
         # pylint: disable=toggle-missing-target-removal-date
-        # .. toggle_name: FEATURES['ENABLE_ORA_RUBRIC_REUSE']
+        # .. toggle_name: ENABLE_ORA_RUBRIC_REUSE
         # .. toggle_implementation: WaffleFlag
         # .. toggle_default: False
         # .. toggle_description: Set to True to enable the reuse of rubric feature
@@ -158,7 +157,7 @@ class ConfigMixin:
         """
         Return a boolean indicating the enhanced staff grader feature is enabled or not.
         """
-        # .. toggle_name: FEATURES['ENABLE_ENHANCED_STAFF_GRADER']
+        # .. toggle_name: ENABLE_ENHANCED_STAFF_GRADER
         # .. toggle_implementation: WaffleFlag
         # .. toggle_default: False
         # .. toggle_description: Set to True to enable the enhanced staff grader feature
@@ -172,7 +171,7 @@ class ConfigMixin:
         """
         Return a boolean indicating the selectable learner waiting review is enabled or not.
         """
-        # .. toggle_name: FEATURES['ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW']
+        # .. toggle_name: ENABLE_ORA_SELECTABLE_LEARNER_WAITING_REVIEW
         # .. toggle_implementation: SettingToggle
         # .. toggle_default: False
         # .. toggle_description: Enable selectable learner in the waiting step list ORA2.
@@ -188,7 +187,7 @@ class ConfigMixin:
         """
         Return a boolean indicating the peer configurable grading feature is enabled or not.
         """
-        # .. toggle_name: FEATURES['ENABLE_ORA_PEER_CONFIGURABLE_GRADING']
+        # .. toggle_name: ENABLE_ORA_PEER_CONFIGURABLE_GRADING
         # .. toggle_implementation: SettingToggle
         # .. toggle_default: False
         # .. toggle_description: Enable configurable grading for peer review.
