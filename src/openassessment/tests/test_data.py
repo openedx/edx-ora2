@@ -346,7 +346,7 @@ class CsvWriterTest(TransactionCacheResetTest):
 
 
 @ddt.ddt
-@patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
+@override_settings(ENABLE_ORA_USERNAMES_ON_DATA_EXPORT=True)
 class TestOraAggregateData(TransactionCacheResetTest):
     """
     Test the component parts of OraAggregateData
@@ -645,7 +645,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
 
 @ddt.ddt
-@patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
+@override_settings(ENABLE_ORA_USERNAMES_ON_DATA_EXPORT=True)
 @patch(
     'openassessment.data.OraAggregateData._map_block_usage_keys_to_display_names',
     Mock(return_value=ITEM_DISPLAY_NAMES_MAPPING)
@@ -817,7 +817,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         settings toggle equals ``False``.
         """
 
-        with patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False}):
+        with override_settings(ENABLE_ORA_USERNAMES_ON_DATA_EXPORT=False):
             with patch('openassessment.data.peer_api.get_bulk_scored_assessments', return_value=set()):
                 headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
